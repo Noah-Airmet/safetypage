@@ -1,0 +1,45 @@
+---
+// /q/<id>: one quote check with its page, and a preview card that says the verdict.
+import Base from '../../layouts/Base.astro';
+import PageCrop from '../../components/PageCrop.astro';
+import { allChecks, type StoredCheck } from '../../lib/checks';
+import { getDoc, getUnit } from '../../lib/data';
+import { anchorLabel, anchorOf, citePath, docIdOf, shortLabel } from '../../lib/cite';
+import { spanInUnit } from '../../lib/quote';
+
+export const getStaticPaths = () => allChecks().map((check) => ({ params: { id: check.id }, props: { check } }));
+const { check } = Astro.props as { check: StoredCheck };
+const doc = getDoc(docIdOf(check.cite))!;
+const here = anchorLabel(anchorOf(check.cite));
+const shownAt = anchorLabel(anchorOf(check.shown));
+const unit = getUnit(check.shown);
+const range = unit && check.span ? spanInUnit(unit, check.span) : null;
+const verdicts: Record<string, string> = {
+  exact: `On ${here}, word for word`, normalized: `On ${here}, allowing for case, punctuation and line breaks`,
+  elsewhere: `Not on ${here}. The words are on ${shownAt}`, near_miss: `Not on ${here}. The page says something else`, not_found: `Not on ${here}, or anywhere in the document`,
+};
+const said = unit?.text && range ? unit.text.slice(range[0], range[1]).replace(/\s+/g, ' ') : null;
+---
+<Base title={`${check.passed ? 'Verified' : 'Rejected'}: “${check.quote.slice(0, 60)}”`} description={`${verdicts[check.verdict]}. ${doc.title}.`} og={`/og/q/${check.id}.png`}>
+  <div class="wrap narrow">
+    <header class="pagehead">
+      <p class="rubric">Quote check · <a href={citePath(doc.doc_id)}>{shortLabel(doc)}</a>, cited at {here}</p>
+      <h1 class="quote">“{check.quote}”</h1>
+      <p><span class="state" data-state={check.passed ? 'verified' : 'rejected'}>{verdicts[check.verdict]}</span></p>
+      {!check.passed && said && <p class="says">The page says: “{said}”</p>}
+    </header>
+    {unit?.width && range && <PageCrop unit={unit} ranges={[range]} kind={check.passed ? 'found' : 'reject'} alt={`${doc.title}, ${shownAt}`} eager />}
+    <p class="after">
+      <a class="btn btn-primary" href={citePath(check.shown, check.passed ? check.quote : undefined)}>Open {shownAt}</a>
+      <a class="btn" href={`/check?text=${encodeURIComponent(`"${check.quote}" (${check.cite})`)}`}>Run the check again</a>
+    </p>
+    <p class="note">The check is deterministic: the quoted words must be on the cited page, in order, with nothing skipped. It does not judge whether the page supports a claim.</p>
+  </div>
+</Base>
+<style>
+  .narrow { max-width: 54rem; }
+  .quote { font: 400 var(--t-28)/1.3 var(--serif); text-wrap: pretty; }
+  .state { font-size: var(--t-16); }
+  .says { font: 400 var(--t-18)/1.5 var(--serif); color: var(--ink-2); }
+  .after { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-block: var(--s-4); }
+</style>

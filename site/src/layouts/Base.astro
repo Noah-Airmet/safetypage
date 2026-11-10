@@ -1,0 +1,64 @@
+---
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/site.css';
+
+interface Props { title?: string; description?: string; og?: string; canonical?: string; bare?: boolean }
+const { title, description = 'A library of the AI safety record. Every result opens the exact page, and every citation is checked against it.', og = '/og/site.png', canonical, bare } = Astro.props;
+const fullTitle = title ? `${title} · On the Page` : 'On the Page: the AI safety record, cited to the page';
+const here = Astro.url.pathname;
+const nav = [
+  ['/library', 'Library'], ['/search', 'Search'], ['/check', 'Check'], ['/r', 'Replay'], ['/pagecite', 'PageCite'], ['/connect', 'Connect'],
+];
+const abs = (p: string) => new URL(p, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={abs(canonical ?? here)} />
+    <meta property="og:site_name" content="On the Page" />
+    <meta property="og:title" content={title ?? 'On the Page'} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={abs(canonical ?? here)} />
+    <meta property="og:image" content={abs(og)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={abs(og)} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="bar">
+      <div class="wrap bar-in">
+        <a class="wordmark" href="/">On the Page</a>
+        <nav class="nav" aria-label="Site">
+          {nav.map(([href, label]) => (
+            <a href={href} aria-current={here === href || here.startsWith(href + '/') ? 'page' : undefined}>{label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main><slot /></main>
+    {!bare && (
+      <footer class="foot">
+        <div class="wrap foot-in">
+          <span>Built by Noah Airmet</span>
+          <a href="https://github.com/Noah-Airmet/onthepage">Source on GitHub</a>
+          <a href="/about">How it works</a>
+          <a href="/about#licences">Licence policy</a>
+        </div>
+      </footer>
+    )}
+  </body>
+</html>

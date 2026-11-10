@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Search from '../islands/Search.tsx';
+---
+<Base title="Search" description="Search the AI safety record to the page.">
+  <div class="wrap narrow">
+    <header class="pagehead"><h1 class="title">Search</h1></header>
+    <Search client:load />
+  </div>
+</Base>
+<style is:global>
+  .narrow { max-width: 54rem; }
+  .search .within { margin-top: var(--s-3); color: var(--ink-2); }
+  .search .results { margin-top: var(--s-6); }
+  .search .count { color: var(--ink-2); font-size: var(--t-13); margin-bottom: var(--s-2); }
+  .search ol > li { border-top: 1px solid var(--rule); }
+  .search ol > li > a { display: grid; gap: var(--s-1); padding-block: var(--s-4); }
+  .search .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-1) var(--s-3); }
+  .search .head .chip { color: var(--accent); }
+  .search .head .chip::before { display: none; }
+  .search .doc { font: 400 var(--t-18)/1.3 var(--serif); }
+  .search a:hover .doc { color: var(--accent); }
+  .search .snippet { font: 400 var(--t-16)/1.55 var(--serif); color: var(--ink-2); max-width: 72ch; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+  .search .snippet mark { color: var(--ink); }
+  .search .meta { color: var(--ink-2); font-size: var(--t-13); }
+  .search .cite { font-size: var(--t-12); margin-left: var(--s-2); color: var(--ink-3); }
+</style>

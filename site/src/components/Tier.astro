@@ -1,0 +1,12 @@
+---
+// Where a document is read. The tier changes where you read it, not what the library knows.
+import { licenceName } from '../lib/cite';
+interface Props { tier: 'open' | 'link_only'; licence: string }
+const { tier, licence } = Astro.props;
+---
+<span class="tier"><strong>{tier === 'open' ? 'Read here' : 'Read at source'}</strong><span class="mono muted">{licenceName(licence)}</span></span>
+<style>
+  .tier { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-2); }
+  .tier strong { font-weight: 500; }
+  .tier .mono { font-size: var(--t-12); }
+</style>

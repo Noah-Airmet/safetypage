@@ -1,0 +1,93 @@
+---
+// The leaderboard, read from a results file. Every number links to the run it came from,
+// every run lists its questions, and every question opens its replay.
+import Base from '../../layouts/Base.astro';
+import { content } from '../../lib/data';
+
+interface Score { value: number; ci: [number, number]; n: number }
+interface Board {
+  sample: boolean; benchmark: string; version: string; questions: number; updated: string; snapshot: string; harness: string;
+  judge: { name: string; agreement: number; n: number } | null;
+  metrics: { key: string; label: string; source: 'deterministic' | 'judge'; better: string }[];
+  rows: { model: string; solver: string; run_id: string; rank_band: [number, number]; scores: Record<string, Score>; cost_per_correct_usd: number | null }[];
+}
+const board = content<Board>('leaderboard.json');
+const pct = (x: number) => Math.round(x * 100);
+const band = ([a, b]: [number, number]) => (a === b ? `${a}` : `${a}–${b}`);
+const lead = board.metrics[0];
+---
+<Base title="PageCite" description="A benchmark of page-level citation: does an agent cite the right page, and quote it faithfully?">
+  <div class="wrap">
+    <header class="pagehead">
+      <h1 class="title">PageCite</h1>
+      <p class="lede">Does an agent cite the right page, and are the words it quotes on that page?</p>
+      <p class="muted facts mono">{board.benchmark} {board.version} · {board.questions} {board.questions === 1 ? 'question' : 'questions'} · updated {board.updated} · snapshot {board.snapshot} · harness {board.harness}</p>
+      {board.sample && <p class="note" data-kind="sample"><strong>Sample data.</strong> These rows are placeholders that show the layout. They are not results for any model. Real runs replace this file.</p>}
+    </header>
+
+    <div class="scroll">
+      <table class="table board">
+        <thead>
+          <tr>
+            <th>Rank</th><th>Agent</th>
+            {board.metrics.map((m) => <th class="num">{m.label}<span class="src">{m.source === 'judge' ? 'judge' : 'code'} · {m.better} is better</span></th>)}
+            <th class="whisk"><span class="sr">{lead.label}, with its 95% interval</span></th>
+            <th class="num">$ per correct<span class="src">cited answer</span></th>
+            <th class="num">Run</th>
+          </tr>
+        </thead>
+        <tbody>
+          {board.rows.map((row) => {
+            const run = `/pagecite/runs/${row.run_id}`;
+            const s = row.scores[lead.key];
+            return (
+              <tr>
+                <td class="mono">{band(row.rank_band)}</td>
+                <td><span class="model">{row.model}</span><span class="solver mono">{row.solver}</span></td>
+                {board.metrics.map((m) => {
+                  const v = row.scores[m.key];
+                  return <td class="num"><a href={run} title={`${pct(v.ci[0])} to ${pct(v.ci[1])}, n = ${v.n}`}>{pct(v.value)} <span class="pm">±{Math.round(((v.ci[1] - v.ci[0]) / 2) * 100)}</span></a></td>;
+                })}
+                <td class="whisk">
+                  <svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="0" x2="100" y1="6" y2="6" class="axis" />
+                    <line x1={s.ci[0] * 100} x2={s.ci[1] * 100} y1="6" y2="6" class="ci" />
+                    <circle cx={s.value * 100} cy="6" r="2.4" class="dot" />
+                  </svg>
+                </td>
+                <td class="num"><a href={run}>{row.cost_per_correct_usd == null ? '–' : `$${row.cost_per_correct_usd.toFixed(2)}`}</a></td>
+                <td class="num"><a class="link" href={run}>{row.scores[lead.key].n} ›</a></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="notes">
+      <p><strong>Rank</strong> is a band, not a position. Agents whose 95% intervals overlap share a band; the harness computes the bands.</p>
+      <p><strong>Code</strong> columns are deterministic: the cited page exists, the run opened it, and the quoted words are on it. No model is involved.</p>
+      <p><strong>Judge</strong> columns come from a model. {board.judge ? `The judge is ${board.judge.name}; it agrees with human labels on ${pct(board.judge.agreement)}% of ${board.judge.n} pairs.` : 'The judge is named here, with its measured agreement with human labels, once a run uses one.'}</p>
+      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page.</p>
+    </div>
+  </div>
+</Base>
+<style>
+  .facts { font-size: var(--t-12); }
+  .scroll { overflow-x: auto; margin-top: var(--s-4); }
+  .board { min-width: 720px; }
+  .board th .src { display: block; font: 400 var(--t-12)/1.3 var(--sans); color: var(--ink-3); }
+  .board td { padding-block: var(--s-3); }
+  .board td a { display: inline-block; min-height: 24px; line-height: 24px; }
+  .board td.num a:hover { color: var(--accent); }
+  .model { font: 400 var(--t-18)/1.3 var(--serif); display: block; }
+  .solver { color: var(--ink-2); font-size: var(--t-12); }
+  .pm { color: var(--ink-2); }
+  .whisk { width: 9rem; padding-right: var(--s-4) !important; vertical-align: middle !important; }
+  .whisk svg { width: 100%; height: 12px; display: block; overflow: visible; }
+  .axis { stroke: var(--rule); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .ci { stroke: var(--ink-2); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .dot { fill: var(--accent); }
+  .notes { margin-top: var(--s-6); display: grid; gap: var(--s-2); color: var(--ink-2); max-width: 76ch; font-size: var(--t-13); }
+  .notes strong { color: var(--ink); font-weight: 500; }
+</style>

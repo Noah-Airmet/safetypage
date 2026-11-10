@@ -1,0 +1,37 @@
+{
+  "name": "onthepage-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "data": "cd .. && uv run --group fixtures --group build python site/scripts/make_data.py",
+    "api": "cd .. && uv run python site/scripts/dev_api.py",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "tsc --noEmit",
+    "unit": "vitest run",
+    "e2e": "playwright test",
+    "test": "npm run check && npm run unit && npm run build && npm run e2e"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.1.5",
+    "@fontsource-variable/source-serif-4": "^5.3.1",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/source-serif-4": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "astro": "^7.4.8",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "satori": "^0.63.2"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

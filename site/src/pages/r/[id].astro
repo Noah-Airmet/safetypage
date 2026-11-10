@@ -1,0 +1,111 @@
+---
+// /r/<trace id>: one research run, played back. ?step=N opens it at a step.
+import Base from '../../layouts/Base.astro';
+import Replay from '../../islands/Replay.tsx';
+import { allDocs, allTraces, getDoc } from '../../lib/data';
+import { docIdOf } from '../../lib/cite';
+import type { Trace } from '../../lib/types';
+
+export function getStaticPaths() {
+  return allTraces().map((trace) => ({ params: { id: trace.header.trace_id }, props: { trace } }));
+}
+const { trace } = Astro.props as { trace: Trace };
+const ids = new Set(trace.events.flatMap((e) => (e.kind === 'tool' ? e.returned.map((r) => docIdOf(r.cite)) : e.kind === 'cite' ? [docIdOf(e.cite)] : [])));
+const docs = Object.fromEntries([...ids].map((id) => getDoc(id)).filter((d) => !!d).map((d) => [d.doc_id, { doc_id: d.doc_id, title: d.title, authors: d.authors, org: d.org, published: d.published, unit_count: d.unit_count, anchor_kind: d.anchor_kind, tier: d.tier, source_url: d.source_url }]));
+const sample = /sample/.test(trace.header.model);
+---
+<Base title={trace.header.question} description={`A research run by ${trace.header.model}, played back step by step.`} og={`/og/r/${trace.header.trace_id}.png`} bare>
+  <div class="wrap rp-wrap">
+    {sample && <p class="note" data-kind="sample"><strong>Sample.</strong> This run is scripted to show the replay. Its searches and every verdict are real; no model wrote the answer.</p>}
+    <Replay client:load trace={trace} docs={docs} librarySize={allDocs().length} />
+  </div>
+</Base>
+
+<style is:global>
+  .rp-wrap { --page: 1400px; padding-top: var(--s-3); }
+  .rp-wrap > .note { margin-bottom: var(--s-3); }
+  .replay { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--s-3); height: calc(100dvh - var(--bar) - var(--s-3) - var(--s-7)); min-height: 560px; }
+  .rp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-5); }
+  .rp-head h1 { font: 400 var(--t-22)/1.25 var(--serif); text-wrap: balance; }
+  .rp-meta { color: var(--ink-2); font-size: var(--t-13); margin-top: var(--s-1); }
+  .rp-tally { display: flex; gap: var(--s-4); font-family: var(--mono); padding-top: var(--s-1); }
+  .rp-tally .state { font-size: var(--t-16); }
+
+  .rp-panes { display: grid; grid-template-columns: minmax(0, 20rem) minmax(0, 1fr) minmax(0, 24rem); gap: var(--s-5); min-height: 0; border-top: 1px solid var(--edge); padding-top: var(--s-3); }
+  .rp-panes > section { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .rp-panes .h2 { margin-bottom: var(--s-2); }
+  .h2-sub { font-weight: 400; color: var(--ink-3); margin-left: var(--s-2); }
+
+  .rp-trace ol { overflow-y: auto; position: relative; flex: 1; min-height: 0; scrollbar-width: thin; }
+  .rp-trace li { border-left: 2px solid transparent; }
+  .rp-trace li[aria-current] { border-left-color: var(--accent); background: var(--wash); }
+  .rp-trace li[data-bad][aria-current] { border-left-color: var(--reject); background: var(--wash-reject); }
+  .rp-trace li > button { display: grid; grid-template-columns: 2.6rem 3.3rem minmax(0, 1fr); gap: var(--s-2); width: 100%; text-align: left; padding: var(--s-2) var(--s-2); font-size: var(--t-13); line-height: 1.45; align-items: baseline; }
+  .rp-trace .t { color: var(--ink-3); font-size: var(--t-12); }
+  .rp-trace .k { font-family: var(--mono); font-size: var(--t-12); color: var(--ink-2); }
+  .rp-trace .q { overflow-wrap: anywhere; }
+  .rp-trace .think { color: var(--ink-2); font: italic 400 var(--t-14)/1.45 var(--serif); }
+  .rp-trace .sub { display: block; color: var(--ink-2); }
+  .rp-trace .bad, .rp-caption .bad { color: var(--reject); }
+  .rp-trace pre { margin: 0 var(--s-2) var(--s-2); font-size: var(--t-12); max-height: 14rem; }
+
+  .shelf { display: grid; gap: var(--s-2); margin-bottom: var(--s-3); }
+  .shelf li { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: var(--s-3); align-items: center; }
+  .shelf-name { font-size: var(--t-13); color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 24px; display: flex; align-items: center; }
+  .shelf-name:hover { color: var(--accent); }
+  .cells { display: grid; gap: 1px; height: 14px; }
+  .cells i { background: color-mix(in srgb, var(--ink) 12%, transparent); border-radius: 1px; transition: background 300ms var(--ease), opacity 300ms var(--ease), transform 300ms var(--ease); }
+  .cells i[data-mark='hit'] { background: var(--accent); }
+  .cells i[data-mark='read'] { background: var(--accent); opacity: 1; }
+  .cells i[data-mark='cited'] { background: var(--accent); box-shadow: 0 0 0 1px var(--bg), 0 0 0 2.5px var(--accent); }
+  .cells i[data-mark='rejected'] { background: var(--reject); box-shadow: 0 0 0 1px var(--bg), 0 0 0 2.5px var(--reject); }
+  .cells i[data-fresh] { transform: scaleY(1.6); opacity: 1 !important; }
+  .cells i[data-here] { transform: scaleY(1.6); }
+  .rp-page { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: var(--s-2); }
+  .rp-page .pv { flex: 1; }
+  .rp-page .pv-page .sheet { width: 116%; margin-left: -8%; }
+  .rp-wait { display: grid; place-items: center; color: var(--ink-2); box-shadow: 0 0 0 1px var(--rule); }
+  .rp-caption { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--t-13); color: var(--ink-2); }
+  .rp-caption a { white-space: nowrap; }
+
+  .rp-answer { overflow-y: auto; }
+  .rp-answer .prose { font-size: var(--t-16); line-height: 1.7; }
+  .rp-answer .chip { margin-inline: 2px; }
+  .rp-answer .chip[data-state='pending'] { animation: pulse 900ms var(--ease) infinite alternate; }
+  @keyframes pulse { to { border-color: var(--ink-3); } }
+  .rp-reason { margin-top: var(--s-3); font-size: var(--t-13); color: var(--ink-2); }
+  .rp-reason:first-of-type { margin-top: var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--rule); }
+
+  .rp-scrub { display: flex; align-items: center; gap: var(--s-3); border-top: 1px solid var(--edge); padding-block: var(--s-3); background: var(--bg); }
+  .rp-play { width: var(--control); padding: 0; flex: none; }
+  .rp-track { position: relative; flex: 1; height: 44px; display: flex; align-items: center; margin-inline: 8px; }
+  .rp-track input { position: absolute; inset: 0 -8px; width: calc(100% + 16px); margin: 0; height: 100%; appearance: none; -webkit-appearance: none; background: none; cursor: pointer; }
+  .rp-track input::-webkit-slider-runnable-track { height: 2px; background: var(--edge); }
+  .rp-track input::-moz-range-track { height: 2px; background: var(--edge); }
+  .rp-track input::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); margin-top: -7px; border: 2px solid var(--bg); }
+  .rp-track input::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--ink); border: 2px solid var(--bg); }
+  .ticks { position: absolute; inset: 0; pointer-events: none; }
+  .ticks i { position: absolute; top: 50%; width: 2px; height: 10px; margin: -5px 0 0 -1px; background: var(--ink-3); opacity: 0.45; }
+  .ticks i[data-past] { opacity: 1; }
+  .ticks i[data-kind='answer'], .ticks i[data-kind='think'] { height: 4px; margin-top: -2px; }
+  .ticks i[data-kind='verify'] { background: var(--accent); height: 14px; margin-top: -7px; }
+  .ticks i[data-bad] { background: var(--reject); width: 3px; }
+  .rp-count { color: var(--ink-2); font-size: var(--t-12); white-space: nowrap; }
+  .rp-raw[aria-pressed='true'] { color: var(--ink); background: var(--sunk); }
+
+  @media (max-width: 1000px) {
+    .replay { height: auto; min-height: 0; display: block; padding-bottom: 76px; }
+    .rp-head { margin-bottom: var(--s-3); flex-direction: column; gap: var(--s-2); }
+    .rp-panes { display: flex; flex-direction: column; gap: var(--s-5); }
+    .rp-library { order: 1; position: sticky; top: 0; z-index: 3; background: var(--bg); padding-bottom: var(--s-2); border-bottom: 1px solid var(--rule); }
+    .rp-library .h2-sub { display: none; }
+    .rp-page .pv { flex: none; height: 30vh; }
+    .rp-answer { order: 2; overflow: visible; }
+    .rp-trace { order: 3; }
+    .rp-trace ol { overflow: visible; }
+    .shelf { gap: 2px; }
+    .shelf li { grid-template-columns: 7.5rem minmax(0, 1fr); }
+    .rp-scrub { position: fixed; left: 0; right: 0; bottom: 0; padding: var(--s-2) var(--s-4) calc(var(--s-2) + env(safe-area-inset-bottom)); z-index: 4; }
+    .rp-raw, .rp-count { display: none; }
+  }
+</style>

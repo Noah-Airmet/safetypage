@@ -1,0 +1,137 @@
+---
+import type { DocumentCard, UnitText } from '../lib/types';
+import { KINDS, anchorLabel, bibtex, citePath, formatDate, licenceName, sourceLink } from '../lib/cite';
+import Tier from './Tier.astro';
+
+interface Props { doc: DocumentCard; version: string; units: UnitText[] }
+const { doc, version, units } = Astro.props;
+const summary = doc.versions.find((v) => v.version === version)!;
+const latest = version === doc.version;
+const ref = `${doc.doc_id}/${version}`;
+const labels = new Map(units.map((u) => [u.anchor, u.anchor_label]));
+const paged = latest ? doc.anchor_kind === 'page' : units[0]?.anchor.startsWith('p') ?? doc.anchor_kind === 'page';
+const count = units.length || (latest ? doc.unit_count : 0);
+const first = units[0]?.anchor ?? (latest && count ? (paged ? 'p1' : 'b1') : undefined);
+const open = summary.tier === 'open';
+const host = new URL(doc.source_url).hostname.replace(/^www\./, '');
+const authors = doc.authors.length > 8 ? [...doc.authors.slice(0, 7), `and ${doc.authors.length - 7} more`] : doc.authors;
+const evidence = latest ? doc.licence_evidence : null;
+const evidenceKinds: Record<string, string> = {
+  licence_link: 'Licence link on the source page', page_statement: 'Statement on the page',
+  publisher_rule: "The publisher's rule", statute: 'Statute', manual: 'Read by hand',
+};
+const site = Astro.site!.origin;
+const citeExample = first ? `${ref}/${first}` : ref;
+---
+<article class="wrap record">
+  <header class="pagehead">
+    <p class="rubric">{[doc.collection && doc.collection[0].toUpperCase() + doc.collection.slice(1).replace(/_/g, ' '), KINDS[doc.kind] ?? doc.kind, doc.org].filter(Boolean).join(' · ')}</p>
+    <h1 class="title">{doc.title}</h1>
+    <p class="byline">{authors.join(', ')}{authors.length && summary.published ? ' · ' : ''}{formatDate(summary.published ?? doc.published)}</p>
+    {!latest && <p class="note">This is version {version}. The latest is <a class="link" href={citePath(`${doc.doc_id}/${doc.version}`)}>{doc.version}</a>.</p>}
+    <div class="actions">
+      {open && first && <a class="btn btn-primary" href={citePath(`${ref}/${first}`)}>Read</a>}
+      <a class="btn" href={summary.tier === 'open' ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener">{open ? 'Source' : 'Open'} at {host} ↗</a>
+      <Tier tier={summary.tier} licence={summary.licence} />
+    </div>
+  </header>
+
+  <div class="cols">
+    <section aria-labelledby="outline-h">
+      <h2 class="h2" id="outline-h">Outline{count ? ` · ${count} ${paged ? 'pages' : 'paragraphs'}` : ''}</h2>
+      {latest && doc.outline.length > 0 ? (
+        <ol class="outline">
+          {doc.outline.map((item) => (
+            <li style={`--level:${item.level - 1}`}>
+              <a href={citePath(item.cite)}>
+                <span class="o-title">{item.title}</span>
+                <span class="o-page mono">{labels.get(item.anchor) ?? anchorLabel(item.anchor)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p class="muted">{latest ? 'This document has no section headings.' : `The outline is kept for the latest version, ${doc.version}.`}{' '}
+          {first && <a class="link" href={citePath(`${ref}/${first}`)}>Open at {anchorLabel(first)}</a>}</p>
+      )}
+    </section>
+
+    <aside class="side">
+      <section aria-labelledby="cite-h">
+        <h2 class="h2" id="cite-h">How to cite</h2>
+        <p class="hint">A citation names the document, the version and the place.</p>
+        <div class="codeline"><code>{citeExample}</code><button class="btn btn-quiet" data-copy={citeExample}>Copy</button></div>
+        <div class="codeline"><code>{site}{citePath(citeExample)}</code><button class="btn btn-quiet" data-copy={site + citePath(citeExample)}>Copy</button></div>
+        <details class="more">
+          <summary>BibTeX</summary>
+          <pre class="code">{bibtex(doc)}</pre>
+        </details>
+      </section>
+
+      <section aria-labelledby="versions-h">
+        <h2 class="h2" id="versions-h">Versions</h2>
+        <table class="table">
+          <thead><tr><th>Version</th><th>Published</th><th>Read</th></tr></thead>
+          <tbody>
+            {[...doc.versions].reverse().map((v) => (
+              <tr>
+                <td><a class="link mono" href={citePath(`${doc.doc_id}/${v.version}`)} aria-current={v.version === version ? 'true' : undefined}>{v.version}</a>{v.latest && <span class="muted"> latest</span>}</td>
+                <td>{formatDate(v.published) || <span class="muted">seen {formatDate(v.observed_at)}</span>}</td>
+                <td>{v.tier === 'open' ? 'Here' : 'At source'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section aria-labelledby="licence-h">
+        <h2 class="h2" id="licence-h">Licence</h2>
+        <dl class="kv lic">
+          <dt>Licence</dt><dd>{licenceName(summary.licence)}</dd>
+          <dt>So you</dt><dd>{open ? 'Read the full document here' : 'Search it, cite it and check quotes here; read it at its source'}</dd>
+          {evidence ? (
+            <>
+              <dt>Evidence</dt><dd>{evidenceKinds[evidence.kind] ?? evidence.kind}: <span class="mono">{evidence.quote}</span></dd>
+              <dt>Read at</dt><dd><a class="link" href={evidence.url} rel="noopener">{evidence.url.replace(/^https?:\/\//, '')}</a>, {formatDate(evidence.observed_at)}</dd>
+            </>
+          ) : latest ? (
+            <><dt>Evidence</dt><dd>No licence statement was found, so the document is treated as not openly licensed.</dd></>
+          ) : null}
+        </dl>
+      </section>
+    </aside>
+  </div>
+</article>
+
+<script>
+  document.addEventListener('click', (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLElement>('[data-copy]');
+    if (!button) return;
+    navigator.clipboard.writeText(button.dataset.copy!);
+    const was = button.textContent;
+    button.textContent = 'Copied';
+    setTimeout(() => (button.textContent = was), 1200);
+  });
+</script>
+
+<style>
+  .byline { color: var(--ink-2); font-size: var(--t-16); max-width: 80ch; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-top: var(--s-2); }
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-7); align-items: start; margin-top: var(--s-4); }
+  .side { display: grid; gap: var(--s-6); }
+  .side .codeline + .codeline { margin-top: var(--s-2); }
+  .hint { color: var(--ink-2); font-size: var(--t-13); margin-bottom: var(--s-2); }
+  .more { margin-top: var(--s-2); }
+  .more summary { cursor: pointer; color: var(--ink-2); min-height: 24px; display: inline-flex; align-items: center; }
+  .more pre { margin-top: var(--s-2); }
+  .outline li { border-top: 1px solid var(--rule); }
+  .outline li:last-child { border-bottom: 1px solid var(--rule); }
+  .outline a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); padding: var(--s-2) 0 var(--s-2) calc(var(--level) * var(--s-5)); min-height: 44px; }
+  .outline .o-title { font: 400 var(--t-18)/1.35 var(--serif); }
+  .outline li:not([style*='level:0']) .o-title { font-size: var(--t-16); color: var(--ink-2); }
+  .outline .o-page { color: var(--ink-2); font-size: var(--t-12); white-space: nowrap; }
+  .outline a:hover .o-title, .outline a:hover .o-page { color: var(--accent); }
+  .lic { grid-template-columns: 5.5rem 1fr; font-size: var(--t-13); }
+  .table a[aria-current] { font-weight: 600; }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; gap: var(--s-6); } }
+</style>

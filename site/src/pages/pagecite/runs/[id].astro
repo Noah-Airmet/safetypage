@@ -1,0 +1,42 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { content, contentFiles } from '../../../lib/data';
+
+interface Run {
+  sample: boolean; run_id: string; model: string; solver: string; snapshot: string; started_at: string;
+  samples: { sample_id: string; trace_id: string; question: string; tally: Record<string, number> }[];
+}
+export function getStaticPaths() {
+  return contentFiles('runs').map((f) => ({ params: { id: f.replace(/\.json$/, '') }, props: { run: content<Run>(`runs/${f}`) } }));
+}
+const { run } = Astro.props;
+---
+<Base title={`Run ${run.run_id}`} description={`${run.model}: ${run.samples.length} questions, each with its replay.`}>
+  <div class="wrap">
+    <header class="pagehead">
+      <p class="rubric"><a href="/pagecite">PageCite</a> · Run</p>
+      <h1 class="title">{run.model}</h1>
+      <p class="muted mono facts">{run.run_id} · {run.solver} · snapshot {run.snapshot} · {run.started_at.slice(0, 10)}</p>
+      {run.sample && <p class="note" data-kind="sample"><strong>Sample data.</strong> A scripted run that shows the layout, not a model's results.</p>}
+    </header>
+    <div class="rows">
+      {run.samples.map((s) => (
+        <a href={`/r/${s.trace_id}`}>
+          <span class="meta mono">{s.sample_id}</span>
+          <span>
+            <span class="name">{s.question}</span>
+            <span class="tally">
+              <span class="state" data-state="verified">{s.tally.verified ?? 0} verified</span>
+              <span class="state" data-state="cited">{s.tally.cited ?? 0} page only</span>
+              <span class="state" data-state="rejected">{s.tally.rejected ?? 0} rejected</span>
+            </span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
+<style>
+  .facts { font-size: var(--t-12); }
+  .tally { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); margin-top: var(--s-1); }
+</style>

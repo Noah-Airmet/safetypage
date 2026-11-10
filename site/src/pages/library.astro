@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { allDocs } from '../lib/data';
+import { KINDS, citePath, formatDate, shortLabel } from '../lib/cite';
+const docs = allDocs();
+const open = docs.filter((d) => d.tier === 'open').length;
+---
+<Base title="Library" description={`${docs.length} documents, each citable to the page.`}>
+  <div class="wrap">
+    <header class="pagehead">
+      <h1 class="title">Library</h1>
+      <p class="muted">{docs.length} documents · {open} read here · {docs.length - open} read at source · newest first</p>
+    </header>
+    <div class="rows">
+      {docs.map((d) => (
+        <a href={citePath(d.doc_id)}>
+          <span class="meta">{KINDS[d.kind] ?? d.kind} · {formatDate(d.published).replace(/^\d+ /, '')}</span>
+          <span>
+            <span class="name">{d.title}</span>
+            <span class="meta by">{[d.authors.length ? shortLabel(d).replace(/ \d{4}$/, '') : d.org, `${d.unit_count} ${d.anchor_kind === 'page' ? 'pages' : 'paragraphs'}`, d.tier === 'open' ? 'Read here' : 'Read at source'].filter(Boolean).join(' · ')}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
+<style>
+  .by { display: block; margin-top: 2px; }
+</style>
