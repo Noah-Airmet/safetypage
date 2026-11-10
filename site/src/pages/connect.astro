@@ -4,7 +4,7 @@ import { MCP_URL } from '../lib/env';
 const site = Astro.site!.origin;
 const mcp = MCP_URL || `${site}/mcp`;
 const clients = [
-  ['Claude Code', `claude mcp add --transport http onthepage ${mcp}`],
+  ['Claude Code', `claude mcp add --transport http safetypage ${mcp}`],
   ['Claude.ai, ChatGPT and other clients: add a connector with this URL', mcp],
 ];
 const tools = [
@@ -63,7 +63,7 @@ ${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
         <thead><tr><th>Method</th><th>Route</th><th>Returns</th></tr></thead>
         <tbody>{api.map(([m, route, model]) => <tr><td class="mono">{m}</td><td class="mono">{route}</td><td class="mono">{model}</td></tr>)}</tbody>
       </table></div>
-      <p class="after muted">JSON Schemas for every model are in <a class="link" href="https://github.com/Noah-Airmet/onthepage/tree/main/schemas">schemas/</a>. The design is in <a class="link" href="https://github.com/Noah-Airmet/onthepage/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a>.</p>
+      <p class="after muted">JSON Schemas for every model are in <a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/schemas">schemas/</a>. The design is in <a class="link" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a>.</p>
     </section>
   </div>
 </Base>
@@ -77,7 +77,6 @@ ${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
   });
 </script>
 <style>
-  .narrow { max-width: 52rem; }
   .scroll td { white-space: nowrap; }
   .clients { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--s-2) var(--s-4); align-items: center; }
   .clients dt { color: var(--ink-2); }

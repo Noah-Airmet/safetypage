@@ -70,7 +70,7 @@ const citeExample = first ? `${ref}/${first}` : ref;
 
       <section aria-labelledby="versions-h">
         <h2 class="h2" id="versions-h">Versions</h2>
-        <table class="table">
+        <table class="table versions">
           <thead><tr><th>Version</th><th>Published</th><th>Read</th></tr></thead>
           <tbody>
             {[...doc.versions].reverse().map((v) => (
@@ -87,7 +87,7 @@ const citeExample = first ? `${ref}/${first}` : ref;
       <section aria-labelledby="licence-h">
         <h2 class="h2" id="licence-h">Licence</h2>
         <dl class="kv lic">
-          <dt>Licence</dt><dd>{licenceName(summary.licence)}</dd>
+          <dt>Terms</dt><dd>{licenceName(summary.licence)}</dd>
           <dt>So you</dt><dd>{open ? 'Read the full document here' : 'Search it, cite it and check quotes here; read it at its source'}</dd>
           {evidence ? (
             <>
@@ -115,9 +115,9 @@ const citeExample = first ? `${ref}/${first}` : ref;
 </script>
 
 <style>
-  .byline { color: var(--ink-2); font-size: var(--t-16); max-width: 80ch; }
+  .byline { color: var(--ink-2); max-width: 90ch; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-top: var(--s-2); }
-  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-7); align-items: start; margin-top: var(--s-4); }
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-7); align-items: start; }
   .side { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); }
   .side .codeline + .codeline { margin-top: var(--s-2); }
   .hint { color: var(--ink-2); font-size: var(--t-13); margin-bottom: var(--s-2); }
@@ -133,5 +133,8 @@ const citeExample = first ? `${ref}/${first}` : ref;
   .outline a:hover .o-title, .outline a:hover .o-page { color: var(--accent); }
   .lic { grid-template-columns: 5.5rem 1fr; font-size: var(--t-13); }
   .table a[aria-current] { font-weight: 600; }
+  .versions { table-layout: fixed; }
+  .versions th:nth-child(1) { width: 34%; }
+  .versions th:nth-child(3) { width: 26%; }
   @media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); } }
 </style>

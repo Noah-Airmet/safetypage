@@ -14,7 +14,7 @@ const pages = {
   search: '/search?query=' + encodeURIComponent('"risk assessment" evaluation'),
   check: '/check?example=1',
   replay: '/r/GVTHZaZca3mVqmnh9t79KL-pc-7abbdba8ab-1?step=30',
-  pagecite: '/pagecite',
+  citationbench: '/citationbench',
   connect: '/connect',
   library: '/library',
 };

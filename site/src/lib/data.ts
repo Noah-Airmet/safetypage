@@ -6,7 +6,7 @@ import type { DocumentCard, RunResult, Trace, UnitText } from './types';
 
 export const PUBLIC_DIR = process.env.OTP_PUBLIC_DIR ?? path.resolve('public/data');
 const CONTENT = path.resolve('src/content');
-// PageCite's output (pagecite/README.md): one results file per run, one trace per sample.
+// CitationBench's output (pagecite/README.md): one results file per run, one trace per sample.
 const RESULTS_DIR = process.env.OTP_RESULTS_DIR ?? path.resolve('../pagecite/results');
 const TRACES_DIR = process.env.OTP_TRACES_DIR ?? path.resolve('../pagecite/traces');
 

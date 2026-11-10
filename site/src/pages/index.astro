@@ -23,7 +23,7 @@ const trace = featuredTrace();
 const asked = trace && questionParts(trace.header.question);
 const runs = allRuns();
 const mcp = MCP_URL || `${Astro.site!.origin}/mcp`;
-const connect = `claude mcp add --transport http onthepage ${mcp}`;
+const connect = `claude mcp add --transport http safetypage ${mcp}`;
 const examples = ['"risk assessment" evaluation', 'sparse autoencoder features', 'risk tolerance'];
 ---
 <Base>
@@ -70,8 +70,8 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
           <Tally citations={trace.answer?.citations ?? []} />
         </a>
       )}
-      <a class="door" href="/pagecite">
-        <h2 class="h2">PageCite, the benchmark</h2>
+      <a class="door" href="/citationbench">
+        <h2 class="h2">CitationBench, the benchmark</h2>
         <p class="door-main">Does an agent cite the right page, and quote it accurately?</p>
         <p class="door-foot">{runs.length ? `${runs.length} ${runs.length === 1 ? 'run' : 'runs'}, every number linked to its pages` : 'First runs soon'}</p>
       </a>
@@ -94,7 +94,7 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
         {docs.slice(0, 8).map((d) => (
           <a href={citePath(d.doc_id)}>
             <span class="meta">{KINDS[d.kind] ?? d.kind} · {formatDate(d.published).replace(/^\d+ /, '')}</span>
-            <span><span class="name">{d.title}</span><span class="meta by">{d.authors.length ? shortLabel(d).replace(/ \d{4}$/, '') : d.org}{' · '}{d.tier === 'open' ? 'Read here' : 'Read at source'}</span></span>
+            <span><span class="name">{d.title}</span><span class="meta by">{[d.authors.length ? shortLabel(d).replace(/ \d{4}$/, '') : d.org, d.tier === 'open' ? 'Read here' : 'Read at source'].filter(Boolean).join(' · ')}</span></span>
           </a>
         ))}
       </div>
@@ -134,6 +134,7 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
   .proof[data-show='verified'] [data-pane='rejected'], .proof[data-show='rejected'] [data-pane='verified'] { display: none; }
   .caption { display: flex; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-2); color: var(--ink-2); font-size: var(--t-13); }
   .caption a { white-space: nowrap; }
+  @media (max-width: 700px) { .caption { flex-direction: column; gap: var(--s-1); } }
   .search { margin-top: var(--s-7); max-width: 46rem; }
   .doors { margin-top: var(--s-7); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--edge); }
   .door { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-4) var(--s-4) var(--s-4) 0; min-width: 0; }

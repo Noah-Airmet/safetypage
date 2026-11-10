@@ -166,7 +166,7 @@ export default function Replay({ trace, docs, librarySize }: Props) {
               return (
                 <li key={docId}>
                   <a className="shelf-name" href={citePath(docId)}>{doc ? shortLabel(doc) : docId}</a>
-                  <span className="cells" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}>
+                  <span className="cells" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))`, gap: n > 60 ? 0 : undefined }}>
                     {Array.from({ length: n }, (_, i) => {
                       const cite = `${docId}/${version}/${kind}${i + 1}`;
                       const hit = state.hits.get(cite);

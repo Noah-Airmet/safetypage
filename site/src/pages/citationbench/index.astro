@@ -1,5 +1,5 @@
 ---
-// The leaderboard, read from PageCite's results files (one per run). Every number links to
+// The leaderboard, read from CitationBench's results files (one per run). Every number links to
 // the run it came from, every run lists its questions, and every question opens its replay.
 import Base from '../../layouts/Base.astro';
 import { allRuns } from '../../lib/data';
@@ -26,10 +26,10 @@ const judges = [...new Map(runs.filter((r) => r.judge).map((r) => [r.judge!.id, 
 const updated = runs.map((r) => r.created_at.slice(0, 10)).sort().at(-1);
 const small = runs.some((r) => r.samples < 50);
 ---
-<Base title="PageCite" description="A benchmark of page-level citation: does an agent cite the right page, quote it accurately, and make claims the page supports?">
+<Base title="CitationBench" description="A benchmark of page-level citation: does an agent cite the right page, quote it accurately, and make claims the page supports?">
   <div class="wrap">
     <header class="pagehead">
-      <h1 class="title">PageCite</h1>
+      <h1 class="title">CitationBench</h1>
       <p class="lede">Does an agent cite the right page, quote it accurately, and make claims the page supports?</p>
       {runs.length > 0 && <p class="muted facts mono">{runs.length} {runs.length === 1 ? 'run' : 'runs'} · updated {updated}</p>}
       {small && <p class="note">These are early runs on a handful of questions over the six-document fixture library. They show that the harness works end to end; they are too small to compare models.</p>}
@@ -49,7 +49,7 @@ const small = runs.some((r) => r.samples < 50);
           </thead>
           <tbody>
             {runs.map((run) => {
-              const href = `/pagecite/runs/${run.run_id}`;
+              const href = `/citationbench/runs/${run.run_id}`;
               const c = run.measures.correct;
               const cost = run.cost.per_correct_usd.mean;
               return (
@@ -80,13 +80,12 @@ const small = runs.some((r) => r.samples < 50);
         ? <>{judges.length === 1 ? 'The judge is ' : 'The judges are '}{judges.map((j, i) => <>{i > 0 && ' and '}<span class="mono">{j.id}</span></>)}. {judges.some((j) => j.agreement) ? 'Agreement with human labels is published with each run.' : 'Their agreement with human labels has not been measured yet, so read this column as provisional.'}</>
         : 'The judge is named here, with its measured agreement with human labels, once a run uses one.'}</p>
       <p><strong>Rank</strong> is a band, not a position: runs whose 95% intervals on Correct overlap share a band. Intervals come from a bootstrap over questions, clustered by document.</p>
-      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page. <a class="link" href="https://github.com/Noah-Airmet/onthepage/tree/main/pagecite">How the questions are made, and how to run it</a></p>
+      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page. <a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/pagecite">How the questions are made, and how to run it</a></p>
     </div>
   </div>
 </Base>
 <style>
   .facts { font-size: var(--t-12); }
-  .scroll { margin-top: var(--s-4); }
   .board { min-width: 920px; }
   .board td { vertical-align: top; line-height: 24px; }
   .board td:nth-child(2) { min-width: 17rem; }

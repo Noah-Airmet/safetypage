@@ -8,12 +8,12 @@ import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/site.css';
 
-interface Props { title?: string; description?: string; og?: string; canonical?: string; bare?: boolean }
-const { title, description = 'A library of the AI safety record. Every result opens the exact page, and every citation is checked against it.', og = '/og/site.png', canonical, bare } = Astro.props;
-const fullTitle = title ? `${title} · On the Page` : 'On the Page: the AI safety record, cited to the page';
+interface Props { title?: string; description?: string; og?: string; canonical?: string; bare?: boolean; wide?: boolean }
+const { title, description = 'A library of the AI safety record. Every result opens the exact page, and every citation is checked against it.', og = '/og/site.png', canonical, bare, wide } = Astro.props;
+const fullTitle = title ? `${title} · SafetyPage` : 'SafetyPage: the AI safety record, cited to the page';
 const here = Astro.url.pathname;
 const nav = [
-  ['/library', 'Library'], ['/search', 'Search'], ['/check', 'Check'], ['/r', 'Replay'], ['/pagecite', 'PageCite'], ['/connect', 'Connect'],
+  ['/library', 'Library'], ['/search', 'Search'], ['/check', 'Check'], ['/r', 'Replay'], ['/citationbench', 'CitationBench'], ['/connect', 'Connect'],
 ];
 const abs = (p: string) => new URL(p, Astro.site).href;
 ---
@@ -25,8 +25,8 @@ const abs = (p: string) => new URL(p, Astro.site).href;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={abs(canonical ?? here)} />
-    <meta property="og:site_name" content="On the Page" />
-    <meta property="og:title" content={title ?? 'On the Page'} />
+    <meta property="og:site_name" content="SafetyPage" />
+    <meta property="og:title" content={title ?? 'SafetyPage'} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="article" />
     <meta property="og:url" content={abs(canonical ?? here)} />
@@ -38,10 +38,10 @@ const abs = (p: string) => new URL(p, Astro.site).href;
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
-  <body>
+  <body style={wide ? '--page: 1400px' : undefined}>
     <header class="bar">
       <div class="wrap bar-in">
-        <a class="wordmark" href="/">On the Page</a>
+        <a class="wordmark" href="/">SafetyPage</a>
         <nav class="nav" aria-label="Site">
           {nav.map(([href, label]) => (
             <a href={href} aria-current={here === href || here.startsWith(href + '/') ? 'page' : undefined}>{label}</a>
@@ -54,7 +54,7 @@ const abs = (p: string) => new URL(p, Astro.site).href;
       <footer class="foot">
         <div class="wrap foot-in">
           <span>Built by Noah Airmet</span>
-          <a href="https://github.com/Noah-Airmet/onthepage">Source on GitHub</a>
+          <a href="https://github.com/Noah-Airmet/safetypage">Source on GitHub</a>
           <a href="/about">How it works</a>
           <a href="/about#licences">Licence policy</a>
         </div>

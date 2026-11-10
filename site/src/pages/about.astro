@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="How it works" description="How On the Page checks a citation, what the licence tiers mean, and how it is built.">
+<Base title="How it works" description="How SafetyPage checks a citation, what the licence tiers mean, and how it is built.">
   <div class="wrap narrow">
     <header class="pagehead"><h1 class="title">How it works</h1></header>
     <div class="prose">
-      <p>On the Page is a library of the AI safety record: research papers, system cards, safety frameworks, evaluation reports and government guidance. Every search result opens an exact page or paragraph. Every citation names a document, a version and a place in it, and code can check it against that place.</p>
+      <p>SafetyPage is a library of the AI safety record: research papers, system cards, safety frameworks, evaluation reports and government guidance. Every search result opens an exact page or paragraph. Every citation names a document, a version and a place in it, and code can check it against that place.</p>
 
       <h2>What a citation is</h2>
       <p><code>arxiv:2305.15324/v2/p6</code> is a document, a version and a page. The version is always there, because pages move when a paper is revised. The same three parts make the link: <code>/d/arxiv/2305.15324/v2/p6</code>.</p>
@@ -20,12 +20,11 @@ import Base from '../layouts/Base.astro';
 
       <h2>How it is built</h2>
       <p>The text of record is the PDF's own text layer. No model transcribes a document. The reader, the checker, the MCP server and the benchmark all use one implementation of each rule, so a verdict an agent gets during a run is the verdict the leaderboard scores. The library is served from frozen snapshots; a benchmark names the snapshot it ran against.</p>
-      <p>The design, with the decisions behind it, is in <a class="link" href="https://github.com/Noah-Airmet/onthepage/blob/main/docs/ARCHITECTURE.md">the architecture document</a>. The code is Apache-2.0.</p>
+      <p>The design, with the decisions behind it, is in <a class="link" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md">the architecture document</a>. The code is Apache-2.0.</p>
     </div>
   </div>
 </Base>
 <style>
-  .narrow { max-width: 52rem; }
   .prose h2 { font: 600 var(--t-22)/1.3 var(--serif); margin: 1.6em 0 0.4em; scroll-margin-top: var(--s-5); }
   .prose .state { font-size: 0.85em; }
 </style>

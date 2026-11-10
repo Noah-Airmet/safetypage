@@ -80,7 +80,7 @@ test('checker: marks each citation Verified, Page only or Rejected, with the rea
   await expect(page.locator('.findings .hl[data-kind="reject"]').first()).toBeVisible();
 });
 
-// A real PageCite run: three verified citations, one rejected, one page-only.
+// A real CitationBench run: three verified citations, one rejected, one page-only.
 const TRACE = '/r/GVTHZaZca3mVqmnh9t79KL-pc-7abbdba8ab-1';
 
 test('replay: a link opens at its step, with the rejection struck through', async ({ page }) => {
@@ -102,11 +102,11 @@ test('replay: a link opens at its step, with the rejection struck through', asyn
 });
 
 test('leaderboard: a number leads to the run, the run to the replay, the replay to the page', async ({ page }) => {
-  await page.goto('/pagecite');
+  await page.goto('/citationbench');
   await page.locator('.board tbody tr').first().locator('td.num a').first().click();
-  await expect(page).toHaveURL(/\/pagecite\/runs\/GVTHZaZca3mVqmnh9t79KL/);
+  await expect(page).toHaveURL(/\/citationbench\/runs\/[\w.-]+/);
   await page.locator('.rows a').first().click();
-  await expect(page).toHaveURL(/\/r\/GVTHZaZca3mVqmnh9t79KL-/);
+  await expect(page).toHaveURL(/\/r\/[\w.-]+/);
   await page.locator('.rp-track input').focus();
   await page.keyboard.press('End');
   await page.locator('.rp-caption a').click();
@@ -114,7 +114,7 @@ test('leaderboard: a number leads to the run, the run to the replay, the replay 
 });
 
 const SCREENS = ['/', '/library', '/d/arxiv/2305.15324', PAGE6, '/d/distill/zoom-in/r1/b21', '/d/example/link-only-eval-report/r1/p2',
-  '/search?query=evaluation', '/check?example=1', `${TRACE}?step=30`, '/pagecite', '/pagecite/runs/GVTHZaZca3mVqmnh9t79KL', '/connect', '/about'];
+  '/search?query=evaluation', '/check?example=1', `${TRACE}?step=30`, '/citationbench', '/citationbench/runs/GVTHZaZca3mVqmnh9t79KL', '/connect', '/about'];
 
 for (const scheme of ['light', 'dark'] as const) {
   test.describe(`accessibility, ${scheme}`, () => {

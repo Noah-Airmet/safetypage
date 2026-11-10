@@ -49,7 +49,7 @@ export async function renderCard(card: Card): Promise<Uint8Array<ArrayBuffer>> {
       h('div', { fontFamily: 'Serif', fontSize: size, lineHeight: 1.16, marginTop: 26, letterSpacing: -0.5, flexGrow: 1, width: 1040 }, card.quote ? `“${clip(card.title, 210)}”` : clip(card.title, 210)),
       card.line ? h('div', { alignItems: 'center', gap: 16, fontFamily: 'Sans', fontSize: 32, color: colour, marginBottom: card.detail ? 8 : 24 }, mark, card.line) : null,
       card.detail ? h('div', { fontFamily: 'Serif', fontSize: 28, color: INK2, marginBottom: 24 }, clip(card.detail, 70)) : null,
-      h('div', { borderTop: `2px solid ${RULE}`, paddingTop: 20, fontFamily: 'Serif', fontWeight: 600, fontSize: 30, width: 1040 }, 'On the Page'),
+      h('div', { borderTop: `2px solid ${RULE}`, paddingTop: 20, fontFamily: 'Serif', fontWeight: 600, fontSize: 30, width: 1040 }, 'SafetyPage'),
     ),
   );
   const svg = await satori(tree as never, { width: 1200, height: 630, fonts });

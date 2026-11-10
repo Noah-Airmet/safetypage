@@ -137,6 +137,7 @@ function start(root: HTMLElement) {
     if (block) {
       block.dataset.target = '';
       block.scrollIntoView({ block: quote ? 'center' : 'start' });
+      if (!quote) document.fonts.ready.then(() => block.scrollIntoView({ block: 'start' }));
       if (quote) {
         const node = block.querySelector('.t')!.firstChild as Text | null;
         const ranges = node ? findQuote(node.data, quote) : null;
@@ -148,7 +149,9 @@ function start(root: HTMLElement) {
             range.surroundContents(document.createElement('mark'));
           }
           say('verified', `In ${anchorLabel(target)}`);
-          block.querySelector('mark')!.scrollIntoView({ block: 'center' });
+          const mark = block.querySelector('mark')!;
+          mark.scrollIntoView({ block: 'center' });
+          document.fonts.ready.then(() => mark.scrollIntoView({ block: 'center' }));   // text reflows when the fonts arrive
         } else {
           say('rejected', `Not in ${anchorLabel(target)}`, checkLink());
           remote();

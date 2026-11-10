@@ -14,7 +14,7 @@ export default {
     { name: 'search', path: `/search?query=${q('"risk assessment" evaluation')}` },
     { name: 'check', path: '/check?example=1' },
     { name: 'replay', path: '/r/GVTHZaZca3mVqmnh9t79KL-pc-7abbdba8ab-1?step=30' },
-    { name: 'pagecite', path: '/pagecite' },
+    { name: 'citationbench', path: '/citationbench', mask: ['.board tbody', '.facts'] },   // rows change as runs land
     { name: 'connect', path: '/connect' },
   ],
   widths: [1440, 390],

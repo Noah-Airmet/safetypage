@@ -1,6 +1,6 @@
 # The site
 
-The reader, the record pages, search, the checker, the replay view and the PageCite
+The reader, the record pages, search, the checker, the replay view and the CitationBench
 leaderboard. Astro, static output, React only on the three interactive parts (search, the
 checker, the replay). Hand-written CSS on the tokens in
 [`src/styles/site.css`](src/styles/site.css); light and dark follow the system setting.
@@ -24,8 +24,8 @@ tests, and the end-to-end and accessibility tests against a fresh build.
 |---|---|---|
 | Document cards, unit text with layout, page images | a snapshot's `public/` tree ([ARCHITECTURE §7](../docs/ARCHITECTURE.md#7-storage-on-disk-blobs-and-snapshots)), at build time and in the browser | `OTP_PUBLIC_DIR` (build, default `public/data`), `PUBLIC_DATA_BASE` (browser, default `/data`) |
 | Search, quote checks, answer audits | the server's JSON API | `PUBLIC_API_BASE` (default: same origin; in dev `/api` is proxied to `OTP_API`) |
-| Leaderboard | PageCite's results files, one per run | `OTP_RESULTS_DIR` (default `../pagecite/results`) |
-| Replays | PageCite's traces, one per sample | `OTP_TRACES_DIR` (default `../pagecite/traces`) |
+| Leaderboard | CitationBench's results files, one per run | `OTP_RESULTS_DIR` (default `../pagecite/results`) |
+| Replays | CitationBench's traces, one per sample | `OTP_TRACES_DIR` (default `../pagecite/traces`) |
 | The MCP address shown on Connect | | `PUBLIC_MCP_URL` (default `<site>/mcp`) |
 | The site's own address, for links and preview cards | | `SITE_URL` |
 
@@ -44,7 +44,7 @@ at a sealed snapshot's `public/` and nothing else changes.
 | `/check[?text=]` | paste a paragraph; each citation comes back Verified, Page only or Rejected |
 | `/r/<trace id>[?step=N]` | a research run played back from its trace |
 | `/q/<id>` | one quote check with its page (built for the landing examples and every quoted citation in a trace) |
-| `/pagecite`, `/pagecite/runs/<run id>` | the leaderboard and a run's questions |
+| `/citationbench`, `/citationbench/runs/<run id>` | the leaderboard and a run's questions |
 | `/library`, `/connect`, `/about` | the catalogue, how to connect an agent, how it works |
 | `/og/…png` | preview cards for a document, a page, a quote check and a replay |
 

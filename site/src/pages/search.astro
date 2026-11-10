@@ -9,7 +9,6 @@ import Search from '../islands/Search.tsx';
   </div>
 </Base>
 <style is:global>
-  .narrow { max-width: 54rem; }
   .search .within { margin-top: var(--s-3); color: var(--ink-2); }
   .search .results { margin-top: var(--s-6); }
   .search .count { color: var(--ink-2); font-size: var(--t-13); margin-bottom: var(--s-2); }
@@ -23,5 +22,6 @@ import Search from '../islands/Search.tsx';
   .search .snippet { font: 400 var(--t-16)/1.55 var(--serif); color: var(--ink-2); max-width: 72ch; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
   .search .snippet mark { color: var(--ink); }
   .search .meta { color: var(--ink-2); font-size: var(--t-13); }
-  .search .cite { font-size: var(--t-12); margin-left: var(--s-2); color: var(--ink-3); }
+  .search .meta { display: flex; flex-wrap: wrap; gap: 0 var(--s-3); align-items: baseline; }
+  .search .cite { font-size: var(--t-12); color: var(--ink-3); }
 </style>

@@ -1,4 +1,4 @@
-/* On the Page: tokens, base and shared components. Every colour, size and radius on the
+/* SafetyPage: tokens, base and shared components. Every colour, size and radius on the
    site comes from the tokens in :root. Themes follow the system setting. */
 
 :root {
@@ -95,6 +95,7 @@ code, kbd, .mono { font-family: var(--mono); font-size: 0.93em; }
 
 .foot { margin-top: var(--s-8); border-top: 1px solid var(--rule); color: var(--ink-2); font-size: var(--t-13); }
 .foot-in { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-block: var(--s-5); align-items: center; }
+@media (max-width: 700px) { .foot-in > span { flex-basis: 100%; } }
 .foot a { display: inline-flex; align-items: center; min-height: 24px; }
 .foot a:hover { color: var(--ink); }
 
@@ -128,7 +129,7 @@ code, kbd, .mono { font-family: var(--mono); font-size: 0.93em; }
   border: 1px solid var(--edge); background: var(--surface);
 }
 .field::placeholder { color: var(--ink-3); }
-textarea.field { height: auto; padding-block: var(--s-3); line-height: 1.55; resize: vertical; }
+textarea.field { display: block; height: auto; padding-block: var(--s-3); line-height: 1.55; resize: vertical; }
 @media (pointer: coarse) { :root { --control: 44px; } }
 
 .searchbox { display: flex; gap: var(--s-2); }
@@ -190,7 +191,16 @@ a.row-link:hover .name, .rows a:hover .name { color: var(--accent); }
 .table .num { font-family: var(--mono); text-align: right; white-space: nowrap; }
 .table th.num { font-family: var(--sans); }
 
-.scroll { overflow-x: auto; position: relative; }
+.narrow { max-width: 54rem; }
+/* A table wider than its column scrolls sideways; shadows at the edges say there is more. */
+.scroll {
+  overflow-x: auto; position: relative;
+  background:
+    linear-gradient(to right, var(--bg) 30%, transparent) left / 40px 100% no-repeat local,
+    linear-gradient(to left, var(--bg) 30%, transparent) right / 40px 100% no-repeat local,
+    linear-gradient(to right, color-mix(in srgb, var(--ink) 14%, transparent), transparent) left / 12px 100% no-repeat scroll,
+    linear-gradient(to left, color-mix(in srgb, var(--ink) 14%, transparent), transparent) right / 12px 100% no-repeat scroll;
+}
 
 .kv { display: grid; grid-template-columns: 9.5rem 1fr; gap: var(--s-2) var(--s-5); }
 .kv dt { color: var(--ink-2); }
