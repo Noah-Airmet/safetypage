@@ -1,0 +1,79 @@
+[
+ {
+  "d": 0,
+  "el": "A.pagepane",
+  "x": 16,
+  "y": 1125.375,
+  "w": 358,
+  "h": 268.5,
+  "ov": "visible",
+  "tr": "none",
+  "pos": "static"
+ },
+ {
+  "d": 1,
+  "el": "DIV.",
+  "x": 16,
+  "y": 1125.375,
+  "w": 358,
+  "h": 268.5,
+  "ov": "visible",
+  "tr": "none",
+  "pos": "static"
+ },
+ {
+  "d": 2,
+  "el": "DIV.crop",
+  "x": 16,
+  "y": 1125.375,
+  "w": 358,
+  "h": 268.5,
+  "ov": "hidden",
+  "tr": "none",
+  "pos": "relative"
+ },
+ {
+  "d": 3,
+  "el": "DIV.sheet",
+  "x": -16.21875,
+  "y": 1092.038818359375,
+  "w": 422.4375,
+  "h": 597.421875,
+  "ov": "visible",
+  "tr": "matrix(1, 0, 0, 1, 0, -33.3361)",
+  "pos": "absolute"
+ },
+ {
+  "d": 1,
+  "el": "DIV.",
+  "x": 0,
+  "y": 0,
+  "w": 0,
+  "h": 0,
+  "ov": "visible",
+  "tr": "none",
+  "pos": "static"
+ },
+ {
+  "d": 2,
+  "el": "DIV.crop",
+  "x": 0,
+  "y": 0,
+  "w": 0,
+  "h": 0,
+  "ov": "hidden",
+  "tr": "none",
+  "pos": "relative"
+ },
+ {
+  "d": 3,
+  "el": "DIV.sheet",
+  "x": 0,
+  "y": 0,
+  "w": 0,
+  "h": 0,
+  "ov": "visible",
+  "tr": "none",
+  "pos": "absolute"
+ }
+]

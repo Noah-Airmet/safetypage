@@ -10,7 +10,7 @@ body.reader main { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-botto
 
 .r-foot { position: fixed; left: var(--side); right: 0; bottom: 0; z-index: var(--z-bar); height: calc(var(--bar-h) + env(safe-area-inset-bottom));
   display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-3);
-  padding: 0 calc(var(--edge-pad) + var(--s-2) + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(var(--edge-pad) + env(safe-area-inset-left));
+  padding: 0 calc(var(--edge-pad) + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(var(--edge-pad) + env(safe-area-inset-left));
   background: var(--frost); -webkit-backdrop-filter: var(--frost-filter); backdrop-filter: var(--frost-filter); box-shadow: inset 0 .5px 0 var(--edge); }
 html.ready .r-foot { transition: left var(--d-panel) var(--ease); }
 .r-gap { width: var(--s-2); }
@@ -90,9 +90,9 @@ html.ready .r-foot { transition: left var(--d-panel) var(--ease); }
 .sourcecard { width: min(100%, 680px); margin-top: var(--s-5); display: flex; flex-direction: column; gap: var(--s-4); align-items: flex-start; }
 .sourcecard > * { max-width: 100%; min-width: 0; overflow-wrap: anywhere; }
 .sourcecard .head { margin-bottom: 0; }
-.sourcecard .where { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-1) var(--s-2); font: 500 var(--t-sm) var(--sans); color: var(--ink-3); }
+.sourcecard .where { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-1) var(--s-3); font: 500 var(--t-sm) var(--sans); color: var(--ink-3); }
 .sourcecard .where b { font: 500 var(--t-lg) var(--sans); color: var(--ink); }
-.sourcecard .where .sect { font: 400 var(--t-md) var(--serif); color: var(--ink-2); margin-left: var(--s-2); }
+.sourcecard .where .sect { font: 400 var(--t-md) var(--serif); color: var(--ink-2); }
 .sourcecard .excerpt { width: 100%; font: var(--t-xl)/var(--lh-read) var(--serif); color: var(--ink); border-left-color: var(--ink-3); }
 .sourcecard .excerpt[data-quoted] { border-left-color: var(--accent); }
 .sourcecard .excerpt[aria-busy] { min-height: 5.6em; }

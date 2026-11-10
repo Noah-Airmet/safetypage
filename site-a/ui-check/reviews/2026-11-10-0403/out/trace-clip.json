@@ -1,0 +1,33 @@
+{
+ "olTop": 218.6875,
+ "ov": "auto",
+ "st": 342,
+ "mask": "none",
+ "rows": [
+  {
+   "t": "00:06fetchOlah et al. 2020 · ¶",
+   "top": 109.9,
+   "bottom": 144.8
+  },
+  {
+   "t": "00:12answer",
+   "top": 145.8,
+   "bottom": 179.2
+  },
+  {
+   "t": "00:12citeOlah et al. 2020 · ¶2",
+   "top": 180.2,
+   "bottom": 252.7
+  },
+  {
+   "t": "00:12citeOlah et al. 2020 · ¶6",
+   "top": 253.7,
+   "bottom": 326.2
+  },
+  {
+   "t": "00:12citeOlah et al. 2020 · ¶6",
+   "top": 327.2,
+   "bottom": 399.8
+  }
+ ]
+}

@@ -404,7 +404,6 @@ function start(root: HTMLElement, o: Opened) {
       if (input.value.trim()) check(input.value.trim());
     });
     if (quote) {
-      input.value = quote;
       check(quote);
     }
   }

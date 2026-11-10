@@ -24,7 +24,7 @@ const model = run.model.split('/').pop()!;
     <header class="head">
       <nav class="crumbs" aria-label="Up"><a href="/citationbench">CitationBench</a><I name="forward" /></nav>
       <h1>{model}</h1>
-      <p class="meta facts">{[run.solver.replace(/ \(.*\)$/, ''), `Snapshot ${run.snapshot}`, run.created_at.slice(0, 10), run.judge && `Judge ${run.judge.id.split('#')[0].split(':').pop()}`].filter(Boolean).join(' · ')}</p>
+      <p class="meta facts">{[run.solver.replace(/ \(.*\)$/, ''), `Snapshot ${run.snapshot.split('/').pop()}`, run.created_at.slice(0, 10), run.judge && `Judge ${run.judge.id.split('#')[0].split(':').pop()}`].filter(Boolean).join(' · ')}</p>
     </header>
 
     <div class="stats">

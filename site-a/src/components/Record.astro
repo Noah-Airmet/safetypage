@@ -39,14 +39,14 @@ const units = count ? `${count.toLocaleString('en')} ${paged ? (count === 1 ? 'p
         <a class={open ? 'btn' : 'pill'} href={open ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener"><I name="external" /><span>{open ? host : `Read at ${host}`}</span></a>
         <button class="btn" type="button" data-open="cite-pop" aria-haspopup="dialog"><I name="quote" /><span>Cite</span></button>
         {!latest && <a class="btn" href={citePath(doc.doc_id)}><span>Latest · {doc.version}</span></a>}
+        {latest && count > 0 && (
+          <form class="find inside" action="/search" role="search">
+            <I name="search" />
+            <input type="hidden" name="doc" value={doc.doc_id} />
+            <input type="search" name="query" placeholder="Search in document" aria-label="Search in this document" autocomplete="off" />
+          </form>
+        )}
       </div>
-      {latest && count > 0 && (
-        <form class="find inside" action="/search" role="search">
-          <I name="search" />
-          <input type="hidden" name="doc" value={doc.doc_id} />
-          <input type="search" name="query" placeholder="Search in document" aria-label="Search in this document" autocomplete="off" />
-        </form>
-      )}
     </header>
   </div>
 
@@ -85,7 +85,7 @@ const units = count ? `${count.toLocaleString('en')} ${paged ? (count === 1 ? 'p
 
       <section aria-labelledby="licence-h">
         <h2 class="sh" id="licence-h">Licence</h2>
-        <p class="lic"><b>{licenceName(summary.licence)}</b><span>{open ? 'Read here' : 'Read at source'}</span></p>
+        <p class="lic"><b>{licenceName(summary.licence)}</b></p>
         {evidence && (
           <figure class="qcard">
             <blockquote>{evidence.quote}</blockquote>

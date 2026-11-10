@@ -1,0 +1,67 @@
+[
+ {
+  "cls": "cite chip",
+  "text": "Verified: Shevlane et al. 2023",
+  "x": 447.921875,
+  "right": 631.9375,
+  "y": 589.234375,
+  "h": 21.5,
+  "bg": "rgba(0, 0, 0, 0)",
+  "pad": "1px 8px 1px 3px",
+  "font": "13px",
+  "next": null,
+  "gap": null
+ },
+ {
+  "cls": "cite chip",
+  "text": "Rejected: Shevlane et al. 2023",
+  "x": 448.796875,
+  "right": 633.078125,
+  "y": 623.421875,
+  "h": 21.5,
+  "bg": "rgba(240, 238, 232, 0.094)",
+  "pad": "1px 8px 1px 3px",
+  "font": "13px",
+  "next": null,
+  "gap": null
+ },
+ {
+  "cls": "cite chip",
+  "text": "Rejected: Shevlane et al. 2023",
+  "x": 239.234375,
+  "right": 423.25,
+  "y": 725.984375,
+  "h": 21.5,
+  "bg": "rgba(0, 0, 0, 0)",
+  "pad": "1px 8px 1px 3px",
+  "font": "13px",
+  "next": null,
+  "gap": null
+ },
+ {
+  "cls": "cite chip",
+  "text": "Page only: Cunningham et al. 2",
+  "x": 412.421875,
+  "right": 605.140625,
+  "y": 761.921875,
+  "h": 21.5,
+  "bg": "rgba(240, 238, 232, 0.055)",
+  "pad": "1px 8px",
+  "font": "13px",
+  "next": null,
+  "gap": null
+ },
+ {
+  "cls": "cite chip",
+  "text": "Rejected: arxiv:2305.15324/v2/",
+  "x": 348.6875,
+  "right": 530.46875,
+  "y": 794.359375,
+  "h": 21.5,
+  "bg": "rgba(0, 0, 0, 0)",
+  "pad": "1px 8px 1px 3px",
+  "font": "13px",
+  "next": null,
+  "gap": null
+ }
+]

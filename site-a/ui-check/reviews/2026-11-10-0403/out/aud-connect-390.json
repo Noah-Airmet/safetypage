@@ -1,0 +1,24 @@
+{
+ "off": {},
+ "all": [
+  "12px 500 Geist",
+  "12px 500 Geist Mono",
+  "13px 400 Geist",
+  "13px 450 Geist Mono",
+  "13px 500 Geist",
+  "14px 500 Geist",
+  "15px 400 Geist",
+  "15px 450 Geist Mono",
+  "17px 400 Source Serif 4",
+  "19px 500 Geist",
+  "22px 500 Geist",
+  "36px 400 Instrument Serif"
+ ],
+ "offRad": {},
+ "rads": [
+  "10px",
+  "16px",
+  "4px",
+  "7px"
+ ]
+}

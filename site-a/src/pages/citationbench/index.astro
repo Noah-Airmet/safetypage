@@ -57,7 +57,7 @@ const day = (iso: string) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en
               return (
                 <tr>
                   <td class="rank">{band(run)}</td>
-                  <td class="agent"><a href={href}><span class="model">{run.model.split('/').pop()}</span><span class="solver">{run.solver.replace(/ \(.*\)$/, '')} · {run.snapshot}</span></a></td>
+                  <td class="agent"><a href={href}><span class="model">{run.model.split('/').pop()}</span><span class="solver">{run.solver.replace(/ \(.*\)$/, '')} · {run.snapshot.split('/').pop()}</span></a></td>
                   {COLUMNS.map((col) => {
                     const e = run.measures[col.key];
                     return (
@@ -67,8 +67,8 @@ const day = (iso: string) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en
                       </a></td>
                     );
                   })}
-                  <td class="num"><a href={href}><span class="v">{cost == null || !run.cost.priced ? '–' : cost < 0.1 ? `$${cost.toFixed(3)}` : `$${cost.toFixed(2)}`}</span></a></td>
-                  <td class="num"><a href={href}><span class="v">{run.samples}</span></a></td>
+                  <td class="num"><a href={href}><span class="v">{cost == null || !run.cost.priced ? '–' : cost < 0.1 ? `$${cost.toFixed(3)}` : `$${cost.toFixed(2)}`}</span><span class="gauge none"></span></a></td>
+                  <td class="num"><a href={href}><span class="v">{run.samples}</span><span class="gauge none"></span></a></td>
                 </tr>
               );
             })}

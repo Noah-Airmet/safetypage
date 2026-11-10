@@ -66,11 +66,11 @@ html.ready .hero { transition: translate var(--d-panel) var(--ease); }
 }
 
 /* ---------------------------------------------------------------- a record */
-.rec-top { display: flex; gap: var(--s-6); align-items: flex-start; margin-bottom: var(--s-7); }
+.rec-top { display: flex; gap: var(--s-6); align-items: flex-start; margin-bottom: var(--s-6); }
 .rec-top > .cv { width: 168px; margin-top: var(--s-1); }
 .rec-top .cv svg.i { width: var(--icon-lg); height: var(--icon-lg); }
 .rec-top .head { flex: 1; min-width: 0; margin-bottom: 0; }
-.record .find.inside { width: min(420px, 100%); height: 36px; margin-top: var(--s-2); }
+.record .ctl .find { flex: 1 1 200px; max-width: 320px; width: auto; height: 36px; }
 .record .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: var(--s-8); align-items: start; }
 .record .side { display: grid; gap: var(--s-7); grid-template-columns: minmax(0, 1fr); }
 .outline .frow { min-height: var(--hit); padding-left: calc(var(--s-3) + var(--level, 0) * 20px); }
@@ -82,17 +82,17 @@ html.ready .hero { transition: translate var(--d-panel) var(--ease); }
 .versions .when { flex: 1; color: var(--ink-2); font-size: var(--t-sm); }
 .lic { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-3); }
 .lic b { font: 500 var(--t-lg) var(--sans); }
-.lic span { font: 500 var(--t-xs) var(--sans); color: var(--ink-3); white-space: nowrap; }
 .record .qcard blockquote { font-size: var(--t-lg); overflow-wrap: anywhere; }
 .record .qcard a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--edge-hover); text-underline-offset: 3px; }
 #cite-pop.popover { width: 460px; }
 .cite-rows { display: grid; gap: var(--s-2); }
-.cite-rows .addr { border-radius: var(--r-ctl); padding: var(--s-1) var(--s-1) var(--s-1) var(--s-3); max-width: none; }
+.cite-rows .addr { max-width: none; }
 .cite-rows .addr.bib { align-items: flex-start; }
 .cite-rows .bib code { white-space: pre-wrap; padding: var(--s-2) 0; }
 @media (max-width: 900px) { .record .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); } }
 @media (max-width: 720px) {
-  .rec-top { gap: var(--s-4); margin-bottom: var(--s-6); flex-direction: column; }
+  .rec-top { gap: var(--s-4); flex-direction: column; }
+  .record .ctl .find { flex-basis: 100%; max-width: none; }
   .rec-top > .cv { width: 96px; }
   .outline .frow { padding-left: calc(var(--s-2) + var(--level, 0) * 14px); }
   .cite-rows .copy-btn span { display: none; }
@@ -191,9 +191,13 @@ table.board .model { font: 500 var(--t-body)/var(--lh-snug) var(--serif); color:
 table.board .solver { font-size: var(--t-xs); color: var(--ink-3); white-space: nowrap; }
 table.board .v { font: 400 var(--t-xl)/1 var(--display-sans); letter-spacing: var(--track-title); color: var(--ink); }
 table.board .pm { font: var(--t-xs) var(--sans); letter-spacing: 0; color: var(--ink-3); }
-table.board .gauge { width: min(100%, 112px); }
+table.board .gauge { width: 100px; }
+.gauge.none { visibility: hidden; }
 .run .head { margin-bottom: var(--s-6); }
-@media (max-width: 720px) { .scroll { margin: 0 calc(-1 * var(--gutter)); padding: 0 calc(var(--gutter) - var(--s-3)); } }
+@media (max-width: 720px) {
+  .scroll { margin: 0 calc(-1 * var(--gutter)); padding: 0 calc(var(--gutter) - var(--s-3)); }
+  .scroll, .about .stacks { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--s-6)), transparent); mask-image: linear-gradient(to right, #000 calc(100% - var(--s-6)), transparent); }
+}
 
 /* ---------------------------------------------------------------- connect an agent: a walkthrough */
 .guide > * { max-width: 40rem; }
@@ -215,11 +219,12 @@ table.board .gauge { width: min(100%, 112px); }
 .anatomy code { padding: var(--s-2) var(--s-3); border-radius: var(--r-ctl); background: var(--fill); font: 450 var(--t-lg)/1.35 var(--mono); color: var(--ink); }
 .anatomy small { padding-left: var(--s-3); font: 500 var(--t-xs) var(--sans); color: var(--ink-3); }
 .anatomy i { font: 450 var(--t-lg)/1.35 var(--mono); font-style: normal; color: var(--ink-3); padding: var(--s-2) 0; }
-.guide .links .addr { color: var(--ink-3); padding: var(--s-2) var(--s-3) var(--s-2) 14px; transition: background var(--d-fast), color var(--d-fast); }
+.guide .links .addr { color: var(--ink-3); min-height: 46px; padding-right: 15px; transition: background var(--d-fast), color var(--d-fast); }
 .guide .links .addr svg.i { width: var(--icon-sm); height: var(--icon-sm); }
 @media (hover: hover) { .guide .links .addr:hover { background: var(--fill-2); color: var(--ink); } }
 .sigs { display: grid; gap: var(--s-1); }
-.sigs li { display: flex; align-items: baseline; gap: var(--s-3); padding: var(--s-2) 14px; border-radius: var(--r-ctl); background: var(--fill); }
+.sigs { gap: var(--s-2); }
+.sigs li { display: flex; align-items: center; gap: var(--s-3); min-height: 46px; padding: var(--card-pad) 14px; border-radius: var(--r-lg); background: var(--fill); }
 .sigs code { flex: 1; min-width: 0; font: 450 var(--t-sm)/1.5 var(--mono); color: var(--ink); overflow-wrap: anywhere; }
 .sigs .m { flex: none; width: 40px; font: 500 var(--t-xs) var(--mono); color: var(--ink-3); }
 .sigs .ret { flex: none; font: 450 var(--t-xs) var(--mono); color: var(--ink-3); }
@@ -251,9 +256,9 @@ table.board .gauge { width: min(100%, 112px); }
 .about .catbar i { display: block; height: 100%; background: var(--ink-2); }
 .proof-cols { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s-6); align-items: start; }
 .proof .claims { display: grid; gap: var(--s-3); }
-.proof .claim { display: block; width: 100%; text-align: left; background: none; transition: background var(--d-fast); }
+.proof .claim { display: block; width: 100%; text-align: left; transition: background var(--d-fast); }
+.proof .crop .sheet { left: 0; width: 100%; }
 .proof .claim[aria-pressed="true"] { background: var(--fill-2); }
-@media (hover: hover) { .proof .claim:not([aria-pressed="true"]):hover { background: var(--fill); } }
 .proof .claim .q { display: block; }
 .proof .claim .says { display: block; }
 .proof[data-show="verified"] [data-pane="rejected"], .proof[data-show="rejected"] [data-pane="verified"] { display: none; }
