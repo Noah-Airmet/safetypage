@@ -92,8 +92,11 @@ export default function Checker() {
       const found = checked.indexOf(c.raw, at);
       if (found < 0) return;
       const wrapped = checked[found - 1] === '(' && checked[found + c.raw.length] === ')';
-      marked.push(checked.slice(at, wrapped ? found - 1 : found), <Chip key={i} state={states[i]} label={c.resolves ? citeLabel(c.cite, docs) : c.raw} onClick={() => { setOpen(i); document.getElementById(`c${i}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }} current={open === i} />);
-      at = found + c.raw.length + (wrapped ? 1 : 0);
+      const end = found + c.raw.length + (wrapped ? 1 : 0);
+      // Punctuation after a citation stays on its line.
+      const tail = /^[.,;:!?]+/.exec(checked.slice(end))?.[0] ?? '';
+      marked.push(checked.slice(at, wrapped ? found - 1 : found), <span className="nb" key={i}><Chip state={states[i]} label={c.resolves ? citeLabel(c.cite, docs) : c.raw} onClick={() => { setOpen(i); document.getElementById(`c${i}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }} current={open === i} />{tail}</span>);
+      at = end + tail.length;
     });
     marked.push(checked.slice(at));
   }
@@ -116,7 +119,7 @@ export default function Checker() {
         <div className="actions">
           <button className="btn btn-primary" disabled={status === 'working' || !text.trim()}>Check</button>
           <button type="button" className="btn" onClick={() => { setText(EXAMPLE); run(EXAMPLE); }}>Try an example</button>
-          {audit && <button type="button" className="btn btn-quiet" onClick={() => { navigator.clipboard.writeText(location.href); setCopied(true); setTimeout(() => setCopied(false), 1200); }}><Icon name={copied ? 'check' : 'link'} small />Copy link</button>}
+          {audit && <button type="button" className="btn" onClick={() => { navigator.clipboard.writeText(location.href); setCopied(true); setTimeout(() => setCopied(false), 1200); }}><Icon name={copied ? 'check' : 'link'} small />Copy link</button>}
         </div>
       </form>
       {status === 'down' && <p className="failed">Checker unavailable <button className="btn" onClick={() => run(text)}>Retry</button></p>}
@@ -135,7 +138,7 @@ export default function Checker() {
               <li key={i} id={`c${i}`} data-open={open === i || undefined} onClick={() => wide && c.quotes.some((q) => q.check?.locations[0]) && setOpen(i)}>
                 <div className="finding-head">
                   <Chip state={states[i]} label={c.resolves ? citeLabel(c.cite, docs) : c.raw} href={c.resolves ? citePath(c.cite, c.quotes[0]?.quote) : undefined} />
-                  <span className="mono cite">{c.cite}</span>
+                  {c.resolves && <span className="mono cite">{c.cite}</span>}
                 </div>
                 {!c.resolves && <p className="why">{c.error}</p>}
                 {c.resolves && c.quotes.length === 0 && <p className="why"><span className="state" data-state="cited">The page exists; nothing quoted</span></p>}

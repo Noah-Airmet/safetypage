@@ -46,7 +46,7 @@ test.describe('reader', () => {
 
   test('a link-only page shows the record and opens the source at the page', async ({ page }) => {
     await page.goto('/d/example/link-only-eval-report/r1/p2');
-    await expect(page.locator('.sourcecard .btn-primary')).toHaveAttribute('href', /#page=2$/);
+    await expect(page.locator('.sourcecard [data-open]')).toHaveAttribute('href', /#page=2$/);
     await expect(page.locator('.sheet')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText('restricted');
   });

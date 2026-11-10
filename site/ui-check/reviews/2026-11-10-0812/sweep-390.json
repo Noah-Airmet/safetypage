@@ -1,0 +1,7178 @@
+{
+ "home": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 1,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "SafetyPageSearch\"alignment fak",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 2933.8,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 3085.8,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.sr",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 80,
+    "w": 1,
+    "h": 1,
+    "font": "400 14px/20.3px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#shelves-h.h2",
+    "text": "Library",
+    "x": 16,
+    "y": 888.5,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#recent-h.h2",
+    "text": "New from the labs",
+    "x": 16,
+    "y": 1283.1,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#follow-h.h2",
+    "text": "Follow",
+    "x": 16,
+    "y": 2081.9,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#agents-h.h2",
+    "text": "Connect",
+    "x": 16,
+    "y": 2485.7,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2.h2",
+    "text": "Check",
+    "x": 16,
+    "y": 2671.3,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2.h2",
+    "text": "Replay",
+    "x": 16,
+    "y": 2769.2,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2.h2",
+    "text": "CitationBench",
+    "x": 16,
+    "y": 2931.9,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "input",
+    "text": "",
+    "x": 16,
+    "y": 80,
+    "w": 358,
+    "h": 56,
+    "font": "400 17px/24.65px",
+    "radius": "12px",
+    "pad": "0px 120px 0px 16px",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.btn.btn-primary",
+    "text": "Search",
+    "x": 278.5,
+    "y": 84,
+    "w": 91.5,
+    "h": 48,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 24px",
+    "bg": "rgb(14, 22, 33)",
+    "border": "0px rgb(236, 238, 241)"
+   },
+   {
+    "el": "button.claim",
+    "text": "not the only tool available fo",
+    "x": 4,
+    "y": 212,
+    "w": 382,
+    "h": 107.7,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip",
+    "text": "Verified: Shevlane et al. 2023",
+    "x": 16,
+    "y": 286,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgb(255, 227, 82)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 6",
+    "x": 37.7,
+    "y": 286,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.claim",
+    "text": "Model evaluation is the only t",
+    "x": 4,
+    "y": 323.7,
+    "w": 382,
+    "h": 167.7,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip",
+    "text": "Rejected: Shevlane et al. 2023",
+    "x": 16,
+    "y": 397.7,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(163, 32, 12, 0.1)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 6",
+    "x": 37.7,
+    "y": 397.7,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 328,
+    "y": 2543.3,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 3156.8,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 3156.8,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 3156.8,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 38,
+    "ex": [
+     "h1.sr \"SafetyPage\"",
+     "span \"Model evaluation for extr\"",
+     "span.val \"329\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 17,
+    "ex": [
+     "button.btn.btn-primary \"Search\"",
+     "span.sr \"Verified:\"",
+     "span.chip-label \"Shevlane et al. 2023, p. \""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 8,
+    "ex": [
+     "a \"\"alignment faking\"\"",
+     "a \"sabotage evaluation\"",
+     "a \"sparse autoencoder*\""
+    ]
+   },
+   "20px|500|Hanken Grotesk Variable": {
+    "n": 17,
+    "ex": [
+     "q \"not the only tool availab\"",
+     "q \"Model evaluation is the o\"",
+     "span.name \"GPT-6 Cyber System Card\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span.says \"p. 6: “Model evaluation i\""
+    ]
+   },
+   "28px|500|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "a \"Library\"",
+     "h2#recent-h.h2 \"New from the labs\"",
+     "a \"Follow\""
+    ]
+   },
+   "17px|500|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "span.name \"Lab system cards and fram\"",
+     "span.name \"Research papers\"",
+     "span.name \"Lab research on the web\""
+    ]
+   },
+   "14px|400|Fragment Mono": {
+    "n": 1,
+    "ex": [
+     "code \"claude mcp add --transpor\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "h1.sr",
+    "sw": 69,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "SafetyPage"
+   },
+   {
+    "el": "p.tries",
+    "sw": 722,
+    "cw": 368,
+    "ox": "auto",
+    "te": "clip",
+    "text": "\"alignment faking\"sabotage evaluationspa"
+   },
+   {
+    "el": "span.sr",
+    "sw": 51,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Verified:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 58,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Rejected:"
+   },
+   {
+    "el": "div.crop",
+    "sw": 390,
+    "cw": 358,
+    "ox": "hidden",
+    "te": "clip",
+    "text": ""
+   },
+   {
+    "el": "code",
+    "sw": 588,
+    "cw": 300,
+    "ox": "auto",
+    "te": "clip",
+    "text": "claude mcp add --transport http safetypa"
+   }
+  ]
+ },
+ "library": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "Library13,898 documentsSnapsho",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 1190.5,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 1342.5,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Library",
+    "x": 16,
+    "y": 88,
+    "w": 95.5,
+    "h": 34.5,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 1413.5,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 1413.5,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 1413.5,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Library\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "span \"13,898 documents\"",
+     "span \"Snapshot 2026.11.3\"",
+     "a \"How it works\""
+    ]
+   },
+   "20px|500|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "span.name \"Lab system cards and fram\"",
+     "span.name \"Research papers\"",
+     "span.name \"Lab research on the web\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 14,
+    "ex": [
+     "span.count \"329\"",
+     "p.about \"System cards, model cards\"",
+     "span.count \"6,256\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "button \"Auto\"",
+     "button \"Light\"",
+     "button \"Dark\""
+    ]
+   }
+  },
+  "overflow": []
+ },
+ "shelf": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "LibraryLab system cards and fr",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 6275.5,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 6427.5,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Lab system cards and framework",
+    "x": 16,
+    "y": 120.3,
+    "w": 358,
+    "h": 69.1,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "input.field",
+    "text": "",
+    "x": 16,
+    "y": 295,
+    "w": 358,
+    "h": 44,
+    "font": "400 16px/23.2px",
+    "radius": "8px",
+    "pad": "1px 12px",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "PublisherOpenAI (160)Anthropic",
+    "x": 16,
+    "y": 347,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "KindArticle (173)System card (",
+    "x": 199,
+    "y": 347,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "Year2026 (117)2025 (114)2024 (",
+    "x": 16,
+    "y": 399,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "Read anywhereRead here (2)At s",
+    "x": 199,
+    "y": 399,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.btn",
+    "text": "More",
+    "x": 16,
+    "y": 6287.5,
+    "w": 64.9,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 6498.5,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 6498.5,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 6498.5,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 5,
+    "ex": [
+     "a \"Library\"",
+     "button.btn \"More\"",
+     "button \"Auto\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Lab system cards and fram\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "p.byline \"System cards, model cards\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 66,
+    "ex": [
+     "p.count \"60 of 329 documents, newe\"",
+     "span.sub \"OpenAI\"",
+     "span.sub \"OpenAI\""
+    ]
+   },
+   "17px|500|Hanken Grotesk Variable": {
+    "n": 60,
+    "ex": [
+     "span.name \"GPT-6 Cyber System Card\"",
+     "span.name \"ChatGPT Images 2.6 System\"",
+     "span.name \"Gemini Omni 1.2 Flash Mod\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 240,
+    "ex": [
+     "span.c.kind \"System card\"",
+     "span.c.date \"Nov 2026\"",
+     "span.c.size \"140 paragraphs\""
+    ]
+   }
+  },
+  "overflow": []
+ },
+ "shelf-filtered": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "LibraryResearch papersInterpre",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 5273.6,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 5425.6,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Research papers",
+    "x": 16,
+    "y": 120.3,
+    "w": 225.9,
+    "h": 34.5,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "input.field",
+    "text": "",
+    "x": 16,
+    "y": 237.2,
+    "w": 358,
+    "h": 44,
+    "font": "400 16px/23.2px",
+    "radius": "8px",
+    "pad": "1px 12px",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "PublisherarXiv (6,101)ACL Anth",
+    "x": 16,
+    "y": 289.2,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "Year2026 (854)2025 (2,322)2024",
+    "x": 199,
+    "y": 289.2,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "Read anywhereRead here (3,331)",
+    "x": 16,
+    "y": 341.2,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 5496.6,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 5496.6,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 5496.6,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 4,
+    "ex": [
+     "a \"Library\"",
+     "button \"Auto\"",
+     "button \"Light\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Research papers\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "p.byline \"Interpretability, alignme\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 48,
+    "ex": [
+     "p.count \"42 documents, newest firs\"",
+     "span.sub \"Bussmann et al.\"",
+     "span.sub \"Karvonen et al.\""
+    ]
+   },
+   "17px|500|Hanken Grotesk Variable": {
+    "n": 42,
+    "ex": [
+     "span.name \"BatchTopK Sparse Autoenco\"",
+     "span.name \"Evaluating Sparse Autoenc\"",
+     "span.name \"Compute Optimal Inference\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 131,
+    "ex": [
+     "span.c.kind \"Paper\"",
+     "span.c.date \"Dec 2024\"",
+     "span.c.size \"6 pages\""
+    ]
+   },
+   "12px|500|Hanken Grotesk Variable": {
+    "n": 37,
+    "ex": [
+     "span.c.read \"Read here\"",
+     "span.c.read \"Read here\"",
+     "span.c.read \"Read here\""
+    ]
+   }
+  },
+  "overflow": []
+ },
+ "record": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "LibraryResearch papersModel ev",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 1368.4,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 1520.4,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Model evaluation for extreme r",
+    "x": 16,
+    "y": 234.2,
+    "w": 358,
+    "h": 69.1,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#outline-h.h2",
+    "text": "Contents",
+    "x": 16,
+    "y": 557.1,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#versions-h.h2",
+    "text": "Versions",
+    "x": 16,
+    "y": 1134.7,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#licence-h.h2",
+    "text": "Licence",
+    "x": 16,
+    "y": 1272.3,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "a.btn.btn-primary",
+    "text": "Read",
+    "x": 16,
+    "y": 429.1,
+    "w": 87.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgb(14, 22, 33)",
+    "border": "0px rgb(236, 238, 241)"
+   },
+   {
+    "el": "a.btn",
+    "text": "arxiv.org",
+    "x": 111.5,
+    "y": 429.1,
+    "w": 111.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 324.5,
+    "y": 487.1,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 324.5,
+    "y": 537.1,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 324.5,
+    "y": 589.1,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "input.field",
+    "text": "",
+    "x": 16,
+    "y": 481.1,
+    "w": 358,
+    "h": 44,
+    "font": "400 16px/23.2px",
+    "radius": "8px",
+    "pad": "1px 12px 1px 34px",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 1591.4,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 1591.4,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 1591.4,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 12,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 10,
+    "ex": [
+     "a \"Library\"",
+     "a \"Research papers\"",
+     "a.btn.btn-primary \"Read\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Model evaluation for extr\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "p.byline \"Toby Shevlane, Sebastian \"",
+     "span.o-title \"Responsible deployment\"",
+     "span.o-title \"Transparency\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 9,
+    "ex": [
+     "span \"Paper\"",
+     "span \"22 Sep 2023\"",
+     "span \"20 pages\""
+    ]
+   },
+   "14px|400|Fragment Mono": {
+    "n": 2,
+    "ex": [
+     "code \"arxiv:2305.15324/v2/p1\"",
+     "code \"http://localhost:4321/d/a\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 1,
+    "ex": [
+     "pre \"@misc{shevlane2023, title\""
+    ]
+   },
+   "28px|500|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "h2#outline-h.h2 \"Contents\"",
+     "h2#versions-h.h2 \"Versions\"",
+     "h2#licence-h.h2 \"Licence\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 14,
+    "ex": [
+     "span.o-page \"p. 1\"",
+     "span.o-page \"p. 2\"",
+     "span.o-page \"p. 7\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "code",
+    "sw": 388,
+    "cw": 288,
+    "ox": "auto",
+    "te": "clip",
+    "text": "http://localhost:4321/d/arxiv/2305.15324"
+   }
+  ]
+ },
+ "record-source": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "LibraryLab system cards and fr",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 10556.4,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 10708.4,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "System Card: Claude Opus 5.5",
+    "x": 16,
+    "y": 234.2,
+    "w": 358,
+    "h": 69.1,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#outline-h.h2",
+    "text": "Contents",
+    "x": 16,
+    "y": 479.6,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#versions-h.h2",
+    "text": "Versions",
+    "x": 16,
+    "y": 10273.1,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#licence-h.h2",
+    "text": "Licence",
+    "x": 16,
+    "y": 10410.7,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "a.btn.btn-primary",
+    "text": "Read at anthropic.com",
+    "x": 16,
+    "y": 351.6,
+    "w": 197.8,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgb(14, 22, 33)",
+    "border": "0px rgb(236, 238, 241)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 315.3,
+    "y": 409.6,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 315.3,
+    "y": 459.6,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 315.3,
+    "y": 511.6,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "input.field",
+    "text": "",
+    "x": 16,
+    "y": 403.6,
+    "w": 358,
+    "h": 44,
+    "font": "400 16px/23.2px",
+    "radius": "8px",
+    "pad": "1px 12px 1px 34px",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 10779.4,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 10779.4,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 10779.4,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 17,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 9,
+    "ex": [
+     "a \"Library\"",
+     "a \"Lab system cards and fram\"",
+     "a.btn.btn-primary \"Read at anthropic.com\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 2,
+    "ex": [
+     "h1.title \"System Card: Claude Opus \"",
+     "span.subtitle \": Claude Opus 5.5\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 10,
+    "ex": [
+     "span \"System card\"",
+     "span \"Anthropic\"",
+     "span \"22 Sep 2026\""
+    ]
+   },
+   "14px|400|Fragment Mono": {
+    "n": 2,
+    "ex": [
+     "code \"anthropic:claude-opus-5-5\"",
+     "code \"http://localhost:4321/d/a\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 1,
+    "ex": [
+     "pre \"@misc{anthropic2026, titl\""
+    ]
+   },
+   "28px|500|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "h2#outline-h.h2 \"Contents\"",
+     "h2#versions-h.h2 \"Versions\"",
+     "h2#licence-h.h2 \"Licence\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 193,
+    "ex": [
+     "span.o-page \"p. 1\"",
+     "span.o-page \"p. 2\"",
+     "span.o-page \"p. 11\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 180,
+    "ex": [
+     "span.o-title \"1.1 Training data and pro\"",
+     "span.o-title \"1.2 Crowd workers\"",
+     "span.o-title \"1.3 Usage Policy and supp\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "code",
+    "sw": 362,
+    "cw": 288,
+    "ox": "auto",
+    "te": "clip",
+    "text": "anthropic:claude-opus-5-5-system-card/r1"
+   },
+   {
+    "el": "code",
+    "sw": 565,
+    "cw": 288,
+    "ox": "auto",
+    "te": "clip",
+    "text": "http://localhost:4321/d/anthropic/claude"
+   }
+  ]
+ },
+ "reader": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 1,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": -2635,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": -2629,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": -2575,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": -2527,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": -2479,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": -2431,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": -2383,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": -2335,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "Model evaluation for extreme r",
+   "x": 0,
+   "y": -2579,
+   "w": 390,
+   "h": 11446.4,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": null,
+  "heads": [],
+  "controls": [
+   {
+    "el": "input.field",
+    "text": "",
+    "x": 212.8,
+    "y": 6,
+    "w": 52,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "1px 4px",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rsource",
+    "text": "arxiv.org",
+    "x": 342,
+    "y": 6,
+    "w": 44,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 8,
+    "ex": [
+     "span.rtitle \"Model evaluation for extr\"",
+     "span.o-title \"Introduction\"",
+     "span.o-title \"Extreme risks from genera\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 8,
+    "ex": [
+     "span.sr \"Go to page\"",
+     "span \"p.\"",
+     "span \"/ 20\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 11,
+    "ex": [
+     "span.o-page \"p. 1\"",
+     "span.o-page \"p. 2\"",
+     "span.o-page \"p. 7\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "q \"not the only tool availab\""
+    ]
+   },
+   "3.3228px|400|Hanken Grotesk Variable": {
+    "n": 18,
+    "ex": [
+     "span \"Model\"",
+     "span \"evaluation\"",
+     "span \"risks\""
+    ]
+   },
+   "3.3813px|400|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "span \"for\"",
+     "span \"In\"",
+     "span \"for\""
+    ]
+   },
+   "2.5935px|400|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "span \"extreme\"",
+     "span \"extreme\"",
+     "span \"extreme\""
+    ]
+   },
+   "4.1145px|400|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "span \"In\"",
+     "span \"In\"",
+     "span \"It\""
+    ]
+   },
+   "4.563px|400|Hanken Grotesk Variable": {
+    "n": 630,
+    "ex": [
+     "span \"the\"",
+     "span \"near-term,\"",
+     "span \"these\""
+    ]
+   },
+   "4.5084px|400|Hanken Grotesk Variable": {
+    "n": 20,
+    "ex": [
+     "span \"will\"",
+     "span \"will\"",
+     "span \"will\""
+    ]
+   },
+   "5.8578px|400|Hanken Grotesk Variable": {
+    "n": 366,
+    "ex": [
+     "span \"especially\"",
+     "span \"development.\"",
+     "span \"loosely\""
+    ]
+   },
+   "3.1005px|400|Hanken Grotesk Variable": {
+    "n": 91,
+    "ex": [
+     "span \"on\"",
+     "span \"are\"",
+     "span \"more\""
+    ]
+   },
+   "4.6215px|400|Hanken Grotesk Variable": {
+    "n": 322,
+    "ex": [
+     "span \"frontier\"",
+     "span \"of\"",
+     "span \"define\""
+    ]
+   },
+   "4.1691px|400|Hanken Grotesk Variable": {
+    "n": 43,
+    "ex": [
+     "span \"AI\"",
+     "span \"We\"",
+     "span \"2\""
+    ]
+   },
+   "3.042px|400|Hanken Grotesk Variable": {
+    "n": 144,
+    "ex": [
+     "span \"as\"",
+     "span \"are\"",
+     "span \"or\""
+    ]
+   },
+   "5.2962px|400|Hanken Grotesk Variable": {
+    "n": 27,
+    "ex": [
+     "span \"(a)\"",
+     "span \"(even\"",
+     "span \"2022).\""
+    ]
+   },
+   "4.3953px|400|Hanken Grotesk Variable": {
+    "n": 113,
+    "ex": [
+     "span \"average\"",
+     "span \"is\"",
+     "span \"“extreme”\""
+    ]
+   },
+   "3.6075px|400|Hanken Grotesk Variable": {
+    "n": 68,
+    "ex": [
+     "span \"most\"",
+     "span \"terms\"",
+     "span \"to\""
+    ]
+   },
+   "5.6901px|400|Hanken Grotesk Variable": {
+    "n": 102,
+    "ex": [
+     "span \"existing\"",
+     "span \"opportunities\"",
+     "span \"community.\""
+    ]
+   },
+   "6.3102px|400|Hanken Grotesk Variable": {
+    "n": 2,
+    "ex": [
+     "span \"models,1\"",
+     "span \"harm;2\""
+    ]
+   },
+   "5.3508px|400|Hanken Grotesk Variable": {
+    "n": 15,
+    "ex": [
+     "span \"(b)\"",
+     "span \"(b)\"",
+     "span \"evaluations).\""
+    ]
+   },
+   "5.5224px|400|Hanken Grotesk Variable": {
+    "n": 28,
+    "ex": [
+     "span \"models,\"",
+     "span \"|\"",
+     "span \"al.,\""
+    ]
+   },
+   "4.3368px|400|Hanken Grotesk Variable": {
+    "n": 68,
+    "ex": [
+     "span \"in\"",
+     "span \"mix\"",
+     "span \"range\""
+    ]
+   },
+   "3.549px|400|Hanken Grotesk Variable": {
+    "n": 78,
+    "ex": [
+     "span \"terms\"",
+     "span \"at\"",
+     "span \"to\""
+    ]
+   },
+   "5.577px|400|Hanken Grotesk Variable": {
+    "n": 57,
+    "ex": [
+     "span \"scale,\"",
+     "span \"tasks,\"",
+     "span \"outward,\""
+    ]
+   },
+   "5.7486px|400|Hanken Grotesk Variable": {
+    "n": 23,
+    "ex": [
+     "span \"(e.g.\"",
+     "span \"(e.g.\"",
+     "span \"(e.g.\""
+    ]
+   },
+   "5.2416px|400|Hanken Grotesk Variable": {
+    "n": 22,
+    "ex": [
+     "span \"(a)\"",
+     "span \"awareness)\"",
+     "span \"2022).\""
+    ]
+   },
+   "4.8438px|400|Hanken Grotesk Variable": {
+    "n": 39,
+    "ex": [
+     "span \"greater\"",
+     "span \"systems\"",
+     "span \"century\""
+    ]
+   },
+   "4.6761px|400|Hanken Grotesk Variable": {
+    "n": 20,
+    "ex": [
+     "span \"focus\"",
+     "span \"practice,\"",
+     "span \"“average\""
+    ]
+   },
+   "4.056px|400|Hanken Grotesk Variable": {
+    "n": 8,
+    "ex": [
+     "span \"mean,\"",
+     "span \"war,\"",
+     "span \"are,\""
+    ]
+   },
+   "5.9163px|400|Hanken Grotesk Variable": {
+    "n": 50,
+    "ex": [
+     "span \"significant\"",
+     "span \"capabilities).\"",
+     "span \"cyber-offense,\""
+    ]
+   },
+   "4.9023px|400|Hanken Grotesk Variable": {
+    "n": 11,
+    "ex": [
+     "span \"governments,\"",
+     "span \"strong\"",
+     "span \"systems\""
+    ]
+   },
+   "5.4093px|400|Hanken Grotesk Variable": {
+    "n": 26,
+    "ex": [
+     "span \"Many\"",
+     "span \"(and\"",
+     "span \"stakeholders)\""
+    ]
+   },
+   "4.4499px|400|Hanken Grotesk Variable": {
+    "n": 25,
+    "ex": [
+     "span \"view\"",
+     "span \"36%\"",
+     "span \"“cause\""
+    ]
+   },
+   "4.2237px|400|Hanken Grotesk Variable": {
+    "n": 16,
+    "ex": [
+     "span \"2022\"",
+     "span \"1.\"",
+     "span \"2.\""
+    ]
+   },
+   "5.1831px|400|Hanken Grotesk Variable": {
+    "n": 2,
+    "ex": [
+     "span \"However,\"",
+     "span \"Kramar,\""
+    ]
+   },
+   "2.7612px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"1\""
+    ]
+   },
+   "4.7892px|400|Hanken Grotesk Variable": {
+    "n": 15,
+    "ex": [
+     "span \"capabilities”\"",
+     "span \"judgement\"",
+     "span \"highly\""
+    ]
+   },
+   "3.7752px|400|Hanken Grotesk Variable": {
+    "n": 49,
+    "ex": [
+     "span \"would\"",
+     "span \"evaluations\"",
+     "span \"should\""
+    ]
+   },
+   "3.7167px|400|Hanken Grotesk Variable": {
+    "n": 27,
+    "ex": [
+     "span \"involve\"",
+     "span \"calls\"",
+     "span \"which\""
+    ]
+   },
+   "2.4804px|400|Hanken Grotesk Variable": {
+    "n": 5,
+    "ex": [
+     "span \"over\"",
+     "span \"a\"",
+     "span \"a\""
+    ]
+   },
+   "2.9289px|400|Hanken Grotesk Variable": {
+    "n": 12,
+    "ex": [
+     "span \"extreme\"",
+     "span \"not\"",
+     "span \"to\""
+    ]
+   },
+   "2.535px|400|Hanken Grotesk Variable": {
+    "n": 11,
+    "ex": [
+     "span \"an\"",
+     "span \"cause\"",
+     "span \"an\""
+    ]
+   },
+   "3.4359px|400|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "span \"Even\"",
+     "span \"For\"",
+     "span \"At\""
+    ]
+   },
+   "3.6621px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"terrorist\""
+    ]
+   },
+   "2.9874px|400|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "span \"to\"",
+     "span \"extreme\"",
+     "span \"or\""
+    ]
+   },
+   "3.8298px|400|Hanken Grotesk Variable": {
+    "n": 8,
+    "ex": [
+     "span \"often\"",
+     "span \"fail.\"",
+     "span \"useful\""
+    ]
+   },
+   "4.2822px|400|Hanken Grotesk Variable": {
+    "n": 12,
+    "ex": [
+     "span \"1.\"",
+     "span \"Some\"",
+     "span \"3\""
+    ]
+   },
+   "0.3939px|400|Hanken Grotesk Variable": {
+    "n": 4,
+    "ex": [
+     "span \"–\"",
+     "span \"–\"",
+     "span \"–\""
+    ]
+   },
+   "5.07px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"and/or\""
+    ]
+   },
+   "1.7472px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"•\""
+    ]
+   },
+   "5.4639px|400|Hanken Grotesk Variable": {
+    "n": 16,
+    "ex": [
+     "span \"Ngo\"",
+     "span \"2022);\"",
+     "span \"Engages\""
+    ]
+   },
+   "1.8018px|400|Hanken Grotesk Variable": {
+    "n": 4,
+    "ex": [
+     "span \"•\"",
+     "span \"•\"",
+     "span \"•\""
+    ]
+   },
+   "5.6355px|400|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "span \"Dafoe,\"",
+     "span \"settings\"",
+     "span \"persuasive\""
+    ]
+   },
+   "3.2097px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"4\""
+    ]
+   },
+   "5.8032px|400|Hanken Grotesk Variable": {
+    "n": 10,
+    "ex": [
+     "span \"Deception\"",
+     "span \"promoting\"",
+     "span \"acquisition\""
+    ]
+   },
+   "5.0154px|400|Hanken Grotesk Variable": {
+    "n": 2,
+    "ex": [
+     "span \"strategy\"",
+     "span \"3.\""
+    ]
+   },
+   "12.168px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"capabil-ities.\""
+    ]
+   },
+   "3.1551px|400|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "span \"awareness\"",
+     "span \"or\"",
+     "span \"7\""
+    ]
+   },
+   "13.5798px|400|Hanken Grotesk Variable": {
+    "n": 2,
+    "ex": [
+     "span \"Self-proliferation\"",
+     "span \"offer-ing\""
+    ]
+   },
+   "0.3393px|400|Hanken Grotesk Variable": {
+    "n": 2,
+    "ex": [
+     "span \"—\"",
+     "span \"—\""
+    ]
+   },
+   "3.2682px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"6\""
+    ]
+   },
+   "4.0014px|400|Hanken Grotesk Variable": {
+    "n": 4,
+    "ex": [
+     "span \"prospect,\"",
+     "span \"compute\"",
+     "span \"systems\""
+    ]
+   },
+   "4.7346px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"(e.g.\""
+    ]
+   },
+   "10.7055px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"accumu-lates\""
+    ]
+   },
+   "12.2265px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"under-stand\""
+    ]
+   },
+   "6.591px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "span \"changes,4\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "span.rtitle",
+    "sw": 219,
+    "cw": 145,
+    "ox": "hidden",
+    "te": "ellipsis",
+    "text": "Model evaluation for extreme risks"
+   },
+   {
+    "el": "span.sr",
+    "sw": 69,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Go to page"
+   },
+   {
+    "el": "q",
+    "sw": 361,
+    "cw": 358,
+    "ox": "hidden",
+    "te": "ellipsis",
+    "text": "not the only tool available for AI risk "
+   },
+   {
+    "el": "figure#p5.sheet",
+    "sw": 395,
+    "cw": 390,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Model evaluation for extreme risks Capab"
+   }
+  ]
+ },
+ "reader-text": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": -2991,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": -2985,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": -2931,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": -2883,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": -2835,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": -2787,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": -2739,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": -2691,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "Zoom In: An Introduction to Ci",
+   "x": 0,
+   "y": -2935,
+   "w": 390,
+   "h": 34120.6,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": null,
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Zoom In: An Introduction to Ci",
+    "x": 16,
+    "y": -2839,
+    "w": 358,
+    "h": 67.2,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3.t",
+    "text": "Three Speculative Claims",
+    "x": 16,
+    "y": -397.4,
+    "w": 358,
+    "h": 25,
+    "font": "500 20px/25px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Schwann’s Claims about Cells",
+    "x": 16,
+    "y": -238.2,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Three Speculative Claims about",
+    "x": 16,
+    "y": 380.8,
+    "w": 358,
+    "h": 47.6,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3.t",
+    "text": "Claim 1: Features",
+    "x": 16,
+    "y": 929.3,
+    "w": 358,
+    "h": 25,
+    "font": "500 20px/25px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Example 1: Curve Detectors",
+    "x": 16,
+    "y": 2253,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Argument 1: Feature Visualizat",
+    "x": 16,
+    "y": 3460.7,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Argument 2: Dataset Examples",
+    "x": 16,
+    "y": 3641.3,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Argument 3: Synthetic Examples",
+    "x": 16,
+    "y": 3822,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Argument 4: Joint Tuning",
+    "x": 16,
+    "y": 4028.2,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Argument 5: Feature implementa",
+    "x": 16,
+    "y": 4234.5,
+    "w": 358,
+    "h": 47.6,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Argument 6: Feature use (circu",
+    "x": 16,
+    "y": 4464.5,
+    "w": 358,
+    "h": 47.6,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Argument 7: Handwritten Circui",
+    "x": 16,
+    "y": 4643.4,
+    "w": 358,
+    "h": 47.6,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Example 2: High-Low Frequency ",
+    "x": 16,
+    "y": 5366.1,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Example 3: Pose-Invariant Dog ",
+    "x": 16,
+    "y": 6455.4,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Polysemantic Neurons",
+    "x": 16,
+    "y": 7323.9,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3.t",
+    "text": "Claim 2: Circuits",
+    "x": 16,
+    "y": 8472.7,
+    "w": 358,
+    "h": 25,
+    "font": "500 20px/25px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Circuit 1: Curve Detectors",
+    "x": 16,
+    "y": 9166.2,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Circuit 2: Oriented Dog Head D",
+    "x": 16,
+    "y": 10956.5,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Circuit 3: Cars in Superpositi",
+    "x": 16,
+    "y": 12554.5,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Circuit Motifs",
+    "x": 16,
+    "y": 13387.8,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3.t",
+    "text": "Claim 3: Universality",
+    "x": 16,
+    "y": 14018.1,
+    "w": 358,
+    "h": 25,
+    "font": "500 20px/25px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3.t",
+    "text": "Interpretability as a Natural ",
+    "x": 16,
+    "y": 16968.5,
+    "w": 358,
+    "h": 25,
+    "font": "500 20px/25px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3.t",
+    "text": "Closing Thoughts",
+    "x": 16,
+    "y": 18802.7,
+    "w": 358,
+    "h": 25,
+    "font": "500 20px/25px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Glossary",
+    "x": 16,
+    "y": 19454.6,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Author Contributions",
+    "x": 16,
+    "y": 21532.4,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Historical Note",
+    "x": 16,
+    "y": 22359.3,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Acknowledgments",
+    "x": 16,
+    "y": 22565.6,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "References",
+    "x": 16,
+    "y": 24355.4,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Updates and Corrections",
+    "x": 16,
+    "y": 30214.9,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Reuse",
+    "x": 16,
+    "y": 30318.8,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h4.t",
+    "text": "Citation",
+    "x": 16,
+    "y": 30550.6,
+    "w": 358,
+    "h": 23.8,
+    "font": "500 17px/23.8px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "a.btn.btn-quiet.rsource",
+    "text": "distill.pub",
+    "x": 342,
+    "y": 6,
+    "w": 44,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "span.rtitle \"Zoom In: An Introduction \"",
+     "span.o-title \"Three Speculative Claims\"",
+     "span.o-title \"Claim 1: Features\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 36,
+    "ex": [
+     "span.here \"¶21 / 225\"",
+     "span.o-title \"Schwann’s Claims about Ce\"",
+     "span.o-title \"Three Speculative Claims \""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 31,
+    "ex": [
+     "span.o-page \"¶13\"",
+     "span.o-page \"¶15\"",
+     "span.o-page \"¶22\""
+    ]
+   },
+   "28px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Zoom In: An Introduction \""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 186,
+    "ex": [
+     "p.byline \"Chris Olah, Nick Cammarat\"",
+     "p.t \"This article is part of t\"",
+     "p.t \"Many important transition\""
+    ]
+   },
+   "20px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "h3.t \"Three Speculative Claims\"",
+     "h3.t \"Claim 1: Features\"",
+     "h3.t \"Claim 2: Circuits\""
+    ]
+   },
+   "17px|500|Hanken Grotesk Variable": {
+    "n": 25,
+    "ex": [
+     "h4.t \"Schwann’s Claims about Ce\"",
+     "h4.t \"Three Speculative Claims \"",
+     "h4.t \"Example 1: Curve Detector\""
+    ]
+   },
+   "14px|400|Fragment Mono": {
+    "n": 2,
+    "ex": [
+     "pre.t \"Olah, et al., \"Zoom In: A\"",
+     "pre.t \"@article{olah2020zoom, au\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "span.rtitle",
+    "sw": 224,
+    "cw": 190,
+    "ox": "hidden",
+    "te": "ellipsis",
+    "text": "Zoom In: An Introduction to Circuits"
+   }
+  ]
+ },
+ "search-empty": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 1,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "Searchastro-island,astro-slot,",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 788,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 0,
+   "w": 0,
+   "h": 0,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.sr",
+    "text": "Search",
+    "x": 16,
+    "y": 80,
+    "w": 1,
+    "h": 1,
+    "font": "400 14px/20.3px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "textarea",
+    "text": "",
+    "x": 32,
+    "y": 84,
+    "w": 286,
+    "h": 40,
+    "font": "400 17px/26px",
+    "radius": "2px",
+    "pad": "7px 0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.send",
+    "text": "",
+    "x": 330,
+    "y": 84,
+    "w": 40,
+    "h": 40,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "0px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(98, 105, 117)"
+   },
+   {
+    "el": "button",
+    "text": "Search",
+    "x": 19,
+    "y": 139,
+    "w": 67.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Check",
+    "x": 88.5,
+    "y": 139,
+    "w": 64,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "\"alignment faking\"",
+    "x": 16,
+    "y": 192,
+    "w": 153.5,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "sabotage evaluation",
+    "x": 173.5,
+    "y": 192,
+    "w": 160.9,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "sparse autoencoder*",
+    "x": 338.4,
+    "y": 192,
+    "w": 160.9,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "sycophancy NEAR/10 evaluation",
+    "x": 503.3,
+    "y": 192,
+    "w": 235.1,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.sr \"Search\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 2,
+    "ex": [
+     "button \"Search\"",
+     "button \"Check\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 4,
+    "ex": [
+     "button \"\"alignment faking\"\"",
+     "button \"sabotage evaluation\"",
+     "button \"sparse autoencoder*\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "h1.sr",
+    "sw": 43,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Search"
+   },
+   {
+    "el": "p.tries",
+    "sw": 722,
+    "cw": 358,
+    "ox": "auto",
+    "te": "clip",
+    "text": "\"alignment faking\"sabotage evaluationspa"
+   },
+   {
+    "el": "div#wall.wall",
+    "sw": 479,
+    "cw": 390,
+    "ox": "hidden",
+    "te": "clip",
+    "text": ""
+   }
+  ]
+ },
+ "search": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 1,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "Searchastro-island,astro-slot,",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 6054.9,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 6206.9,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.sr",
+    "text": "Search",
+    "x": 16,
+    "y": 80,
+    "w": 1,
+    "h": 1,
+    "font": "400 14px/20.3px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "textarea",
+    "text": "\"alignment faking\"",
+    "x": 32,
+    "y": 84,
+    "w": 286,
+    "h": 40,
+    "font": "400 17px/26px",
+    "radius": "2px",
+    "pad": "7px 0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.send",
+    "text": "",
+    "x": 330,
+    "y": 84,
+    "w": 40,
+    "h": 40,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "0px",
+    "bg": "rgb(14, 22, 33)",
+    "border": "0px rgb(236, 238, 241)"
+   },
+   {
+    "el": "button",
+    "text": "Search",
+    "x": 19,
+    "y": 139,
+    "w": 67.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Check",
+    "x": 88.5,
+    "y": 139,
+    "w": 64,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "\"alignment faking\"",
+    "x": 16,
+    "y": 192,
+    "w": 153.5,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "sabotage evaluation",
+    "x": 173.5,
+    "y": 192,
+    "w": 160.9,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "sparse autoencoder*",
+    "x": 338.4,
+    "y": 192,
+    "w": 160.9,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "sycophancy NEAR/10 evaluation",
+    "x": 503.3,
+    "y": 192,
+    "w": 235.1,
+    "h": 44,
+    "font": "400 12px/12px",
+    "radius": "8px",
+    "pad": "0px 10px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "select.field",
+    "text": "ShelfResearch papers (494)Alig",
+    "x": 16,
+    "y": 268,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "KindPaper (610)Forum post (429",
+    "x": 199,
+    "y": 268,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "PublisherAlignment Forum (355)",
+    "x": 16,
+    "y": 320,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "select.field",
+    "text": "Read anywhereAt source (1,053)",
+    "x": 199,
+    "y": 320,
+    "w": 175,
+    "h": 44,
+    "font": "500 16px/23.2px",
+    "radius": "8px",
+    "pad": "0px 34px 0px 12px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.btn",
+    "text": "More",
+    "x": 16,
+    "y": 6066.9,
+    "w": 64.9,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 6277.9,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 6277.9,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 6277.9,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 121,
+    "ex": [
+     "h1.sr \"Search\"",
+     "span \"1,403 pages and paragraph\"",
+     "span \"Paper\""
+    ]
+   },
+   "17px|400|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "textarea \"\"alignment faking\"\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "button \"Search\"",
+     "button \"Check\"",
+     "button.btn \"More\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 4,
+    "ex": [
+     "button \"\"alignment faking\"\"",
+     "button \"sabotage evaluation\"",
+     "button \"sparse autoencoder*\""
+    ]
+   },
+   "17px|500|Hanken Grotesk Variable": {
+    "n": 50,
+    "ex": [
+     "span.doc \"Alignment Faking - the Tr\"",
+     "span.pg \"p. 1\"",
+     "span.doc \"Alignment Faking in Large\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 92,
+    "ex": [
+     "p.snippet \"…harmlessness, and helpfu\"",
+     "mark \"alignment faking\"",
+     "mark \"alignment faking\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "h1.sr",
+    "sw": 43,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Search"
+   },
+   {
+    "el": "p.tries",
+    "sw": 722,
+    "cw": 358,
+    "ox": "auto",
+    "te": "clip",
+    "text": "\"alignment faking\"sabotage evaluationspa"
+   },
+   {
+    "el": "p.snippet",
+    "sw": 360,
+    "cw": 358,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Alignment faking rate (AFR) – the rate a"
+   },
+   {
+    "el": "p.snippet",
+    "sw": 360,
+    "cw": 358,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "…indicating that more of the compliance "
+   }
+  ]
+ },
+ "follow": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "FollowSabotageWhether a model ",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 16389.3,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 16541.3,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Sabotage",
+    "x": 16,
+    "y": 120.3,
+    "w": 126.8,
+    "h": 34.5,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#lab-OpenAI.h2",
+    "text": "OpenAI17 of 44 cards",
+    "x": 16,
+    "y": 586.7,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#lab-Anthropic.h2",
+    "text": "Anthropic16 of 22 cards",
+    "x": 16,
+    "y": 7652.6,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#lab-Google-DeepMind.h2",
+    "text": "Google DeepMind1 of 34 cards",
+    "x": 16,
+    "y": 15695.5,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#lab-Meta.h2",
+    "text": "Meta0 of 8 cards",
+    "x": 16,
+    "y": 16080.6,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#lab-xAI.h2",
+    "text": "xAI0 of 4 cards",
+    "x": 16,
+    "y": 16218.2,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2#lab-Amazon.h2",
+    "text": "Amazon0 of 1 cards",
+    "x": 16,
+    "y": 16355.8,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 3 paragraphs",
+    "x": 4,
+    "y": 1242.9,
+    "w": 127.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 15 paragraphs",
+    "x": 4,
+    "y": 1622.3,
+    "w": 135.4,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 5 paragraphs",
+    "x": 4,
+    "y": 2414.8,
+    "w": 127.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 3 paragraphs",
+    "x": 4,
+    "y": 3173.5,
+    "w": 127.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 5 paragraphs",
+    "x": 4,
+    "y": 3701.7,
+    "w": 127.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 3 pages",
+    "x": 4,
+    "y": 4229.9,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 3 pages",
+    "x": 4,
+    "y": 5982.8,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 5 pages",
+    "x": 4,
+    "y": 8021.6,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 4 pages",
+    "x": 4,
+    "y": 8980.4,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 9 pages",
+    "x": 4,
+    "y": 10431.4,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 4 pages",
+    "x": 4,
+    "y": 10984.4,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 7 pages",
+    "x": 4,
+    "y": 11537.4,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 5 pages",
+    "x": 4,
+    "y": 11991.2,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 10 pages",
+    "x": 4,
+    "y": 12469.8,
+    "w": 100.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 28 pages",
+    "x": 4,
+    "y": 12973.2,
+    "w": 100.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 21 pages",
+    "x": 4,
+    "y": 13501.4,
+    "w": 100.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 4 pages",
+    "x": 4,
+    "y": 14054.3,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 14 pages",
+    "x": 4,
+    "y": 14532.9,
+    "w": 100.5,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.btn.btn-quiet.rest",
+    "text": "All 7 pages",
+    "x": 4,
+    "y": 15059.3,
+    "w": 92.6,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 16612.3,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 16612.3,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 16612.3,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 98,
+    "ex": [
+     "a \"Follow\"",
+     "a \"Sabotage\"",
+     "a \"Sycophancy\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Sabotage\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 154,
+    "ex": [
+     "p.byline \"Whether a model could und\"",
+     "span.snippet \"…| Measure | GPT-Rosalind\"",
+     "mark \"Sabotage\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 266,
+    "ex": [
+     "span \"34 of 113 cards\"",
+     "span.lab \"OpenAI\"",
+     "span.lab \"Anthropic\""
+    ]
+   },
+   "12.88px|400|Fragment Mono": {
+    "n": 1,
+    "ex": [
+     "a.link.mono \"sabotage\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 5,
+    "ex": [
+     "span \"2023\"",
+     "span \"2024\"",
+     "span \"2025\""
+    ]
+   },
+   "28px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "span.org \"OpenAI\"",
+     "span.org \"Anthropic\"",
+     "span.org \"Google DeepMind\""
+    ]
+   },
+   "17px|500|Hanken Grotesk Variable": {
+    "n": 34,
+    "ex": [
+     "a.name \"GPT-Rosalind-6 System Car\"",
+     "a.name \"Addendum to GPT-6 Astra S\"",
+     "a.name \"GPT-6 Astra System Card\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "nav.switch",
+    "sw": 931,
+    "cw": 386,
+    "ox": "auto",
+    "te": "clip",
+    "text": "SabotageSycophancyModel welfareSandbaggi"
+   }
+  ]
+ },
+ "check": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "Check a paragraphastro-island,",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 2392,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 2544,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Check a paragraph",
+    "x": 16,
+    "y": 88,
+    "w": 258.4,
+    "h": 34.5,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "textarea#check-text.field",
+    "text": "Model evaluation matters, but ",
+    "x": 16,
+    "y": 146.5,
+    "w": 358,
+    "h": 494.2,
+    "font": "400 17px/27.2px",
+    "radius": "8px",
+    "pad": "16px",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.btn.btn-primary",
+    "text": "Check",
+    "x": 16,
+    "y": 652.7,
+    "w": 72,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgb(14, 22, 33)",
+    "border": "0px rgb(236, 238, 241)"
+   },
+   {
+    "el": "button.btn",
+    "text": "Try an example",
+    "x": 96,
+    "y": 652.7,
+    "w": 128.3,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.btn.btn-quiet",
+    "text": "Copy link",
+    "x": 232.3,
+    "y": 652.7,
+    "w": 107.4,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Verified: Shevlane et al. 2023",
+    "x": 16,
+    "y": 869.6,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgb(255, 227, 82)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 6",
+    "x": 37.7,
+    "y": 869.6,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Rejected: Shevlane et al. 2023",
+    "x": 16,
+    "y": 927.2,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(163, 32, 12, 0.1)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 3",
+    "x": 37.7,
+    "y": 927.2,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Rejected: Shevlane et al. 2023",
+    "x": 16,
+    "y": 1042.4,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(163, 32, 12, 0.1)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 6",
+    "x": 37.7,
+    "y": 1042.4,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Page only: Cunningham et al. 2",
+    "x": 177.4,
+    "y": 1101.8,
+    "w": 189,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Cunningham et al. 2023, p. 2",
+    "x": 183,
+    "y": 1101.8,
+    "w": 177.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Rejected: arxiv:2305.15324/v2/",
+    "x": 152.7,
+    "y": 1157.6,
+    "w": 186.7,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(163, 32, 12, 0.1)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "arxiv:2305.15324/v2/p41",
+    "x": 174.4,
+    "y": 1157.6,
+    "w": 159.4,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "a.chip",
+    "text": "Verified: Shevlane et al. 2023",
+    "x": 16,
+    "y": 1228.2,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgb(255, 227, 82)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 6",
+    "x": 37.7,
+    "y": 1228.2,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.btn.btn-quiet.show",
+    "text": "Show the page",
+    "x": 4,
+    "y": 1366.6,
+    "w": 116.1,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.chip",
+    "text": "Rejected: Shevlane et al. 2023",
+    "x": 16,
+    "y": 1438.6,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(163, 32, 12, 0.1)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 3",
+    "x": 37.7,
+    "y": 1438.6,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "a.chip",
+    "text": "Rejected: Shevlane et al. 2023",
+    "x": 16,
+    "y": 1954.3,
+    "w": 183.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(163, 32, 12, 0.1)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Shevlane et al. 2023, p. 6",
+    "x": 37.7,
+    "y": 1954.3,
+    "w": 156.6,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "button.btn.btn-quiet.show",
+    "text": "Show the page",
+    "x": 4,
+    "y": 2144.7,
+    "w": 116.1,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "a.chip",
+    "text": "Page only: Cunningham et al. 2",
+    "x": 16,
+    "y": 2216.7,
+    "w": 189,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Cunningham et al. 2023, p. 2",
+    "x": 21.6,
+    "y": 2216.7,
+    "w": 177.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip",
+    "text": "Rejected: arxiv:2305.15324/v2/",
+    "x": 16,
+    "y": 2320.1,
+    "w": 186.7,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(163, 32, 12, 0.1)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "arxiv:2305.15324/v2/p41",
+    "x": 37.7,
+    "y": 2320.1,
+    "w": 159.4,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(163, 32, 12)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 2615,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 2615,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 2615,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 7,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Check a paragraph\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 9,
+    "ex": [
+     "label.sr \"Text with citations\"",
+     "a.link \"The words are on p. 6\"",
+     "span \"Shevlane et al. 2023, p. \""
+    ]
+   },
+   "17px|400|Hanken Grotesk Variable": {
+    "n": 4,
+    "ex": [
+     "textarea#check-text.field \"Model evaluation matters,\"",
+     "p.q \"“not the only tool availa\"",
+     "p.q \"“one of the main tools we\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 36,
+    "ex": [
+     "button.btn.btn-primary \"Check\"",
+     "button.btn \"Try an example\"",
+     "button.btn.btn-quiet \"Copy link\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 19,
+    "ex": [
+     "span \"Model evaluation matters,\"",
+     "span \", and they call it \"one o\"",
+     "span \".\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 5,
+    "ex": [
+     "span.mono.cite \"arxiv:2305.15324/v2/p6\"",
+     "span.mono.cite \"arxiv:2305.15324/v2/p3\"",
+     "span.mono.cite \"arxiv:2305.15324/v2/p6\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "label.sr",
+    "sw": 113,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Text with citations"
+   },
+   {
+    "el": "span.sr",
+    "sw": 51,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Verified:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 58,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Rejected:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 58,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Rejected:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 64,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Page only:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 58,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Rejected:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 51,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Verified:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 58,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Rejected:"
+   },
+   {
+    "el": "div.pv.pv-page",
+    "sw": 410,
+    "cw": 358,
+    "ox": "hidden",
+    "te": "clip",
+    "text": ""
+   },
+   {
+    "el": "span.sr",
+    "sw": 58,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Rejected:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 64,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Page only:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 58,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Rejected:"
+   }
+  ]
+ },
+ "replay": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "astro-island,astro-slot,astro-",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 3452.7,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": null,
+  "heads": [
+   {
+    "el": "h1",
+    "text": "“Most notably, the White House",
+    "x": 16,
+    "y": 64,
+    "w": 226.5,
+    "h": 52,
+    "font": "500 20px/26px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2.h3",
+    "text": "Trace",
+    "x": 16,
+    "y": 1970.3,
+    "w": 358,
+    "h": 20.3,
+    "font": "500 14px/20.3px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "button",
+    "text": "00:01search\"AI Bill of Rights\"",
+    "x": 8,
+    "y": 1998.6,
+    "w": 374,
+    "h": 77.1,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:01search\"Most notably, the ",
+    "x": 8,
+    "y": 2075.7,
+    "w": 374,
+    "h": 97.5,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:03fetchWang et al. 2023, p.",
+    "x": 8,
+    "y": 2173.2,
+    "w": 374,
+    "h": 36.4,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:03search\"Blueprint for an A",
+    "x": 8,
+    "y": 2209.6,
+    "w": 374,
+    "h": 77.1,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:05searchBlueprint AI Bill o",
+    "x": 8,
+    "y": 2286.6,
+    "w": 374,
+    "h": 56.7,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:05searchfive principles saf",
+    "x": 8,
+    "y": 2343.3,
+    "w": 374,
+    "h": 117.9,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:07search\"five principles\"2 ",
+    "x": 8,
+    "y": 2461.2,
+    "w": 374,
+    "h": 56.7,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:07search\"Safe and Effective",
+    "x": 8,
+    "y": 2517.9,
+    "w": 374,
+    "h": 97.5,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:09fetchExecutive Office of ",
+    "x": 8,
+    "y": 2615.3,
+    "w": 374,
+    "h": 56.6,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:10verifyWang et al. 2023, p",
+    "x": 8,
+    "y": 2671.9,
+    "w": 374,
+    "h": 56.6,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:10verifyWang et al. 2023, p",
+    "x": 8,
+    "y": 2728.5,
+    "w": 374,
+    "h": 56.6,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:19audit",
+    "x": 8,
+    "y": 2785.1,
+    "w": 374,
+    "h": 36.4,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:25audit",
+    "x": 8,
+    "y": 2821.5,
+    "w": 374,
+    "h": 36.4,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29answerwriting",
+    "x": 8,
+    "y": 2857.9,
+    "w": 374,
+    "h": 36.4,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29citeWang et al. 2023, p. ",
+    "x": 8,
+    "y": 2894.3,
+    "w": 374,
+    "h": 76.9,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29citeWang et al. 2023, p. ",
+    "x": 8,
+    "y": 2971.2,
+    "w": 374,
+    "h": 76.9,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29citeExecutive Office of t",
+    "x": 8,
+    "y": 3048.1,
+    "w": 374,
+    "h": 97.2,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29citeExecutive Office of t",
+    "x": 8,
+    "y": 3145.3,
+    "w": 374,
+    "h": 97.2,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29citeExecutive Office of t",
+    "x": 8,
+    "y": 3242.5,
+    "w": 374,
+    "h": 56.6,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29citeExecutive Office of t",
+    "x": 8,
+    "y": 3299,
+    "w": 374,
+    "h": 56.6,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29checkVerified, word for w",
+    "x": 8,
+    "y": 3355.6,
+    "w": 374,
+    "h": 38.5,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "00:29checkVerified, word for w",
+    "x": 8,
+    "y": 3394.2,
+    "w": 374,
+    "h": 38.5,
+    "font": "400 14px/20.3px",
+    "radius": "8px",
+    "pad": "8px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Verified: Wang et al. 2023, p.",
+    "x": 155.6,
+    "y": 982.6,
+    "w": 170,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgb(255, 227, 82)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Wang et al. 2023, p. 74",
+    "x": 177.3,
+    "y": 982.6,
+    "w": 142.7,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Verified: Wang et al. 2023, p.",
+    "x": 18,
+    "y": 1184.1,
+    "w": 170,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgb(255, 227, 82)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Wang et al. 2023, p. 61",
+    "x": 39.7,
+    "y": 1184.1,
+    "w": 142.7,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Being checked: Executive Offic",
+    "x": 85.5,
+    "y": 1294.6,
+    "w": 273,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Executive Office of the Presid",
+    "x": 91.1,
+    "y": 1294.6,
+    "w": 261.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Being checked: Executive Offic",
+    "x": 89.2,
+    "y": 1376.2,
+    "w": 280.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Executive Office of the Presid",
+    "x": 94.8,
+    "y": 1376.2,
+    "w": 269.7,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Being checked: Executive Offic",
+    "x": 18,
+    "y": 1604.9,
+    "w": 273,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Executive Office of the Presid",
+    "x": 23.6,
+    "y": 1604.9,
+    "w": 261.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.chip",
+    "text": "Being checked: Executive Offic",
+    "x": 18,
+    "y": 1768,
+    "w": 280.8,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "2px",
+    "pad": "0px 5.6px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "span.chip-label",
+    "text": "Executive Office of the Presid",
+    "x": 23.6,
+    "y": 1768,
+    "w": 269.7,
+    "h": 21.7,
+    "font": "500 14px/21.7px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.btn.rp-play",
+    "text": "",
+    "x": 16,
+    "y": 792,
+    "w": 44,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "input",
+    "text": "",
+    "x": 72,
+    "y": 792,
+    "w": 126.9,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button.btn.btn-quiet.rp-speed",
+    "text": "1×",
+    "x": 210.9,
+    "y": 792,
+    "w": 39.7,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.btn",
+    "text": "Copy link",
+    "x": 258.6,
+    "y": 792,
+    "w": 115.4,
+    "h": 44,
+    "font": "500 14px/14px",
+    "radius": "8px",
+    "pad": "0px 16px",
+    "bg": "rgba(14, 22, 33, 0.05)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "20px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1 \"“Most notably, the White \""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 52,
+    "ex": [
+     "span \"claude-haiku-5-5\"",
+     "span \"2026-11-10\"",
+     "span \"26 steps\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 24,
+    "ex": [
+     "span.state \"2 verified\"",
+     "span.sr \"verified\"",
+     "span.state \"0 page only\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 23,
+    "ex": [
+     "span.t \"00:01\"",
+     "span.t \"00:01\"",
+     "span.t \"00:03\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 7,
+    "ex": [
+     "span.mono.q \"\"AI Bill of Rights\" OSTP \"",
+     "span.mono.q \"\"Most notably, the White \"",
+     "span.mono.q \"\"Blueprint for an AI Bill\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 8,
+    "ex": [
+     "p \"Verdict: not supported\"",
+     "p \"The sentence paraphrases \"",
+     "em \"DecodingTrust: A Comprehe\""
+    ]
+   },
+   "16px|700|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "strong \"The citation target is ri\"",
+     "strong \"The number is wrong.\"",
+     "strong \"The principle list only l\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "span.sr",
+    "sw": 47,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "verified"
+   },
+   {
+    "el": "span.sr",
+    "sw": 61,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "page only"
+   },
+   {
+    "el": "span.sr",
+    "sw": 52,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "rejected"
+   },
+   {
+    "el": "div.pv.pv-page",
+    "sw": 458,
+    "cw": 358,
+    "ox": "hidden",
+    "te": "clip",
+    "text": ""
+   },
+   {
+    "el": "span.sr",
+    "sw": 51,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Verified:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 51,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Verified:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 94,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Being checked:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 94,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Being checked:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 94,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Being checked:"
+   },
+   {
+    "el": "span.sr",
+    "sw": 94,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Being checked:"
+   }
+  ]
+ },
+ "citationbench": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "CitationBenchDoes an agent cit",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 1070,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 1222,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "CitationBench",
+    "x": 16,
+    "y": 88,
+    "w": 189.7,
+    "h": 34.5,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 1293,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 1293,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 1293,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"CitationBench\""
+    ]
+   },
+   "16px|400|Hanken Grotesk Variable": {
+    "n": 29,
+    "ex": [
+     "p.byline \"Does an agent cite the ri\"",
+     "td \"1–3\"",
+     "a \"66 ±13\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 32,
+    "ex": [
+     "span \"4 runs\"",
+     "span \"Updated 2026-11-10\"",
+     "th \"Rank\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 4,
+    "ex": [
+     "span.src \"code\"",
+     "span.src \"code\"",
+     "span.src \"code\""
+    ]
+   },
+   "17px|500|Hanken Grotesk Variable": {
+    "n": 4,
+    "ex": [
+     "span.model \"gemini-3.8-flash-high\"",
+     "span.model \"gpt-6.1-sol\"",
+     "span.model \"claude-haiku-5-5\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 4,
+    "ex": [
+     "span.solver.mono \"antigravity 1.5.4 agy-gem\"",
+     "span.solver.mono \"codex codex-cli 0.167.0 c\"",
+     "span.solver.mono \"claude-code 2.1.321 (Clau\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 9,
+    "ex": [
+     "dt \"Correct\"",
+     "dt \"Code\"",
+     "dt \"Judge\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "div.scroll",
+    "sw": 900,
+    "cw": 382,
+    "ox": "auto",
+    "te": "clip",
+    "text": "RankAgentCorrectcodePage precisioncodeQu"
+   },
+   {
+    "el": "span.sr",
+    "sw": 181,
+    "cw": 1,
+    "ox": "hidden",
+    "te": "clip",
+    "text": "Correct, with its 95% interval"
+   }
+  ]
+ },
+ "connect": {
+  "doc": {
+   "sw": 390,
+   "cw": 390
+  },
+  "headerCount": 2,
+  "header": {
+   "el": "header.bar",
+   "text": "SafetyPageLibrarySearchFollowC",
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "headerKids": [
+   {
+    "el": "a.wordmark",
+    "text": "SafetyPage",
+    "x": 16,
+    "y": 6,
+    "w": 105.8,
+    "h": 44,
+    "font": "600 16px/16px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Library",
+    "x": 96,
+    "y": 60,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Search",
+    "x": 96,
+    "y": 108,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Follow",
+    "x": 96,
+    "y": 156,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Check",
+    "x": 96,
+    "y": 204,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "CitationBench",
+    "x": 96,
+    "y": 252,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "a",
+    "text": "Connect",
+    "x": 96,
+    "y": 300,
+    "w": 276,
+    "h": 48,
+    "font": "500 16px/16px",
+    "radius": "6px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "main": {
+   "el": "main",
+   "text": "Connect an agentMCP over HTTP4",
+   "x": 0,
+   "y": 56,
+   "w": 390,
+   "h": 1579.3,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(14, 22, 33)"
+  },
+  "footer": {
+   "el": "footer.foot",
+   "text": "How it worksLicencesReplaysGit",
+   "x": 0,
+   "y": 1731.3,
+   "w": 390,
+   "h": 144,
+   "font": "400 14px/20.3px",
+   "radius": "0px",
+   "pad": "0px",
+   "bg": "rgba(0, 0, 0, 0)",
+   "border": "0px rgb(74, 81, 92)"
+  },
+  "heads": [
+   {
+    "el": "h1.title",
+    "text": "Connect an agent",
+    "x": 16,
+    "y": 88,
+    "w": 237.8,
+    "h": 34.5,
+    "font": "500 32px/34.56px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2.h2",
+    "text": "Tools",
+    "x": 16,
+    "y": 391.4,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3",
+    "text": "search(query, collection?, org",
+    "x": 16,
+    "y": 449,
+    "w": 358,
+    "h": 63,
+    "font": "400 14px/21px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3",
+    "text": "fetch(id)",
+    "x": 16,
+    "y": 590.9,
+    "w": 358,
+    "h": 21,
+    "font": "400 14px/21px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3",
+    "text": "verify_quote(quote, cite?, doc",
+    "x": 16,
+    "y": 711.1,
+    "w": 358,
+    "h": 21,
+    "font": "400 14px/21px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h3",
+    "text": "check_answer(text)",
+    "x": 16,
+    "y": 831.3,
+    "w": 358,
+    "h": 21,
+    "font": "400 14px/21px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2.h2",
+    "text": "A citation",
+    "x": 16,
+    "y": 942.9,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "h2.h2",
+    "text": "HTTP",
+    "x": 16,
+    "y": 1287.5,
+    "w": 358,
+    "h": 33.6,
+    "font": "500 28px/33.6px",
+    "radius": "0px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(14, 22, 33)"
+   }
+  ],
+  "controls": [
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 328,
+    "y": 203.1,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 328,
+    "y": 287.4,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button.ib",
+    "text": "",
+    "x": 328,
+    "y": 1143.5,
+    "w": 44,
+    "h": 44,
+    "font": "400 14px/20.3px",
+    "radius": "6px",
+    "pad": "0px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Auto",
+    "x": 204.8,
+    "y": 1802.3,
+    "w": 53.7,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(14, 22, 33, 0.09)",
+    "border": "0px rgb(14, 22, 33)"
+   },
+   {
+    "el": "button",
+    "text": "Light",
+    "x": 260.5,
+    "y": 1802.3,
+    "w": 54,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   },
+   {
+    "el": "button",
+    "text": "Dark",
+    "x": 316.5,
+    "y": 1802.3,
+    "w": 54.5,
+    "h": 38,
+    "font": "500 14px/14px",
+    "radius": "5px",
+    "pad": "0px 12px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px rgb(74, 81, 92)"
+   }
+  ],
+  "sizes": {
+   "16px|600|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "a.wordmark \"SafetyPage\""
+    ]
+   },
+   "16px|500|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "a \"Library\"",
+     "a \"Search\"",
+     "a \"Follow\""
+    ]
+   },
+   "32px|500|Hanken Grotesk Variable": {
+    "n": 1,
+    "ex": [
+     "h1.title \"Connect an agent\""
+    ]
+   },
+   "14px|400|Hanken Grotesk Variable": {
+    "n": 17,
+    "ex": [
+     "span \"MCP over HTTP\"",
+     "span \"4 tools\"",
+     "span \"Read-only\""
+    ]
+   },
+   "14px|400|Fragment Mono": {
+    "n": 12,
+    "ex": [
+     "code \"claude mcp add --transpor\"",
+     "code \"http://localhost:4321/mcp\"",
+     "h3 \"search(query, collection?\""
+    ]
+   },
+   "28px|500|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "h2.h2 \"Tools\"",
+     "h2.h2 \"A citation\"",
+     "h2.h2 \"HTTP\""
+    ]
+   },
+   "17px|400|Fragment Mono": {
+    "n": 10,
+    "ex": [
+     "code \"arxiv:2305.15324\"",
+     "code.sep \"/\"",
+     "code \"v2\""
+    ]
+   },
+   "12px|400|Hanken Grotesk Variable": {
+    "n": 6,
+    "ex": [
+     "span \"document\"",
+     "span \"version\"",
+     "span \"page\""
+    ]
+   },
+   "12px|400|Fragment Mono": {
+    "n": 15,
+    "ex": [
+     "td \"GET\"",
+     "td \"/api/search?query=…\"",
+     "td \"SearchResponse\""
+    ]
+   },
+   "14px|500|Hanken Grotesk Variable": {
+    "n": 3,
+    "ex": [
+     "button \"Auto\"",
+     "button \"Light\"",
+     "button \"Dark\""
+    ]
+   }
+  },
+  "overflow": [
+   {
+    "el": "code",
+    "sw": 588,
+    "cw": 300,
+    "ox": "auto",
+    "te": "clip",
+    "text": "claude mcp add --transport http safetypa"
+   },
+   {
+    "el": "code",
+    "sw": 398,
+    "cw": 300,
+    "ox": "auto",
+    "te": "clip",
+    "text": "http://localhost:4321/d/arxiv/2305.15324"
+   },
+   {
+    "el": "code",
+    "sw": 623,
+    "cw": 300,
+    "ox": "auto",
+    "te": "clip",
+    "text": "http://localhost:4321/d/arxiv/2305.15324"
+   }
+  ]
+ }
+}

@@ -1,0 +1,343 @@
+
+###### home 1440
+-- tries
+    {"el":"p.tries","text":"\"alignment faking\"sabotage eva","x":102,"y":176,"w":490,"h":32,"right":592,"bottom":208,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"8px 0px 0px -10px","ov":"auto","mask":"none","wmask":"none","sb":"none","sw":722,"cw":490}
+    {"el":"p.tries","text":"searchfetchverify_quotecheck_a","x":102,"y":1784.8,"w":490,"h":32,"right":592,"bottom":1816.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"8px 0px 0px -10px","ov":"auto","mask":"none","wmask":"none","sb":"none","sw":722,"cw":490}
+-- triesKids
+    {"el":"a","text":"\"alignment faking\"","x":102,"y":176,"w":153.5,"h":32,"right":255.5,"bottom":208,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"a","text":"sabotage evaluation","x":259.5,"y":176,"w":160.9,"h":32,"right":420.4,"bottom":208,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"a","text":"sparse autoencoder*","x":424.4,"y":176,"w":160.9,"h":32,"right":585.3,"bottom":208,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"a","text":"sycophancy NEAR/10 evaluation","x":589.3,"y":176,"w":235.1,"h":32,"right":824.4,"bottom":208,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"a","text":"search","x":102,"y":1784.8,"w":64.5,"h":32,"right":166.5,"bottom":1816.8,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"a","text":"fetch","x":170.5,"y":1784.8,"w":57.1,"h":32,"right":227.6,"bottom":1816.8,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"a","text":"verify_quote","x":231.6,"y":1784.8,"w":109,"h":32,"right":340.6,"bottom":1816.8,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"a","text":"check_answer","x":344.6,"y":1784.8,"w":109,"h":32,"right":453.6,"bottom":1816.8,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+-- code
+    {"el":"code","text":"claude mcp add --transport htt","x":124,"y":1738.8,"w":430,"h":36,"right":554,"bottom":1774.8,"font":"400 14px/36px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px","ov":"auto","mask":"none","sw":588,"cw":430,"wsp":"nowrap"}
+-- codeParent
+    {"x":112,"y":1736.8,"w":480,"h":40,"right":592,"bottom":1776.8}
+-- shelfRows
+    {"row":{"x":100,"y":813.9,"w":504,"h":49,"right":604,"bottom":862.9},"name":{"x":112,"y":825.9,"w":432.5,"h":25,"right":544.5,"bottom":850.9},"count":null,"ai":"baseline","disp":"grid"}
+    {"row":{"x":100,"y":862.9,"w":504,"h":49,"right":604,"bottom":911.9},"name":{"x":112,"y":874.9,"w":421.3,"h":25,"right":533.3,"bottom":899.9},"count":null,"ai":"baseline","disp":"grid"}
+    {"row":{"x":100,"y":911.9,"w":504,"h":49,"right":604,"bottom":960.9},"name":{"x":112,"y":923.9,"w":432.5,"h":25,"right":544.5,"bottom":948.9},"count":null,"ai":"baseline","disp":"grid"}
+-- recentRows
+    {"row":{"x":644,"y":813.9,"w":696,"h":71.3,"right":1340,"bottom":885.2},"kids":[{"x":656,"y":825.9,"w":488,"h":25,"right":1144,"bottom":850.9},{"x":656,"y":852.9,"w":488,"h":20.3,"right":1144,"bottom":873.2},{"x":1168,"y":829.9,"w":160,"h":20.3,"right":1328,"bottom":850.2}]}
+    {"row":{"x":644,"y":885.2,"w":696,"h":71.3,"right":1340,"bottom":956.5},"kids":[{"x":656,"y":897.2,"w":488,"h":25,"right":1144,"bottom":922.2},{"x":656,"y":924.2,"w":488,"h":20.3,"right":1144,"bottom":944.5},{"x":1168,"y":901.2,"w":160,"h":20.3,"right":1328,"bottom":921.5}]}
+-- sections
+    {"el":"section.wrap.hero","y":64,"b":704.3,"h":640.3}
+    {"el":"div.wrap","y":768.3,"b":1997.7,"h":1229.4}
+-- h2s
+    {"el":"h2#shelves-h.h2","text":"Library","x":112,"y":768.3,"w":480,"h":33.6,"right":592,"bottom":801.9,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 0px 12px"}
+    {"el":"h2#recent-h.h2","text":"New from the labs","x":656,"y":768.3,"w":672,"h":33.6,"right":1328,"bottom":801.9,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 0px 12px"}
+    {"el":"h2#follow-h.h2","text":"Follow","x":112,"y":1427,"w":1216,"h":33.6,"right":1328,"bottom":1460.6,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 0px 12px"}
+    {"el":"h2#agents-h.h2","text":"Connect","x":112,"y":1679.2,"w":480,"h":33.6,"right":592,"bottom":1712.8,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 0px 12px"}
+    {"el":"h2.h2","text":"Check","x":656,"y":1679.2,"w":672,"h":33.6,"right":1328,"bottom":1712.8,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"h2.h2","text":"Replay","x":656,"y":1777,"w":672,"h":33.6,"right":1328,"bottom":1810.6,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"h2.h2","text":"CitationBench","x":656,"y":1939.8,"w":672,"h":33.6,"right":1328,"bottom":1973.4,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- hero
+    {"el":"section.wrap.hero","text":"SafetyPageSearch\"alignment fak","x":112,"y":64,"w":1216,"h":640.3,"right":1328,"bottom":704.3,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"48px 0px 0px","margin":"0px 112px"}
+    {"el":"form.ask","text":"Search","x":112,"y":112,"w":480,"h":56,"right":592,"bottom":168,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- heroInput
+    {"el":"input","text":"","x":112,"y":112,"w":480,"h":56,"right":592,"bottom":168,"font":"400 17px/24.65px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"12px","padding":"0px 120px 0px 16px","margin":"0px"}
+-- heroBtn
+    {"el":"button.btn.btn-primary","text":"Search","x":496.5,"y":116,"w":91.5,"h":48,"right":588,"bottom":164,"font":"500 14px/14px","color":"rgb(236, 238, 241)","bg":"rgb(14, 22, 33)","radius":"8px","padding":"0px 24px","margin":"0px"}
+-- headers
+    {"el":"header.bar","x":0,"y":0,"w":1440,"h":64,"right":1440,"bottom":64}
+-- ib
+    {"el":"button.ib","text":"","x":554,"y":1738.8,"w":36,"h":36,"right":590,"bottom":1774.8,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"6px","padding":"0px","margin":"0px","border":"0px none rgb(74, 81, 92)"}
+-- claims
+    {"el":"button.claim","text":"not the only tool available fo","x":100,"y":232,"w":504,"h":124.9,"right":604,"bottom":356.9,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.09)","radius":"8px","padding":"12px","margin":"0px"}
+    {"el":"button.claim","text":"Model evaluation is the only t","x":100,"y":360.9,"w":504,"h":184.9,"right":604,"bottom":545.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+-- checkTeaser
+    {"el":"div.rows.shelflist","text":"Lab system cards and framework","x":100,"y":813.9,"w":504,"h":343,"right":604,"bottom":1156.9,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px -12px"}
+    {"el":"div.rows","text":"GPT-6 Cyber System CardOpenAI,","x":644,"y":813.9,"w":696,"h":549.1,"right":1340,"bottom":1363,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px -12px"}
+    {"el":"div.topics","text":"Sabotage34 system cards, 3 lab","x":100,"y":1472.6,"w":1240,"h":142.6,"right":1340,"bottom":1615.2,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px -12px"}
+    {"el":"div.codeline","text":"claude mcp add --transport htt","x":112,"y":1736.8,"w":480,"h":40,"right":592,"bottom":1776.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 2px 0px 12px","margin":"12px 0px 0px"}
+    {"el":"p.tries","text":"searchfetchverify_quotecheck_a","x":102,"y":1784.8,"w":490,"h":32,"right":592,"bottom":1816.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"8px 0px 0px -10px"}
+    {"el":"span.tally","text":"1 verified1 page only3 rejecte","x":656,"y":1716.8,"w":672,"h":20.3,"right":1328,"bottom":1737,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+
+###### search 1440
+-- tries
+    {"el":"p.tries","text":"\"alignment faking\"sabotage eva","x":519.6,"y":170,"w":552.4,"h":32,"right":1072,"bottom":202,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px","ov":"auto","mask":"none","wmask":"none","sw":722,"cw":552}
+-- triesKids
+    {"el":"button","text":"\"alignment faking\"","x":519.6,"y":170,"w":153.5,"h":32,"right":673.1,"bottom":202,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"button","text":"sabotage evaluation","x":677.1,"y":170,"w":160.9,"h":32,"right":838,"bottom":202,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"button","text":"sparse autoencoder*","x":842,"y":170,"w":160.9,"h":32,"right":1002.9,"bottom":202,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+    {"el":"button","text":"sycophancy NEAR/10 evaluation","x":1006.9,"y":170,"w":235.1,"h":32,"right":1242,"bottom":202,"font":"400 12px/12px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 10px","margin":"0px"}
+-- form
+    {"el":"form.composer","text":"\"alignment faking\"SearchCheck\"","x":368,"y":112,"w":704,"h":92,"right":1072,"bottom":204,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px","border":"0px none rgb(14, 22, 33)","shadow":"none"}
+-- formKids
+    {"el":"div.cbox","text":"\"alignment faking\"","x":368,"y":112,"w":704,"h":48,"right":1072,"bottom":160,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"12px","padding":"4px 4px 4px 16px","margin":"0px"}
+    {"el":"div.crow","text":"SearchCheck\"alignment faking\"s","x":368,"y":168,"w":704,"h":36,"right":1072,"bottom":204,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"8px 0px 0px"}
+-- seg
+    {"el":"div.seg","text":"SearchCheck","x":368,"y":168,"w":139.6,"h":36,"right":507.6,"bottom":204,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"3px","margin":"0px"}
+    {"el":"div.seg.theme","text":"AutoLightDark","x":1155.8,"y":4647.7,"w":172.2,"h":36,"right":1328,"bottom":4683.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"3px","margin":"0px 0px 0px 8px"}
+-- segKids
+    {"el":"button","text":"Search","x":371,"y":171,"w":67.5,"h":30,"right":438.5,"bottom":201,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.09)","radius":"5px","padding":"0px 12px","margin":"0px"}
+    {"el":"button","text":"Check","x":440.5,"y":171,"w":64,"h":30,"right":504.6,"bottom":201,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"5px","padding":"0px 12px","margin":"0px"}
+    {"el":"button","text":"Auto","x":1158.8,"y":4650.7,"w":53.7,"h":30,"right":1212.5,"bottom":4680.7,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.09)","radius":"5px","padding":"0px 12px","margin":"0px"}
+    {"el":"button","text":"Light","x":1214.5,"y":4650.7,"w":54,"h":30,"right":1268.5,"bottom":4680.7,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"5px","padding":"0px 12px","margin":"0px"}
+    {"el":"button","text":"Dark","x":1270.5,"y":4650.7,"w":54.5,"h":30,"right":1325,"bottom":4680.7,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"5px","padding":"0px 12px","margin":"0px"}
+-- results
+    {"el":"li","x":356,"y":328.3,"w":728,"h":200.5,"right":1084,"bottom":528.8,"kids":[{"x":356,"y":328.3,"w":728,"h":200.5,"right":1084,"bottom":528.8}]}
+    {"el":"li","x":356,"y":536.8,"w":728,"h":152,"right":1084,"bottom":688.9,"kids":[{"x":356,"y":536.8,"w":728,"h":152,"right":1084,"bottom":688.9}]}
+-- main
+    {"el":"div.wrap.searchroom","text":"Searchastro-island,astro-slot,","x":368,"y":64,"w":704,"h":4455.7,"right":1072,"bottom":4519.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"48px 0px 0px","margin":"0px 368px"}
+-- headers
+    {"el":"header.bar","x":0,"y":0,"w":1440,"h":64,"right":1440,"bottom":64}
+
+###### check 1440
+-- textarea
+    {"el":"textarea#check-text.field","text":"Model evaluation matters, but ","x":112,"y":191.5,"w":864,"h":249.5,"right":976,"bottom":441,"font":"400 17px/27.2px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"8px","padding":"16px","margin":"0px","resize":"vertical","border":"0px none rgb(14, 22, 33)"}
+-- btns
+    {"el":"button.btn.btn-primary","text":"Check","x":112,"y":453,"w":72,"h":40,"right":184,"bottom":493,"font":"500 14px/14px","color":"rgb(236, 238, 241)","bg":"rgb(14, 22, 33)","radius":"8px","padding":"0px 16px","margin":"0px","border":"0px none rgb(236, 238, 241)"}
+    {"el":"button.btn","text":"Try an example","x":192,"y":453,"w":128.3,"h":40,"right":320.3,"bottom":493,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 16px","margin":"0px","border":"0px none rgb(236, 238, 241)"}
+    {"el":"button.btn.btn-quiet","text":"Copy link","x":328.3,"y":453,"w":107.4,"h":40,"right":435.7,"bottom":493,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 12px","margin":"0px","border":"0px none rgb(236, 238, 241)"}
+-- copy
+    {"el":"button.btn.btn-quiet","text":"Copy link","x":328.3,"y":453,"w":107.4,"h":40,"right":435.7,"bottom":493,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 12px","margin":"0px","border":"0px none rgb(74, 81, 92)"}
+-- chipsText
+    {"el":"button.chip","text":"Verified: Shevlane et al. 2023","x":432.6,"y":612.1,"w":183.8,"h":21.7,"right":616.4,"bottom":633.8,"border":"0px none rgb(14, 22, 33)","outline":"rgb(14, 22, 33) none 3px","shadow":"none","deco":"none"}
+    {"el":"button.chip","text":"Rejected: Shevlane et al. 2023","x":487.3,"y":642.7,"w":183.8,"h":21.7,"right":671.1,"bottom":664.4,"border":"0px none rgb(163, 32, 12)","outline":"rgb(163, 32, 12) none 3px","shadow":"rgb(163, 32, 12) 0px 0px 0px 1.5px","deco":"line-through"}
+    {"el":"button.chip","text":"Rejected: Shevlane et al. 2023","x":210.9,"y":734.5,"w":183.8,"h":21.7,"right":394.8,"bottom":756.2,"border":"0px none rgb(163, 32, 12)","outline":"rgb(163, 32, 12) none 3px","shadow":"none","deco":"line-through"}
+    {"el":"button.chip","text":"Page only: Cunningham et al. 2","x":407.6,"y":766.9,"w":189,"h":21.7,"right":596.5,"bottom":788.6,"border":"0px none rgb(14, 22, 33)","outline":"rgb(14, 22, 33) none 3px","shadow":"none","deco":"none"}
+    {"el":"button.chip","text":"Rejected: arxiv:2305.15324/v2/","x":437.5,"y":795.7,"w":186.7,"h":21.7,"right":624.2,"bottom":817.4,"border":"0px none rgb(163, 32, 12)","outline":"rgb(163, 32, 12) none 3px","shadow":"none","deco":"line-through"}
+-- chipsList
+    {"el":"a.chip","text":"Verified: Shevlane et al. 2023","x":112,"y":866.1,"w":183.8,"h":21.7,"right":295.8,"bottom":887.8,"border":"0px none rgb(14, 22, 33)","outline":"rgb(14, 22, 33) none 3px","shadow":"none"}
+    {"el":"a.chip","text":"Rejected: Shevlane et al. 2023","x":112,"y":973.5,"w":183.8,"h":21.7,"right":295.8,"bottom":995.2,"border":"0px none rgb(163, 32, 12)","outline":"rgb(163, 32, 12) none 3px","shadow":"none"}
+    {"el":"a.chip","text":"Rejected: Shevlane et al. 2023","x":112,"y":1105.3,"w":183.8,"h":21.7,"right":295.8,"bottom":1127,"border":"0px none rgb(163, 32, 12)","outline":"rgb(163, 32, 12) none 3px","shadow":"none"}
+    {"el":"a.chip","text":"Page only: Cunningham et al. 2","x":112,"y":1240.8,"w":189,"h":21.7,"right":301,"bottom":1262.5,"border":"0px none rgb(14, 22, 33)","outline":"rgb(14, 22, 33) none 3px","shadow":"none"}
+    {"el":"span.chip","text":"Rejected: arxiv:2305.15324/v2/","x":112,"y":1318.8,"w":186.7,"h":21.7,"right":298.7,"bottom":1340.5,"border":"0px none rgb(163, 32, 12)","outline":"rgb(163, 32, 12) none 3px","shadow":"none"}
+-- summary
+    {"el":"p.summary.tally","text":"1 verified1 page only3 rejecte","x":112,"y":525,"w":672,"h":20.3,"right":784,"bottom":545.3,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- results
+    {"el":"header.head","x":112,"y":64,"w":1216,"h":127.5,"right":1328,"bottom":191.5}
+    {"el":"style","x":0,"y":0,"w":0,"h":0,"right":0,"bottom":0}
+    {"el":"script","x":0,"y":0,"w":0,"h":0,"right":0,"bottom":0}
+    {"el":"script","x":0,"y":0,"w":0,"h":0,"right":0,"bottom":0}
+    {"el":"astro-island","x":0,"y":0,"w":0,"h":0,"right":0,"bottom":0}
+-- pv
+    {"el":"div.pv.pv-page","text":"","x":848,"y":525,"w":480,"h":600,"right":1328,"bottom":1125,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"2px","padding":"0px","margin":"0px"}
+    {"el":"img","text":"","x":819.2,"y":481,"w":537.6,"h":760.3,"right":1356.8,"bottom":1241.3,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- headers
+    {"el":"header.bar","x":0,"y":0,"w":1440,"h":64,"right":1440,"bottom":64}
+    {"el":"header.head","x":112,"y":64,"w":1216,"h":127.5,"right":1328,"bottom":191.5}
+
+###### replay 1440
+-- copy
+    {"el":"button.btn","text":"Copy link","x":1292.6,"y":842,"w":115.4,"h":40,"right":1408,"bottom":882,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 16px","margin":"0px","border":"0px none rgb(14, 22, 33)"}
+-- strong
+    {"el":"strong","text":"The citation target is right.","x":1008,"y":278.1,"w":191.5,"h":21,"right":1199.5,"bottom":299.1,"font":"700 16px/27.2px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"strong","text":"The number is wrong.","x":1008,"y":425.2,"w":156.1,"h":21,"right":1164.1,"bottom":446.2,"font":"700 16px/27.2px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- h1
+    {"el":"h1","text":"“Most notably, the White House","x":32,"y":96.3,"w":1024,"h":52,"right":1056,"bottom":148.3,"font":"500 20px/26px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- top
+    {"el":"div.wrap.rp-wrap","text":"astro-island,astro-slot,astro-","x":32,"y":64,"w":1376,"h":836,"right":1408,"bottom":900,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 0px 0px","margin":"0px 32px"}
+    {"el":"header.rp-head","text":"A document in the library cont","x":32,"y":72,"w":1376,"h":100.6,"right":1408,"bottom":172.6,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"div","text":"A document in the library cont","x":32,"y":72,"w":1024,"h":100.6,"right":1056,"bottom":172.6,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"p.rp-tally","text":"2 verified0 page only0 rejecte","x":1292.5,"y":72,"w":115.5,"h":20.3,"right":1408,"bottom":92.3,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- headers
+    {"el":"header.bar","x":0,"y":0,"w":1440,"h":64,"right":1440,"bottom":64}
+    {"el":"header.rp-head","x":32,"y":72,"w":1376,"h":100.6,"right":1408,"bottom":172.6}
+
+###### replay 390
+-- doc
+    {"sw":390,"cw":390}
+-- pv
+    {"el":"div.pv.pv-page","text":"","x":16,"y":200.9,"w":358,"h":320.7,"right":374,"bottom":521.6,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"2px","padding":"0px","margin":"0px"}
+    {"el":"div.sheet","text":"","x":-63.3,"y":6.2,"w":537,"h":694.9,"right":473.7,"bottom":701.2,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"0px","padding":"0px","margin":"0px 0px 0px -79.2656px"}
+    {"el":"img","text":"","x":-63.3,"y":6.2,"w":537,"h":694.9,"right":473.7,"bottom":701.2,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- pvOv
+    {"el":"div.pv.pv-page","sw":458,"cw":358,"ov":"hidden"}
+-- panes
+    {"el":"div.wrap.rp-wrap","text":"astro-island,astro-slot,astro-","x":16,"y":56,"w":358,"h":3452.7,"right":374,"bottom":3508.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 0px 0px","margin":"0px 16px"}
+-- bar
+    {"el":"div.wrap.rp-wrap","text":"astro-island,astro-slot,astro-","x":16,"y":56,"w":358,"h":3452.7,"right":374,"bottom":3508.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 0px 0px","margin":"0px 16px"}
+    {"el":"header.rp-head","text":"A document in the library cont","x":16,"y":64,"w":358,"h":116.9,"right":374,"bottom":180.9,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 0px 12px"}
+    {"el":"p.rp-meta","text":"claude-haiku-5-52026-11-1026 s","x":16,"y":120,"w":226.5,"h":60.9,"right":242.5,"bottom":180.9,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"p.rp-tally","text":"2 verified0 page only0 rejecte","x":258.5,"y":64,"w":115.5,"h":20.3,"right":374,"bottom":84.3,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"div.rp-panes","text":"Trace00:01search\"AI Bill of Ri","x":16,"y":192.9,"w":358,"h":3239.8,"right":374,"bottom":3432.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"section.rp-trace","text":"Trace00:01search\"AI Bill of Ri","x":16,"y":1970.3,"w":358,"h":1462.4,"right":374,"bottom":3432.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"section.rp-stage","text":"00:29checkVerified, word for w","x":0,"y":192.9,"w":390,"h":461.3,"right":390,"bottom":654.1,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(236, 238, 241)","radius":"0px","padding":"8px 16px","margin":"0px -16px"}
+    {"el":"div.rp-page","text":"","x":16,"y":200.9,"w":358,"h":320.7,"right":374,"bottom":521.6,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"p.rp-now","text":"00:29checkVerified, word for w","x":16,"y":525.6,"w":358,"h":24.5,"right":374,"bottom":550.1,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"4px 0px 0px","margin":"0px"}
+    {"el":"section.rp-answer","text":"AnswerVerdict: not supportedTh","x":16,"y":686.1,"w":358,"h":1252.2,"right":374,"bottom":1938.3,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"div.rp-scrub","text":"22 / 261×RawCopy link","x":0,"y":784,"w":390,"h":60,"right":390,"bottom":844,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(236, 238, 241)","radius":"0px","padding":"8px 16px","margin":"0px"}
+    {"el":"button.btn.rp-play","text":"","x":16,"y":792,"w":44,"h":44,"right":60,"bottom":836,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px","margin":"0px"}
+
+###### check 390
+-- doc
+    {"sw":390,"cw":390}
+-- main
+    {"el":"main","text":"Check a paragraphastro-island,","x":0,"y":56,"w":390,"h":2392,"right":390,"bottom":2448,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"div.wrap","text":"Check a paragraphastro-island,","x":16,"y":56,"w":358,"h":2392,"right":374,"bottom":2448,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 16px"}
+-- plates
+-- pv
+    {"el":"div.pv.pv-page","text":"","x":16,"y":1605.2,"w":358,"h":268.5,"right":374,"bottom":1873.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"2px","padding":"0px","margin":"0px"}
+-- btns
+    {"el":"button.btn.btn-primary","text":"Check","x":16,"y":652.7,"w":72,"h":44,"right":88,"bottom":696.7,"font":"500 14px/14px","color":"rgb(236, 238, 241)","bg":"rgb(14, 22, 33)","radius":"8px","padding":"0px 16px","margin":"0px"}
+    {"el":"button.btn","text":"Try an example","x":96,"y":652.7,"w":128.3,"h":44,"right":224.3,"bottom":696.7,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 16px","margin":"0px"}
+    {"el":"button.btn.btn-quiet","text":"Copy link","x":232.3,"y":652.7,"w":107.4,"h":44,"right":339.7,"bottom":696.7,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 12px","margin":"0px"}
+    {"el":"button.btn.btn-quiet.show","text":"Show the page","x":4,"y":1366.6,"w":116.1,"h":44,"right":120.1,"bottom":1410.6,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 12px","margin":"4px 0px 0px -12px"}
+    {"el":"button.btn.btn-quiet.show","text":"Show the page","x":4,"y":2144.7,"w":116.1,"h":44,"right":120.1,"bottom":2188.7,"font":"500 14px/14px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"0px 12px","margin":"4px 0px 0px -12px"}
+
+###### home 390
+-- doc
+    {"sw":390,"cw":390}
+-- plates
+    {"el":"button.claim","x":4,"y":212,"w":382,"h":107.7,"right":386,"bottom":319.7,"margin":"0px"}
+-- tries
+    {"el":"p.tries","text":"\"alignment faking\"sabotage eva","x":6,"y":144,"w":368,"h":44,"right":374,"bottom":188,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"8px 0px 0px -10px","sw":722,"cw":368}
+    {"el":"p.tries","text":"searchfetchverify_quotecheck_a","x":6,"y":2595.3,"w":368,"h":44,"right":374,"bottom":2639.3,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"8px 0px 0px -10px","sw":722,"cw":368}
+-- input
+    {"el":"input","text":"","x":16,"y":80,"w":358,"h":56,"right":374,"bottom":136,"font":"400 17px/24.65px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"12px","padding":"0px 120px 0px 16px","margin":"0px","ph":"Search 13,898 AI safety documents","sw":222,"cw":222}
+-- code
+    {"el":"code","text":"claude mcp add --transport htt","x":28,"y":2543.3,"w":300,"h":44,"right":328,"bottom":2587.3,"font":"400 14px/44px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px","sw":588,"cw":300}
+-- follow
+    {"el":"a","text":"Follow","x":16,"y":2079.9,"w":79.7,"h":36,"right":95.7,"bottom":2115.9,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"a","text":"Sabotage34 system cards, 3 lab","x":4,"y":2127.5,"w":187,"h":71.3,"right":191,"bottom":2198.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+    {"el":"a","text":"Sycophancy24 system cards, 3 l","x":199,"y":2127.5,"w":187,"h":71.3,"right":386,"bottom":2198.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+    {"el":"a","text":"Model welfare19 system cards, ","x":4,"y":2198.8,"w":187,"h":71.3,"right":191,"bottom":2270.1,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+    {"el":"a","text":"Sandbagging26 system cards, 2 ","x":199,"y":2198.8,"w":187,"h":71.3,"right":386,"bottom":2270.1,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+    {"el":"a","text":"Alignment faking13 system card","x":4,"y":2270.1,"w":187,"h":71.3,"right":191,"bottom":2341.4,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+    {"el":"a","text":"Reward hacking27 system cards,","x":199,"y":2270.1,"w":187,"h":71.3,"right":386,"bottom":2341.4,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+    {"el":"a","text":"Deception48 system cards, 4 la","x":4,"y":2341.4,"w":187,"h":96.3,"right":191,"bottom":2437.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"8px","padding":"12px","margin":"0px"}
+-- main
+    {"el":"section.wrap.hero","text":"SafetyPageSearch\"alignment fak","x":16,"y":56,"w":358,"h":784.5,"right":374,"bottom":840.5,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"24px 0px 0px","margin":"0px 16px"}
+    {"el":"div.wrap","text":"LibraryLab system cards and fr","x":16,"y":888.5,"w":358,"h":2101.4,"right":374,"bottom":2989.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 16px"}
+-- header
+    {"el":"header.bar","text":"SafetyPageLibrarySearchFollowC","x":0,"y":0,"w":390,"h":56,"right":390,"bottom":56,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"div.wrap.bar-in","text":"SafetyPageLibrarySearchFollowC","x":16,"y":0,"w":358,"h":56,"right":374,"bottom":56,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 16px"}
+
+###### citationbench 1440
+-- th
+    {"el":"th","text":"Rank","x":100,"y":259,"w":63.2,"h":57.7,"right":163.2,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 12px","margin":"0px","ta":"left"}
+    {"el":"th","text":"Agent","x":163.2,"y":259,"w":461.5,"h":57.7,"right":624.6,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 0px","margin":"0px","ta":"left"}
+    {"el":"th.num","text":"Correctcode","x":624.6,"y":259,"w":69.1,"h":57.7,"right":693.8,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 0px","margin":"0px","ta":"left"}
+    {"el":"th.num","text":"Page precisioncode","x":693.8,"y":259,"w":113.8,"h":57.7,"right":807.5,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 0px","margin":"0px","ta":"left"}
+    {"el":"th.num","text":"Quote fidelitycode","x":807.5,"y":259,"w":107.3,"h":57.7,"right":914.8,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 0px","margin":"0px","ta":"left"}
+    {"el":"th.num","text":"Claim supportjudge","x":914.8,"y":259,"w":112.2,"h":57.7,"right":1027,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 0px","margin":"0px","ta":"left"}
+    {"el":"th.whisk","text":"Correct, with its 95% interval","x":1027,"y":259,"w":144,"h":57.7,"right":1171,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 0px","margin":"0px","ta":"left"}
+    {"el":"th.num","text":"$ / correct","x":1171,"y":259,"w":88.8,"h":57.7,"right":1259.7,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 16px 12px 0px","margin":"0px","ta":"left"}
+    {"el":"th.num","text":"Questions","x":1259.7,"y":259,"w":80.3,"h":57.7,"right":1340,"bottom":316.7,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"8px 12px 12px 0px","margin":"0px","ta":"left"}
+-- thAlign
+    {"t":"Rank","ta":"left","x":100,"right":163.2}
+    {"t":"Agent","ta":"left","x":163.2,"right":624.6}
+    {"t":"Correctcode","ta":"right","x":624.6,"right":693.8}
+    {"t":"Page precision","ta":"right","x":693.8,"right":807.5}
+    {"t":"Quote fidelity","ta":"right","x":807.5,"right":914.8}
+    {"t":"Claim supportj","ta":"right","x":914.8,"right":1027}
+    {"t":"Correct, with ","ta":"left","x":1027,"right":1171}
+    {"t":"$ / correct","ta":"right","x":1171,"right":1259.7}
+    {"t":"Questions","ta":"right","x":1259.7,"right":1340}
+-- td
+    {"el":"td","t":"1–3","ta":"start","x":100,"y":316.7,"w":63.2,"h":68,"right":163.2,"bottom":384.7}
+    {"el":"td","t":"gemini-3.8-fla","ta":"start","x":163.2,"y":316.7,"w":461.5,"h":68,"right":624.6,"bottom":384.7}
+    {"el":"td.num","t":"66 ±13","ta":"right","x":624.6,"y":316.7,"w":69.1,"h":68,"right":693.8,"bottom":384.7}
+    {"el":"td.num","t":"31 ±7","ta":"right","x":693.8,"y":316.7,"w":113.8,"h":68,"right":807.5,"bottom":384.7}
+    {"el":"td.num","t":"100","ta":"right","x":807.5,"y":316.7,"w":107.3,"h":68,"right":914.8,"bottom":384.7}
+    {"el":"td.num","t":"–","ta":"right","x":914.8,"y":316.7,"w":112.2,"h":68,"right":1027,"bottom":384.7}
+    {"el":"td.whisk","t":"","ta":"start","x":1027,"y":316.7,"w":144,"h":68,"right":1171,"bottom":384.7}
+    {"el":"td.num","t":"–","ta":"right","x":1171,"y":316.7,"w":88.8,"h":68,"right":1259.7,"bottom":384.7}
+    {"el":"td.num","t":"50","ta":"right","x":1259.7,"y":316.7,"w":80.3,"h":68,"right":1340,"bottom":384.7}
+-- rows
+    {"el":"tr","text":"1–3gemini-3.8-flash-highantigr","x":100,"y":316.7,"w":1240,"h":68,"right":1340,"bottom":384.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"tr","text":"1–4gpt-6.1-solcodex codex-cli ","x":100,"y":384.7,"w":1240,"h":68,"right":1340,"bottom":452.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"tr","text":"2–4claude-haiku-5-5claude-code","x":100,"y":452.7,"w":1240,"h":68,"right":1340,"bottom":520.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"tr","text":"1–4gpt-6-lunacodex codex-cli 0","x":100,"y":520.7,"w":1240,"h":68,"right":1340,"bottom":588.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- dl
+    {"el":"dl.terms.section","text":"CorrectThe verdict is right, a","x":112,"y":652.7,"w":872,"h":182.1,"right":984,"bottom":834.8,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"64px 0px 0px"}
+    {"el":"dt","text":"Correct","x":112,"y":652.7,"w":160,"h":20.3,"right":272,"bottom":673,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dd","text":"The verdict is right, a cited ","x":296,"y":652.7,"w":688,"h":20.3,"right":984,"bottom":673,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dt","text":"Code","x":112,"y":681,"w":160,"h":20.3,"right":272,"bottom":701.3,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dd","text":"Deterministic: the cited page ","x":296,"y":681,"w":688,"h":20.3,"right":984,"bottom":701.3,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dt","text":"Judge","x":112,"y":709.3,"w":160,"h":20.3,"right":272,"bottom":729.6,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- sub
+    {"el":"p.byline","text":"Does an agent cite the right p","x":112,"y":171.5,"w":644.8,"h":23.2,"right":756.8,"bottom":194.7,"font":"400 16px/23.2px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"p.facts","text":"4 runsUpdated 2026-11-10","x":112,"y":206.7,"w":184.3,"h":20.3,"right":296.3,"bottom":227,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+
+###### connect 1440
+-- h3
+    {"x":112,"y":434,"w":864,"h":21,"right":976,"bottom":455,"font":"14px","code":null,"codeBg":null,"codePad":null,"next":{"el":"p","x":112,"y":457,"w":688,"h":40.6,"right":800,"bottom":497.6,"font":"14px"}}
+    {"x":112,"y":513.6,"w":864,"h":21,"right":976,"bottom":534.6,"font":"14px","code":null,"codeBg":null,"codePad":null,"next":{"el":"p","x":112,"y":536.6,"w":688,"h":40.6,"right":800,"bottom":577.2,"font":"14px"}}
+    {"x":112,"y":593.2,"w":864,"h":21,"right":976,"bottom":614.2,"font":"14px","code":null,"codeBg":null,"codePad":null,"next":{"el":"p","x":112,"y":616.2,"w":688,"h":40.6,"right":800,"bottom":656.8,"font":"14px"}}
+    {"x":112,"y":672.8,"w":864,"h":21,"right":976,"bottom":693.8,"font":"14px","code":null,"codeBg":null,"codePad":null,"next":{"el":"p","x":112,"y":695.8,"w":688,"h":20.3,"right":800,"bottom":716.1,"font":"14px"}}
+-- rows
+    {"el":"dl.clients","text":"Claude Codeclaude mcp add --tr","x":112,"y":223.8,"w":864,"h":88.6,"right":976,"bottom":312.4,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dt","text":"Claude Code","x":112,"y":233.7,"w":160,"h":20.3,"right":272,"bottom":254,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dd","text":"claude mcp add --transport htt","x":296,"y":223.8,"w":680,"h":40,"right":976,"bottom":263.8,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dt","text":"Claude.ai, ChatGPT, others","x":112,"y":271.8,"w":160,"h":40.6,"right":272,"bottom":312.4,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"dd","text":"http://localhost:4321/mcp","x":296,"y":272.1,"w":680,"h":40,"right":976,"bottom":312.1,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- codeBoxes
+-- ib
+    {"el":"button.ib","text":"","x":938,"y":225.8,"w":36,"h":36,"right":974,"bottom":261.8,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"6px","padding":"0px","margin":"0px"}
+    {"el":"button.ib","text":"","x":938,"y":274.1,"w":36,"h":36,"right":974,"bottom":310.1,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"6px","padding":"0px","margin":"0px"}
+    {"el":"button.ib","text":"","x":938,"y":1017,"w":36,"h":36,"right":974,"bottom":1053,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"6px","padding":"0px","margin":"0px"}
+    {"el":"a.ib","text":"","x":938,"y":1065,"w":36,"h":36,"right":974,"bottom":1101,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"6px","padding":"0px","margin":"0px"}
+-- first
+    {"el":"div.wrap","text":"Connect an agentMCP over HTTP4","x":112,"y":64,"w":1216,"h":1363.9,"right":1328,"bottom":1427.9,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 112px"}
+
+###### record 1440
+-- thumb
+    {"el":"a.cover.sheet","text":"","x":112,"y":96,"w":152,"h":196.7,"right":264,"bottom":292.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"2px","padding":"0px","margin":"0px"}
+    {"el":"img","text":"","x":112,"y":96,"w":152,"h":196.7,"right":264,"bottom":292.7,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- crumb
+    {"el":"nav.nav","text":"LibrarySearchFollowCheckCitati","x":241.8,"y":14,"w":465.5,"h":36,"right":707.3,"bottom":50,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"nav.up","text":"LibraryResearch papers","x":296,"y":96,"w":171.9,"h":20.3,"right":467.9,"bottom":116.3,"font":"500 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- h1
+    {"el":"h1.title","text":"Model evaluation for extreme r","x":296,"y":128.3,"w":644.2,"h":47.5,"right":940.2,"bottom":175.8,"font":"500 44px/47.52px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"4px 0px 0px"}
+-- meta
+    {"el":"p.byline","text":"Toby Shevlane, Sebastian Farqu","x":296,"y":183.8,"w":688,"h":46.4,"right":984,"bottom":230.2,"font":"400 16px/23.2px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"p.facts","text":"Paper22 Sep 202320 pages","x":296,"y":238.2,"w":202.9,"h":20.3,"right":498.9,"bottom":258.5,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"div.actions","text":"Readarxiv.orgCitearxiv:2305.15","x":296,"y":278.5,"w":1032,"h":40,"right":1328,"bottom":318.5,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"12px 0px 0px"}
+-- versions
+    {"el":"div.versions","text":"v222 Sep 2023Read here","x":948,"y":412.1,"w":392,"h":40.4,"right":1340,"bottom":452.5,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px -12px"}
+    {"el":"a","text":"v222 Sep 2023Read here","x":948,"y":412.1,"w":392,"h":40.4,"right":1340,"bottom":452.5,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.09)","radius":"8px","padding":"10px 12px","margin":"0px"}
+-- licence
+    {"el":"p.lic","text":"CC BY 4.0","x":960,"y":546.1,"w":368,"h":20.3,"right":1328,"bottom":566.4,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"figure.evidence-card","text":"http://creativecommons.org/lic","x":960,"y":578.4,"w":368,"h":74.2,"right":1328,"bottom":652.5,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"12px 16px","margin":"12px 0px 0px"}
+-- outline
+    {"el":"span.o-title","text":"Introduction","x":112,"y":421.1,"w":748.2,"h":22.4,"right":860.2,"bottom":443.5,"font":"500 16px/22.4px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"span.o-page","text":"p. 1","x":876.2,"y":425.1,"w":19.8,"h":16.8,"right":896,"bottom":441.9,"font":"400 12px/16.8px","color":"rgb(98, 105, 117)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"span.o-title","text":"Extreme risks from general-pur","x":112,"y":461.5,"w":748.2,"h":22.4,"right":860.2,"bottom":483.9,"font":"500 16px/22.4px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"span.o-page","text":"p. 2","x":876.2,"y":465.5,"w":19.8,"h":16.8,"right":896,"bottom":482.3,"font":"400 12px/16.8px","color":"rgb(98, 105, 117)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- btns
+    {"el":"input.field","text":"","x":1088,"y":14,"w":240,"h":36,"right":1328,"bottom":50,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"8px","padding":"1px 12px 1px 34px","margin":"0px"}
+    {"el":"a.btn.btn-primary","text":"Read","x":296,"y":278.5,"w":87.5,"h":40,"right":383.5,"bottom":318.5,"font":"500 14px/14px","color":"rgb(236, 238, 241)","bg":"rgb(14, 22, 33)","radius":"8px","padding":"0px 16px","margin":"0px"}
+    {"el":"a.btn","text":"arxiv.org","x":391.5,"y":278.5,"w":111.5,"h":40,"right":503,"bottom":318.5,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 16px","margin":"0px"}
+    {"el":"summary.btn","text":"Cite","x":511,"y":278.5,"w":81.5,"h":40,"right":592.5,"bottom":318.5,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 16px","margin":"0px"}
+    {"el":"input.field","text":"","x":600.5,"y":278.5,"w":320,"h":40,"right":920.5,"bottom":318.5,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"8px","padding":"1px 12px 1px 34px","margin":"0px"}
+-- cols
+    {"el":"article.wrap.record","text":"LibraryResearch papersModel ev","x":112,"y":64,"w":1216,"h":792.4,"right":1328,"bottom":856.4,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 112px"}
+
+###### library 1440
+-- rows
+    {"el":"li","x":112,"y":223.8,"w":1216,"h":174.4,"right":1328,"bottom":398.2,"kids":[{"el":"a.shelf","x":100,"y":231.8,"w":1240,"h":72,"right":1340,"bottom":303.8,"font":"14px"},{"el":"p.about","x":112,"y":299.8,"w":688,"h":46.4,"right":800,"bottom":346.2,"font":"16px"},{"el":"p.publishers","x":104,"y":350.2,"w":1040,"h":32,"right":1144,"bottom":382.2,"font":"14px"}]}
+    {"el":"li","x":112,"y":398.2,"w":1216,"h":151.2,"right":1328,"bottom":549.4,"kids":[{"el":"a.shelf","x":100,"y":406.2,"w":1240,"h":72,"right":1340,"bottom":478.2,"font":"14px"},{"el":"p.about","x":112,"y":474.2,"w":688,"h":23.2,"right":800,"bottom":497.4,"font":"16px"},{"el":"p.publishers","x":104,"y":501.4,"w":1040,"h":32,"right":1144,"bottom":533.4,"font":"14px"}]}
+    {"el":"li","x":112,"y":549.4,"w":1216,"h":151.2,"right":1328,"bottom":700.6,"kids":[{"el":"a.shelf","x":100,"y":557.4,"w":1240,"h":72,"right":1340,"bottom":629.4,"font":"14px"},{"el":"p.about","x":112,"y":625.4,"w":688,"h":23.2,"right":800,"bottom":648.6,"font":"16px"},{"el":"p.publishers","x":104,"y":652.6,"w":1040,"h":32,"right":1144,"bottom":684.6,"font":"14px"}]}
+-- name
+    {"el":"span.name","text":"Lab system cards and framework","x":112,"y":256.8,"w":1032,"h":33.6,"right":1144,"bottom":290.4,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+    {"el":"span.name","text":"Research papers","x":112,"y":431.2,"w":1032,"h":33.6,"right":1144,"bottom":464.8,"font":"500 28px/33.6px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- count
+    {"el":"span.count","text":"329","x":1168,"y":263.8,"w":160,"h":24,"right":1328,"bottom":287.8,"font":"400 20px/24px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"24px 0px 8px"}
+    {"el":"span.count","text":"6,256","x":1168,"y":438.2,"w":160,"h":24,"right":1328,"bottom":462.2,"font":"400 20px/24px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"24px 0px 8px"}
+-- chips
+-- sub
+    {"el":"p.facts","text":"13,898 documentsSnapshot 2026.","x":112,"y":171.5,"w":255.2,"h":20.3,"right":367.2,"bottom":191.8,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+
+###### shelf 1440
+-- filters
+    {"el":"input.field","text":"","x":1088,"y":14,"w":240,"h":36,"right":1328,"bottom":50,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"8px","padding":"1px 12px 1px 34px","margin":"0px","border":"0px none rgb(14, 22, 33)"}
+    {"el":"input.field","text":"","x":112,"y":282.2,"w":382,"h":40,"right":494,"bottom":322.2,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgb(255, 255, 255)","radius":"8px","padding":"1px 12px","margin":"0px","border":"0px none rgb(14, 22, 33)"}
+    {"el":"select.field","text":"PublisherOpenAI (160)Anthropic","x":502,"y":282.2,"w":300,"h":40,"right":802,"bottom":322.2,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 34px 0px 12px","margin":"0px","border":"0px none rgb(14, 22, 33)"}
+    {"el":"select.field","text":"KindArticle (173)System card (","x":810,"y":282.2,"w":182,"h":40,"right":992,"bottom":322.2,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 34px 0px 12px","margin":"0px","border":"0px none rgb(14, 22, 33)"}
+    {"el":"select.field","text":"Year2026 (117)2025 (114)2024 (","x":1000,"y":282.2,"w":160,"h":40,"right":1160,"bottom":322.2,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 34px 0px 12px","margin":"0px","border":"0px none rgb(14, 22, 33)"}
+    {"el":"select.field","text":"Read anywhereRead here (2)At s","x":1168,"y":282.2,"w":160,"h":40,"right":1328,"bottom":322.2,"font":"500 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 34px 0px 12px","margin":"0px","border":"0px none rgb(14, 22, 33)"}
+-- rows
+-- count
+    {"el":"p.count","text":"60 of 329 documents, newest fi","x":112,"y":346.2,"w":1216,"h":20.3,"right":1328,"bottom":366.5,"font":"400 14px/20.3px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"24px 0px 8px"}
+-- crumb
+    {"el":"p.byline","text":"System cards, model cards, saf","x":112,"y":203.8,"w":688,"h":46.4,"right":800,"bottom":250.2,"font":"400 16px/23.2px","color":"rgb(74, 81, 92)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px"}
+-- top
+    {"el":"div.wrap","text":"LibraryLab system cards and fr","x":112,"y":64,"w":1216,"h":4520.5,"right":1328,"bottom":4584.5,"font":"400 14px/20.3px","color":"rgb(14, 22, 33)","bg":"rgba(0, 0, 0, 0)","radius":"0px","padding":"0px","margin":"0px 112px"}
+-- more
+    {"el":"button.btn","text":"More","x":112,"y":4544.5,"w":64.9,"h":40,"right":176.9,"bottom":4584.5,"font":"500 14px/14px","color":"rgb(14, 22, 33)","bg":"rgba(14, 22, 33, 0.05)","radius":"8px","padding":"0px 16px","margin":"0px"}

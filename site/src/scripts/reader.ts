@@ -280,7 +280,7 @@ function start(root: HTMLElement, o: Opened) {
         <a class="btn btn-primary" data-open href="${esc(sourceLink(doc.source_url, target, paged))}" rel="noopener">Read ${paged ? esc(anchorLabel(target)) : 'this paragraph'} at ${esc(host)}${icon('external', true)}</a>
         <form class="quotecheck" data-quotecheck>
           <label class="h3" for="qc">Check a quote</label>
-          <div><input class="field" id="qc" name="quote" autocomplete="off" placeholder="The words as quoted" /><button class="btn">Check</button></div>
+          <div><input class="field" id="qc" name="quote" autocomplete="off" placeholder="The words as quoted" /><button class="btn btn-primary">Check</button></div>
           <p class="qc-result" data-result aria-live="polite"></p>
         </form>
         <p class="links">

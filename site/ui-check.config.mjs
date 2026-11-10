@@ -25,7 +25,9 @@ export default {
     { name: 'search-empty', path: '/search', mask: ['.wall'] },
     { name: 'search', path: `/search?query=${q('"alignment faking"')}` },
     { name: 'follow', path: '/follow/sabotage' },
-    { name: 'check', path: '/check?example=1' },
+    // The page beside the findings arrives after the check and Chrome redraws it once at full
+    // quality, so two captures can differ in its fine lines: it is left out of the comparison.
+    { name: 'check', path: '/check?example=1', mask: ['.evidence .sheet img'] },
     { name: 'replay', path: '/r/cc-haiku-5-5-4e1c63-pc-4bd058594c.1?step=21' },
     { name: 'citationbench', path: '/citationbench', mask: ['.board tbody', '.facts'] },   // rows change as runs land
     { name: 'connect', path: '/connect' },

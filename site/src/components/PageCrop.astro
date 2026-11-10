@@ -5,10 +5,12 @@ import type { UnitText } from '../lib/types';
 import { highlightRects } from '../lib/quote';
 import { pageImageUrl } from '../lib/env';
 
-interface Props { unit: UnitText; ranges: [number, number][]; kind?: 'found' | 'reject'; alt: string; eager?: boolean; lead?: number }
-const { unit, ranges, kind = 'found', alt, eager, lead = 16 } = Astro.props;
+// `at`: the passage the window is placed on, when two windows on one page must not move against each other.
+interface Props { unit: UnitText; ranges: [number, number][]; at?: [number, number][]; kind?: 'found' | 'reject'; alt: string; eager?: boolean; lead?: number }
+const { unit, ranges, at, kind = 'found', alt, eager, lead = 16 } = Astro.props;
 const rects = ranges.flatMap(([s, e]) => highlightRects(unit, s, e));
-const top = rects.length ? Math.min(...rects.map((r) => r.top)) : 10;
+const placed = (at ?? ranges).flatMap(([s, e]) => highlightRects(unit, s, e));
+const top = placed.length ? Math.min(...placed.map((r) => r.top)) : 10;
 const shift = Math.max(0, top - lead);
 ---
 <div class="crop">

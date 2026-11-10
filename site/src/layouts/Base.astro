@@ -46,7 +46,7 @@ const abs = (p: string) => new URL(p, Astro.site).href;
     <script is:inline>try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
-  <body style={wide ? '--page: 1500px' : undefined}>
+  <body>
     <header class="bar">
       <div class="wrap bar-in">
         <a class="wordmark" href="/">
@@ -70,7 +70,7 @@ const abs = (p: string) => new URL(p, Astro.site).href;
         </details>
       </div>
     </header>
-    <main><slot /></main>
+    <main style={wide ? '--page: 1500px' : undefined}><slot /></main>
     {!bare && (
       <footer class="foot">
         <div class="wrap foot-in">

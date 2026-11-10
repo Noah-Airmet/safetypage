@@ -77,11 +77,16 @@ export function PageView(props: { cite: string; span?: [number, number] | null; 
   const rects = range ? highlightRects(unit, range[0], range[1]) : [];
   const top = rects.length ? Math.min(...rects.map((r) => r.top)) : 0;
   const shift = Math.max(0, top - 14);
-  // Where the passage starts across the page, so a narrow pane can open on it at a readable size.
-  const left = rects.length ? Math.min(...rects.map((r) => r.left)) : 8;
+  // The page's text column (ignoring the few words that stand outside it), so a narrow pane can
+  // show exactly that column at a size that can be read, and never cut a line.
+  const words = unit.words ?? [];
+  const pick = (xs: number[], q: number) => xs.sort((a, b) => a - b)[Math.min(xs.length - 1, Math.floor(xs.length * q))];
+  const colLeft = words.length > 40 ? Math.max(0, (pick(words.map((w) => w[2]), 0.02) / unit.width) * 100 - 2) : 0;
+  const colRight = words.length > 40 ? Math.min(100, (pick(words.map((w) => w[4]), 0.98) / unit.width) * 100 + 2) : 100;
+  const zoom = 100 / Math.max(50, colRight - colLeft);
   return (
     <div className="pv pv-page">
-      <div className="sheet" style={{ aspectRatio: `${unit.width}/${unit.height}`, transform: `translateY(-${shift.toFixed(2)}%)`, '--hx': left.toFixed(2) } as React.CSSProperties}>
+      <div className="sheet" style={{ aspectRatio: `${unit.width}/${unit.height}`, transform: `translateY(-${shift.toFixed(2)}%)`, '--cx': colLeft.toFixed(2), '--cz': zoom.toFixed(3) } as React.CSSProperties}>
         <img src={pageImageUrl(cite, 1600)} alt={`${doc?.title ?? ''} ${unit.anchor_label}`} width={Math.round(unit.width)} height={Math.round(unit.height)} />
         {rects.map((r, i) => <div key={i} className="hl" data-kind={kind === 'reject' ? 'reject' : undefined} style={{ left: `${r.left}%`, top: `${r.top}%`, width: `${r.width}%`, height: `${r.height}%` }} />)}
       </div>

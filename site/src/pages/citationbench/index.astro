@@ -22,6 +22,9 @@ const band = (run: RunResult) => {
   const notWorse = runs.filter((r) => (r.measures.correct.ci_high ?? 0) >= (me.ci_low ?? 0)).length;
   return better + 1 === notWorse ? `${notWorse}` : `${better + 1}–${notWorse}`;
 };
+// A measure no run has yet is not a column.
+const columns = COLUMNS.filter((c) => runs.some((r) => r.measures[c.key]?.mean != null));
+const priced = runs.some((r) => r.cost.priced && r.cost.per_correct_usd.mean != null);
 const judges = [...new Map(runs.filter((r) => r.judge).map((r) => [r.judge!.id, r.judge!])).values()];
 const updated = runs.map((r) => r.created_at.slice(0, 10)).sort().at(-1);
 const small = runs.some((r) => r.samples < 50);
@@ -40,9 +43,11 @@ const small = runs.some((r) => r.samples < 50);
           <thead>
             <tr>
               <th>Rank</th><th>Agent</th>
-              {COLUMNS.map((c) => <th class="num">{c.label}<span class="src">{c.source}</span></th>)}
-              <th class="whisk"><span class="sr">Correct, with its 95% interval</span></th>
-              <th class="num">$ / correct</th>
+              {columns.map((c) => <>
+                <th class="num">{c.label}<span class="src">{c.source}</span></th>
+                {c.key === 'correct' && <th class="whisk">95% interval</th>}
+              </>)}
+              {priced && <th class="num">$ / correct</th>}
               <th class="num">Questions</th>
             </tr>
           </thead>
@@ -55,14 +60,18 @@ const small = runs.some((r) => r.samples < 50);
                 <tr>
                   <td>{band(run)}</td>
                   <td><a href={href}><span class="model">{run.model.split('/').pop()}</span><span class="solver mono">{run.solver} {run.name} {run.snapshot}</span></a></td>
-                  {COLUMNS.map((col) => {
+                  {columns.map((col) => {
                     const e = run.measures[col.key];
-                    return <td class="num"><a href={href} title={e?.mean == null ? 'not measured' : `${pct(e.ci_low)} to ${pct(e.ci_high)}, n = ${e.n}`}>{pct(e?.mean)}{e && half(e) != null && <span class="pm"> ±{half(e)}</span>}</a></td>;
+                    return <>
+                      <td class="num"><a href={href} title={e?.mean == null ? 'not measured' : `${pct(e.ci_low)} to ${pct(e.ci_high)}, n = ${e.n}`}>{pct(e?.mean)}{e && half(e) != null && <span class="pm"> ±{half(e)}</span>}</a></td>
+                      {col.key === 'correct' && (
+                        <td class="whisk">
+                          {c.mean != null && <span class="whisker"><i class="ci" style={`left:${(c.ci_low ?? c.mean) * 100}%;width:${((c.ci_high ?? c.mean) - (c.ci_low ?? c.mean)) * 100}%`}></i><i class="dot" style={`left:${c.mean * 100}%`}></i></span>}
+                        </td>
+                      )}
+                    </>;
                   })}
-                  <td class="whisk">
-                    {c.mean != null && <span class="whisker"><i class="ci" style={`left:${(c.ci_low ?? c.mean) * 100}%;width:${((c.ci_high ?? c.mean) - (c.ci_low ?? c.mean)) * 100}%`}></i><i class="dot" style={`left:${c.mean * 100}%`}></i></span>}
-                  </td>
-                  <td class="num"><a href={href}>{cost == null || !run.cost.priced ? '–' : cost < 0.1 ? `$${cost.toFixed(3)}` : `$${cost.toFixed(2)}`}</a></td>
+                  {priced && <td class="num"><a href={href}>{cost == null || !run.cost.priced ? '–' : cost < 0.1 ? `$${cost.toFixed(3)}` : `$${cost.toFixed(2)}`}</a></td>}
                   <td class="num"><a class="link" href={href}>{run.samples}</a></td>
                 </tr>
               );

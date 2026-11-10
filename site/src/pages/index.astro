@@ -40,9 +40,11 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
     <div class="hero-say">
       <h1 class="sr">SafetyPage</h1>
       <div class="hero-find">
-        <form class="ask" action="/search" role="search">
-          <input type="search" name="query" placeholder={`Search ${num(n.documents)} AI safety documents`} aria-label="Search the library" autocomplete="off" />
-          <button class="btn btn-primary">Search</button>
+        <form class="composer" action="/search" role="search" data-composer>
+          <div class="cbox">
+            <input type="search" name="query" placeholder={`Search ${num(n.documents)} AI safety documents`} aria-label="Search the library" autocomplete="off" />
+            <button class="send" aria-label="Search"><Icon name="send" /></button>
+          </div>
         </form>
         <p class="tries">{examples.map((q) => <a href={`/search?query=${encodeURIComponent(q)}`}>{q}</a>)}</p>
       </div>
@@ -66,7 +68,7 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
     </div>
     <figure class="hero-page">
       <div data-pane="verified"><PageCrop unit={unit} ranges={[found]} alt={`${doc.title}, ${anchorLabel(where.anchor)}, with the quoted passage highlighted`} eager /></div>
-      <div data-pane="rejected"><PageCrop unit={unit} ranges={[nearRange]} kind="reject" alt={`${doc.title}, ${anchorLabel(near.anchor)}, with the sentence the quotation misquotes underlined`} /></div>
+      <div data-pane="rejected"><PageCrop unit={unit} ranges={[nearRange]} at={[found]} kind="reject" alt={`${doc.title}, ${anchorLabel(near.anchor)}, with the sentence the quotation misquotes underlined`} /></div>
       <figcaption class="caption"><span>{doc.title}, {anchorLabel(where.anchor)} of {doc.unit_count}</span><a class="link" href={citePath(where.cite, verified.quote)}>Open the page</a></figcaption>
     </figure>
   </section>
@@ -132,6 +134,8 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
 </Base>
 
 <script>
+  const composer = document.querySelector<HTMLFormElement>('[data-composer]')!;
+  composer.addEventListener('input', () => composer.toggleAttribute('data-typed', !!composer.querySelector('input')!.value.trim()));
   const proof = document.querySelector<HTMLElement>('[data-proof]')!;
   proof.querySelectorAll<HTMLElement>('[data-pick]').forEach((claim) =>
     claim.addEventListener('click', () => {
