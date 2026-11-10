@@ -24,7 +24,7 @@ export default {
     { name: 'search', path: `/search?query=${q('"alignment faking"')}` },
     { name: 'follow', path: '/follow/sabotage' },
     { name: 'check', path: '/check?example=1' },
-    { name: 'replay', path: '/r/cc-sonnet-5-5-43677d-pc-7abbdba8ab.1?step=14' },
+    { name: 'replay', path: '/r/cc-haiku-5-5-4e1c63-pc-4bd058594c.1?step=21' },
     { name: 'citationbench', path: '/citationbench', mask: ['.board tbody', '.facts'] },   // rows change as runs land
     { name: 'connect', path: '/connect' },
   ],

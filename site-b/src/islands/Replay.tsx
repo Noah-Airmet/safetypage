@@ -128,14 +128,14 @@ export default function Replay({ trace, docs, librarySize, other }: Props) {
   };
 
   const usage = trace.header.usage?.cost_usd;
+  const now = events[step];
   return (
     <div className="replay">
       <header className="rp-head">
         <div>
           {asked.quoted && <p className="rp-lead">{asked.lead}</p>}
           <h1>{asked.quoted ? `“${asked.quoted}”` : asked.lead}</h1>
-          {asked.rest && <p className="rp-rest">{asked.rest}</p>}
-          <p className="rp-meta">{[trace.header.model.split('/').pop(), trace.header.started_at.slice(0, 10), `${events.length} steps`, `${reads} ${reads === 1 ? 'page' : 'pages'} read`, usage != null ? `$${usage.toFixed(usage < 0.1 ? 3 : 2)}` : null].filter(Boolean).map((part) => <span key={part}>{part}</span>)}</p>
+          <p className="rp-meta">{[trace.header.model.split('/').pop(), trace.header.started_at.slice(0, 10), `${events.length} steps`, `${reads} ${reads === 1 ? 'page' : 'pages'} read`, `${touched.length} of ${librarySize.toLocaleString('en')} documents`, usage != null ? `$${usage.toFixed(usage < 0.1 ? 3 : 2)}` : null].filter(Boolean).map((part) => <span key={part}>{part}</span>)}</p>
         </div>
         <p className="rp-tally" aria-label="Citations so far">
           <span className="state" data-state="verified">{state.tally.verified}<span className="sr"> verified</span></span>
@@ -159,9 +159,24 @@ export default function Replay({ trace, docs, librarySize, other }: Props) {
           </ol>
         </section>
 
-        <section className="rp-library" aria-label="Library">
-          <h2 className="h3">Library <span className="sub">{other ? `${touched.length} documents, snapshot ${other}` : `${touched.length} of ${librarySize.toLocaleString('en')} documents`}</span></h2>
-          <ul className="books">
+        <section className="rp-stage" aria-label="The page being read">
+          <div className="rp-page">
+            {focus ? (
+              other ? (
+                <div className="pv pv-source">
+                  <p className="muted">{anchorLabel(anchorOf(focus.cite))}</p>
+                  <p className="pv-title">{focusDoc?.title ?? docIdOf(focus.cite)}</p>
+                  <p className="muted">Snapshot <span className="mono">{other}</span></p>
+                </div>
+              ) : <PageView key={focus.cite} cite={focus.cite} span={focus.span} kind={focus.kind} doc={focusDoc} />
+            ) : <div className="pv pv-empty" />}
+          </div>
+          <p className="rp-now" data-bad={now.kind === 'verify' && now.state === 'rejected' || undefined}><span className="t">{clock(now.t_ms)}</span>{line(now)}</p>
+          <p className="rp-caption">
+            {focus && <span>{label(focus.cite)}{focus.cited && focus.cited !== focus.cite && <span className="bad">, cited as {anchorLabel(anchorOf(focus.cited))}</span>}</span>}
+            {focus && !other && <a className="link" href={citePath(focus.cite)}>Open the page</a>}
+          </p>
+          <ul className="books" aria-label="Documents touched">
             {touched.map(([docId, version]) => {
               const doc = docs[docId];
               const n = doc?.unit_count ?? 1;
@@ -182,28 +197,12 @@ export default function Replay({ trace, docs, librarySize, other }: Props) {
               );
             })}
           </ul>
-          <div className="rp-page">
-            {focus ? (
-              <>
-                {other ? (
-                  <div className="pv pv-source">
-                    <p className="muted">{anchorLabel(anchorOf(focus.cite))}</p>
-                    <p className="pv-title">{focusDoc?.title ?? docIdOf(focus.cite)}</p>
-                    <p className="muted">Read from snapshot <span className="mono">{other}</span></p>
-                  </div>
-                ) : <PageView key={focus.cite} cite={focus.cite} span={focus.span} kind={focus.kind} doc={focusDoc} />}
-                <p className="rp-caption">
-                  <span>{label(focus.cite)}{focus.cited && focus.cited !== focus.cite && <span className="bad">, cited as {anchorLabel(anchorOf(focus.cited))}</span>}</span>
-                  {!other && <a className="link" href={citePath(focus.cite)}>Open the page</a>}
-                </p>
-              </>
-            ) : <div className="pv pv-empty" />}
-          </div>
         </section>
 
         <section className="rp-answer" aria-label="Answer" ref={answerRef}>
           <h2 className="h3">Answer</h2>
           <div className="prose">
+            {state.answer.length === 0 && <div className="rp-blank" aria-hidden="true"><i /><i /><i /></div>}
             <Rich segments={segments} chip={(part, key) => <Chip key={key} state={part.state} label={label(part.cite)} current={focus?.cite === focusFor(part).cite && (focus?.cited ?? focus?.cite) === part.cite} onClick={() => { setPlaying(false); setPinned(focusFor(part)); }} />} />
           </div>
           {state.answer.filter((p): p is AnswerCite => p.type === 'cite' && p.state === 'rejected').map((c) => (

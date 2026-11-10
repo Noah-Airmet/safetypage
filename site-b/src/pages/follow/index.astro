@@ -7,14 +7,14 @@ const topics = await Promise.all(TOPICS.map(follow));
 <Base title="Follow a topic across labs" description="One evaluation or topic across every lab's system cards, by lab and date. Each mention opens the page.">
   <div class="wrap">
     <header class="head">
-      <h1 class="title">One topic, every lab's system cards</h1>
+      <h1 class="title">Follow</h1>
     </header>
     <div class="rows">
       {topics.map((t) => (
         <a href={`/follow/${t.topic.id}`}>
           <span class="name">{t.topic.name}</span>
           <span class="sub">{t.topic.about}</span>
-          <span class="val">{t.found} of {t.cards} cards</span>
+          <span class="val">{t.found} of {t.cards} system cards</span>
           <span class="val">{t.labs.filter((l) => l.found.length).length} labs</span>
         </a>
       ))}

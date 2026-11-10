@@ -304,14 +304,14 @@ ins.diff { text-decoration: none; color: var(--pencil); font-weight: 500; backgr
 
 /* ================================================================ home */
 .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: start; padding-top: var(--s-7); }
-.hero-say { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); justify-items: start; min-width: 0; }
+.hero-say { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5); justify-items: start; min-width: 0; }
 .hero-say .ask { max-width: none; }
 .hero-find { width: 100%; }
 .claims { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-1); margin-inline: calc(-1 * var(--s-3)); align-self: stretch; }
-.claim { display: grid; gap: var(--s-2); justify-items: start; padding: var(--s-3); border-radius: var(--r-ctl); text-align: left; transition: background var(--d-fast) var(--ease); }
+.claim { display: grid; gap: var(--s-3); justify-items: start; padding: var(--s-3); border-radius: var(--r-ctl); text-align: left; transition: background var(--d-fast) var(--ease); }
 .claim:hover { background: var(--fill); }
 .claim[aria-pressed='true'] { background: var(--fill-2); }
-.claim q { font: 400 var(--t-20)/1.35 var(--sans); letter-spacing: -0.01em; quotes: '“' '”'; text-wrap: pretty; }
+.claim q { font: 500 var(--t-28)/1.2 var(--sans); letter-spacing: -0.02em; quotes: '“' '”'; text-wrap: pretty; }
 .claim .says { color: var(--ink-2); font-size: var(--t-16); line-height: 1.5; }
 .claim-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-3); }
 .hero-page { min-width: 0; --crop: 6 / 5; }
@@ -333,7 +333,7 @@ ins.diff { text-decoration: none; color: var(--pencil); font-weight: 500; backgr
 @media (max-width: 699px) {
   .hero { padding-top: var(--s-5); gap: var(--s-5); }
   .hero-say { gap: var(--s-5); }
-  .claim q { font-size: var(--t-17); }
+  .claim q { font-size: var(--t-20); letter-spacing: -0.01em; line-height: 1.25; }
   .caption { flex-direction: column; gap: var(--s-1); }
   .topics { gap: 0 var(--s-2); }
 }
@@ -563,48 +563,54 @@ ins.diff { text-decoration: none; color: var(--pencil); font-weight: 500; backgr
   .silent ul { columns: 1; }
 }
 
-/* ================================================================ replay */
+/* ================================================================ replay
+   The page the agent is reading is the stage. The trace runs down its left margin and the answer
+   is written in its right; under it, the documents touched, a cell a page, and the scrubber. */
 .rp-wrap { padding-top: var(--s-2); }
-.replay { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--s-4); height: calc(100dvh - var(--bar) - var(--s-2)); min-height: 560px; }
+.replay { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--s-4); height: calc(100dvh - var(--bar) - var(--s-2)); min-height: 600px; }
 .rp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-6); }
-.rp-head > div { min-width: 0; display: grid; gap: var(--s-1); }
-.rp-head h1 { font: 500 var(--t-20)/1.3 var(--sans); letter-spacing: -0.01em; text-wrap: pretty; max-width: 64rem; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
-.rp-lead, .rp-rest { color: var(--ink-2); max-width: 64rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rp-head > div { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-1); }
+.rp-head h1 { font: 500 var(--t-20)/1.3 var(--sans); letter-spacing: -0.01em; text-wrap: pretty; max-width: 64rem; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.rp-lead { color: var(--ink-2); max-width: 64rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rp-meta { display: flex; flex-wrap: wrap; gap: 0 var(--s-4); color: var(--ink-2); }
 .rp-tally { display: flex; gap: var(--s-4); }
-.rp-panes { display: grid; grid-template-columns: minmax(0, 20rem) minmax(0, 1fr) minmax(0, 25rem); gap: var(--s-6); min-height: 0; }
+.rp-panes { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr) minmax(0, 25rem); gap: var(--s-6); min-height: 0; }
 .rp-panes > section { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
-.rp-panes .h3 { display: flex; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-2); }
-.h3 .sub { font-weight: 400; color: var(--ink-2); }
+.rp-panes .h3, .rp-now { display: none; }
+
 .rp-trace ol { overflow-y: auto; position: relative; flex: 1; min-height: 0; scrollbar-width: thin; margin-inline: calc(-1 * var(--s-2)); }
 .rp-trace li { border-radius: var(--r-ctl); }
 .rp-trace li[aria-current] { background: var(--fill-2); }
 .rp-trace li[data-bad][aria-current] { background: var(--pencil-wash); }
-.rp-trace li > button { display: grid; grid-template-columns: 2.4rem 3rem minmax(0, 1fr); gap: var(--s-2); width: 100%; text-align: left; padding: var(--s-2); line-height: 1.45; align-items: baseline; border-radius: var(--r-ctl); }
-.rp-trace li:not([aria-current]) > button:hover { background: var(--fill); }
-.rp-trace .t { color: var(--ink-2); font-size: var(--t-12); }
-.rp-trace .k { color: var(--ink-2); }
-.rp-trace .q { overflow-wrap: anywhere; font-size: var(--t-12); }
-.rp-trace .think { color: var(--ink-2); font-style: italic; }
-.rp-trace .sub { display: block; color: var(--ink-2); }
-.rp-trace .bad, .rp-caption .bad { color: var(--pencil); }
+.rp-trace li > button, .rp-now { display: grid; grid-template-columns: 2.4rem 3rem minmax(0, 1fr); gap: var(--s-2); width: 100%; text-align: left; padding: var(--s-2); line-height: 1.45; align-items: baseline; border-radius: var(--r-ctl); }
+.rp-trace li:not([aria-current]) > button { color: var(--ink-2); }
+.rp-trace li:not([aria-current]) > button:hover { background: var(--fill); color: var(--ink); }
+.replay .t { color: var(--ink-2); font-size: var(--t-12); }
+.replay .k { color: var(--ink-2); }
+.replay .q { overflow-wrap: anywhere; font-size: var(--t-12); }
+.replay .think { font-style: italic; }
+.replay .sub { display: block; color: var(--ink-2); }
+.replay .bad { color: var(--pencil); }
 .rp-trace pre { margin: 0 var(--s-2) var(--s-2); max-height: 14rem; }
-.books { display: grid; gap: var(--s-1); margin-bottom: var(--s-3); }
+
+.rp-stage { gap: var(--s-2); }
+.rp-page { flex: 1; min-height: 0; display: flex; justify-content: center; }
+.rp-page .pv { flex: 1; max-width: 52rem; }
+.rp-page .pv-page .sheet { width: 108%; margin-left: -4%; }
+.rp-caption { display: flex; justify-content: space-between; gap: var(--s-3); min-height: 1.45em; width: 100%; max-width: 52rem; margin-inline: auto; color: var(--ink-2); }
+.rp-caption a { white-space: nowrap; color: var(--ink); font-weight: 500; margin-left: auto; }
+.books { display: grid; gap: var(--s-1); width: 100%; max-width: 52rem; margin-inline: auto; }
 .books li { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: var(--s-3); align-items: center; }
 .book-name { display: block; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 24px; }
 .book-name:hover { color: var(--ink); }
-.cells { display: grid; gap: 1px; height: 16px; }
+.cells { display: grid; gap: 1px; height: 14px; }
 .cells i { background: var(--fill-2); border-radius: 1px; transition: background var(--d-pop) var(--ease), transform var(--d-pop) var(--ease); }
 .cells i[data-mark='hit'] { background: color-mix(in srgb, var(--mark) calc(var(--score, 1) * 100%), rgb(14 22 33 / 0.09)); }
 .cells i[data-mark='read'] { background: var(--ink-3); }
 .cells i[data-mark='cited'] { background: var(--mark); box-shadow: 0 0 0 1.5px var(--ink); position: relative; }
 .cells i[data-mark='rejected'] { background: var(--pencil); box-shadow: 0 0 0 1.5px var(--pencil); position: relative; }
 .cells i[data-fresh], .cells i[data-here] { transform: scaleY(1.5); }
-.rp-page { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: var(--s-2); }
-.rp-page .pv { flex: 1; }
-.rp-page .pv-page .sheet { width: 112%; margin-left: -6%; }
-.rp-caption { display: flex; justify-content: space-between; gap: var(--s-3); color: var(--ink-2); }
-.rp-caption a { white-space: nowrap; color: var(--ink); font-weight: 500; }
+
 .rp-answer { overflow-y: auto; position: relative; scrollbar-width: thin; }
 .rp-answer .prose { font-size: var(--t-16); line-height: 1.7; }
 .rp-answer .prose p + p { margin-top: 0.7em; }
@@ -612,9 +618,13 @@ ins.diff { text-decoration: none; color: var(--pencil); font-weight: 500; backgr
 .rp-answer .prose p.item::before { content: '–'; position: absolute; left: 0; color: var(--ink-3); }
 .rp-answer .prose p.item + p.item { margin-top: 0.35em; }
 .rp-answer .chip { margin-inline: 2px; white-space: normal; }
+.rp-blank { display: grid; gap: var(--s-3); padding-top: var(--s-2); }
+.rp-blank i { height: 12px; border-radius: var(--r-sheet); background: var(--fill); }
+.rp-blank i:last-child { width: 60%; }
 .rp-reason { margin-top: var(--s-3); color: var(--ink-2); display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-1) var(--s-2); }
 .rp-reason:first-of-type { margin-top: var(--s-5); }
-.rp-scrub { display: flex; align-items: center; gap: var(--s-2); padding-block: var(--s-2) var(--s-4); background: var(--desk); }
+
+.rp-scrub { display: flex; align-items: center; gap: var(--s-2); padding-block: 0 var(--s-4); background: var(--desk); }
 .rp-play { width: var(--control); padding: 0; }
 .rp-play .i { fill: currentColor; stroke: none; }
 .rp-track { position: relative; flex: 1; height: 44px; display: flex; align-items: center; margin-inline: 12px; }
@@ -631,17 +641,25 @@ ins.diff { text-decoration: none; color: var(--pencil); font-weight: 500; backgr
 .ticks i[data-kind='verify']:not([data-past]) { opacity: 0.45; }
 .ticks i[data-bad] { background: var(--pencil); box-shadow: none; }
 .rp-count { color: var(--ink-2); white-space: nowrap; min-width: 4rem; text-align: right; }
+
+/* Narrow: the stage stays in view at the top, with the step it is on; the answer is written
+   under it, then the whole trace; the scrubber is at the thumb. */
 @media (max-width: 999px) {
   .replay { height: auto; min-height: 0; display: block; padding-bottom: 76px; }
-  .rp-head { margin-bottom: var(--s-4); flex-direction: column; align-items: stretch; gap: var(--s-2); }
+  .rp-head { margin-bottom: var(--s-3); gap: var(--s-4); }
+  .rp-lead { display: none; }
   .rp-panes { display: flex; flex-direction: column; gap: var(--s-6); }
-  .rp-library { order: 1; position: sticky; top: 0; z-index: 3; background: var(--desk); padding-block: var(--s-2); }
-  .rp-library .h3 .sub { display: none; }
-  .rp-page .pv { flex: none; height: 30vh; }
+  .rp-stage { order: 1; position: sticky; top: 0; z-index: 3; margin-inline: calc(-1 * var(--gutter)); padding: var(--s-2) var(--gutter); background: var(--desk); gap: var(--s-1); }
+  .rp-page { flex: none; height: 34dvh; }
+  .rp-caption, .books .book-name { display: none; }
+  .books li { grid-template-columns: minmax(0, 1fr); }
+  .cells { height: 8px; }
+  .rp-now { display: grid; grid-template-columns: 2.4rem 3rem minmax(0, 1fr); padding: var(--s-1) 0 0; max-height: 2.9em; overflow: hidden; }
+  .rp-now .sub { display: inline; margin-left: var(--s-2); }
   .rp-answer { order: 2; overflow: visible; }
   .rp-trace { order: 3; }
   .rp-trace ol { overflow: visible; }
-  .books li { grid-template-columns: 7.5rem minmax(0, 1fr); }
+  .rp-panes .rp-trace .h3 { display: block; margin-bottom: var(--s-2); }
   .rp-scrub { position: fixed; left: 0; right: 0; bottom: 0; padding: var(--s-2) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom)); z-index: 4; }
   .rp-raw, .rp-count { display: none; }
 }
@@ -726,4 +744,20 @@ main { flex: 1 0 auto; }
   .routes tr { display: grid; grid-template-columns: 3rem minmax(0, 1fr); padding-block: var(--s-1); }
   .routes td { white-space: normal; overflow-wrap: anywhere; padding-block: 2px; }
   .routes td:last-child { grid-column: 2; color: var(--ink-2); }
+}
+.rooms { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); margin: calc(-1 * var(--s-3)); }
+.rooms a { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-1); padding: var(--s-3); border-radius: var(--r-ctl); transition: background var(--d-fast) var(--ease); }
+.rooms a:hover { background: var(--fill); }
+.rooms .h2 { margin-bottom: 0; }
+.rooms .sub { color: var(--ink-2); max-width: var(--measure); }
+@media (min-width: 1000px) {
+  .replay .rp-now { display: none; }
+  .books { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px var(--s-5); }
+  .books li { grid-template-columns: 7.5rem minmax(0, 1fr); }
+  .books li:only-child { grid-column: 1 / -1; }
+}
+@media (max-width: 999px) {
+  .rp-now > :last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rp-now > :last-child * { display: inline; }
+  .rp-now .state::before { display: inline-block; vertical-align: -2px; margin-right: 6px; }
 }

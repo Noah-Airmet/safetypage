@@ -38,10 +38,10 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
 <Base find={false}>
   <section class="wrap hero" data-proof data-show="verified">
     <div class="hero-say">
-      <h1 class="display">The AI safety record, cited to the page.</h1>
+      <h1 class="sr">SafetyPage</h1>
       <div class="hero-find">
         <form class="ask" action="/search" role="search">
-          <input type="search" name="query" placeholder={`Search ${num(n.documents)} documents`} aria-label="Search the library" autocomplete="off" />
+          <input type="search" name="query" placeholder={`Search ${num(n.documents)} AI safety documents`} aria-label="Search the library" autocomplete="off" />
           <button class="btn btn-primary">Search</button>
         </form>
         <p class="tries">{examples.map((q) => <a href={`/search?query=${encodeURIComponent(q)}`}>{q}</a>)}</p>
@@ -95,10 +95,10 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
 
     {topics.length > 0 && (
       <section class="section" aria-labelledby="follow-h">
-        <h2 class="h2" id="follow-h"><a href="/follow">One topic, every lab's system cards</a></h2>
+        <h2 class="h2" id="follow-h"><a href="/follow">Follow</a></h2>
         <div class="topics">
           {topics.map((t) => (
-            <a href={`/follow/${t.topic.id}`}><span class="name">{t.topic.name}</span><span class="sub">{t.found} cards, {t.labs.filter((l) => l.found.length).length} labs</span></a>
+            <a href={`/follow/${t.topic.id}`}><span class="name">{t.topic.name}</span><span class="sub">{t.found} system cards, {t.labs.filter((l) => l.found.length).length} labs</span></a>
           ))}
         </div>
       </section>
@@ -106,30 +106,26 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
 
     <section class="section split" aria-labelledby="agents-h">
       <div class="agent">
-        <h2 class="h2" id="agents-h"><a href="/connect">Connect an agent</a></h2>
+        <h2 class="h2" id="agents-h"><a href="/connect">Connect</a></h2>
         <div class="codeline"><code tabindex="0">{connect}</code><button class="ib" data-copy={connect} aria-label="Copy command"><Icon name="copy" /></button></div>
         <p class="tries"><a href="/connect">search</a><a href="/connect">fetch</a><a href="/connect">verify_quote</a><a href="/connect">check_answer</a></p>
       </div>
-      <div>
-      <h2 class="h2">Check the work</h2>
-      <div class="rows">
+      <div class="rooms">
         <a href="/check?example=1">
-          <span class="name">Check a paragraph</span>
+          <h2 class="h2">Check</h2>
           <Tally citations={[{ state: 'verified' }, { state: 'cited' }, { state: 'rejected' }, { state: 'rejected' }, { state: 'rejected' }]} />
         </a>
         {trace && (
           <a href={`/r/${trace.header.trace_id}`}>
-            <span class="name">Replay a run</span>
+            <h2 class="h2">Replay</h2>
             <span class="sub clamp">{asked!.quoted ? `“${asked!.quoted}”` : asked!.lead}</span>
             <Tally citations={trace.answer?.citations ?? []} />
-            <span class="val">{trace.header.model.split('/').pop()}</span>
           </a>
         )}
         <a href="/citationbench">
-          <span class="name">CitationBench</span>
-          <span class="val">{runs.length ? `${runs.length} ${runs.length === 1 ? 'run' : 'runs'}` : ''}</span>
+          <h2 class="h2">CitationBench</h2>
+          {runs.length > 0 && <span class="sub">{runs.length} {runs.length === 1 ? 'run' : 'runs'}</span>}
         </a>
-      </div>
       </div>
     </section>
   </div>

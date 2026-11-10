@@ -4,7 +4,7 @@ const base = process.argv[2] ?? 'http://localhost:4412';
 const q = encodeURIComponent;
 const paths = ['/', '/library', '/library/labs', '/library/papers?year=2024&q=sparse', '/d/arxiv/2305.15324', '/d/anthropic/claude-opus-5-5-system-card', '/d/arxiv/2305.15324/v2/p6?q=' + q('not the only tool available for AI risk assessment'),
   '/d/distill/zoom-in/r1/b21', '/d/anthropic/claude-opus-5-5-system-card/r1/p135', '/d/lw/LNA8mubrByG7SFacm/r1/b85', '/search?query=' + q('"alignment faking"'), '/follow', '/follow/sabotage', '/check?example=1',
-  '/r/cc-sonnet-5-5-43677d-pc-7abbdba8ab.1?step=14', '/r', '/citationbench', '/citationbench/runs/cc-sonnet-5-5-43677d', '/connect', '/about', '/nope'];
+  '/r/cc-haiku-5-5-4e1c63-pc-4bd058594c.1?step=24', '/r', '/citationbench', '/citationbench/runs/cc-haiku-5-5-4e1c63', '/connect', '/about', '/nope'];
 const browser = await chromium.launch({ channel: 'chrome' });
 for (const width of [390, 1440]) {
   const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: width < 500, hasTouch: width < 500 });
