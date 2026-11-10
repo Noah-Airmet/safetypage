@@ -523,6 +523,79 @@ keyword index, a flat `.npy` matrix per embedding model with exact search. Lexic
 Dense, hybrid and the rest are arms measured on the benchmark's dev split, and the default
 public arm is whichever wins there.
 
+### As built: `onthepage.search` and `onthepage.build`
+
+`SnapshotSearch(snapshot_dir, base_url=...)` in
+[`onthepage.search.backend`](../src/onthepage/search/backend.py) is the `SearchBackend` for one
+sealed snapshot.
+
+**The query grammar** ([`onthepage.search.grammar`](../src/onthepage/search/grammar.py)):
+
+| Query | Means |
+|---|---|
+| `sparse autoencoder` | both words, anywhere in the unit (bare words are ANDed; `AND` is accepted and ignored) |
+| `"sparse autoencoder"` | the words together, in order |
+| `"sparse auto*"` | a phrase whose last word starts with `auto` |
+| `eval*` | any word starting with `eval`; at least 3 letters before the `*` |
+| `refuse NEAR/5 harmful` | both words, **in either order, with at most 5 other words between them**. `NEAR` alone is `NEAR/10`; the most is `NEAR/50`. Operands are single plain words |
+| `-benchmark`, `-"red team"` | the unit must not contain it; a query needs at least one positive term |
+
+Words are what the index's analyzer makes of the text: split on anything that is not a letter
+or digit, lower-cased, accents folded (`Café` = `cafe`), words of 40 bytes or more dropped. No
+stemming and no stop words. `ASL-3` is the phrase `asl 3`. `OR` and parentheses are refused
+with a message saying what to do instead. At most 12 terms. Tantivy's phrase slop is ordered
+and charges 2 for a swap, so `NEAR/n` compiles to the union of both orders, each with slop
+`n`; golden cases in [`tests/search/test_lexical.py`](../tests/search/test_lexical.py) pin
+the meaning for the engine and the highlighter together.
+
+**Filters** are request fields: `doc` (a document: its latest version; or `doc/version`),
+`kind`, `collection` and `org` (case-insensitive; an unknown value is an error listing the
+known ones), `tier`, `date_from`/`date_to` (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`, inclusive, on the
+document's `published`; undated documents never match a date filter). Only latest versions
+are searched unless `all_versions` is set or `doc` names a version.
+
+**Results.** `score` is BM25 (bm25), cosine similarity (dense) or the fused RRF score
+(hybrid); `sort=date` orders by date, newest first, and reports score 0. Snippets are at most
+300 characters around the densest run of matches, whitespace collapsed; a link-only unit's
+snippet is cut by `policy.clip`. `match_spans` are offsets into the snippet. `facets` counts
+the matches by `kind`, `collection`, `org` and `tier` (bm25 only). In `documents` mode bm25
+ranks documents by how many of their units match; dense and hybrid group the top 200 units.
+An empty query lists documents by id (or by date with `sort=date`). Paging is a numeric
+cursor, to at most 250 results.
+
+**Arms.** `bm25` is always there. `dense` (Qwen3-Embedding-0.6B, one vector per unit, text
+truncated to 1,024 tokens, exact search) and `hybrid` (reciprocal rank fusion, k = 60, of the
+top 100 of each; the bm25 half reads single words as "any of") need `dense/<model>/` in the
+snapshot; without it they fall back to bm25 and the response's `arm` and `interpretation` say
+so. `hybrid-rerank` and `contextual` are not built: asking for them raises
+`ArmUnavailableError`.
+
+**Limits.** Each backend runs searches on its own pool: at most 8 at once, a 2 s time limit
+per query (`SearchTimeoutError`), 1 s to wait for a slot (`SearchBusyError`). A query past its
+limit finishes in the background but keeps its slot, so slow queries cannot pile up. All
+errors derive from `onthepage.search.errors.SearchError` and their messages are written for an
+agent.
+
+**Building a snapshot** ([`onthepage.build.snapshot`](../src/onthepage/build/snapshot.py)):
+`build_snapshot(corpus_db, root, id)` stages, writes `lexical/`, `public/` (cards for every
+document; for open versions each unit's `read_units(layout=True)` JSON, the source PDF or
+HTML, and WebP page images at 800 and 1600 px), assembles `dense/<model>/` if the embedding
+cache covers every unit (otherwise the manifest records why it was skipped), and seals.
+Page images are cached by PDF hash in `<root>/cache/pages/`; blob and image files are
+hard-linked into the snapshot.
+
+**Embeddings** are a resumable batch job into `<root>/embeddings/<model>/`, keyed by the hash
+of the unit's text, so a restart carries on and unchanged units are never embedded twice. The
+command refuses to start outside 22:00–06:00 (local model work runs overnight) unless told
+`--now`, and stops at 06:00.
+
+```sh
+uv run python -m onthepage.search build   --root data --id 2026.11.0 --current
+uv run python -m onthepage.search query   --root data '"reward hacking" -benchmark' --kind paper
+uv run python -m onthepage.search latency --root data
+uv sync --extra embed && uv run python -m onthepage.search embed --root data   # at night
+```
+
 The site's JSON API is the same functions over HTTP, with `/s/<snapshot>/` as an optional
 prefix to pin a snapshot (unprefixed routes serve `current`):
 
@@ -591,7 +664,8 @@ against.
 
 A **surface** is a named configuration: which tools, which descriptions, which retrieval arm,
 which snapshot, which result shape. Surfaces are files in the repository and are how tool
-design is ablated.
+design is ablated: one TOML file each in `src/onthepage/server/surfaces/`, with description
+files in `surfaces/descriptions/` (see [SERVER.md](SERVER.md#surfaces)).
 
 - `/mcp` serves the default surface on the current snapshot.
 - `/x/<surface>/mcp` serves a variant at its own path. A path, not a header, because the
@@ -599,9 +673,14 @@ design is ablated.
 - `surface_id` is `<name>@<first 6 hex of the SHA-256 of the resolved config and its
   description files>`.
 
-Every result carries `ResponseMeta` in MCP `_meta` (and in API responses): `server_version`,
-`surface_id`, `snapshot`, `arm`, `request_id`. The harness asserts the first four are constant
-within a run.
+Every result carries `ResponseMeta` in MCP `_meta` under the key `onthepage` (error results
+too), and in API responses as the headers `X-Server-Version`, `X-Surface`, `X-Snapshot`, `X-Arm`
+and `X-Request-Id`: `server_version`, `surface_id`, `snapshot`, `arm`, `request_id`. The harness
+asserts the first four are constant within a run.
+
+A benchmark run identifies itself with the HTTP headers `X-OnThePage-Run: <run_id>` and
+`X-OnThePage-Sample: <sample_id>` on every MCP request. How to run, call and deploy the server,
+and how to add it to claude.ai and ChatGPT: [SERVER.md](SERVER.md).
 
 ---
 
@@ -667,8 +746,9 @@ Deterministic checks and a judge's opinion are never mixed. A model's verdict on
 
 In `ops.sqlite`, `traces` holds the header and `trace_events` holds one event per row.
 `tool_calls` is the server's own log, one row per call; `request_id` joins it to a trace.
-Calls that belong to a benchmark run or an opted-in session keep their arguments. Public calls
-keep none, and no IP address is ever written.
+Calls that belong to a benchmark run (an `X-OnThePage-Run` header) keep their arguments, the
+cites returned and the error message. Public calls keep none of these (only the kind of error),
+and no IP address is ever written.
 
 ---
 

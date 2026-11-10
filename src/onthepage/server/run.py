@@ -43,17 +43,15 @@ FIXTURE_BUNDLES = Path(__file__).resolve().parents[3] / "fixtures" / "corpus" / 
 
 
 def open_backend(snapshot_dir: Path, snapshot_id: str, base_url: str) -> SearchBackend:
-    """The snapshot's Tantivy backend when it has one, else the in-memory backend."""
+    """The search track's Tantivy backend when the snapshot has an index, else the in-memory one."""
     if (snapshot_dir / "lexical").is_dir():
         try:
-            search = importlib.import_module("onthepage.search")
-            opener = search.open_backend
-        except (ImportError, AttributeError):
-            log.warning(
-                "%s has a lexical index but onthepage.search.open_backend is missing", snapshot_id
-            )
+            module = importlib.import_module("onthepage.search.backend")
+        except ImportError:
+            log.warning("%s has a lexical index but onthepage.search is not installed", snapshot_id)
         else:
-            return opener(snapshot_dir)  # pyright: ignore[reportUnknownVariableType]
+            backend: SearchBackend = module.SnapshotSearch(snapshot_dir, base_url=base_url)
+            return backend
     corpus = open_readonly(snapshot_dir / "corpus.sqlite", base_url)
     try:
         return MemoryBackend(corpus, snapshot=snapshot_id)

@@ -148,8 +148,10 @@ class Library:
             request = request.model_copy(update={"doc": str(_ref(request.doc))})
         try:
             response = self.backend.search(request)
-        except (ValueError, LookupError) as exc:
-            raise _failure(exc) from exc
+        except Exception as exc:
+            if _is_search_error(exc):
+                raise ToolError(str(exc)) from exc
+            raise
         if response.total == 0 and _has_filters(request):
             bare = self.backend.search(
                 SearchRequest(query=request.query, arm=request.arm, limit=1, mode=request.mode)
@@ -340,6 +342,14 @@ class Library:
                 "in sections."
             )
         return self.corpus.check_answer(text)
+
+
+def _is_search_error(exc: Exception) -> bool:
+    """A backend refusing a query (bad syntax, unknown filter, busy, slow); its message is for agents."""
+    module = type(exc).__module__
+    return isinstance(exc, ValueError | LookupError) or module.startswith(
+        ("onthepage.search", "onthepage.server.backend")
+    )
 
 
 def _has_filters(request: SearchRequest) -> bool:
