@@ -159,3 +159,17 @@ def test_html_comments_are_not_text() -> None:
         "<figure><figcaption>Caption<!--<b>draft</b>--></figcaption></figure></body>"
     )
     assert [b.text for b in blocks] == ["Shown and kept.", "Caption"]
+
+
+def test_site_furniture_is_dropped() -> None:
+    body = "<p>" + "Real text of the post. " * 20 + "</p>"
+    page = (
+        "<html><body><main><article><h1>Post</h1><p>Please enable javascript for this website.</p>"
+        f"<p>\u200d</p>{body}<p>Lorem ipsum dolor sit amet, consectetur.</p>"
+        "<p>Share this article</p><h2>More papers</h2><p>Another post</p></article></main>"
+        "</body></html>"
+    ).encode()
+    texts = [b.text for b in page_blocks(page, "https://www.apolloresearch.ai/blog/post")]
+    assert texts[0] == "Post" and len(texts) == 2
+    other = [b.text for b in page_blocks(page, "https://example.org/post")]
+    assert "Share this article" not in other and "Another post" in other

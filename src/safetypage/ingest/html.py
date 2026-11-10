@@ -11,6 +11,8 @@ lines), passed through ``clean_text``. Anchors are minted by storage, in this or
 
 from __future__ import annotations
 
+import re
+import unicodedata
 from typing import Any, Final
 from urllib.parse import urlsplit
 
@@ -156,6 +158,7 @@ def page_blocks(data: bytes, url: str) -> list[NewBlock]:
         blocks = _whole_main_blocks(html)
     if blocks is None:
         blocks = _main_blocks(html, url)
+    blocks = _without_furniture(blocks, url)
     total = sum(len(b.text) for b in blocks)
     if total < MIN_TEXT_CHARS:
         raise ExtractError(
@@ -187,6 +190,46 @@ def _d_article_blocks(html: str) -> list[NewBlock] | None:
     for article in articles:
         walker.walk(article)
     return walker.blocks
+
+
+_FURNITURE: Final = {
+    "please enable javascript for this website.",
+    "no items found.",
+    "read the full paper",
+    "← back to all updates",
+    "share this article",
+    "copy as markdown",
+    "listen to this article",
+}
+"""Site furniture that the extractor keeps as paragraphs on many pages (buttons, widgets,
+script notices). Dropped wherever it stands alone as a block that is not a heading."""
+
+_FURNITURE_FROM: Final = {"apolloresearch.ai": "Share this article"}
+"""Sites whose article ends at this line; what follows is a list of other posts."""
+
+_APOLLO_BANNER: Final = {"Table of Contents", "Evaluating anti-scheming training"}
+"""The table-of-contents widget and the banner linking to a featured post, atop every post."""
+_INVISIBLE: Final = {"Cf", "Cc", "Zs", "Zl", "Zp"}
+_MIN_READ: Final = re.compile(r"\d+ min read")
+
+
+def _without_furniture(blocks: list[NewBlock], url: str) -> list[NewBlock]:
+    end = _FURNITURE_FROM.get(urlsplit(url).netloc.removeprefix("www."))
+    kept: list[NewBlock] = []
+    for block in blocks:
+        text = block.text.strip()
+        if end is not None and text == end:
+            break
+        if all(unicodedata.category(ch) in _INVISIBLE for ch in text):
+            continue  # nothing a reader can see (a lone zero-width joiner)
+        if block.kind != "heading" and (
+            text.lower() in _FURNITURE
+            or text.startswith("Lorem ipsum dolor sit amet")
+            or (end is not None and (_MIN_READ.fullmatch(text) or text in _APOLLO_BANNER))
+        ):
+            continue
+        kept.append(block)
+    return kept
 
 
 _WHOLE_MAIN_HOSTS: Final = {"deploymentsafety.openai.com"}
