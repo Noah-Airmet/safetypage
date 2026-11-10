@@ -1,0 +1,426 @@
+{
+ "schema": "citationbench.result/1",
+ "run_id": "codex-gpt-6.1-sol-ce56fe",
+ "name": "codex-gpt-6.1-sol",
+ "created_at": "2026-11-10T10:08:21.455013+00:00",
+ "agent": "codex codex-cli 0.167.0",
+ "model": "gpt-6.1-sol",
+ "solver": "codex codex-cli 0.167.0",
+ "surface": "default",
+ "server": "http://localhost:8766",
+ "snapshot": "2026.11.3",
+ "questions": {
+  "file": "citationbench/heldout/test.jsonl",
+  "sha256": "d18c86f4df9d8d905d27c7a317d3b35749c2766e8f0e0156e277c9474eb512c4",
+  "n": 50
+ },
+ "epochs": 1,
+ "samples": 50,
+ "planned_samples": 50,
+ "complete": true,
+ "stopped": null,
+ "errors": 0,
+ "contaminated": 0,
+ "seconds_per_sample": 36.93937656920032,
+ "judge": null,
+ "measures": {
+  "correct": {
+   "mean": 0.6,
+   "ci_low": 0.46296296296296297,
+   "ci_high": 0.7346938775510204,
+   "n": 50
+  },
+  "verdict_correct": {
+   "mean": 0.8863636363636364,
+   "ci_low": 0.7906976744186046,
+   "ci_high": 0.9761904761904762,
+   "n": 44
+  },
+  "page_precision": {
+   "mean": 0.4015714285714286,
+   "ci_low": 0.292517006802721,
+   "ci_high": 0.5052754435107376,
+   "n": 50
+  },
+  "page_recall": {
+   "mean": 0.4733333333333334,
+   "ci_low": 0.3576388888888889,
+   "ci_high": 0.5900000000000001,
+   "n": 50
+  },
+  "quote_fidelity": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 25
+  },
+  "quoted": {
+   "mean": 0.5,
+   "ci_low": 0.3673469387755102,
+   "ci_high": 0.6326530612244898,
+   "n": 50
+  },
+  "seen_rate": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 50
+  },
+  "support_rate": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 0
+  }
+ },
+ "by_method": {
+  "perturbed_claim": {
+   "correct": {
+    "mean": 0.6551724137931034,
+    "ci_low": 0.4827586206896552,
+    "ci_high": 0.8275862068965517,
+    "n": 29
+   },
+   "verdict_correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "page_precision": {
+    "mean": 0.34236453201970446,
+    "ci_low": 0.22454844006568142,
+    "ci_high": 0.46469622331691296,
+    "n": 29
+   },
+   "page_recall": {
+    "mean": 0.3850574712643678,
+    "ci_low": 0.25862068965517243,
+    "ci_high": 0.5114942528735632,
+    "n": 29
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 18
+   },
+   "quoted": {
+    "mean": 0.6206896551724138,
+    "ci_low": 0.4482758620689655,
+    "ci_high": 0.7931034482758621,
+    "n": 29
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "version_diff": {
+   "correct": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.5,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.5,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "page_recall": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.5,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 1
+   },
+   "quoted": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.0,
+    "ci_high": 0.5,
+    "n": 3
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "citing_sentence": {
+   "correct": {
+    "mean": 0.4,
+    "ci_low": 0.13333333333333333,
+    "ci_high": 0.6666666666666666,
+    "n": 15
+   },
+   "verdict_correct": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.4,
+    "ci_high": 0.8666666666666667,
+    "n": 15
+   },
+   "page_precision": {
+    "mean": 0.3655555555555556,
+    "ci_low": 0.1833333333333333,
+    "ci_high": 0.5611111111111112,
+    "n": 15
+   },
+   "page_recall": {
+    "mean": 0.5,
+    "ci_low": 0.26666666666666666,
+    "ci_high": 0.7333333333333333,
+    "n": 15
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "quoted": {
+    "mean": 0.4,
+    "ci_low": 0.2,
+    "ci_high": 0.6666666666666666,
+    "n": 15
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 15
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "shared_section": {
+   "correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.8888888888888888,
+    "ci_low": 0.6666666666666666,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "page_recall": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quote_fidelity": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "quoted": {
+    "mean": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "n": 3
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "by_kind": {
+  "claim": {
+   "correct": {
+    "mean": 0.5681818181818182,
+    "ci_low": 0.4222222222222222,
+    "ci_high": 0.7142857142857143,
+    "n": 44
+   },
+   "verdict_correct": {
+    "mean": 0.8863636363636364,
+    "ci_low": 0.7906976744186046,
+    "ci_high": 0.9761904761904762,
+    "n": 44
+   },
+   "page_precision": {
+    "mean": 0.35027056277056273,
+    "ci_low": 0.24399350649350654,
+    "ci_high": 0.4594696969696969,
+    "n": 44
+   },
+   "page_recall": {
+    "mean": 0.42424242424242425,
+    "ci_low": 0.3079710144927536,
+    "ci_high": 0.5460992907801417,
+    "n": 44
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 24
+   },
+   "quoted": {
+    "mean": 0.5454545454545454,
+    "ci_low": 0.3953488372093023,
+    "ci_high": 0.6818181818181818,
+    "n": 44
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 44
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "compare": {
+   "correct": {
+    "mean": 0.8333333333333334,
+    "ci_low": 0.625,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.7777777777777778,
+    "ci_low": 0.5833333333333333,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "page_recall": {
+    "mean": 0.8333333333333334,
+    "ci_low": 0.625,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 1
+   },
+   "quoted": {
+    "mean": 0.16666666666666666,
+    "ci_low": 0.0,
+    "ci_high": 0.375,
+    "n": 6
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "cost": {
+  "billing": "subscription",
+  "price_table": "2026-11",
+  "priced": false,
+  "input_tokens": 2031027,
+  "output_tokens": 47327,
+  "cache_read_tokens": 8955392,
+  "cache_write_tokens": 0,
+  "total_usd": null,
+  "per_sample_usd": null,
+  "per_correct_usd": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 50
+  }
+ },
+ "meter": {
+  "after_first": {
+   "five_hour_used": 0.04,
+   "seven_day_used": 0.22
+  },
+  "after_last": {
+   "five_hour_used": 0.73,
+   "seven_day_used": 0.33
+  }
+ },
+ "config": {
+  "agent": "codex",
+  "model": "gpt-6.1-sol",
+  "questions": "citationbench/heldout/test.jsonl",
+  "limit": 50,
+  "corpus": "data/snapshots/2026.11.3",
+  "server": "http://localhost:8766",
+  "ops_db": "citationbench/work/ops.sqlite",
+  "surface": "default",
+  "epochs": 1,
+  "batch": 50,
+  "pause": 10,
+  "max_used": {
+   "five_hour": 0.8,
+   "seven_day": 0.41
+  },
+  "name": "codex-gpt-6.1-sol"
+ },
+ "log": "work/runs/codex-gpt-6.1-sol-ce56fe"
+}

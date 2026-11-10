@@ -291,7 +291,7 @@ def _trace(
             model=log.eval.model,
             solver=str(config.get("solver", "react-baseline@1")),
             surface_id=str(config.get("surface", "default")),
-            snapshot=str(config.get("corpus", "fixtures")),
+            snapshot=Path(str(config.get("corpus", "fixtures"))).name,
             arm=str(config.get("arm", "default")),
             server_version=str(config.get("server_version", "unknown")),
             started_at=started.isoformat(),
@@ -458,7 +458,7 @@ def summarize(
         solver=str(config.get("solver", agent)),
         surface=str(config.get("surface", "default")),
         server=config.get("server"),
-        snapshot=str(config.get("corpus", "fixtures")),
+        snapshot=Path(str(config.get("corpus", "fixtures"))).name,
         questions={
             "file": str(config.get("questions", "")),
             "sha256": qhash,

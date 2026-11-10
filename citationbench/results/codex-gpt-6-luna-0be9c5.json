@@ -1,0 +1,426 @@
+{
+ "schema": "citationbench.result/1",
+ "run_id": "codex-gpt-6-luna-0be9c5",
+ "name": "codex-gpt-6-luna",
+ "created_at": "2026-11-10T10:47:25.712611+00:00",
+ "agent": "codex codex-cli 0.167.0",
+ "model": "gpt-6-luna",
+ "solver": "codex codex-cli 0.167.0",
+ "surface": "default",
+ "server": "http://localhost:8766",
+ "snapshot": "2026.11.3",
+ "questions": {
+  "file": "citationbench/heldout/test.jsonl",
+  "sha256": "d18c86f4df9d8d905d27c7a317d3b35749c2766e8f0e0156e277c9474eb512c4",
+  "n": 50
+ },
+ "epochs": 1,
+ "samples": 50,
+ "planned_samples": 50,
+ "complete": true,
+ "stopped": null,
+ "errors": 0,
+ "contaminated": 0,
+ "seconds_per_sample": 30.694245633299143,
+ "judge": null,
+ "measures": {
+  "correct": {
+   "mean": 0.4,
+   "ci_low": 0.25,
+   "ci_high": 0.54,
+   "n": 50
+  },
+  "verdict_correct": {
+   "mean": 0.8409090909090909,
+   "ci_low": 0.7333333333333333,
+   "ci_high": 0.9333333333333333,
+   "n": 44
+  },
+  "page_precision": {
+   "mean": 0.3245238095238095,
+   "ci_low": 0.22071428571428572,
+   "ci_high": 0.43238095238095225,
+   "n": 50
+  },
+  "page_recall": {
+   "mean": 0.35,
+   "ci_low": 0.2418300653594771,
+   "ci_high": 0.4591836734693877,
+   "n": 50
+  },
+  "quote_fidelity": {
+   "mean": 0.8421052631578947,
+   "ci_low": 0.6842105263157895,
+   "ci_high": 1.0,
+   "n": 19
+  },
+  "quoted": {
+   "mean": 0.38,
+   "ci_low": 0.25,
+   "ci_high": 0.5102040816326531,
+   "n": 50
+  },
+  "seen_rate": {
+   "mean": 0.9676190476190476,
+   "ci_low": 0.9370748299319729,
+   "ci_high": 0.9935897435897435,
+   "n": 50
+  },
+  "support_rate": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 0
+  }
+ },
+ "by_method": {
+  "perturbed_claim": {
+   "correct": {
+    "mean": 0.41379310344827586,
+    "ci_low": 0.20689655172413793,
+    "ci_high": 0.5862068965517241,
+    "n": 29
+   },
+   "verdict_correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "page_precision": {
+    "mean": 0.24055829228243022,
+    "ci_low": 0.1412151067323481,
+    "ci_high": 0.3555008210180624,
+    "n": 29
+   },
+   "page_recall": {
+    "mean": 0.25862068965517243,
+    "ci_low": 0.15517241379310343,
+    "ci_high": 0.37356321839080464,
+    "n": 29
+   },
+   "quote_fidelity": {
+    "mean": 0.9230769230769231,
+    "ci_low": 0.7692307692307693,
+    "ci_high": 1.0,
+    "n": 13
+   },
+   "quoted": {
+    "mean": 0.4482758620689655,
+    "ci_low": 0.27586206896551724,
+    "ci_high": 0.6206896551724138,
+    "n": 29
+   },
+   "seen_rate": {
+    "mean": 0.9700328407224958,
+    "ci_low": 0.9343185550082101,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "version_diff": {
+   "correct": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.5,
+    "ci_low": 0.0,
+    "ci_high": 0.75,
+    "n": 3
+   },
+   "page_recall": {
+    "mean": 0.5,
+    "ci_low": 0.0,
+    "ci_high": 0.75,
+    "n": 3
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 1
+   },
+   "quoted": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.0,
+    "ci_high": 0.5,
+    "n": 3
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "citing_sentence": {
+   "correct": {
+    "mean": 0.2,
+    "ci_low": 0.0,
+    "ci_high": 0.4,
+    "n": 15
+   },
+   "verdict_correct": {
+    "mean": 0.5333333333333333,
+    "ci_low": 0.26666666666666666,
+    "ci_high": 0.8,
+    "n": 15
+   },
+   "page_precision": {
+    "mean": 0.33888888888888885,
+    "ci_low": 0.16666666666666666,
+    "ci_high": 0.5388888888888889,
+    "n": 15
+   },
+   "page_recall": {
+    "mean": 0.36666666666666664,
+    "ci_low": 0.17777777777777776,
+    "ci_high": 0.5666666666666668,
+    "n": 15
+   },
+   "quote_fidelity": {
+    "mean": 0.6,
+    "ci_low": 0.2,
+    "ci_high": 1.0,
+    "n": 5
+   },
+   "quoted": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.13333333333333333,
+    "ci_high": 0.6,
+    "n": 15
+   },
+   "seen_rate": {
+    "mean": 0.95,
+    "ci_low": 0.8666666666666667,
+    "ci_high": 1.0,
+    "n": 15
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "shared_section": {
+   "correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.8888888888888888,
+    "ci_low": 0.6666666666666666,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "page_recall": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quote_fidelity": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "quoted": {
+    "mean": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "n": 3
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "by_kind": {
+  "claim": {
+   "correct": {
+    "mean": 0.3409090909090909,
+    "ci_low": 0.19047619047619047,
+    "ci_high": 0.4888888888888889,
+    "n": 44
+   },
+   "verdict_correct": {
+    "mean": 0.8409090909090909,
+    "ci_low": 0.7333333333333333,
+    "ci_high": 0.9333333333333333,
+    "n": 44
+   },
+   "page_precision": {
+    "mean": 0.2740800865800866,
+    "ci_low": 0.17386489479512734,
+    "ci_high": 0.3753968253968253,
+    "n": 44
+   },
+   "page_recall": {
+    "mean": 0.29545454545454547,
+    "ci_low": 0.18604651162790697,
+    "ci_high": 0.4,
+    "n": 44
+   },
+   "quote_fidelity": {
+    "mean": 0.8333333333333334,
+    "ci_low": 0.6666666666666666,
+    "ci_high": 1.0,
+    "n": 18
+   },
+   "quoted": {
+    "mean": 0.4090909090909091,
+    "ci_low": 0.2619047619047619,
+    "ci_high": 0.5555555555555556,
+    "n": 44
+   },
+   "seen_rate": {
+    "mean": 0.9632034632034632,
+    "ci_low": 0.925531914893617,
+    "ci_high": 0.9924242424242425,
+    "n": 44
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "compare": {
+   "correct": {
+    "mean": 0.8333333333333334,
+    "ci_low": 0.4,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.6944444444444445,
+    "ci_low": 0.3611111111111111,
+    "ci_high": 0.9333333333333332,
+    "n": 6
+   },
+   "page_recall": {
+    "mean": 0.75,
+    "ci_low": 0.4,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 1
+   },
+   "quoted": {
+    "mean": 0.16666666666666666,
+    "ci_low": 0.0,
+    "ci_high": 0.375,
+    "n": 6
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "cost": {
+  "billing": "subscription",
+  "price_table": "2026-11",
+  "priced": false,
+  "input_tokens": 2410398,
+  "output_tokens": 47370,
+  "cache_read_tokens": 10913536,
+  "cache_write_tokens": 0,
+  "total_usd": null,
+  "per_sample_usd": null,
+  "per_correct_usd": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 50
+  }
+ },
+ "meter": {
+  "after_first": {
+   "five_hour_used": 0.74,
+   "seven_day_used": 0.33
+  },
+  "after_last": {
+   "five_hour_used": 0.79,
+   "seven_day_used": 0.33
+  }
+ },
+ "config": {
+  "agent": "codex",
+  "model": "gpt-6-luna",
+  "questions": "citationbench/heldout/test.jsonl",
+  "limit": 50,
+  "corpus": "data/snapshots/2026.11.3",
+  "server": "http://localhost:8766",
+  "ops_db": "citationbench/work/ops.sqlite",
+  "surface": "default",
+  "epochs": 1,
+  "batch": 50,
+  "pause": 10,
+  "max_used": {
+   "five_hour": 0.8,
+   "seven_day": 0.41
+  },
+  "name": "codex-gpt-6-luna"
+ },
+ "log": "work/runs/codex-gpt-6-luna-0be9c5"
+}

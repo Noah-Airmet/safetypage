@@ -1,0 +1,428 @@
+{
+ "schema": "citationbench.result/1",
+ "run_id": "cc-haiku-5-5-4e1c63",
+ "name": "cc-haiku-5-5",
+ "created_at": "2026-11-10T10:08:28.999947+00:00",
+ "agent": "claude-code 2.1.321 (Claude Code)",
+ "model": "claude-haiku-5-5",
+ "solver": "claude-code 2.1.321 (Claude Code)",
+ "surface": "default",
+ "server": "http://localhost:8766",
+ "snapshot": "2026.11.3",
+ "questions": {
+  "file": "citationbench/heldout/test.jsonl",
+  "sha256": "d18c86f4df9d8d905d27c7a317d3b35749c2766e8f0e0156e277c9474eb512c4",
+  "n": 75
+ },
+ "epochs": 1,
+ "samples": 75,
+ "planned_samples": 150,
+ "complete": false,
+ "stopped": "usage meter five_hour_used at 55%, at or above the 55% ceiling; next is pc-70026559c4.1",
+ "errors": 0,
+ "contaminated": 0,
+ "seconds_per_sample": 25.818519938280563,
+ "judge": null,
+ "measures": {
+  "correct": {
+   "mean": 0.41333333333333333,
+   "ci_low": 0.3013698630136986,
+   "ci_high": 0.525,
+   "n": 75
+  },
+  "verdict_correct": {
+   "mean": 0.8059701492537313,
+   "ci_low": 0.7164179104477612,
+   "ci_high": 0.8923076923076924,
+   "n": 67
+  },
+  "page_precision": {
+   "mean": 0.2567936507936508,
+   "ci_low": 0.19244444444444442,
+   "ci_high": 0.3214603174603174,
+   "n": 75
+  },
+  "page_recall": {
+   "mean": 0.4066666666666667,
+   "ci_low": 0.3143459915611814,
+   "ci_high": 0.4999999999999999,
+   "n": 75
+  },
+  "quote_fidelity": {
+   "mean": 0.9517354497354497,
+   "ci_low": 0.9273858514599255,
+   "ci_high": 0.9736000881834214,
+   "n": 75
+  },
+  "quoted": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 75
+  },
+  "seen_rate": {
+   "mean": 0.9805079365079366,
+   "ci_low": 0.9596078431372547,
+   "ci_high": 0.9972972972972972,
+   "n": 75
+  },
+  "support_rate": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 0
+  }
+ },
+ "by_method": {
+  "perturbed_claim": {
+   "correct": {
+    "mean": 0.475,
+    "ci_low": 0.325,
+    "ci_high": 0.625,
+    "n": 40
+   },
+   "verdict_correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 40
+   },
+   "page_precision": {
+    "mean": 0.19523809523809524,
+    "ci_low": 0.13773809523809524,
+    "ci_high": 0.2556547619047619,
+    "n": 40
+   },
+   "page_recall": {
+    "mean": 0.3416666666666667,
+    "ci_low": 0.24166666666666664,
+    "ci_high": 0.4416666666666667,
+    "n": 40
+   },
+   "quote_fidelity": {
+    "mean": 0.9397023809523809,
+    "ci_low": 0.8989880952380954,
+    "ci_high": 0.9759523809523809,
+    "n": 40
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 40
+   },
+   "seen_rate": {
+    "mean": 0.9759523809523809,
+    "ci_low": 0.943809523809524,
+    "ci_high": 1.0,
+    "n": 40
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "version_diff": {
+   "correct": {
+    "mean": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "n": 3
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.0,
+    "ci_high": 0.5,
+    "n": 3
+   },
+   "page_recall": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.0,
+    "ci_high": 0.5,
+    "n": 3
+   },
+   "quote_fidelity": {
+    "mean": 0.9153439153439153,
+    "ci_low": 0.873015873015873,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "citing_sentence": {
+   "correct": {
+    "mean": 0.25925925925925924,
+    "ci_low": 0.1111111111111111,
+    "ci_high": 0.4444444444444444,
+    "n": 27
+   },
+   "verdict_correct": {
+    "mean": 0.5185185185185185,
+    "ci_low": 0.3333333333333333,
+    "ci_high": 0.7037037037037037,
+    "n": 27
+   },
+   "page_precision": {
+    "mean": 0.2265432098765432,
+    "ci_low": 0.14259259259259258,
+    "ci_high": 0.3179012345679012,
+    "n": 27
+   },
+   "page_recall": {
+    "mean": 0.4012345679012346,
+    "ci_low": 0.25925925925925924,
+    "ci_high": 0.5370370370370371,
+    "n": 27
+   },
+   "quote_fidelity": {
+    "mean": 0.9646678424456203,
+    "ci_low": 0.9322751322751324,
+    "ci_high": 0.9907407407407407,
+    "n": 27
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 27
+   },
+   "seen_rate": {
+    "mean": 0.9814814814814815,
+    "ci_low": 0.9444444444444444,
+    "ci_high": 1.0,
+    "n": 27
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "shared_section": {
+   "correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 5
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.8666666666666666,
+    "ci_low": 0.7333333333333332,
+    "ci_high": 1.0,
+    "n": 5
+   },
+   "page_recall": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 5
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 5
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 5
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 5
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "by_kind": {
+  "claim": {
+   "correct": {
+    "mean": 0.3880597014925373,
+    "ci_low": 0.28125,
+    "ci_high": 0.5,
+    "n": 67
+   },
+   "verdict_correct": {
+    "mean": 0.8059701492537313,
+    "ci_low": 0.7164179104477612,
+    "ci_high": 0.8923076923076924,
+    "n": 67
+   },
+   "page_precision": {
+    "mean": 0.20785358919687277,
+    "ci_low": 0.15645743145743146,
+    "ci_high": 0.2629665379665379,
+    "n": 67
+   },
+   "page_recall": {
+    "mean": 0.3656716417910448,
+    "ci_low": 0.2786458333333333,
+    "ci_high": 0.4577114427860696,
+    "n": 67
+   },
+   "quote_fidelity": {
+    "mean": 0.9497630893153282,
+    "ci_low": 0.9242063492063489,
+    "ci_high": 0.9734432234432232,
+    "n": 67
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 67
+   },
+   "seen_rate": {
+    "mean": 0.97818052594172,
+    "ci_low": 0.9534161490683228,
+    "ci_high": 0.996969696969697,
+    "n": 67
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "compare": {
+   "correct": {
+    "mean": 0.625,
+    "ci_low": 0.2727272727272727,
+    "ci_high": 1.0,
+    "n": 8
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.4285714285714285,
+    "ci_high": 0.9047619047619048,
+    "n": 8
+   },
+   "page_recall": {
+    "mean": 0.75,
+    "ci_low": 0.5,
+    "ci_high": 1.0,
+    "n": 8
+   },
+   "quote_fidelity": {
+    "mean": 0.9682539682539683,
+    "ci_low": 0.9238095238095237,
+    "ci_high": 1.0,
+    "n": 8
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 8
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 8
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "cost": {
+  "billing": "subscription",
+  "price_table": "2026-11",
+  "priced": true,
+  "input_tokens": 1370,
+  "output_tokens": 408350,
+  "cache_read_tokens": 18482771,
+  "cache_write_tokens": 3286709,
+  "total_usd": 0.799978335,
+  "per_sample_usd": 0.0106663778,
+  "per_correct_usd": {
+   "mean": 0.025805752741935487,
+   "ci_low": 0.020022287236842108,
+   "ci_high": 0.035293649318181804,
+   "n": 75
+  }
+ },
+ "meter": {
+  "after_first": {
+   "status": "allowed",
+   "five_hour_used": 0.4,
+   "seven_day_used": 0.01
+  },
+  "after_last": {
+   "status": "allowed",
+   "five_hour_used": 0.55,
+   "seven_day_used": 0.04
+  }
+ },
+ "config": {
+  "agent": "claude-code",
+  "model": "claude-haiku-5-5",
+  "questions": "citationbench/heldout/test.jsonl",
+  "limit": 150,
+  "corpus": "data/snapshots/2026.11.3",
+  "server": "http://localhost:8766",
+  "ops_db": "citationbench/work/ops.sqlite",
+  "surface": "default",
+  "epochs": 1,
+  "batch": 150,
+  "pause": 10,
+  "max_used": {
+   "five_hour": 0.55,
+   "seven_day": 0.45
+  },
+  "name": "cc-haiku-5-5"
+ },
+ "log": "work/runs/cc-haiku-5-5-4e1c63"
+}

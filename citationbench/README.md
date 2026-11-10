@@ -112,7 +112,11 @@ One question per fresh session. Every tool call carries `X-SafetyPage-Run` and
 `X-SafetyPage-Sample`, so the server's call log (`ops.sqlite`) is the record of what the agent
 saw; the CLI's output gives the answer, tokens and the account's usage meter. Scoring is the
 same code as above. A run writes `results/<run_id>.json` and `traces/<run_id>/`; the raw
-per-sample records are in `work/runs/<run_id>/` (not committed).
+per-sample records are in `work/runs/<run_id>/` (not committed). A trace holds its question,
+so a run on the held-out split writes its traces to `work/traces/<run_id>/` instead, and only
+the replays chosen for the site are copied to `traces/`. Those questions are public from then
+on and leave the held-out split in its next version (v1: `pc-4bd058594c`, `pc-0b71f9e37b`,
+`pc-1022dddab4`).
 
 **Usage safety.** A batch runs at most `batch` samples with `pause` seconds between them, and
 stops cleanly, recording why and which sample is next in `work/runs/<run_id>/stopped.json`, when:
@@ -168,6 +172,19 @@ copies live in `local/`, which is not committed. The log is `work/nightly.log`.
 python -m safetypage.bench pairs --traces citationbench/traces     # claim-citation pairs from questions and runs
 python -m safetypage.bench label --who <name>                 # label in the terminal, blind to the judge
 python -m safetypage.bench agreement --judge claude-code:claude-sonnet-5-5
+```
+
+For version 1 the sample is 100 pairs in `work/labels/pairs.jsonl` (not committed, since 60
+of its claims come from answers to held-out questions): 40 from public questions (a citing or
+perturbed sentence and one of its gold units) and 30 each from the Claude Code Haiku 5.5 and
+Codex GPT-6.1 Sol runs. Pages run about 500 words, so a pair takes about a minute; `q` stops
+and a later session resumes where it stopped:
+
+```sh
+uv run --group bench python -m safetypage.bench label --who noah \
+  --corpus data/snapshots/2026.11.3 --pairs citationbench/work/labels/pairs.jsonl
+uv run --group bench python -m safetypage.bench agreement \
+  --corpus data/snapshots/2026.11.3 --pairs citationbench/work/labels/pairs.jsonl
 ```
 
 `labels/pairs.jsonl` holds claims and cite strings only, never document text. Labels go to

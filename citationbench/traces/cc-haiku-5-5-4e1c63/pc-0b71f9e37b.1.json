@@ -1,0 +1,542 @@
+{
+ "schema": "safetypage.trace/1",
+ "header": {
+  "trace_id": "cc-haiku-5-5-4e1c63-pc-0b71f9e37b.1",
+  "run_id": "cc-haiku-5-5-4e1c63",
+  "sample_id": "pc-0b71f9e37b",
+  "question": "A document in the library contains this sentence:\n\n> Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].\n\nCheck what the sentence says about the work it cites against that work in the library. Does the cited source support it? Cite the page(s) of the cited source that show what it actually says.",
+  "model": "claude-haiku-5-5",
+  "solver": "claude-code 2.1.321 (Claude Code)",
+  "surface_id": "default@ec7ad8",
+  "snapshot": "2026.11.3",
+  "arm": "bm25",
+  "server_version": "0.1.0",
+  "started_at": "2026-11-10T10:14:07.961717+00:00",
+  "usage": {
+   "input_tokens": 24,
+   "output_tokens": 7173,
+   "cache_read_tokens": 374517
+  }
+ },
+ "events": [
+  {
+   "seq": 0,
+   "t_ms": 2038,
+   "kind": "tool",
+   "call_id": "r_L4yWz2H7Hxa1",
+   "tool": "search",
+   "args": {
+    "limit": 10,
+    "mode": "units",
+    "query": "indirect prompt injection attacks to hijack a GenAI AGENT",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "nist:ai-100-2/r3/p65"
+    },
+    {
+     "cite": "nist:ai-100-2/r3/p67"
+    },
+    {
+     "cite": "nist:ai-100-2/r3/p52"
+    }
+   ],
+   "result_tokens": 498,
+   "latency_ms": 5,
+   "request_id": "r_L4yWz2H7Hxa1"
+  },
+  {
+   "seq": 1,
+   "t_ms": 4038,
+   "kind": "tool",
+   "call_id": "r_IO7vIyWv5gXV",
+   "tool": "search",
+   "args": {
+    "limit": 10,
+    "mode": "units",
+    "query": "\"user-provided task\" attacker-specified task hijack agent",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "nist:ai-100-2/r3/p65"
+    }
+   ],
+   "result_tokens": 234,
+   "latency_ms": 2,
+   "request_id": "r_IO7vIyWv5gXV"
+  },
+  {
+   "seq": 2,
+   "t_ms": 4038,
+   "kind": "tool",
+   "call_id": "r_VjhBv0EzrNtl",
+   "tool": "search",
+   "args": {
+    "limit": 10,
+    "mode": "units",
+    "query": "\"intended, user-provided task\"",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "nist:ai-100-2/r3/p65"
+    }
+   ],
+   "result_tokens": 224,
+   "latency_ms": 2,
+   "request_id": "r_VjhBv0EzrNtl"
+  },
+  {
+   "seq": 3,
+   "t_ms": 6038,
+   "kind": "tool",
+   "call_id": "r_383QIWibeIEo",
+   "tool": "fetch",
+   "args": {
+    "id": "nist:ai-100-2/r3/p65",
+    "max_tokens": 6000,
+    "view": "text"
+   },
+   "returned": [
+    {
+     "cite": "nist:ai-100-2/r3/p65"
+    }
+   ],
+   "result_tokens": 837,
+   "latency_ms": 1,
+   "request_id": "r_383QIWibeIEo"
+  },
+  {
+   "seq": 4,
+   "t_ms": 6038,
+   "kind": "tool",
+   "call_id": "r_jBKTxcNBleAo",
+   "tool": "search",
+   "args": {
+    "doc": "nist:ai-100-2/r3",
+    "limit": 10,
+    "mode": "units",
+    "query": "[353]",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "nist:ai-100-2/r3/p65"
+    },
+    {
+     "cite": "nist:ai-100-2/r3/p109"
+    }
+   ],
+   "result_tokens": 355,
+   "latency_ms": 2,
+   "request_id": "r_jBKTxcNBleAo"
+  },
+  {
+   "seq": 5,
+   "t_ms": 7038,
+   "kind": "tool",
+   "call_id": "r_jPQHwAfAeIii",
+   "tool": "search",
+   "args": {
+    "limit": 10,
+    "mode": "units",
+    "query": "Strengthening AI agent hijacking evaluations",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b1"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b49"
+    },
+    {
+     "cite": "arxiv:2512.23128/v3/p10"
+    },
+    {
+     "cite": "nist:caisi-evaluation-deepseek-ai-models-report/r1/p16"
+    },
+    {
+     "cite": "anthropic:response-to-nist-rfi-on-agentic-security/r1/p3"
+    },
+    {
+     "cite": "anthropic:response-to-nist-rfi-on-agentic-security/r1/p17"
+    },
+    {
+     "cite": "nist:nist.ai.800-4/r1/p44"
+    },
+    {
+     "cite": "iasr:international-ai-safety-report-2026_1/r1/p185"
+    },
+    {
+     "cite": "anthropic:response-to-nist-rfi-on-agentic-security/r1/p5"
+    },
+    {
+     "cite": "nist:ai-100-2/r3/p109"
+    }
+   ],
+   "result_tokens": 1332,
+   "latency_ms": 12,
+   "request_id": "r_jPQHwAfAeIii"
+  },
+  {
+   "seq": 6,
+   "t_ms": 8038,
+   "kind": "tool",
+   "call_id": "r_FCLTrWxrLsw1",
+   "tool": "fetch",
+   "args": {
+    "id": "nist:ai-100-2/r3/p109",
+    "max_tokens": 1500,
+    "view": "text"
+   },
+   "returned": [
+    {
+     "cite": "nist:ai-100-2/r3/p109"
+    }
+   ],
+   "result_tokens": 865,
+   "latency_ms": 1,
+   "request_id": "r_FCLTrWxrLsw1"
+  },
+  {
+   "seq": 7,
+   "t_ms": 9038,
+   "kind": "tool",
+   "call_id": "r_pf4LrUrqHppd",
+   "tool": "fetch",
+   "args": {
+    "id": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b1-b8",
+    "max_tokens": 6000,
+    "view": "text"
+   },
+   "returned": [
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b1"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b2"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b4"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b5"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b6"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b7"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b8"
+    }
+   ],
+   "result_tokens": 880,
+   "latency_ms": 1,
+   "request_id": "r_pf4LrUrqHppd"
+  },
+  {
+   "seq": 8,
+   "t_ms": 12038,
+   "kind": "tool",
+   "call_id": "r_Fj7VnJZPihyF",
+   "tool": "fetch",
+   "args": {
+    "id": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b9-b25",
+    "max_tokens": 5000,
+    "view": "text"
+   },
+   "returned": [],
+   "latency_ms": 1,
+   "error": "range too large: b9-b25 is 17 units, the most per call is 8. The document card's outline lists sections with their anchors.",
+   "request_id": "r_Fj7VnJZPihyF"
+  },
+  {
+   "seq": 9,
+   "t_ms": 13038,
+   "kind": "tool",
+   "call_id": "r_U6NTf3zmoHw7",
+   "tool": "fetch",
+   "args": {
+    "id": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b9-b16",
+    "max_tokens": 5000,
+    "view": "text"
+   },
+   "returned": [
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b9"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b11"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b12"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b14"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b15"
+    },
+    {
+     "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b16"
+    }
+   ],
+   "result_tokens": 1136,
+   "latency_ms": 1,
+   "request_id": "r_U6NTf3zmoHw7"
+  },
+  {
+   "seq": 10,
+   "t_ms": 13038,
+   "kind": "tool",
+   "call_id": "r_m6yJXmh62zka",
+   "tool": "search",
+   "args": {
+    "doc": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1",
+    "limit": 10,
+    "mode": "units",
+    "query": "user task attacker injected task instead",
+    "sort": "relevance"
+   },
+   "returned": [],
+   "latency_ms": 2,
+   "error": "0 hits with these filters (all of: user; task; attacker; injected; task; instead. Filters: document = nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1, all versions. Ranked by BM25, after up to 3 documents whose title, publisher or authors hold the whole query (each at its first page or block).); without filters this query has 72. Drop or change a filter.",
+   "request_id": "r_m6yJXmh62zka"
+  },
+  {
+   "seq": 11,
+   "t_ms": 19038,
+   "kind": "tool",
+   "call_id": "r_hx2Z4cvwHbVm",
+   "tool": "check_answer",
+   "args": {
+    "text": "Verdict: supported\n\nThe sentence is on page 52 of NIST AI 100-2e2025 (PDF p. 65), in the \"Integrity Attacks\" part of the indirect prompt injection section: \"Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].\" (nist:ai-100-2/r3/p65)\n\nReference [353] is \"U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024\" (nist:ai-100-2/r3/p109). That is the NIST CAISI technical blog *Strengthening AI Agent Hijacking Evaluations*, which is in the library as nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1.\n\nThe blog supports the core of the claim:\n\n- It defines the term: \"agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3)\n- It says the attacker's data is meant \"to 'hijack' the agent to complete a different and potentially harmful task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10)\n- It describes the evaluation unit as a scenario in which \"an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13)\n\nThe \"instead of (or in addition to)\" wording is the survey's own gloss. The blog frames hijacking as the agent completing a different task, and does not say \"in addition to\". So the claim is supported in substance, but the \"in addition to\" part is not in the cited source.\n\nNote that the cited source is a short blog post about AgentDojo experiments, not a taxonomy. It does not discuss the other attack types the sentence leads into."
+   },
+   "returned": [],
+   "result_tokens": 404,
+   "latency_ms": 26,
+   "request_id": "r_hx2Z4cvwHbVm"
+  },
+  {
+   "seq": 12,
+   "t_ms": 24038,
+   "kind": "tool",
+   "call_id": "r_9y6ysiV-zX70",
+   "tool": "check_answer",
+   "args": {
+    "text": "Verdict: supported\n\nThe sentence is on page 52 of NIST AI 100-2e2025 (PDF p. 65), in the indirect prompt injection section: \"Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].\" (nist:ai-100-2/r3/p65)\n\nReference [353] is \"U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024\" (nist:ai-100-2/r3/p109). That is the NIST CAISI technical blog *Strengthening AI Agent Hijacking Evaluations*, which is in the library as nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1.\n\nThe blog supports the core of the claim:\n\n- It defines the term: \"agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3)\n- It says the attacker's data is meant to \"hijack\" the agent to complete a different and potentially harmful task. (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10)\n- It describes the evaluation unit as a scenario in which \"an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13)\n\nThe \"instead of (or in addition to)\" wording is the survey's own paraphrase. The blog frames hijacking as the agent completing a different task, and does not describe the agent also doing its intended task. So the claim is supported in substance, but the \"or in addition to\" part is not in the cited source.\n\nThe cited source is a short blog post about AgentDojo experiments, not a taxonomy. It does not discuss the other attack types the sentence leads into."
+   },
+   "returned": [],
+   "result_tokens": 364,
+   "latency_ms": 1,
+   "request_id": "r_9y6ysiV-zX70"
+  },
+  {
+   "seq": 13,
+   "t_ms": 29038,
+   "kind": "tool",
+   "call_id": "r_lSRdWA_4UjWa",
+   "tool": "check_answer",
+   "args": {
+    "text": "Verdict: supported\n\nThe sentence is on page 52 of NIST AI 100-2e2025 (PDF p. 65), in the indirect prompt injection section: \"Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].\" (nist:ai-100-2/r3/p65)\n\nReference [353] is \"U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024\" (nist:ai-100-2/r3/p109). That is the NIST CAISI technical blog *Strengthening AI Agent Hijacking Evaluations*, which is in the library as nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1.\n\nThe blog supports the core of the claim:\n\n- It defines the term: \"agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3)\n- It says the attacker's data is meant to make the agent complete \"a different and potentially harmful task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10)\n- It describes the evaluation unit as a scenario in which \"an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13)\n\nThe \"instead of, or in addition to\" wording in the sentence is not in the blog. The blog frames hijacking as the agent completing a different task, and does not describe the agent also doing its intended task. So the claim is supported in substance, but the \"or in addition to\" part is not in the cited source.\n\nThe cited source is a short blog post about AgentDojo experiments, not a taxonomy. It does not discuss the other attack types the sentence leads into."
+   },
+   "returned": [],
+   "result_tokens": 379,
+   "latency_ms": 1,
+   "request_id": "r_lSRdWA_4UjWa"
+  },
+  {
+   "seq": 14,
+   "t_ms": 33038,
+   "kind": "tool",
+   "call_id": "r_zqnxW8ocWeJA",
+   "tool": "check_answer",
+   "args": {
+    "text": "Verdict: supported\n\nThe sentence is on page 52 of NIST AI 100-2e2025 (PDF p. 65), in the indirect prompt injection section: \"Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].\" (nist:ai-100-2/r3/p65)\n\nReference [353] is \"U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024\" (nist:ai-100-2/r3/p109). That is the NIST CAISI technical blog *Strengthening AI Agent Hijacking Evaluations*, which is in the library as nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1.\n\nThe blog supports the core of the claim:\n\n- It defines the term: \"agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3)\n- It says the attacker's data is meant to make the agent complete \"a different and potentially harmful task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10)\n- It describes the evaluation unit as a scenario in which \"an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13)\n\nThe sentence's wording that the hijacked task runs instead of, or in addition to, the intended task is not in the blog. The blog frames hijacking as the agent completing a different task, and does not describe the agent also doing its intended task. So the claim is supported in substance, but the \"in addition to\" part is not in the cited source.\n\nThe cited source is a short blog post about AgentDojo experiments, not a taxonomy. It does not discuss the other attack types the sentence leads into."
+   },
+   "returned": [],
+   "result_tokens": 363,
+   "latency_ms": 1,
+   "request_id": "r_zqnxW8ocWeJA"
+  },
+  {
+   "seq": 15,
+   "t_ms": 36443,
+   "kind": "answer",
+   "delta": "Verdict: supported, with one part of the sentence not found in the source.\n\nThe sentence is on page 52 of *Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations* (2025 edition), in the indirect prompt injection section: \"Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].\" (nist:ai-100-2/r3/p65)\n\nReference [353] is \"U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024\" (nist:ai-100-2/r3/p109). The library holds that work as the NIST CAISI technical blog *Strengthening AI Agent Hijacking Evaluations* (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1).\n\nThe blog supports the core of the claim:\n\n- It defines the term: \"agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3)\n- It says the hijacked agent is made to complete \"a different and potentially harmful task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10)\n- It describes the evaluation unit as a scenario in which \"an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13)\n\nThe part not found is the \"in addition to\" qualifier. The blog describes the agent completing a different task. It does not say the agent also carries out its intended task. So the sentence is supported in substance, but that qualifier is the survey's own addition.\n\nThe cited source is a short blog post about AgentDojo experiments, not a taxonomy. It does not cover the other attack types that the surrounding passage discusses."
+  },
+  {
+   "seq": 16,
+   "t_ms": 36443,
+   "kind": "cite",
+   "cite_id": "c1",
+   "cite": "nist:ai-100-2/r3/p65",
+   "quote": "Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353]."
+  },
+  {
+   "seq": 17,
+   "t_ms": 36443,
+   "kind": "cite",
+   "cite_id": "c2",
+   "cite": "nist:ai-100-2/r3/p109",
+   "quote": "U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024"
+  },
+  {
+   "seq": 18,
+   "t_ms": 36443,
+   "kind": "cite",
+   "cite_id": "c3",
+   "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3",
+   "quote": "agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions."
+  },
+  {
+   "seq": 19,
+   "t_ms": 36443,
+   "kind": "cite",
+   "cite_id": "c4",
+   "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10",
+   "quote": "a different and potentially harmful task."
+  },
+  {
+   "seq": 20,
+   "t_ms": 36443,
+   "kind": "cite",
+   "cite_id": "c5",
+   "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13",
+   "quote": "an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task."
+  },
+  {
+   "seq": 21,
+   "t_ms": 36443,
+   "kind": "verify",
+   "cite_id": "c1",
+   "state": "verified",
+   "resolves": true,
+   "seen": true,
+   "quote_verdict": "exact",
+   "span": [
+    164419,
+    164623
+   ]
+  },
+  {
+   "seq": 22,
+   "t_ms": 36443,
+   "kind": "verify",
+   "cite_id": "c2",
+   "state": "verified",
+   "resolves": true,
+   "seen": true,
+   "quote_verdict": "exact",
+   "span": [
+    297074,
+    297166
+   ]
+  },
+  {
+   "seq": 23,
+   "t_ms": 36443,
+   "kind": "verify",
+   "cite_id": "c3",
+   "state": "verified",
+   "resolves": true,
+   "seen": true,
+   "quote_verdict": "exact",
+   "span": [
+    485,
+    683
+   ]
+  },
+  {
+   "seq": 24,
+   "t_ms": 36443,
+   "kind": "verify",
+   "cite_id": "c4",
+   "state": "verified",
+   "resolves": true,
+   "seen": true,
+   "quote_verdict": "exact",
+   "span": [
+    2151,
+    2191
+   ]
+  },
+  {
+   "seq": 25,
+   "t_ms": 36443,
+   "kind": "verify",
+   "cite_id": "c5",
+   "state": "verified",
+   "resolves": true,
+   "seen": true,
+   "quote_verdict": "exact",
+   "span": [
+    2950,
+    3113
+   ]
+  }
+ ],
+ "answer": {
+  "text": "Verdict: supported, with one part of the sentence not found in the source.\n\nThe sentence is on page 52 of *Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations* (2025 edition), in the indirect prompt injection section: \"Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].\" (nist:ai-100-2/r3/p65)\n\nReference [353] is \"U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024\" (nist:ai-100-2/r3/p109). The library holds that work as the NIST CAISI technical blog *Strengthening AI Agent Hijacking Evaluations* (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1).\n\nThe blog supports the core of the claim:\n\n- It defines the term: \"agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3)\n- It says the hijacked agent is made to complete \"a different and potentially harmful task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10)\n- It describes the evaluation unit as a scenario in which \"an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task.\" (nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13)\n\nThe part not found is the \"in addition to\" qualifier. The blog describes the agent completing a different task. It does not say the agent also carries out its intended task. So the sentence is supported in substance, but that qualifier is the survey's own addition.\n\nThe cited source is a short blog post about AgentDojo experiments, not a taxonomy. It does not cover the other attack types that the surrounding passage discusses.",
+  "citations": [
+   {
+    "cite_id": "c1",
+    "cite": "nist:ai-100-2/r3/p65",
+    "quote": "Attackers may also use indirect prompt injection attacks to hijack a GenAI AGENT, causing it to perform a malicious, attacker-specified task instead of (or in addition to) its intended, user-provided task [353].",
+    "state": "verified",
+    "gold": false
+   },
+   {
+    "cite_id": "c2",
+    "cite": "nist:ai-100-2/r3/p109",
+    "quote": "U.S. AI Safety Institute Technical Staff. Strengthening ai agent hijacking evaluations, 2024",
+    "state": "verified",
+    "gold": false
+   },
+   {
+    "cite_id": "c3",
+    "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b3",
+    "quote": "agent hijacking, a type of indirect prompt injection in which an attacker inserts malicious instructions into data that may be ingested by an AI agent, causing it to take unintended, harmful actions.",
+    "state": "verified",
+    "gold": true
+   },
+   {
+    "cite_id": "c4",
+    "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b10",
+    "quote": "a different and potentially harmful task.",
+    "state": "verified",
+    "gold": true
+   },
+   {
+    "cite_id": "c5",
+    "cite": "nist:technical-blog-strengthening-ai-agent-hijacking-evaluations/r1/b13",
+    "quote": "an agent is asked to complete a legitimate user task but encounters data containing an attack that tries to direct the agent to complete a malicious injection task.",
+    "state": "verified",
+    "gold": true
+   }
+  ]
+ },
+ "scores": {
+  "verdict_correct": 1.0,
+  "page_precision": 0.6,
+  "page_recall": 1.0,
+  "quote_fidelity": 1.0,
+  "quoted": 1.0,
+  "seen_rate": 1.0,
+  "correct": 1.0
+ }
+}

@@ -404,7 +404,10 @@ def write_cli_results(
     records = [json.loads(p.read_text()) for p in sorted((state / "samples").glob("*.json"))]
     if not records:
         return None
-    trace_dir = PC / "traces" / run_id
+    # Traces carry the question text, so a run on the held-out split keeps them out of the
+    # published folder; replays worth showing are copied into citationbench/traces by hand.
+    held_out = str(config.get("questions", "")).startswith("citationbench/heldout/")
+    trace_dir = PC / ("work/traces" if held_out else "traces") / run_id
     trace_dir.mkdir(parents=True, exist_ok=True)
     rows: list[dict[str, Any]] = []
     for rec in records:
