@@ -423,6 +423,35 @@ CURSOR_CONFIG = {
     "sandbox": {"mode": "enabled"},
 }
 CURSOR_OK_CALLS = {"mcpToolCall", "getMcpToolsToolCall", "listMcpResourcesToolCall"}
+CURSOR_FILE_CALLS = {"grepToolCall", "globToolCall", "readToolCall"}
+
+
+def cursor_off_library(out: str, *, workspace: Path, home: Path) -> list[str]:
+    """Tools a Cursor run used that are not the library's. Only calls that succeeded count.
+    Its file tools ignore the permission rules, so a grep, glob or read counts unless it stayed
+    in the empty workspace or in the folder where Cursor saves library results too long to show
+    inline (``<home>/.cursor/projects``): those reach nothing but the library's own output."""
+    allowed = (str(workspace), str(home / ".cursor" / "projects"))
+    used: list[str] = []
+    for e in _jsonl(out):
+        if e.get("type") != "tool_call" or e.get("subtype") != "completed":
+            continue
+        for kind, body in _d(e.get("tool_call")).items():
+            if not isinstance(body, dict):
+                continue
+            args, result = _d(body.get("args")), _d(body.get("result"))
+            if kind == "mcpToolCall":
+                server = args.get("providerIdentifier")
+                if server not in (None, "safetypage"):
+                    used.append(f"mcp:{server}")
+                continue
+            if kind in CURSOR_OK_CALLS or "success" not in result:
+                continue
+            path = str(args.get("path") or args.get("targetDirectory") or "")
+            if kind in CURSOR_FILE_CALLS and (not path or path.startswith(allowed)):
+                continue
+            used.append(kind.removesuffix("ToolCall"))
+    return used
 
 
 def _cursor_home(mcp_url: str | None, headers: dict[str, str]) -> Path:
@@ -454,21 +483,9 @@ def _cursor(
     out, err, code, secs = _run(cmd, env=dict(os.environ, HOME=str(home)), cwd=cwd, timeout=timeout)
     run = AgentRun(answer="", seconds=secs, agent_version=f"cursor {_version(CURSOR_BIN)}", raw=out)
     usage = {"input": 0, "output": 0, "cache_read": 0, "cache_write": 0, "reasoning": 0}
+    run.off_library = cursor_off_library(out, workspace=cwd, home=home)
     for e in _jsonl(out):
-        if e.get("type") == "tool_call" and e.get("subtype") == "completed":
-            call = _d(e.get("tool_call"))
-            for kind, body in call.items():
-                if not isinstance(body, dict):
-                    continue
-                result = _d(_d(body).get("result"))
-                # Denied calls reached nothing; only one that succeeded counts.
-                if kind not in CURSOR_OK_CALLS and "success" in result:
-                    run.off_library.append(kind.removesuffix("ToolCall"))
-                if kind == "mcpToolCall":
-                    server = _d(_d(body).get("args")).get("providerIdentifier")
-                    if server not in (None, "safetypage"):
-                        run.off_library.append(f"mcp:{server}")
-        elif e.get("type") == "result":
+        if e.get("type") == "result":
             run.answer = str(e.get("result") or "")
             u = _d(e.get("usage"))
             usage["input"] += int(u.get("inputTokens", 0))

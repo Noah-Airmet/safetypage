@@ -196,7 +196,8 @@ def test_cursor_marks_successful_non_library_calls(
 
     lines = [
         call("shellToolCall", {"permissionDenied": {"command": "ls"}}),
-        call("globToolCall", {"success": {"files": []}}),
+        call("globToolCall", {"success": {"files": []}}, {"targetDirectory": "/Users"}),
+        call("grepToolCall", {"success": {}}, {"pattern": "x"}),  # the workspace: fine
         call("mcpToolCall", {"success": {}}, {"providerIdentifier": "safetypage"}),
         call("getMcpToolsToolCall", {"success": {}}),
         {
