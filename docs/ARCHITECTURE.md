@@ -554,6 +554,21 @@ known ones), `tier`, `date_from`/`date_to` (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`, inc
 document's `published`; undated documents never match a date filter). Only latest versions
 are searched unless `all_versions` is set or `doc` names a version.
 
+**Titles.** Each version's first unit (`p1`, or its first block) also carries the document's
+record: `title`, `byline` (publisher and authors) and `title_key` (the folded title and main
+title, the part before a colon, dash or parenthesis). A query whose every term is in a
+record *names* that document. In bm25 and hybrid, up to three named documents come first,
+each at its first unit, ahead of the text ranking, which is otherwise unchanged; so a known
+title finds its document and a topic query ("reward hacking") still shows passages. Named
+documents rank by a fixed 8 points per term found in the record, plus 20 when the query is
+the whole title or main title, with the title's own BM25 as a small tie-breaker, then the
+number of units matching the text (so an original beats a crosspost of the same title). A
+named hit's `score` is that record score, and its snippet is the first unit's text like any
+other hit. Fixed scores rather than BM25 because only first units carry a record: BM25's
+length normalisation, averaged over every unit, makes every title look long. In `documents`
+mode the named documents also come first. Exclusions and filters apply to them;
+`sort=date` ignores them.
+
 **Results.** `score` is BM25 (bm25), cosine similarity (dense) or the fused RRF score
 (hybrid); `sort=date` orders by date, newest first, and reports score 0. Snippets are at most
 300 characters around the densest run of matches, whitespace collapsed; a link-only unit's

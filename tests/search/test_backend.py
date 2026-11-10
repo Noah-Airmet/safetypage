@@ -219,3 +219,32 @@ def test_embedding_job_resumes(fixture_db: Path, tmp_path: Path, fake_embedder: 
         assert getattr(embedder, "calls") == first.embedded + second.embedded  # noqa: B009
         third = embed_units(corpus, cache, embedder, part_rows=50)
         assert third.embedded == 0 and third.units == first.units
+
+
+@pytest.mark.parametrize(
+    ("query", "doc"),
+    [
+        ("Zoom In", "distill:zoom-in"),
+        ("Sparse Autoencoders Find Highly Interpretable Features", "arxiv:2309.08600"),
+        ("Artificial Intelligence Risk Management Framework", "nist:ai-100-1"),
+        ("Meridian-2 refusal robustness", "example:link-only-eval-report"),
+        ("Example Lab Meridian-2", "example:link-only-eval-report"),  # publisher + title
+    ],
+)
+def test_a_title_finds_its_document(lexical_backend: SnapshotSearch, query: str, doc: str) -> None:
+    units = lexical_backend.search(SearchRequest(query=query))
+    first = units.hits[0]
+    assert first.doc_id == doc and first.anchor in {"p1", "b1"}
+    assert len(set(cites(units))) == len(units.hits)  # the named unit is not listed twice
+    documents = lexical_backend.search(SearchRequest(query=query, mode="documents"))
+    assert documents.documents[0].doc_id == doc
+    assert documents.documents[0].top[0].cite == first.cite
+
+
+def test_named_documents_respect_filters_and_exclusions(lexical_backend: SnapshotSearch) -> None:
+    query = "Artificial Intelligence Risk Management Framework"
+    papers = lexical_backend.search(SearchRequest(query=query, kind="paper"))
+    assert all(h.doc_id != "nist:ai-100-1" for h in papers.hits)
+    by_date = lexical_backend.search(SearchRequest(query="Zoom In", sort="date", limit=25))
+    dates = [h.date or "" for h in by_date.hits]
+    assert dates == sorted(dates, reverse=True)  # date order is not interrupted

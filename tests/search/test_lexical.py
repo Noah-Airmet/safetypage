@@ -9,7 +9,14 @@ import tantivy
 
 from safetypage.search.grammar import parse_query
 from safetypage.search.highlight import find_spans
-from safetypage.search.lexical import ANALYZER, analyzer, compile_query, date_key, schema
+from safetypage.search.lexical import (
+    ANALYZER,
+    analyzer,
+    compile_query,
+    date_key,
+    schema,
+    title_keys,
+)
 
 TEXTS = {
     "gap0": "alpha beta",
@@ -113,3 +120,15 @@ def test_date_key() -> None:
     assert date_key("2023-05", end=True) == 20230599
     assert date_key("2023", end=True) == 20239999
     assert date_key(None) == 0
+
+
+def test_title_keys() -> None:
+    assert title_keys("Zoom In: An Introduction to Circuits") == [
+        "zoom in an introduction to circuits",
+        "zoom in",
+    ]
+    assert title_keys("Artificial Intelligence Risk Management Framework (AI RMF 1.0)")[1] == (
+        "artificial intelligence risk management framework"
+    )
+    assert title_keys("GPT-5 System Card") == ["gpt 5 system card"]
+    assert title_keys("") == []

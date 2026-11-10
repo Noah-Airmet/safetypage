@@ -33,7 +33,7 @@ from typing import Any, Final, cast
 import numpy as np
 import numpy.typing as npt
 import tantivy
-from tantivy import Query
+from tantivy import Occur, Query
 
 from safetypage.api import DocumentHit, Hit, SearchRequest, SearchResponse
 from safetypage.corpus import Corpus, NotFoundError
@@ -66,6 +66,10 @@ FUSION_DEPTH: Final = 100
 DOCUMENT_DEPTH: Final = 200
 """``documents`` mode for dense and hybrid groups this many top units by document."""
 TOP_PER_DOCUMENT: Final = 3
+NAMED_FIRST: Final = 3
+"""bm25 and hybrid put up to this many documents whose title, publisher or authors hold the
+whole query ahead of the text ranking, each at its first page or block. Few, so a topic query
+("reward hacking") still shows passages, not a page of title pages."""
 _DATE_RE: Final = re.compile(r"[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?")
 _NOT_BUILT: Final = {"hybrid-rerank", "contextual"}
 
@@ -408,7 +412,12 @@ class SnapshotSearch:
         by_date = request.sort == "date"
         interpretation = (
             f"{parsed.describe()}. {filters.describe()}. "
-            + ("Sorted by date, newest first." if by_date else "Ranked by BM25.")
+            + (
+                "Sorted by date, newest first."
+                if by_date
+                else f"Ranked by BM25, after up to {NAMED_FIRST} documents whose title,"
+                " publisher or authors hold the whole query (each at its first page or block)."
+            )
             + note
         )
         facets = self._facets(query)
@@ -421,15 +430,15 @@ class SnapshotSearch:
                 offset=offset,
                 interpretation=interpretation,
             )
-        result = self._searcher.search(
-            query,
-            limit=request.limit,
-            offset=offset,
-            count=True,
-            order_by_field="date" if by_date else None,
-        )
-        ranked = [self._ranked(key, address, by_date) for key, address in result.hits]
-        total = int(getattr(result, "count", 0) or 0)
+        if by_date:
+            result = self._searcher.search(
+                query, limit=request.limit, offset=offset, count=True, order_by_field="date"
+            )
+            ranked = [self._ranked(key, address, True) for key, address in result.hits]
+            total = int(getattr(result, "count", 0) or 0)
+        else:
+            ranked, total = self._named_then_text(parsed, filters, query, offset + request.limit)
+            ranked = ranked[offset:]
         return SearchResponse(
             query=request.query,
             interpretation=interpretation,
@@ -441,6 +450,52 @@ class SnapshotSearch:
             facets=facets,
             next_cursor=self._next(offset, request.limit, total),
         )
+
+    def _named(self, parsed: ParsedQuery, filters: _Filters, text_query: Query) -> list[_Ranked]:
+        """Up to :data:`NAMED_FIRST` first units of documents whose record holds the query.
+
+        Equal record scores (a crosspost under the same title) go to the document with more
+        units matching the text, then by cite.
+        """
+        if not parsed.must:
+            return []
+        query = compile_query(self._schema, parsed, filters.queries(self._schema), record_only=True)
+        found = self._searcher.search(query, limit=NAMED_FIRST + 7, count=False)
+        ranked = [self._ranked(key, address, False) for key, address in found.hits]
+        if not ranked:
+            return []
+        refs = sorted({r.cite.rsplit("/", 1)[0] for r in ranked})
+        among = Query.boolean_query(
+            [
+                (Occur.Must, text_query),
+                (Occur.Must, Query.term_set_query(self._schema, "ref", refs)),
+            ]
+        )
+        spec = {"docs": {"terms": {"field": "ref", "size": len(refs)}}}
+        counts = {
+            str(b["key"]): int(b["doc_count"])
+            for b in self._aggregate(among, spec)["docs"]["buckets"]
+        }
+        ranked.sort(
+            key=lambda r: (-round(r.score, 4), -counts.get(r.cite.rsplit("/", 1)[0], 0), r.cite)
+        )
+        return ranked[:NAMED_FIRST]
+
+    def _named_then_text(
+        self, parsed: ParsedQuery, filters: _Filters, text_query: Query, k: int
+    ) -> tuple[list[_Ranked], int]:
+        """The first ``k`` of: the documents the query names, then the text ranking (BM25,
+        ties by cite) without them. Returns those and the total number of matches."""
+        named = self._named(parsed, filters, text_query)
+        named_cites = {r.cite for r in named}
+        result = self._searcher.search(text_query, limit=k + len(named), count=True)
+        text = sorted(
+            (self._ranked(key, address, False) for key, address in result.hits),
+            key=lambda r: (-r.score, r.cite),
+        )
+        kept = [r for r in text if r.cite not in named_cites]
+        total = int(getattr(result, "count", 0) or 0) + len(named) - (len(text) - len(kept))
+        return (named + kept)[:k], total
 
     def _ranked(self, key: Any, address: tantivy.DocAddress, by_date: bool) -> _Ranked:
         doc = self._searcher.doc(address)
@@ -479,17 +534,30 @@ class SnapshotSearch:
             ((str(b["key"]), int(b["doc_count"])) for b in result["docs"]["buckets"]),
             key=lambda kc: (-kc[1], kc[0]),
         )
+        # Up to NAMED_FIRST documents whose record (title, publisher, authors) holds the query
+        # come first; then the rest by how many of their units match.
+        counts = dict(buckets)
+        named = {r.cite.rsplit("/", 1)[0]: r for r in self._named(parsed, filters, query)}
+        rest = [(ref, n) for ref, n in buckets if ref not in named]
+        buckets = [(ref, counts.get(ref, 0)) for ref in named] + rest
         documents: list[DocumentHit] = []
         for ref, count in buckets[offset : offset + request.limit]:
             narrowed = compile_query(
                 self._schema, parsed, replace(filters, ref=ref).queries(self._schema)
             )
             top = self._searcher.search(narrowed, limit=TOP_PER_DOCUMENT, count=False)
-            ranked = [self._ranked(key, address, False) for key, address in top.hits]
+            ranked = sorted(
+                (self._ranked(key, address, False) for key, address in top.hits),
+                key=lambda r: (-r.score, r.cite),
+            )
+            if ref in named and named[ref].cite not in {r.cite for r in ranked}:
+                ranked = [named[ref], *ranked][:TOP_PER_DOCUMENT]
             documents.append(self._document_hit(ref, count, self._hits(ranked, parsed)))
         return SearchResponse(
             query=request.query,
-            interpretation=interpretation + " Documents ranked by how many units match.",
+            interpretation=interpretation
+            + f" Up to {NAMED_FIRST} documents whose title, publisher or authors hold the query"
+            " first; the rest by how many of their units match.",
             arm="bm25",
             snapshot=self._snapshot,
             mode="documents",
@@ -519,9 +587,7 @@ class SnapshotSearch:
             compiled = compile_query(
                 self._schema, parsed, filters.queries(self._schema), disjunctive=True
             )
-            result = self._searcher.search(compiled, limit=FUSION_DEPTH, count=False)
-            lexical = [self._ranked(key, address, False) for key, address in result.hits]
-            lexical.sort(key=lambda r: (-r.score, r.cite))
+            lexical, _ = self._named_then_text(parsed, filters, compiled, FUSION_DEPTH)
         dense, _ = self._dense_ranked(query, filters, FUSION_DEPTH)
         fused: dict[str, float] = {}
         version_of: dict[str, int] = {}
@@ -582,7 +648,6 @@ class SnapshotSearch:
         return str(row[0]) if row else ""
 
     def _hits(self, ranked: list[_Ranked], parsed: ParsedQuery | None) -> list[Hit]:
-        ranked = sorted(ranked, key=lambda r: (-r.score, r.cite)) if ranked else ranked
         corpus = self._corpus()
         out: list[Hit] = []
         for item in ranked:

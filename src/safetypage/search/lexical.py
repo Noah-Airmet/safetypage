@@ -9,6 +9,8 @@ snapshot's ``corpus.sqlite`` by ``version_id`` and anchor.
 
 from __future__ import annotations
 
+import json
+import re
 import shutil
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -19,12 +21,14 @@ import tantivy
 from tantivy import Occur, Query
 
 from safetypage.corpus import Corpus
-from safetypage.search.grammar import Near, ParsedQuery, Phrase, Prefix
+from safetypage.search.grammar import Near, ParsedQuery, Phrase, Prefix, words
 
 __all__ = [
     "ANALYZER",
+    "EXACT_TITLE_SCORE",
     "FACET_FIELDS",
     "LEXICAL_DIR",
+    "RECORD_CLAUSE_SCORE",
     "UnitRow",
     "analyzer",
     "build_lexical_index",
@@ -32,7 +36,9 @@ __all__ = [
     "date_key",
     "iter_unit_rows",
     "open_index",
+    "record_query",
     "schema",
+    "title_keys",
 ]
 
 LEXICAL_DIR: Final = "lexical"
@@ -53,6 +59,10 @@ def analyzer() -> tantivy.TextAnalyzer:
 def schema() -> tantivy.Schema:
     builder = tantivy.SchemaBuilder()
     builder.add_text_field("text", tokenizer_name=ANALYZER, index_option="position")
+    # The catalogue record, on the first unit of each version only (see record_query).
+    builder.add_text_field("title", tokenizer_name=ANALYZER, index_option="position")
+    builder.add_text_field("byline", tokenizer_name=ANALYZER, index_option="position")
+    builder.add_text_field("title_key", tokenizer_name="raw", index_option="basic")
     builder.add_text_field("cite", stored=True, tokenizer_name="raw")
     for name in ("doc_id", "ref", *FACET_FIELDS):
         builder.add_text_field(name, stored=False, fast=True, tokenizer_name="raw")
@@ -98,6 +108,10 @@ class UnitRow:
     tier: str
     date: int
     latest: bool
+    title: str = ""
+    byline: str = ""
+    """Publisher and authors. ``title`` and ``byline`` are set on each version's first unit
+    only, and only when the rows are read ``with_text``."""
 
 
 def iter_unit_rows(corpus: Corpus, *, with_text: bool = True) -> Iterator[UnitRow]:
@@ -109,7 +123,7 @@ def iter_unit_rows(corpus: Corpus, *, with_text: bool = True) -> Iterator[UnitRo
     rows = corpus.conn.execute(
         f"""
         SELECT u.cite, u.version_id, {text}, u.doc_id, u.doc_id || '/' || u.version AS ref,
-               d.kind, d.collection, d.org, u.tier, d.published,
+               d.kind, d.collection, d.org, u.tier, d.published, d.title, d.authors,
                v.seq = (SELECT max(seq) FROM versions WHERE doc_id = u.doc_id) AS latest
           FROM units u
           JOIN versions v ON v.version_id = u.version_id
@@ -117,7 +131,11 @@ def iter_unit_rows(corpus: Corpus, *, with_text: bool = True) -> Iterator[UnitRo
          ORDER BY u.doc_id, v.seq, u.seq
         """  # noqa: S608
     )
+    previous = None
     for r in rows:
+        first = with_text and r["version_id"] != previous
+        previous = r["version_id"]
+        authors: list[str] = json.loads(r["authors"] or "[]") if first else []
         yield UnitRow(
             cite=r["cite"],
             version_id=r["version_id"],
@@ -130,6 +148,8 @@ def iter_unit_rows(corpus: Corpus, *, with_text: bool = True) -> Iterator[UnitRo
             tier=r["tier"],
             date=date_key(r["published"]),
             latest=bool(r["latest"]),
+            title=r["title"] if first else "",
+            byline=" ; ".join([r["org"] or "", *authors]).strip(" ;") if first else "",
         )
 
 
@@ -145,6 +165,12 @@ def build_lexical_index(corpus: Corpus, directory: Path, *, threads: int = 0) ->
     for row in iter_unit_rows(corpus):
         doc = tantivy.Document()
         doc.add_text("text", row.text)
+        if row.title:
+            doc.add_text("title", row.title)
+        if row.byline:
+            doc.add_text("byline", row.byline)
+        for key in title_keys(row.title):
+            doc.add_text("title_key", key)
         doc.add_text("cite", row.cite)
         doc.add_text("doc_id", row.doc_id)
         doc.add_text("ref", row.ref)
@@ -169,9 +195,28 @@ def build_lexical_index(corpus: Corpus, directory: Path, *, threads: int = 0) ->
 # ---------------------------------------------------------------------------------------
 
 
-def _clause(s: tantivy.Schema, clause: Phrase | Prefix | Near) -> Query:
+RECORD_CLAUSE_SCORE: Final = 8.0
+"""What each query term found in a document's record (title, publisher, authors) adds to the
+score of the document's first unit. A fixed score, not BM25: only first units carry a record,
+so BM25's length normalisation, averaged over every unit, would make every title look long."""
+EXACT_TITLE_SCORE: Final = 20.0
+"""Added when the query is the whole title, or the main title (before a colon, a dash or a
+parenthesis). Ties between records are broken by the title's own BM25, which is small (its
+length normalisation is skewed, as above) but prefers the shorter, closer title."""
+_MAIN_TITLE_RE: Final = re.compile(r":|\s[—–-]\s|\s\(")
+
+
+def title_keys(title: str) -> list[str]:
+    """The title and its main title, as folded words: what an exact-title query must equal."""
+    keys = [" ".join(w for w, _, _ in words(title))]
+    main = _MAIN_TITLE_RE.split(title, maxsplit=1)[0]
+    keys.append(" ".join(w for w, _, _ in words(main)))
+    return [k for k in dict.fromkeys(keys) if k]
+
+
+def _clause(s: tantivy.Schema, clause: Phrase | Prefix | Near, field: str = "text") -> Query:
     if isinstance(clause, Prefix):
-        return Query.regex_query(s, "text", clause.stem + ".*")
+        return Query.regex_query(s, field, clause.stem + ".*")
     if isinstance(clause, Near):
         # Tantivy's slop is ordered (and charges 2 for a swap), so "either order, at most n
         # words between" is the union of both orders, each with slop n.
@@ -179,34 +224,22 @@ def _clause(s: tantivy.Schema, clause: Phrase | Prefix | Near) -> Query:
             [
                 (
                     Occur.Should,
-                    Query.phrase_query(s, "text", [clause.a, clause.b], clause.distance),
+                    Query.phrase_query(s, field, [clause.a, clause.b], clause.distance),
                 ),
                 (
                     Occur.Should,
-                    Query.phrase_query(s, "text", [clause.b, clause.a], clause.distance),
+                    Query.phrase_query(s, field, [clause.b, clause.a], clause.distance),
                 ),
             ]
         )
     if len(clause.words) == 1:
-        return Query.term_query(s, "text", clause.words[0])
+        return Query.term_query(s, field, clause.words[0])
     if clause.prefix:
-        return Query.phrase_prefix_query(s, "text", list(clause.words))
-    return Query.phrase_query(s, "text", list(clause.words))
+        return Query.phrase_prefix_query(s, field, list(clause.words))
+    return Query.phrase_query(s, field, list(clause.words))
 
 
-def compile_query(
-    s: tantivy.Schema,
-    parsed: ParsedQuery,
-    filters: list[Query],
-    *,
-    disjunctive: bool = False,
-) -> Query:
-    """The Tantivy query for a parsed concordance query plus filter queries.
-
-    ``disjunctive`` reads single words as "any of" rather than "all of" (the lexical half of
-    the hybrid arm, where the query is often a question). Phrases, NEAR and exclusions keep
-    their meaning either way. Filters never change the score.
-    """
+def _text_part(s: tantivy.Schema, parsed: ParsedQuery, *, disjunctive: bool) -> Query:
     clauses: list[tuple[Occur, Query]] = []
     for clause in parsed.must:
         single_word = isinstance(clause, Phrase) and len(clause.words) == 1
@@ -218,10 +251,61 @@ def compile_query(
             clauses.extend(
                 (Occur.Should, Query.term_query(s, "text", w)) for w in clause.words[:-1]
             )
-    clauses.extend((Occur.MustNot, _clause(s, c)) for c in parsed.must_not)
-    if not parsed.must:
-        clauses.append((Occur.Must, Query.all_query()))
-    clauses.extend((Occur.Must, Query.const_score_query(f, 0.0)) for f in filters)
     if any(o is Occur.Should for o, _ in clauses):
         return Query.boolean_query(clauses, minimum_number_should_match=1)
+    return Query.boolean_query(clauses)
+
+
+def record_query(s: tantivy.Schema, parsed: ParsedQuery) -> Query:
+    """Every positive clause found in the catalogue record (title, or publisher and authors),
+    scored :data:`RECORD_CLAUSE_SCORE` a clause, plus :data:`EXACT_TITLE_SCORE` when the query
+    is the title. Only first units carry a record: at most one match per version."""
+    clauses: list[tuple[Occur, Query]] = [
+        (
+            Occur.Must,
+            Query.const_score_query(
+                Query.boolean_query(
+                    [
+                        (Occur.Should, _clause(s, clause, "title")),
+                        (Occur.Should, _clause(s, clause, "byline")),
+                    ]
+                ),
+                RECORD_CLAUSE_SCORE,
+            ),
+        )
+        for clause in parsed.must
+    ]
+    clauses.extend((Occur.Should, _clause(s, clause, "title")) for clause in parsed.must)
+    if all(isinstance(c, Phrase) and not c.prefix for c in parsed.must):
+        exact = Query.term_query(s, "title_key", " ".join(parsed.bare_words))
+        clauses.append((Occur.Should, Query.const_score_query(exact, EXACT_TITLE_SCORE)))
+    return Query.boolean_query(clauses)
+
+
+def compile_query(
+    s: tantivy.Schema,
+    parsed: ParsedQuery,
+    filters: list[Query],
+    *,
+    disjunctive: bool = False,
+    record_only: bool = False,
+) -> Query:
+    """The Tantivy query for a parsed concordance query plus filter queries.
+
+    By default the query is matched against unit text. ``record_only`` matches it against the
+    catalogue record instead (:func:`record_query`): the documents the query names. The backend
+    puts a few of those ahead of the text ranking; see ``NAMED_FIRST`` there.
+    ``disjunctive`` reads single words in the text as "any of" rather than "all of" (the lexical
+    half of the hybrid arm, where the query is often a question); the record match stays "all
+    of". Exclusions apply to the text. Filters never change the score.
+    """
+    clauses: list[tuple[Occur, Query]] = []
+    if parsed.must and record_only:
+        clauses.append((Occur.Must, record_query(s, parsed)))
+    elif parsed.must:
+        clauses.append((Occur.Must, _text_part(s, parsed, disjunctive=disjunctive)))
+    else:
+        clauses.append((Occur.Must, Query.all_query()))
+    clauses.extend((Occur.MustNot, _clause(s, c)) for c in parsed.must_not)
+    clauses.extend((Occur.Must, Query.const_score_query(f, 0.0)) for f in filters)
     return Query.boolean_query(clauses)
