@@ -7,7 +7,7 @@ import { KINDS, anchorLabel, citePath, formatDate, questionParts, shelfName, she
 import { EXAMPLE, landingChecks } from '../lib/checks';
 import { TOPICS, follow } from '../lib/follow';
 import { spanInUnit } from '../lib/quote';
-import { MCP_URL } from '../lib/env';
+import { mcpUrl } from '../lib/env';
 
 // The example is checked by the server when the site is built: what is printed here is its answer.
 const { verified, rejected } = await landingChecks();
@@ -26,7 +26,7 @@ const sourceWords = near.text.replace(/\s+/g, ' ').split(' ');
 const trace = featuredTrace();
 const asked = trace && questionParts(trace.header.question);
 const runs = allRuns();
-const mcp = MCP_URL || `${Astro.site!.origin}/mcp`;
+const mcp = mcpUrl(Astro.site!.origin);
 const connect = `claude mcp add --transport http safetypage ${mcp}`;
 const shelves = [...allShelves()].sort((a, b) => shelfOrder(a.id) - shelfOrder(b.id) || b.docs.length - a.docs.length);
 const topics = await Promise.all(TOPICS.map(follow));
@@ -76,7 +76,6 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
       <div><dt>PDF pages</dt><dd>{num(n.pages)}</dd></div>
       <div><dt>Paragraphs of web documents</dt><dd>{num(n.paragraphs)}</dd></div>
       <div><dt>Read in full here</dt><dd>{num(n.open)}</dd></div>
-      {n.snapshot && <div><dt>Snapshot</dt><dd>{n.snapshot}</dd></div>}
     </dl>
 
     {topics.some((t) => t.found > 0) && (
@@ -168,7 +167,6 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
   .claim { display: grid; gap: var(--s-2); justify-items: start; padding-left: var(--s-4); border-left: 2px solid var(--rule); }
   .proof[data-show='verified'] .claim[data-claim='verified'] { border-color: var(--accent); }
   .proof[data-show='rejected'] .claim[data-claim='rejected'] { border-color: var(--reject); }
-  .claim .chip { min-height: 28px; align-items: center; }
   .verdict { display: grid; gap: var(--s-1); font-size: var(--t-13); }
   .says { color: var(--ink-2); font: 400 var(--t-16)/1.45 var(--serif); }
   .how { color: var(--ink-2); font-size: var(--t-13); max-width: 52ch; }
@@ -180,7 +178,7 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
   .doors { margin-top: var(--s-7); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--edge); }
   .door { display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-4) var(--s-4) var(--s-4) 0; min-width: 0; }
   .door + .door { padding-left: var(--s-4); border-left: 1px solid var(--rule); }
-  .door .h2 { margin: 0; }
+  .door .h2 { margin: 0 0 var(--s-1); }
   .door-main { font: 400 var(--t-18)/1.35 var(--serif); text-wrap: pretty; }
   .clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
   .door-foot { margin-top: auto; padding-top: var(--s-2); color: var(--ink-2); font-size: var(--t-13); }
@@ -189,10 +187,11 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
   .door .codeline + .door-foot { margin-top: 0; }
   .by { display: block; margin-top: 2px; }
   .numbers { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-7); }
+  @media (max-width: 700px) { .numbers { display: grid; grid-template-columns: 1fr 1fr; } }
   .numbers div { display: flex; flex-direction: column-reverse; }
   .numbers dt { color: var(--ink-2); font-size: var(--t-13); }
   .numbers dd { font: 400 var(--t-28)/1.15 var(--serif); }
-  .follow { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); border-top: 1px solid var(--edge); }
+  .follow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--edge); }
   .follow a { display: grid; gap: 2px; padding: var(--s-3) var(--s-3) var(--s-3) 0; border-bottom: 1px solid var(--rule); min-height: 44px; }
   .follow .name { font: 400 var(--t-18)/1.3 var(--serif); }
   .follow .meta { color: var(--ink-2); font-size: var(--t-13); }
@@ -200,7 +199,7 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
   .shelves-recent { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-7); align-items: start; }
   .shelflist li { border-top: 1px solid var(--rule); }
   .shelflist li:last-child { border-bottom: 1px solid var(--rule); }
-  .shelflist a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); min-height: 44px; padding-block: var(--s-2); font: 400 var(--t-18)/1.3 var(--serif); }
+  .shelflist a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); min-height: 44px; padding-block: var(--s-4); font: 400 var(--t-18)/1.3 var(--serif); }
   .shelflist a:hover { color: var(--accent); }
   .shelflist .mono { font-size: var(--t-13); }
   .colophon .prose { font-size: var(--t-16); color: var(--ink-2); max-width: 86ch; }

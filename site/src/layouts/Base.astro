@@ -11,7 +11,8 @@ import '../styles/site.css';
 interface Props { title?: string; description?: string; og?: string; canonical?: string; bare?: boolean; wide?: boolean }
 const { title, description = 'A library of the AI safety record. Every result opens the exact page, and every citation is checked against it.', og = '/og/site.png', canonical, bare, wide } = Astro.props;
 const fullTitle = title ? `${title} · SafetyPage` : 'SafetyPage: the AI safety record, cited to the page';
-const here = Astro.url.pathname;
+// A page is built as <address>.html; its address has no extension.
+const here = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '') || '/';
 const nav = [
   ['/library', 'Library'], ['/search', 'Search'], ['/follow', 'Follow'], ['/check', 'Check'], ['/citationbench', 'CitationBench'], ['/connect', 'Connect'],
 ];

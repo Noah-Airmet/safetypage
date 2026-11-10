@@ -1,0 +1,25 @@
+# The API origin: one address for the search server and the snapshot's public files.
+#
+#   /data/<snapshot id>/…   the snapshot's public/ tree (document cards, unit text, page images,
+#                           open PDFs). A sealed snapshot never changes, so these are cached for good.
+#   everything else         the search server: /api/…, /mcp, /x/<surface>/mcp, /health
+#
+# compose.yaml mounts each snapshot's public/ directory at /public/<snapshot id>.
+
+:8080 {
+	encode zstd gzip
+
+	handle_path /data/* {
+		root * /public
+		# Only a file that exists is cached for good; a miss is not.
+		@found file
+		header @found Cache-Control "public, max-age=31536000, immutable"
+		header Access-Control-Allow-Origin "*"
+		header X-Content-Type-Options "nosniff"
+		file_server
+	}
+
+	handle {
+		reverse_proxy server:8000
+	}
+}

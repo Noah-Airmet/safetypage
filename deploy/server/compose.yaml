@@ -1,0 +1,37 @@
+# The API origin on one machine: the search server and a file server for the snapshot's public
+# files, behind one port. Point the tunnel (or any HTTPS proxy) at 127.0.0.1:8080.
+#
+#   SNAPSHOT_DIR=/srv/safetypage/snapshots/2026.11.1 SNAPSHOT_ID=2026.11.1 \
+#     docker compose -f deploy/server/compose.yaml up -d --build
+#
+# SNAPSHOT_DIR   a sealed snapshot directory (manifest.json, corpus.sqlite, lexical/, public/)
+# SNAPSHOT_ID    its id; the public files are served under /data/<SNAPSHOT_ID>/
+# SITE_URL       where the site is, for the citation links in tool results
+# API_URL        this origin's public address, for page image links in tool results
+# The call log (ops.sqlite) is kept in the `ops` volume.
+services:
+  server:
+    build:
+      context: ../..
+      dockerfile: deploy/server/Dockerfile
+    restart: unless-stopped
+    environment:
+      SAFETYPAGE_BASE_URL: ${SITE_URL:-https://safetypage.noahairmet.com}
+      SAFETYPAGE_STATIC_URL: ${API_URL:-https://api.safetypage.noahairmet.com}/data/${SNAPSHOT_ID:?set SNAPSHOT_ID}
+      SAFETYPAGE_TRUST_PROXY: "1"
+    volumes:
+      - ${SNAPSHOT_DIR:?set SNAPSHOT_DIR}:/snapshot:ro
+      - ops:/ops
+
+  files:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [server]
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${SNAPSHOT_DIR}/public:/public/${SNAPSHOT_ID}:ro
+
+volumes:
+  ops:

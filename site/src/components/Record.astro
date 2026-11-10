@@ -127,7 +127,8 @@ const shelf = doc.collection;
   .byline { color: var(--ink-2); max-width: 90ch; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-top: var(--s-2); }
   .rubric a:hover { color: var(--accent); }
-  .inside { max-width: 30rem; margin-top: var(--s-2); }
+  .inside { margin-top: var(--s-2); }
+  @media (max-width: 700px) { .actions :global(.tier) { flex-basis: 100%; } }
   .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-7); align-items: start; }
   .side { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); }
   .side .codeline + .codeline { margin-top: var(--s-2); }
@@ -140,9 +141,9 @@ const shelf = doc.collection;
   .outline a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); padding: var(--s-2) 0; min-height: 44px; }
   .outline .o-title { font: 400 var(--t-18)/1.35 var(--serif); }
   .outline li:not([style*='level:0']) .o-title { font-size: var(--t-16); color: var(--ink-2); }
-  .outline .o-page { color: var(--ink-2); font-size: var(--t-12); white-space: nowrap; }
+  .outline .o-page { color: var(--ink-2); font-size: var(--t-13); white-space: nowrap; }
   .outline a:hover .o-title, .outline a:hover .o-page { color: var(--accent); }
-  .lic { grid-template-columns: 5.5rem 1fr; font-size: var(--t-13); }
+  .lic { font-size: var(--t-13); }
   .table a[aria-current] { font-weight: 600; }
   .versions { table-layout: fixed; }
   .versions th:nth-child(1) { width: 34%; }

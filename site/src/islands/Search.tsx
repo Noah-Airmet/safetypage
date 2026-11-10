@@ -4,7 +4,7 @@ import { KINDS, citePath, formatDate, shelfName } from '../lib/cite';
 import { API_BASE } from '../lib/env';
 import type { Hit, SearchResponse } from '../lib/types';
 
-const EXAMPLES = ['"alignment faking"', 'sabotage evaluation', 'sparse autoencoder*', 'sycophancy NEAR/10 evaluation', '"risk assessment" evaluation'];
+const EXAMPLES = ['"alignment faking"', 'sabotage evaluation', 'sparse autoencoder*', 'sycophancy NEAR/10 evaluation'];
 // The filters the server counts for every query, in the order they are shown.
 const FILTERS = [
   { key: 'collection', every: 'Every shelf', name: shelfName },

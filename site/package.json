@@ -11,7 +11,8 @@
     "check": "tsc --noEmit",
     "unit": "vitest run",
     "e2e": "playwright test",
-    "test": "npm run check && npm run unit && npm run e2e"
+    "test": "npm run check && npm run unit && npm run e2e",
+    "build:deploy": "set -a && . ./deploy.env && set +a && astro build"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.5",

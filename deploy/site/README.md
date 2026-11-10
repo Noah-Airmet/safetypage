@@ -1,54 +1,71 @@
-# Deploying the site
+# Deploying
 
-Three things are served, and they can be on one hostname.
+Two origins. The addresses are written once, in [`site/deploy.env`](../../site/deploy.env).
 
-| What | Where it comes from | Where it goes |
+| Origin | What it serves | Where it runs |
 |---|---|---|
-| The static site | `site/dist/` after the build ([site/README.md](../../site/README.md#on-the-real-library)): about 14,700 files, 196 MB | any static host |
-| The library's public files | the snapshot's `public/` tree: `docs/` (75 MB), `text/` (2 GB) and `pages/` (30 GB of page images), served under `/data` | object storage |
-| Search, quote checks, MCP | the server container ([docs/SERVER.md](../../docs/SERVER.md#container)) with the sealed snapshot mounted read-only: `corpus.sqlite` (4 GB) and `lexical/` (0.3 GB); it used 350 MB of memory serving this snapshot locally | anything that runs a container, behind HTTPS |
+| `https://safetypage.noahairmet.com` | the static site: about 14,600 files, 194 MB, and one small worker for citation addresses | a Cloudflare Pages project |
+| `https://api.safetypage.noahairmet.com` | search and quote checks (`/api/…`), MCP (`/mcp`, `/x/<surface>/mcp`), and the snapshot's public files (`/data/<snapshot id>/…`) | one machine, behind a Cloudflare tunnel |
 
-`public/files/` (the source PDFs, 12 GB) is not read by the site and need not be uploaded.
+The browser calls the API origin directly; the server answers cross-origin requests from
+anywhere, and so does the file server.
 
-## The edge rule
+## The API origin
 
-A static host needs one rule: a page or paragraph address, `/d/<ns>/<id>/<version>/<anchor>`,
-has no file and is answered with `/reader/index.html`, which draws the page in the browser.
-[`worker.js`](worker.js) is that rule for Cloudflare, about 60 lines:
-
-- `/d/<ns>/<id>/<version>/<anchor>`: the reader's shell with the document's card and its title,
-  description and preview image written in (so a citation link has a real preview); 404 if the
-  document or version is not in the library.
-- `/d/<ns>/<id>/<version>`: the document's record page, when that version is the latest.
-- `/data/…`: the public files, from the R2 bucket bound as `DATA`.
-- `/api/…`, `/mcp`, `/x/…`: passed to the search server at `API_ORIGIN`, so the site, the API
-  and the MCP endpoint share one origin and the Connect page's address is `https://<host>/mcp`.
-
-Record pages and everything else are plain files and never run the Worker.
-
-## Cloudflare, step by step
+The Python server does not serve files. [`deploy/server/compose.yaml`](../server/compose.yaml)
+runs it beside a Caddy file server ([`Caddyfile`](../server/Caddyfile)) on one port:
 
 ```sh
-# 1. the public files, once per snapshot (rclone configured for R2)
-rclone copy <snapshot dir>/public r2:safetypage-data --exclude 'files/**' --transfers 32
-
-# 2. the site, built against that snapshot with its server running (site/README.md)
-cd site && SAFETYPAGE_PUBLIC_DIR=<snapshot dir>/public SAFETYPAGE_API=http://127.0.0.1:8000 \
-  SITE_URL=https://<host> npm run build
-
-# 3. the Worker and the files: set API_ORIGIN and the bucket name in wrangler.jsonc first
-cd ../deploy/site && npx wrangler deploy
+SNAPSHOT_DIR=<snapshot dir> SNAPSHOT_ID=<its id, e.g. 2026.11.1> \
+  docker compose -f deploy/server/compose.yaml up -d --build
+# then point the tunnel at http://127.0.0.1:8080
 ```
 
-The build has 14,703 files, under the 20,000 a free Workers plan allows per deployment; a
-paid plan allows 100,000. Another host needs the same three things: the rewrite above
-(Netlify and Vercel both express it as a rewrite rule), `/data` pointed at the bucket, and
-`/api` and `/mcp` proxied to the server. If the API is on its own hostname instead, build
-with `PUBLIC_API_BASE=https://<api host>` and `PUBLIC_MCP_URL=https://<api host>/mcp`; the
-server already answers cross-origin requests.
+- `/data/<snapshot id>/…` is the snapshot's `public/` directory: `docs/` (75 MB), `text/`
+  (2 GB), `pages/` (page images) and `files/` (the open PDFs, 12 GB). The snapshot's id is in
+  the path because a sealed snapshot never changes: every file is sent with
+  `Cache-Control: public, max-age=31536000, immutable`, so Cloudflare and browsers keep it. A
+  new snapshot is a new path, mounted beside the old one. Nothing outside `public/` is reachable.
+- Everything else goes to the search server, which reads the snapshot's `corpus.sqlite` (4 GB)
+  and `lexical/` (0.3 GB). It used 350 MB of memory serving this snapshot locally.
+- The site's build must name the same snapshot: it reads the id from the snapshot's
+  `manifest.json` and writes `…/data/<snapshot id>` into the pages.
+
+## The site
+
+```sh
+uv run python -m safetypage.server --snapshot <snapshot dir> --port 8000 &   # the build asks it questions
+cd site && npm ci
+SAFETYPAGE_PUBLIC_DIR=<snapshot dir>/public SAFETYPAGE_API=http://127.0.0.1:8000 npm run build:deploy
+npx wrangler pages deploy dist --project-name safetypage
+```
+
+`npm run build:deploy` is the one command that builds the static site for the two origins in
+`deploy.env`. `SAFETYPAGE_API` may also be the deployed API origin, once it is up.
+
+**The edge rule.** `dist/_worker.js` (from [`site/edge/worker.js`](../../site/edge/worker.js))
+runs for `/d/*` only (`dist/_routes.json`); every other address is a file.
+
+- `/d/<ns>/<id>/<version>/<anchor>` gets the reader's shell, `/reader.html`, which draws the
+  page in the browser. The worker fetches the document's card from the API origin (cached at
+  the edge for a day) to write the title, description and preview image into the shell, so a
+  citation link unfurls as "Shevlane et al. 2023, p. 6" with the cited page as its image. If
+  the document or version does not exist, 404. If the API origin is slow or down, the plain
+  shell is sent.
+- `/d/<ns>/<id>/<version>` gets the document's record page when that version is the latest.
+- `/d/<ns>/<id>` is a file, passed through.
+
+Pages allows 20,000 files a deployment on the free plan; the build has about 14,600. Worker
+requests count against the free plan's 100,000 a day, and only `/d/*` addresses use them.
 
 ## Checked, and not yet
 
-The Worker was run locally with `wrangler dev` against a real build and real objects in a
-local R2 bucket: every route above answered as described. Nothing has been deployed to
-Cloudflare, and the R2 upload has not been run.
+- The Pages worker was run with `wrangler pages dev` against a real build: record pages,
+  citation addresses (with title, canonical address and page image written in), ranges,
+  missing documents and versions (404), and the API origin switched off (plain shell, 200).
+- The Caddyfile was run with a local Caddy in front of the real server and snapshot: files with
+  the cache and cross-origin headers, `..` paths refused, `/api`, `/mcp` and `/health` passed on.
+- A build for two local origins was opened in a browser on 122 pages at desktop and phone
+  width with no failed request.
+- Not done: `docker compose` itself has not been run (no Docker on the build machine), nothing
+  is deployed, and the tunnel is not set up.

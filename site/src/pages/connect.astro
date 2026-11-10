@@ -1,8 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import { MCP_URL } from '../lib/env';
+import { mcpUrl } from '../lib/env';
 const site = Astro.site!.origin;
-const mcp = MCP_URL || `${site}/mcp`;
+const mcp = mcpUrl(site);
 const clients = [
   ['Claude Code', `claude mcp add --transport http safetypage ${mcp}`],
   ['Claude.ai, ChatGPT and other clients: add a connector with this URL', mcp],
@@ -78,9 +78,9 @@ ${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
 </script>
 <style>
   .scroll td { white-space: nowrap; }
-  .clients { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--s-2) var(--s-4); align-items: center; }
+  .clients { display: grid; grid-template-columns: var(--label) minmax(0, 1fr); gap: var(--s-2) var(--s-4); align-items: center; }
   .clients dt { color: var(--ink-2); }
-  .tools li { padding-block: var(--s-3); border-top: 1px solid var(--rule); display: grid; gap: var(--s-1); }
+  .tools li { padding-block: var(--s-4); border-top: 1px solid var(--rule); display: grid; gap: var(--s-1); }
   .tools li:last-child { border-bottom: 1px solid var(--rule); }
   .tools h3 { font-weight: 500; font-size: var(--t-13); overflow-wrap: anywhere; }
   .tools p { color: var(--ink-2); max-width: 70ch; }

@@ -12,7 +12,8 @@ import Search from '../islands/Search.tsx';
   .search .within { margin-top: var(--s-3); color: var(--ink-2); }
   .search .results { margin-top: var(--s-6); }
   .search .facets { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); }
-  .search .facets .field { width: auto; flex: 0 1 auto; max-width: 100%; padding-right: var(--s-2); }
+  .search .facets { max-width: 54rem; }
+  .search .facets .field { width: auto; flex: 1 1 0; min-width: 0; padding-right: var(--s-2); }
   .search .head .chip { white-space: normal; }
   .search .more { margin-top: var(--s-4); }
   @media (max-width: 700px) { .search .facets .field { flex: 1 1 45%; min-width: 0; } }

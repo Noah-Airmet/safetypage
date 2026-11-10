@@ -1,6 +1,7 @@
 // A local stand-in for the static host: node scripts/serve.mjs <dir> <port>
-// It does what deploy/site/worker.js does on Cloudflare, with files and a proxy:
-//   /d/<ns>/<id>/<version>/<anchor>   the reader's shell (dist/reader/index.html)
+// It does what edge/worker.js does on Cloudflare Pages, and serves the library's files and the
+// API on the same origin, as a build with no PUBLIC_API_BASE expects:
+//   /d/<ns>/<id>/<version>/<anchor>   the reader's shell (dist/reader.html)
 //   /d/<ns>/<id>/<version>            the document's record, when that version has no page of its own (it is the latest)
 //   /data/…                           the snapshot's public/ tree (SAFETYPAGE_PUBLIC_DIR, default .data)
 //   /api/…, /mcp                      the search server (SAFETYPAGE_API), when one is named
@@ -24,13 +25,17 @@ http.createServer((req, res) => {
     upstream.on('error', () => res.writeHead(502).end());
     return void req.pipe(upstream);
   }
-  const clean = path.normalize(pathname).replace(/^(\.\.[/\\])+/, '');
-  let file = path.join(dir, READER.test(pathname) ? 'reader' : clean);
+  const clean = path.normalize(pathname).replace(/^(\.\.[/\\])+/, '').replace(/\/$/, '');
+  // a page is <address>.html; an older version's record falls back to the document's
+  const html = (p) => path.join(dir, (p || '/index') + '.html');
+  let file = READER.test(pathname) ? html('/reader') : path.join(dir, clean);
   if (clean.startsWith('/data/')) file = path.join(data, clean.slice('/data/'.length));
-  if (!fs.existsSync(file) && /^\/d\/[^/]+\/[^/]+\/[vr]\d+\/?$/.test(pathname)) file = path.join(dir, clean, '..');
-  if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, 'index.html');
+  else if (!fs.existsSync(file) || fs.statSync(file).isDirectory()) {
+    file = html(clean);
+    if (!fs.existsSync(file) && /^\/d\/[^/]+\/[^/]+\/[vr]\d+$/.test(clean)) file = html(path.dirname(clean));
+  }
   const found = fs.existsSync(file);
-  if (!found) file = path.join(dir, '404.html');
+  if (!found) file = html('/404');
   res.writeHead(found ? 200 : 404, { 'Content-Type': types[path.extname(file)] ?? 'application/octet-stream' });
   fs.createReadStream(file).pipe(res);
 }).listen(Number(port), () => console.log(`serving ${dir} on http://localhost:${port}`));

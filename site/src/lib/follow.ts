@@ -13,6 +13,7 @@ export const TOPICS: Topic[] = [
   { id: 'sandbagging', name: 'Sandbagging', queries: ['sandbagging'], about: 'Deliberately underperforming on an evaluation.' },
   { id: 'alignment-faking', name: 'Alignment faking', queries: ['"alignment faking"'], about: 'Behaving as trained while being watched, and otherwise when not.' },
   { id: 'reward-hacking', name: 'Reward hacking', queries: ['"reward hacking"'], about: 'Passing the test without doing the task.' },
+  { id: 'deception', name: 'Deception', queries: ['deception', 'deceptive'], about: 'A model misleading the people it works with or for.' },
   { id: 'evaluation-awareness', name: 'Evaluation awareness', queries: ['"evaluation awareness"'], about: 'A model noticing that it is being tested.' },
 ];
 const KINDS = ['system_card', 'model_card'];
