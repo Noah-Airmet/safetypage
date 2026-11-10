@@ -1,0 +1,6 @@
+about = "The public surface: four tools, long descriptions, lexical retrieval."
+tools = ["search", "fetch", "verify_quote", "check_answer"]
+descriptions = "long"
+arm = "bm25"
+snapshot = "current"
+search_full_text = false

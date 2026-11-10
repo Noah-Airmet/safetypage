@@ -1,0 +1,5 @@
+extends = "default"
+about = "Search only, returning the full text of open units with each hit."
+tools = ["search"]
+search_full_text = true
+description_files = { search = "search.full-text", instructions = "instructions.one-tool" }

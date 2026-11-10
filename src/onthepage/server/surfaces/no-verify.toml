@@ -1,0 +1,4 @@
+extends = "default"
+about = "The default surface without verify_quote."
+tools = ["search", "fetch", "check_answer"]
+description_files = { instructions = "instructions.no-verify" }
