@@ -53,6 +53,10 @@ def open_backend(snapshot_dir: Path, snapshot_id: str, base_url: str) -> SearchB
             )
         else:
             backend: SearchBackend = module.SnapshotSearch(snapshot_dir, base_url=base_url)
+            try:
+                backend.warm()  # type: ignore[attr-defined]
+            except RuntimeError as exc:
+                log.warning("%s: dense search is not available (%s)", snapshot_id, exc)
             return backend
     corpus = open_readonly(snapshot_dir / "corpus.sqlite", base_url)
     try:

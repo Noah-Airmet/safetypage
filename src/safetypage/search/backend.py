@@ -254,6 +254,15 @@ class SnapshotSearch:
     def arms(self) -> tuple[str, ...]:
         return ("bm25", "dense", "hybrid") if self._dense is not None else ("bm25",)
 
+    def warm(self) -> None:
+        """Load the embedding model now, so the first dense query does not wait for it.
+
+        Loading takes longer than the per-query time limit. Does nothing for a snapshot
+        without vectors; raises ``RuntimeError`` when the embed extra is not installed.
+        """
+        if self._embedder is not None:
+            self._embedder.encode_query("warm")
+
     def search(self, request: SearchRequest) -> SearchResponse:
         """Answer ``request`` within the time limit, or raise a :class:`SearchError`."""
         if not self._slots.acquire(timeout=self.limits.queue_wait_s):
