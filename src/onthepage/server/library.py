@@ -345,7 +345,7 @@ class Library:
 
 
 def _is_search_error(exc: Exception) -> bool:
-    """A backend refusing a query (bad syntax, unknown filter, busy, slow); its message is for agents."""
+    """A backend refusing a query (bad syntax, unknown filter, busy, slow): tell the agent."""
     module = type(exc).__module__
     return isinstance(exc, ValueError | LookupError) or module.startswith(
         ("onthepage.search", "onthepage.server.backend")
