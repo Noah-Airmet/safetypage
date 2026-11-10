@@ -92,7 +92,8 @@ requests count against the free plan's 100,000 a day, and only `/d/*` addresses 
 
 ## Checked
 
-Live since 10 November 2026 on snapshot `2026.11.2`. Checked from outside after the deploy:
+Live since 10 November 2026; on snapshot `2026.11.3`, with the two-theme site, from later that day.
+Checked from outside after the deploy:
 
 - the landing page, search, a record page, the library and Connect, in Chrome at desktop and
   phone width, with no failed request, console error or sideways scroll;
