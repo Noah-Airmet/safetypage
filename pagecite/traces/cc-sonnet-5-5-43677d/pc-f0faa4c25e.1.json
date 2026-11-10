@@ -1,0 +1,500 @@
+{
+ "schema": "onthepage.trace/1",
+ "header": {
+  "trace_id": "cc-sonnet-5-5-43677d-pc-f0faa4c25e.1",
+  "run_id": "cc-sonnet-5-5-43677d",
+  "sample_id": "pc-f0faa4c25e",
+  "question": "A document in the library contains this sentence:\n\n> Using individual neurons as these units has had some success (Olah et al., 2020; Bills et al., 2023), but a key challenge has been that neurons are almost always polysemantic, with nearly every neuron activating for several unrelated types of feature (Olah et al., 2020).\n\nCheck what the sentence says about the work it cites against that work in the library. Does the cited source support it? Cite the page(s) of the cited source that show what it actually says.",
+  "model": "claude-sonnet-5-5",
+  "solver": "claude-code 2.1.321 (Claude Code)",
+  "surface_id": "default@18b281",
+  "snapshot": "fixtures",
+  "arm": "bm25",
+  "server_version": "0.1.0",
+  "started_at": "2026-11-10T03:33:26.592654+00:00",
+  "usage": {
+   "input_tokens": 8,
+   "output_tokens": 1393,
+   "cache_read_tokens": 35458
+  }
+ },
+ "events": [
+  {
+   "seq": 0,
+   "t_ms": 0,
+   "kind": "tool",
+   "call_id": "r_EzoY9e1qYflC",
+   "tool": "search",
+   "args": {
+    "limit": 10,
+    "mode": "units",
+    "query": "neurons polysemantic",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "distill:zoom-in/r1/b65"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b97"
+    },
+    {
+     "cite": "arxiv:2309.08600/v3/p1"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b66"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b60"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b62"
+    }
+   ],
+   "result_tokens": 646,
+   "latency_ms": 1,
+   "request_id": "r_EzoY9e1qYflC"
+  },
+  {
+   "seq": 1,
+   "t_ms": 0,
+   "kind": "tool",
+   "call_id": "r_kZnd5sJDYmju",
+   "tool": "search",
+   "args": {
+    "limit": 5,
+    "mode": "units",
+    "query": "\"Zoom In\" circuits neurons features",
+    "sort": "relevance"
+   },
+   "returned": [],
+   "result_tokens": 55,
+   "latency_ms": 0,
+   "request_id": "r_kZnd5sJDYmju"
+  },
+  {
+   "seq": 2,
+   "t_ms": 0,
+   "kind": "tool",
+   "call_id": "r_4sNN6z3NTTpO",
+   "tool": "search",
+   "args": {
+    "limit": 5,
+    "mode": "units",
+    "query": "language models can explain neurons in language models",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "arxiv:2309.08600/v3/p10"
+    }
+   ],
+   "result_tokens": 171,
+   "latency_ms": 1,
+   "request_id": "r_4sNN6z3NTTpO"
+  },
+  {
+   "seq": 3,
+   "t_ms": 0,
+   "kind": "tool",
+   "call_id": "r_ZcrsvyfdGZ5a",
+   "tool": "fetch",
+   "args": {
+    "id": "distill:zoom-in/r1/b60-b66",
+    "max_tokens": 6000,
+    "view": "text"
+   },
+   "returned": [
+    {
+     "cite": "distill:zoom-in/r1/b60"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b61"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b62"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b63"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b64"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b65"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b66"
+    }
+   ],
+   "result_tokens": 777,
+   "latency_ms": 1,
+   "request_id": "r_ZcrsvyfdGZ5a"
+  },
+  {
+   "seq": 4,
+   "t_ms": 1407,
+   "kind": "tool",
+   "call_id": "r__1bdRvLMgifM",
+   "tool": "search",
+   "args": {
+    "limit": 10,
+    "mode": "units",
+    "query": "polysemantic neurons \"Zoom In\" circuits",
+    "sort": "relevance"
+   },
+   "returned": [],
+   "result_tokens": 56,
+   "latency_ms": 1,
+   "request_id": "r__1bdRvLMgifM"
+  },
+  {
+   "seq": 5,
+   "t_ms": 2407,
+   "kind": "tool",
+   "call_id": "r__RGZPnft0Vx3",
+   "tool": "search",
+   "args": {
+    "limit": 5,
+    "mode": "units",
+    "query": "language models can explain neurons in language models",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "arxiv:2309.08600/v3/p10"
+    }
+   ],
+   "result_tokens": 171,
+   "latency_ms": 5,
+   "request_id": "r__RGZPnft0Vx3"
+  },
+  {
+   "seq": 6,
+   "t_ms": 3407,
+   "kind": "tool",
+   "call_id": "r_MaWN7Y3Vgz8H",
+   "tool": "search",
+   "args": {
+    "limit": 15,
+    "mode": "units",
+    "query": "polysemantic",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "distill:zoom-in/r1/b65"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b97"
+    },
+    {
+     "cite": "arxiv:2309.08600/v3/p1"
+    },
+    {
+     "cite": "arxiv:2309.08600/v3/p6"
+    },
+    {
+     "cite": "arxiv:2309.08600/v3/p7"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b60"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b62"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b63"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b66"
+    }
+   ],
+   "result_tokens": 916,
+   "latency_ms": 1,
+   "request_id": "r_MaWN7Y3Vgz8H"
+  },
+  {
+   "seq": 7,
+   "t_ms": 3407,
+   "kind": "tool",
+   "call_id": "r_kbLkG98lLCBs",
+   "tool": "search",
+   "args": {
+    "limit": 10,
+    "mode": "documents",
+    "query": "Olah circuits",
+    "sort": "relevance"
+   },
+   "returned": [
+    {
+     "cite": "arxiv:2309.08600/v3"
+    },
+    {
+     "cite": "arxiv:2305.15324/v2"
+    }
+   ],
+   "result_tokens": 385,
+   "latency_ms": 4,
+   "request_id": "r_kbLkG98lLCBs"
+  },
+  {
+   "seq": 8,
+   "t_ms": 6407,
+   "kind": "tool",
+   "call_id": "r_QesDSN_4925o",
+   "tool": "fetch",
+   "args": {
+    "id": "distill:zoom-in/r1/b60-b66",
+    "max_tokens": 6000,
+    "view": "text"
+   },
+   "returned": [
+    {
+     "cite": "distill:zoom-in/r1/b60"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b61"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b62"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b63"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b64"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b65"
+    },
+    {
+     "cite": "distill:zoom-in/r1/b66"
+    }
+   ],
+   "result_tokens": 777,
+   "latency_ms": 7,
+   "request_id": "r_QesDSN_4925o"
+  },
+  {
+   "seq": 9,
+   "t_ms": 13701,
+   "kind": "answer",
+   "delta": "Verdict: not supported\n\nThe sentence overstates what Olah et al. (2020), *Zoom In: An Introduction to Circuits*, says. I only checked the Olah et al. claim, because Bills et al. (2023) appears in the library only as a reference-list entry (arxiv:2309.08600/v3/p10).\n\n**What the source says.** The \"Polysemantic Neurons\" section asks whether \"every neuron yields a nice, human-understandable concept\". It answers that this is not the case: \"Neural networks often contain “polysemantic neurons” that respond to multiple unrelated inputs.\" It gives one example, an InceptionV1 neuron that responds to cat faces, fronts of cars and cat legs (distill:zoom-in/r1/b61, distill:zoom-in/r1/b62, distill:zoom-in/r1/b63). The authors also say that this neuron is not responding to a subtle shared feature (distill:zoom-in/r1/b64).\n\n**Where the sentence goes wrong.**\n- The sentence says neurons are \"almost always polysemantic, with nearly every neuron activating for several unrelated types of feature\". Olah et al. say only that polysemantic neurons occur \"often\". They give no figure and don't claim that nearly all neurons are polysemantic.\n- The source's framing points the other way. The essay opens the topic by saying it may be giving \"an overly rosy picture\", and in the next paragraph it says \"We can still study such features, characterizing each different case they fire, and reason about their circuits to some extent\" (distill:zoom-in/r1/b61, distill:zoom-in/r1/b65). It also says its earlier examples, such as curve detectors, are neurons that do correspond to a single feature, which makes polysemanticity a significant exception rather than the norm.\n\n**What the sentence gets right.** Olah et al. do call polysemantic neurons \"a major challenge for the circuits agenda, significantly limiting our ability to reason about neural networks\" (distill:zoom-in/r1/b65). That supports the sentence's point that polysemanticity is a key challenge. They also attribute it to \"superposition\", where a circuit spreads a feature across many neurons (distill:zoom-in/r1/b66). The sentence's claim that individual neurons have had \"some success\" as units is consistent with the source's curve-detector and other neuron-level examples, but I didn't check those passages in detail.\n\n**Fix.** Replace \"almost always\" and \"nearly every neuron\" with wording such as \"neurons are often polysemantic\"."
+  },
+  {
+   "seq": 10,
+   "t_ms": 13701,
+   "kind": "cite",
+   "cite_id": "c1",
+   "cite": "arxiv:2309.08600/v3/p10"
+  },
+  {
+   "seq": 11,
+   "t_ms": 13701,
+   "kind": "cite",
+   "cite_id": "c2",
+   "cite": "distill:zoom-in/r1/b61",
+   "quote": "every neuron yields a nice, human-understandable concept"
+  },
+  {
+   "seq": 12,
+   "t_ms": 13701,
+   "kind": "cite",
+   "cite_id": "c3",
+   "cite": "distill:zoom-in/r1/b62"
+  },
+  {
+   "seq": 13,
+   "t_ms": 13701,
+   "kind": "cite",
+   "cite_id": "c4",
+   "cite": "distill:zoom-in/r1/b63"
+  },
+  {
+   "seq": 14,
+   "t_ms": 13701,
+   "kind": "cite",
+   "cite_id": "c5",
+   "cite": "distill:zoom-in/r1/b64"
+  },
+  {
+   "seq": 15,
+   "t_ms": 13701,
+   "kind": "cite",
+   "cite_id": "c6",
+   "cite": "distill:zoom-in/r1/b65",
+   "quote": "a major challenge for the circuits agenda, significantly limiting our ability to reason about neural networks"
+  },
+  {
+   "seq": 16,
+   "t_ms": 13701,
+   "kind": "cite",
+   "cite_id": "c7",
+   "cite": "distill:zoom-in/r1/b66"
+  },
+  {
+   "seq": 17,
+   "t_ms": 13701,
+   "kind": "verify",
+   "cite_id": "c1",
+   "state": "cited",
+   "resolves": true,
+   "seen": true,
+   "judgement": {
+    "judge": "claude-code:claude-sonnet-5-5#12160b",
+    "label": "partially_supported"
+   }
+  },
+  {
+   "seq": 18,
+   "t_ms": 13701,
+   "kind": "verify",
+   "cite_id": "c2",
+   "state": "rejected",
+   "reason": "quote_elsewhere",
+   "resolves": true,
+   "seen": true,
+   "quote_verdict": "elsewhere",
+   "span": [
+    14752,
+    14808
+   ],
+   "closest": "distill:zoom-in/r1/b62",
+   "judgement": {
+    "judge": "claude-code:claude-sonnet-5-5#12160b",
+    "label": "partially_supported"
+   }
+  },
+  {
+   "seq": 19,
+   "t_ms": 13701,
+   "kind": "verify",
+   "cite_id": "c3",
+   "state": "cited",
+   "resolves": true,
+   "seen": true,
+   "judgement": {
+    "judge": "claude-code:claude-sonnet-5-5#12160b",
+    "label": "partially_supported"
+   }
+  },
+  {
+   "seq": 20,
+   "t_ms": 13701,
+   "kind": "verify",
+   "cite_id": "c4",
+   "state": "cited",
+   "resolves": true,
+   "seen": true,
+   "judgement": {
+    "judge": "claude-code:claude-sonnet-5-5#12160b",
+    "label": "partially_supported"
+   }
+  },
+  {
+   "seq": 21,
+   "t_ms": 13701,
+   "kind": "verify",
+   "cite_id": "c5",
+   "state": "cited",
+   "resolves": true,
+   "seen": true,
+   "judgement": {
+    "judge": "claude-code:claude-sonnet-5-5#12160b",
+    "label": "supported"
+   }
+  },
+  {
+   "seq": 22,
+   "t_ms": 13701,
+   "kind": "verify",
+   "cite_id": "c6",
+   "state": "verified",
+   "resolves": true,
+   "seen": true,
+   "quote_verdict": "exact",
+   "span": [
+    15634,
+    15743
+   ],
+   "judgement": {
+    "judge": "claude-code:claude-sonnet-5-5#12160b",
+    "label": "partially_supported"
+   }
+  },
+  {
+   "seq": 23,
+   "t_ms": 13701,
+   "kind": "verify",
+   "cite_id": "c7",
+   "state": "cited",
+   "resolves": true,
+   "seen": true,
+   "judgement": {
+    "judge": "claude-code:claude-sonnet-5-5#12160b",
+    "label": "partially_supported"
+   }
+  }
+ ],
+ "answer": {
+  "text": "Verdict: not supported\n\nThe sentence overstates what Olah et al. (2020), *Zoom In: An Introduction to Circuits*, says. I only checked the Olah et al. claim, because Bills et al. (2023) appears in the library only as a reference-list entry (arxiv:2309.08600/v3/p10).\n\n**What the source says.** The \"Polysemantic Neurons\" section asks whether \"every neuron yields a nice, human-understandable concept\". It answers that this is not the case: \"Neural networks often contain “polysemantic neurons” that respond to multiple unrelated inputs.\" It gives one example, an InceptionV1 neuron that responds to cat faces, fronts of cars and cat legs (distill:zoom-in/r1/b61, distill:zoom-in/r1/b62, distill:zoom-in/r1/b63). The authors also say that this neuron is not responding to a subtle shared feature (distill:zoom-in/r1/b64).\n\n**Where the sentence goes wrong.**\n- The sentence says neurons are \"almost always polysemantic, with nearly every neuron activating for several unrelated types of feature\". Olah et al. say only that polysemantic neurons occur \"often\". They give no figure and don't claim that nearly all neurons are polysemantic.\n- The source's framing points the other way. The essay opens the topic by saying it may be giving \"an overly rosy picture\", and in the next paragraph it says \"We can still study such features, characterizing each different case they fire, and reason about their circuits to some extent\" (distill:zoom-in/r1/b61, distill:zoom-in/r1/b65). It also says its earlier examples, such as curve detectors, are neurons that do correspond to a single feature, which makes polysemanticity a significant exception rather than the norm.\n\n**What the sentence gets right.** Olah et al. do call polysemantic neurons \"a major challenge for the circuits agenda, significantly limiting our ability to reason about neural networks\" (distill:zoom-in/r1/b65). That supports the sentence's point that polysemanticity is a key challenge. They also attribute it to \"superposition\", where a circuit spreads a feature across many neurons (distill:zoom-in/r1/b66). The sentence's claim that individual neurons have had \"some success\" as units is consistent with the source's curve-detector and other neuron-level examples, but I didn't check those passages in detail.\n\n**Fix.** Replace \"almost always\" and \"nearly every neuron\" with wording such as \"neurons are often polysemantic\".",
+  "citations": [
+   {
+    "cite_id": "c1",
+    "cite": "arxiv:2309.08600/v3/p10",
+    "state": "cited",
+    "gold": false
+   },
+   {
+    "cite_id": "c2",
+    "cite": "distill:zoom-in/r1/b61",
+    "quote": "every neuron yields a nice, human-understandable concept",
+    "state": "rejected",
+    "reason": "quote_elsewhere",
+    "gold": false
+   },
+   {
+    "cite_id": "c3",
+    "cite": "distill:zoom-in/r1/b62",
+    "state": "cited",
+    "gold": true
+   },
+   {
+    "cite_id": "c4",
+    "cite": "distill:zoom-in/r1/b63",
+    "state": "cited",
+    "gold": false
+   },
+   {
+    "cite_id": "c5",
+    "cite": "distill:zoom-in/r1/b64",
+    "state": "cited",
+    "gold": false
+   },
+   {
+    "cite_id": "c6",
+    "cite": "distill:zoom-in/r1/b65",
+    "quote": "a major challenge for the circuits agenda, significantly limiting our ability to reason about neural networks",
+    "state": "verified",
+    "gold": true
+   },
+   {
+    "cite_id": "c7",
+    "cite": "distill:zoom-in/r1/b66",
+    "state": "cited",
+    "gold": false
+   }
+  ]
+ },
+ "scores": {
+  "verdict_correct": 1.0,
+  "page_precision": 0.2857142857142857,
+  "page_recall": 0.6666666666666666,
+  "quote_fidelity": 0.5,
+  "quoted": 1.0,
+  "seen_rate": 1.0,
+  "support_rate": 0.14285714285714285,
+  "correct": 0.0
+ }
+}
