@@ -5,7 +5,7 @@ import { allChecks, type StoredCheck } from '../../../lib/checks';
 import { getDoc } from '../../../lib/data';
 import { anchorLabel, anchorOf, docIdOf, shortLabel } from '../../../lib/cite';
 
-export const getStaticPaths = () => allChecks().map((check) => ({ params: { id: check.id }, props: { check } }));
+export const getStaticPaths = async () => (await allChecks()).map((check) => ({ params: { id: check.id }, props: { check } }));
 
 export async function GET({ props }: APIContext) {
   const check = (props as { check: StoredCheck }).check;

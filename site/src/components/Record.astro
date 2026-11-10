@@ -1,19 +1,20 @@
 ---
-import type { DocumentCard, UnitText } from '../lib/types';
-import { KINDS, anchorLabel, bibtex, citePath, formatDate, licenceName, sourceLink } from '../lib/cite';
+import type { DocumentCard } from '../lib/types';
+import { KINDS, anchorLabel, bibtex, citePath, formatDate, hostOf, licenceName, shelfName, sourceLink } from '../lib/cite';
+import { hasUnit } from '../lib/data';
 import Tier from './Tier.astro';
 
-interface Props { doc: DocumentCard; version: string; units: UnitText[] }
-const { doc, version, units } = Astro.props;
+interface Props { doc: DocumentCard; version: string }
+const { doc, version } = Astro.props;
 const summary = doc.versions.find((v) => v.version === version)!;
 const latest = version === doc.version;
 const ref = `${doc.doc_id}/${version}`;
-const labels = new Map(units.map((u) => [u.anchor, u.anchor_label]));
-const paged = latest ? doc.anchor_kind === 'page' : units[0]?.anchor.startsWith('p') ?? doc.anchor_kind === 'page';
-const count = units.length || (latest ? doc.unit_count : 0);
-const first = units[0]?.anchor ?? (latest && count ? (paged ? 'p1' : 'b1') : undefined);
+// The card describes the latest version. For an older one, the published text says which kind of anchor it has.
+const paged = latest ? doc.anchor_kind === 'page' : hasUnit(doc.doc_id, version, 'p1') || (!hasUnit(doc.doc_id, version, 'b1') && doc.anchor_kind === 'page');
+const count = latest ? doc.unit_count : 0;
+const first = latest ? (count ? (paged ? 'p1' : 'b1') : undefined) : paged ? 'p1' : 'b1';
 const open = summary.tier === 'open';
-const host = new URL(doc.source_url).hostname.replace(/^www\./, '');
+const host = hostOf(doc.source_url);
 const authors = doc.authors.length > 8 ? [...doc.authors.slice(0, 7), `and ${doc.authors.length - 7} more`] : doc.authors;
 const evidence = latest ? doc.licence_evidence : null;
 const evidenceKinds: Record<string, string> = {
@@ -22,18 +23,26 @@ const evidenceKinds: Record<string, string> = {
 };
 const site = Astro.site!.origin;
 const citeExample = first ? `${ref}/${first}` : ref;
+const shelf = doc.collection;
 ---
 <article class="wrap record">
   <header class="pagehead">
-    <p class="rubric">{[doc.collection && doc.collection[0].toUpperCase() + doc.collection.slice(1).replace(/_/g, ' '), KINDS[doc.kind] ?? doc.kind, doc.org].filter(Boolean).join(' · ')}</p>
+    <p class="rubric">{shelf && <><a href={`/library/${shelf}`}>{shelfName(shelf)}</a> · </>}{[KINDS[doc.kind] ?? doc.kind, doc.org].filter(Boolean).join(' · ')}</p>
     <h1 class="title">{doc.title}</h1>
     <p class="byline">{authors.join(', ')}{authors.length && summary.published ? ' · ' : ''}{formatDate(summary.published ?? doc.published)}</p>
-    {!latest && <p class="note">This is version {version}. The latest is <a class="link" href={citePath(`${doc.doc_id}/${doc.version}`)}>{doc.version}</a>.</p>}
+    {!latest && <p class="note">This is version {version}. The latest is <a class="link" href={citePath(doc.doc_id)}>{doc.version}</a>.</p>}
     <div class="actions">
       {open && first && <a class="btn btn-primary" href={citePath(`${ref}/${first}`)}>Read</a>}
-      <a class="btn" href={summary.tier === 'open' ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener">{open ? 'Source' : 'Open'} at {host} ↗</a>
+      <a class={open ? 'btn' : 'btn btn-primary'} href={open ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener">{open ? 'Source' : 'Read'} at {host} ↗</a>
       <Tier tier={summary.tier} licence={summary.licence} />
     </div>
+    {latest && count > 0 && (
+      <form class="searchbox inside" action="/search" role="search">
+        <input type="hidden" name="doc" value={doc.doc_id} />
+        <input class="field" type="search" name="query" placeholder={`Search its ${count.toLocaleString('en')} ${paged ? 'pages' : 'paragraphs'}`} aria-label="Search inside this document" />
+        <button class="btn">Search</button>
+      </form>
+    )}
   </header>
 
   <div class="cols">
@@ -45,7 +54,7 @@ const citeExample = first ? `${ref}/${first}` : ref;
             <li style={`--level:${item.level - 1}`}>
               <a href={citePath(item.cite)}>
                 <span class="o-title">{item.title}</span>
-                <span class="o-page mono">{labels.get(item.anchor) ?? anchorLabel(item.anchor)}</span>
+                <span class="o-page mono">{anchorLabel(item.anchor)}</span>
               </a>
             </li>
           ))}
@@ -75,7 +84,7 @@ const citeExample = first ? `${ref}/${first}` : ref;
           <tbody>
             {[...doc.versions].reverse().map((v) => (
               <tr>
-                <td><a class="link mono" href={citePath(`${doc.doc_id}/${v.version}`)} aria-current={v.version === version ? 'true' : undefined}>{v.version}</a>{v.latest && <span class="muted"> latest</span>}</td>
+                <td><a class="link mono" href={citePath(v.latest ? doc.doc_id : `${doc.doc_id}/${v.version}`)} aria-current={v.version === version ? 'true' : undefined}>{v.version}</a>{v.latest && <span class="muted"> latest</span>}</td>
                 <td>{formatDate(v.published) || <span class="muted">seen {formatDate(v.observed_at)}</span>}</td>
                 <td>{v.tier === 'open' ? 'Here' : 'At source'}</td>
               </tr>
@@ -117,6 +126,8 @@ const citeExample = first ? `${ref}/${first}` : ref;
 <style>
   .byline { color: var(--ink-2); max-width: 90ch; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-top: var(--s-2); }
+  .rubric a:hover { color: var(--accent); }
+  .inside { max-width: 30rem; margin-top: var(--s-2); }
   .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-7); align-items: start; }
   .side { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); }
   .side .codeline + .codeline { margin-top: var(--s-2); }

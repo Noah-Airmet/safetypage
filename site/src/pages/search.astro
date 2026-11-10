@@ -11,6 +11,11 @@ import Search from '../islands/Search.tsx';
 <style is:global>
   .search .within { margin-top: var(--s-3); color: var(--ink-2); }
   .search .results { margin-top: var(--s-6); }
+  .search .facets { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); }
+  .search .facets .field { width: auto; flex: 0 1 auto; max-width: 100%; padding-right: var(--s-2); }
+  .search .head .chip { white-space: normal; }
+  .search .more { margin-top: var(--s-4); }
+  @media (max-width: 700px) { .search .facets .field { flex: 1 1 45%; min-width: 0; } }
   .search .count { color: var(--ink-2); font-size: var(--t-13); margin-bottom: var(--s-2); }
   .search ol > li { border-top: 1px solid var(--rule); }
   .search ol > li > a { display: grid; gap: var(--s-1); padding-block: var(--s-4); }

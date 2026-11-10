@@ -2,14 +2,18 @@
 import Base from '../layouts/Base.astro';
 import PageCrop from '../components/PageCrop.astro';
 import Tally from '../components/Tally.astro';
-import { allDocs, allRuns, content, featuredTrace, getUnit } from '../lib/data';
-import { KINDS, anchorLabel, citePath, formatDate, questionParts, shortLabel } from '../lib/cite';
+import { allRuns, allShelves, featuredTrace, getDoc, getUnit, libraryCounts } from '../lib/data';
+import { KINDS, anchorLabel, citePath, formatDate, questionParts, shelfName, shelfOrder, shortLabel } from '../lib/cite';
+import { EXAMPLE, landingChecks } from '../lib/checks';
+import { TOPICS, follow } from '../lib/follow';
 import { spanInUnit } from '../lib/quote';
 import { MCP_URL } from '../lib/env';
-import type { DocumentCard, QuoteCheck } from '../lib/types';
 
-const { doc, verified, rejected } = content<{ doc: DocumentCard; verified: QuoteCheck; rejected: QuoteCheck }>('landing.json');
-const docs = allDocs();
+// The example is checked by the server when the site is built: what is printed here is its answer.
+const { verified, rejected } = await landingChecks();
+const doc = getDoc(EXAMPLE.cite.split('/')[0])!;
+const n = libraryCounts();
+const num = (x: number) => x.toLocaleString('en');
 const where = verified.locations[0];
 const unit = getUnit(where.cite)!;
 const label = `${shortLabel(doc)} · ${anchorLabel(where.anchor)}`;
@@ -24,7 +28,12 @@ const asked = trace && questionParts(trace.header.question);
 const runs = allRuns();
 const mcp = MCP_URL || `${Astro.site!.origin}/mcp`;
 const connect = `claude mcp add --transport http safetypage ${mcp}`;
-const examples = ['"risk assessment" evaluation', 'sparse autoencoder features', 'risk tolerance'];
+const shelves = [...allShelves()].sort((a, b) => shelfOrder(a.id) - shelfOrder(b.id) || b.docs.length - a.docs.length);
+const topics = await Promise.all(TOPICS.map(follow));
+// Search examples are shown only when the library has what they look for.
+const examples = n.documents > 1000 ? ['"alignment faking"', 'sabotage evaluation', 'sparse autoencoder*', 'sycophancy NEAR/10 evaluation'] : ['"risk assessment" evaluation', 'sparse autoencoder features', 'risk tolerance'];
+// The newest lab documents; on a small library, the newest of anything.
+const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0, 6);
 ---
 <Base>
   <div class="wrap">
@@ -56,11 +65,30 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
 
     <section class="search" aria-label="Search">
       <form class="searchbox" action="/search" role="search">
-        <input class="field" type="search" name="query" placeholder={`Search ${docs.length.toLocaleString('en')} documents to the page`} aria-label="Search the library" />
+        <input class="field" type="search" name="query" placeholder={`Search ${num(n.documents)} documents to the page`} aria-label="Search the library" />
         <button class="btn btn-primary">Search</button>
       </form>
       <p class="examples"><span>Try</span>{examples.map((q) => <a href={`/search?query=${encodeURIComponent(q)}`}>{q}</a>)}</p>
     </section>
+
+    <dl class="numbers" aria-label="The library in numbers">
+      <div><dt>Documents</dt><dd>{num(n.documents)}</dd></div>
+      <div><dt>PDF pages</dt><dd>{num(n.pages)}</dd></div>
+      <div><dt>Paragraphs of web documents</dt><dd>{num(n.paragraphs)}</dd></div>
+      <div><dt>Read in full here</dt><dd>{num(n.open)}</dd></div>
+      {n.snapshot && <div><dt>Snapshot</dt><dd>{n.snapshot}</dd></div>}
+    </dl>
+
+    {topics.some((t) => t.found > 0) && (
+      <section class="section" aria-labelledby="follow-h">
+        <h2 class="h2" id="follow-h">Follow one evaluation across the labs' system cards</h2>
+        <div class="follow">
+          {topics.filter((t) => t.found > 0).map((t) => (
+            <a href={`/follow/${t.topic.id}`}><span class="name">{t.topic.name}</span><span class="meta">{t.found} cards · {t.labs.filter((l) => l.found.length).length} labs</span></a>
+          ))}
+        </div>
+      </section>
+    )}
 
     <section class="doors" aria-label="What is here">
       {trace && (
@@ -73,7 +101,7 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
       <a class="door" href="/citationbench">
         <h2 class="h2">CitationBench, the benchmark</h2>
         <p class="door-main">Does an agent cite the right page, and quote it accurately?</p>
-        <p class="door-foot">{runs.length ? `${runs.length} ${runs.length === 1 ? 'run' : 'runs'}, every number linked to its pages` : 'First runs soon'}</p>
+        <p class="door-foot">{runs.length ? `${runs.length} early ${runs.length === 1 ? 'run' : 'runs'}; every number links to its pages` : 'First runs soon'}</p>
       </a>
       <a class="door" href="/check">
         <h2 class="h2">Check a paragraph</h2>
@@ -88,17 +116,29 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
       </div>
     </section>
 
-    <section class="section" aria-labelledby="recent-h">
-      <h2 class="h2" id="recent-h">In the library</h2>
-      <div class="rows">
-        {docs.slice(0, 8).map((d) => (
-          <a href={citePath(d.doc_id)}>
-            <span class="meta">{KINDS[d.kind] ?? d.kind} · {formatDate(d.published).replace(/^\d+ /, '')}</span>
-            <span><span class="name">{d.title}</span><span class="meta by">{[d.authors.length ? shortLabel(d).replace(/ \d{4}$/, '') : d.org, d.tier === 'open' ? 'Read here' : 'Read at source'].filter(Boolean).join(' · ')}</span></span>
-          </a>
-        ))}
+    <section class="section shelves-recent">
+      <div>
+        <h2 class="h2" id="shelves-h">The shelves</h2>
+        <ul class="shelflist" aria-labelledby="shelves-h">
+          {shelves.map((s) => <li><a href={`/library/${s.id}`}><span>{shelfName(s.id)}</span><span class="mono muted">{num(s.docs.length)}</span></a></li>)}
+        </ul>
       </div>
-      <p class="all"><a class="link" href="/library">All {docs.length} documents</a></p>
+      <div>
+        <h2 class="h2" id="recent-h">Newest from the labs</h2>
+        <div class="rows" aria-labelledby="recent-h">
+          {recent.map((d) => (
+            <a href={citePath(d.doc_id)}>
+              <span class="meta">{KINDS[d.kind] ?? d.kind} · {formatDate(d.published).replace(/^\d+ /, '')}</span>
+              <span><span class="name">{d.title}</span><span class="meta by">{[d.authors.length ? shortLabel(d).replace(/ \d{4}$/, '') : d.org, d.tier === 'open' ? 'Read here' : 'Read at source'].filter(Boolean).join(' · ')}</span></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section colophon" aria-labelledby="made-h">
+      <h2 class="h2" id="made-h">How it is made</h2>
+      <p class="prose">The text of record is each PDF's own text layer or the web page's own words; no model transcribes a document. A quote check is code, the same code for the reader, the MCP server and the benchmark. Three quarters of the library is not openly licensed: those documents are searched, cited and quote-checked here and read at their source. <a class="link" href="/about">How it works</a> · <a class="link" href="https://github.com/Noah-Airmet/safetypage">Source on GitHub</a> · <a class="link" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md">The design and its decisions</a></p>
     </section>
   </div>
 </Base>
@@ -147,7 +187,22 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
   .door .codeline { margin-top: auto; }
   .door .codeline + .door-foot { margin-top: 0; }
   .by { display: block; margin-top: 2px; }
-  .all { margin-top: var(--s-4); }
+  .numbers { margin-top: var(--s-6); display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-7); }
+  .numbers div { display: flex; flex-direction: column-reverse; }
+  .numbers dt { color: var(--ink-2); font-size: var(--t-13); }
+  .numbers dd { font: 400 var(--t-28)/1.15 var(--serif); }
+  .follow { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); border-top: 1px solid var(--edge); }
+  .follow a { display: grid; gap: 2px; padding: var(--s-3) var(--s-3) var(--s-3) 0; border-bottom: 1px solid var(--rule); min-height: 44px; }
+  .follow .name { font: 400 var(--t-18)/1.3 var(--serif); }
+  .follow .meta { color: var(--ink-2); font-size: var(--t-13); }
+  .follow a:hover .name { color: var(--accent); }
+  .shelves-recent { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-7); align-items: start; }
+  .shelflist li { border-top: 1px solid var(--rule); }
+  .shelflist li:last-child { border-bottom: 1px solid var(--rule); }
+  .shelflist a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); min-height: 44px; padding-block: var(--s-2); font: 400 var(--t-18)/1.3 var(--serif); }
+  .shelflist a:hover { color: var(--accent); }
+  .shelflist .mono { font-size: var(--t-13); }
+  .colophon .prose { font-size: var(--t-16); color: var(--ink-2); max-width: 86ch; }
   @media (max-width: 1000px) {
     .doors { grid-template-columns: 1fr 1fr; }
     .door:nth-child(3) { padding-left: 0; border-left: 0; }
@@ -162,6 +217,9 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
     .how { order: 4; }
     .search { margin-top: var(--s-6); }
     .doors { grid-template-columns: 1fr; margin-top: var(--s-6); }
+    .numbers { gap: var(--s-3) var(--s-5); }
+    .numbers dd { font-size: var(--t-22); }
+    .shelves-recent { grid-template-columns: 1fr; gap: var(--s-6); }
     .door, .door + .door { padding: var(--s-4) 0; border-left: 0; }
     .door + .door { border-top: 1px solid var(--rule); }
   }

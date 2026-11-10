@@ -52,6 +52,56 @@ test.describe('reader', () => {
   });
 });
 
+test('reader: one shell serves every page; a range opens at its first page; a page that is not there says so', async ({ page }) => {
+  await page.goto('/d/arxiv/2305.15324/v2/p6-p7');
+  await expect(page.locator('#p6')).toBeInViewport();
+  await expect(page).toHaveTitle(/Shevlane et al\. 2023, p\. 6/);
+  await page.goto('/d/arxiv/2305.15324/v2/p41');
+  await expect(page.locator('[data-reader]')).toContainText('There is no p. 41. This version has 20 pages.');
+  await page.goto('/d/arxiv/0000.00000/v1/p1');
+  await expect(page.locator('[data-reader]')).toContainText('not in the library');
+});
+
+test('a link-only page checks a quote against the library\'s copy', async ({ page }) => {
+  await page.goto('/d/example/link-only-eval-report/r1/p2');
+  await expect(page.locator('[data-excerpt]')).not.toBeEmpty();
+  const words = (await page.locator('[data-excerpt]').innerText()).replace(/…/g, '').trim().split(/\s+/).slice(0, 6).join(' ');
+  await page.locator('[data-quotecheck] input').fill(words);
+  await page.locator('[data-quotecheck] button').click();
+  await expect(page.locator('[data-result] .state')).toHaveText('On p. 2');
+  await page.locator('[data-quotecheck] input').fill('words that are certainly not anywhere on this page at all');
+  await page.locator('[data-quotecheck] button').click();
+  await expect(page.locator('[data-result] .state')).toHaveText('Not on p. 2');
+});
+
+test('record: the latest version\'s address is the record page', async ({ page }) => {
+  await page.goto('/d/arxiv/2305.15324/v2');
+  await expect(page.locator('h1')).toHaveText('Model evaluation for extreme risks');
+});
+
+test('library: a shelf filters its catalogue without leaving the page', async ({ page }) => {
+  await page.goto('/library');
+  await page.locator('.shelves .shelf').first().click();
+  await expect(page).toHaveURL(/\/library\/[\w-]+$/);
+  const rows = page.locator('[data-rows] > a');
+  const all = await rows.count();
+  expect(all).toBeGreaterThan(0);
+  const title = (await rows.first().locator('.name').innerText()).split(' ').slice(0, 2).join(' ');
+  await page.locator('[data-filters] input[name="q"]').fill(title);
+  await expect(page).toHaveURL(/\?q=/);
+  await expect(rows.first().locator('.name')).toContainText(title);
+  await page.locator('[data-filters] input[name="q"]').fill('zzzz no such title');
+  await expect(rows).toHaveCount(0);
+  await expect(page.locator('[data-count]')).toHaveText('0 documents, newest first');
+});
+
+test('follow: a topic page is a saved search, and says so when no card mentions it', async ({ page }) => {
+  await page.goto('/follow');
+  await page.locator('.rows a').first().click();
+  await expect(page.locator('h1')).toHaveText('Sabotage');
+  await expect(page.locator('.facts a')).toHaveAttribute('href', /\/search\?query=sabotage/);
+});
+
 test('landing: the rejected citation is struck through and shows the word that was dropped', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('[data-pane="verified"] .hl')).toBeVisible();
@@ -113,7 +163,7 @@ test('leaderboard: a number leads to the run, the run to the replay, the replay 
   await expect(page).toHaveURL(/\/d\//);
 });
 
-const SCREENS = ['/', '/library', '/d/arxiv/2305.15324', PAGE6, '/d/distill/zoom-in/r1/b21', '/d/example/link-only-eval-report/r1/p2',
+const SCREENS = ['/', '/library', '/library/evals', '/follow', '/follow/sabotage', '/d/arxiv/2305.15324', PAGE6, '/d/distill/zoom-in/r1/b21', '/d/example/link-only-eval-report/r1/p2',
   '/search?query=evaluation', '/check?example=1', `${TRACE}?step=14`, '/citationbench', '/citationbench/runs/cc-sonnet-5-5-43677d', '/connect', '/about'];
 
 for (const scheme of ['light', 'dark'] as const) {

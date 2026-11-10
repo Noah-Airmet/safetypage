@@ -7,12 +7,12 @@ import { getDoc, getUnit } from '../../lib/data';
 import { anchorLabel, anchorOf, citePath, docIdOf, shortLabel } from '../../lib/cite';
 import { spanInUnit } from '../../lib/quote';
 
-export const getStaticPaths = () => allChecks().map((check) => ({ params: { id: check.id }, props: { check } }));
+export const getStaticPaths = async () => (await allChecks()).map((check) => ({ params: { id: check.id }, props: { check } }));
 const { check } = Astro.props as { check: StoredCheck };
 const doc = getDoc(docIdOf(check.cite))!;
 const here = anchorLabel(anchorOf(check.cite));
 const shownAt = anchorLabel(anchorOf(check.shown));
-const unit = getUnit(check.shown);
+const unit = getUnit(check.shown);   // open documents only: a link-only page has no published text
 const range = unit && check.span ? spanInUnit(unit, check.span) : null;
 const verdicts: Record<string, string> = {
   exact: `On ${here}, word for word`, normalized: `On ${here}, allowing for case, punctuation and line breaks`,

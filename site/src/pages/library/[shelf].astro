@@ -1,0 +1,114 @@
+---
+// One shelf. The newest documents are printed here; the filters and "Show more" read the
+// shelf's catalogue file (/catalogue/<shelf>.json), fetched the first time one is used.
+import Base from '../../layouts/Base.astro';
+import { allShelves, type Shelf } from '../../lib/data';
+import { KINDS, SHELVES, shelfName } from '../../lib/cite';
+import { rowHtml, toRow } from '../../lib/catalogue';
+
+export const getStaticPaths = () => allShelves().map((shelf) => ({ params: { shelf: shelf.id }, props: { shelf } }));
+const { shelf } = Astro.props as { shelf: Shelf };
+const FIRST = 60;
+const total = shelf.docs.length;
+const num = (x: number) => x.toLocaleString('en');
+const open = shelf.docs.filter((d) => d.tier === 'open').length;
+---
+<Base title={shelfName(shelf.id)} description={`${num(total)} documents. ${SHELVES[shelf.id]?.about ?? ''}`}>
+  <div class="wrap">
+    <header class="pagehead">
+      <p class="rubric"><a href="/library">Library</a></p>
+      <h1 class="title">{shelfName(shelf.id)}</h1>
+      {SHELVES[shelf.id] && <p class="muted">{SHELVES[shelf.id].about}</p>}
+    </header>
+    <form class="filters" data-filters data-shelf={shelf.id} data-total={total}>
+      <input class="field" type="search" name="q" placeholder="Filter by title or author" aria-label="Filter by title or author" autocomplete="off" />
+      {shelf.publishers.length > 1 && (
+        <select class="field" name="publisher" aria-label="Publisher">
+          <option value="">Every publisher</option>
+          {shelf.publishers.map(([p, c]) => <option value={p}>{p} ({num(c)})</option>)}
+        </select>
+      )}
+      {shelf.kinds.length > 1 && (
+        <select class="field" name="kind" aria-label="Kind">
+          <option value="">Every kind</option>
+          {shelf.kinds.map(([k, c]) => <option value={k}>{KINDS[k] ?? k} ({num(c)})</option>)}
+        </select>
+      )}
+      {shelf.years.length > 1 && (
+        <select class="field" name="year" aria-label="Year">
+          <option value="">Every year</option>
+          {shelf.years.map(([y, c]) => <option value={y}>{y} ({num(c)})</option>)}
+        </select>
+      )}
+      {open > 0 && open < total && (
+        <select class="field" name="read" aria-label="Where it is read">
+          <option value="">Read anywhere</option>
+          <option value="here">Read here ({num(open)})</option>
+          <option value="source">Read at source ({num(total - open)})</option>
+        </select>
+      )}
+    </form>
+    <p class="count muted" data-count aria-live="polite">{total > FIRST ? `${num(FIRST)} of ${num(total)}` : num(total)} documents, newest first</p>
+    <div class="rows" data-rows set:html={shelf.docs.slice(0, FIRST).map((d) => rowHtml(toRow(d))).join('')} />
+    {total > FIRST && <p class="more"><button class="btn" data-more>Show more</button></p>}
+  </div>
+</Base>
+
+<script>
+  import { matches, rowHtml, type Filter, type Row } from '../../lib/catalogue';
+
+  const form = document.querySelector<HTMLFormElement>('[data-filters]')!;
+  const rows = document.querySelector<HTMLElement>('[data-rows]')!;
+  const count = document.querySelector<HTMLElement>('[data-count]')!;
+  const more = document.querySelector<HTMLButtonElement>('[data-more]');
+  const FIELDS = ['q', 'publisher', 'kind', 'year', 'read'] as const;
+  const STEP = 200;
+  let catalogue: Promise<Row[]> | undefined;
+  let shown = rows.children.length;
+  const num = (x: number) => x.toLocaleString('en');
+
+  const filter = (): Filter => {
+    const data = new FormData(form);
+    return Object.fromEntries(FIELDS.map((f) => [f, String(data.get(f) ?? '').trim()])) as unknown as Filter;
+  };
+  async function draw(limit: number) {
+    catalogue ??= fetch(`/catalogue/${form.dataset.shelf}.json`).then((r) => r.json());
+    const f = filter();
+    const found = (await catalogue).filter((row) => matches(row, f));
+    shown = Math.min(limit, found.length);
+    rows.innerHTML = found.slice(0, shown).map(rowHtml).join('');
+    count.textContent = `${shown < found.length ? `${num(shown)} of ${num(found.length)}` : num(found.length)} ${found.length === 1 ? 'document' : 'documents'}, newest first`;
+    if (more) more.parentElement!.hidden = shown >= found.length;
+    const params = new URLSearchParams(Object.entries(f).filter(([, v]) => v));
+    history.replaceState(null, '', location.pathname + (params.size ? `?${params}` : ''));
+  }
+
+  let timer = 0;
+  form.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = window.setTimeout(() => draw(STEP), 120);
+  });
+  form.addEventListener('submit', (event) => event.preventDefault());
+  more?.addEventListener('click', () => draw(shown + STEP));
+
+  // A link such as /library/labs?publisher=Anthropic opens with the filter set.
+  const params = new URLSearchParams(location.search);
+  let preset = false;
+  for (const name of FIELDS) {
+    const field = form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+    if (field && params.get(name)) { field.value = params.get(name)!; preset = true; }
+  }
+  if (preset) draw(STEP);
+</script>
+
+<style>
+  .rubric a:hover { color: var(--accent); }
+  .filters { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .filters .field { width: auto; flex: 0 1 auto; max-width: 100%; }
+  .filters input.field { flex: 1 1 16rem; }
+  .filters select.field { padding-right: var(--s-2); }
+  .count { margin-block: var(--s-4) var(--s-2); font-size: var(--t-13); }
+  .more { margin-top: var(--s-4); }
+  :global(.rows .by) { display: block; margin-top: 2px; }
+  @media (max-width: 700px) { .filters select.field { flex: 1 1 45%; min-width: 0; } }
+</style>

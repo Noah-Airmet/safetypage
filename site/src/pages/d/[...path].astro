@@ -1,43 +1,33 @@
 ---
-// /d/<ns>/<id>                      the record page, latest version
-// /d/<ns>/<id>/<version>            that version's record page
-// /d/<ns>/<id>/<version>/<anchor>   the reader, opened at the anchor (?q= highlights a quote)
+// /d/<ns>/<id>             the record page, latest version
+// /d/<ns>/<id>/<version>   an older version's record page. The latest version's address is not
+//                          built: the host serves /d/<ns>/<id> for it (one page per document).
+// A page or paragraph (/d/<ns>/<id>/<version>/<anchor>) is not built here: the reader's shell
+// (reader.astro) serves every one of them.
 import Base from '../../layouts/Base.astro';
 import Record from '../../components/Record.astro';
-import Reader from '../../components/Reader.astro';
-import { allDocs, unitsOf } from '../../lib/data';
-import { anchorLabel, licenceName, shortLabel } from '../../lib/cite';
+import { allDocs } from '../../lib/data';
+import { licenceName, shortLabel } from '../../lib/cite';
+import { DATA_BASE } from '../../lib/env';
 import type { DocumentCard } from '../../lib/types';
 
 export function getStaticPaths() {
-  const paths: { params: { path: string }; props: { doc: DocumentCard; version: string; anchor?: string } }[] = [];
+  const paths: { params: { path: string }; props: { doc: DocumentCard; version: string } }[] = [];
   for (const doc of allDocs()) {
     const stem = doc.doc_id.replace(':', '/');
     paths.push({ params: { path: stem }, props: { doc, version: doc.version } });
-    for (const v of doc.versions) {
-      paths.push({ params: { path: `${stem}/${v.version}` }, props: { doc, version: v.version } });
-      let anchors = unitsOf(doc.doc_id, v.version).map((u) => u.anchor);
-      // A link-only version's text is not published; its places are still citable.
-      if (!anchors.length && v.version === doc.version) {
-        const kind = doc.anchor_kind === 'page' ? 'p' : 'b';
-        anchors = Array.from({ length: doc.unit_count }, (_, i) => `${kind}${i + 1}`);
-      }
-      for (const anchor of anchors) paths.push({ params: { path: `${stem}/${v.version}/${anchor}` }, props: { doc, version: v.version, anchor } });
-    }
+    for (const v of doc.versions) if (v.version !== doc.version) paths.push({ params: { path: `${stem}/${v.version}` }, props: { doc, version: v.version } });
   }
   return paths;
 }
 
-const { doc, version, anchor } = Astro.props;
-const units = unitsOf(doc.doc_id, version);
+const { doc, version } = Astro.props;
 const tier = doc.versions.find((v) => v.version === version)!.tier;
-const where = anchor ? units.find((u) => u.anchor === anchor)?.anchor_label ?? anchorLabel(anchor) : '';
-const title = anchor ? `${shortLabel(doc)}, ${where}` : doc.title;
-const description = anchor
-  ? `${doc.title}, ${where}. ${tier === 'open' ? 'Read the page here.' : 'Opens at its source.'}`
-  : `${shortLabel(doc)}. ${tier === 'open' ? 'Read here' : 'Read at source'} · ${licenceName(doc.licence)}.`;
-const og = `/og/d/${Astro.params.path}.png`;
+const description = `${shortLabel(doc)}. ${tier === 'open' ? 'Read here' : 'Read at source'} · ${licenceName(doc.licence)}.`;
+// An open PDF's preview card is its first page.
+const og = tier === 'open' && doc.anchor_kind === 'page' && version === doc.version && /^https?:/.test(DATA_BASE)
+  ? `${DATA_BASE}/pages/${doc.doc_id.replace(':', '/')}/${version}/p1.800.webp` : undefined;
 ---
-<Base title={title} description={description} og={og} bare={!!anchor}>
-  {anchor ? <Reader doc={doc} version={version} anchor={anchor} units={units} /> : <Record doc={doc} version={version} units={units} />}
+<Base title={doc.title} description={description} og={og} canonical={`/d/${doc.doc_id.replace(':', '/')}`}>
+  <Record doc={doc} version={version} />
 </Base>

@@ -1,0 +1,145 @@
+---
+// /follow/<topic>: one evaluation or topic across the labs' system and model cards. A saved
+// search, laid out by lab and date; every row is a citation.
+import Base from '../../layouts/Base.astro';
+import { TOPICS, follow, sectionOf, type Followed } from '../../lib/follow';
+import { anchorLabel, citePath, formatDate } from '../../lib/cite';
+import type { Hit } from '../../lib/types';
+
+export async function getStaticPaths() {
+  return Promise.all(TOPICS.map(async (topic) => ({ params: { topic: topic.id }, props: { data: await follow(topic) } })));
+}
+const { data } = Astro.props as { data: Followed };
+const { topic, labs } = data;
+const query = topic.queries[0];
+const y0 = Number(data.from), y1 = Number(data.to) + 1;
+// Where a date falls on the strip, as a percentage of its width.
+const at = (published: string) => {
+  const [y, m = 7, d = 1] = published.split('-').map(Number);
+  return (((y + (m - 1) / 12 + (d - 1) / 365 - y0) / (y1 - y0)) * 100).toFixed(2);
+};
+const years = Array.from({ length: y1 - y0 }, (_, i) => y0 + i);
+const parts = (hit: Hit) => {
+  const out: (string | { mark: string })[] = [];
+  let i = 0;
+  for (const [s, e] of hit.match_spans) {
+    if (s < i) continue;
+    out.push(hit.snippet.slice(i, s), { mark: hit.snippet.slice(s, e) });
+    i = e;
+  }
+  out.push(hit.snippet.slice(i));
+  return out;
+};
+const shown = labs.filter((l) => l.found.length > 0);
+---
+<Base title={`${topic.name} across the labs' system cards`} description={`${data.found} of ${data.cards} system and model cards mention it. Each mention opens the page.`}>
+  <div class="wrap">
+    <header class="pagehead">
+      <p class="rubric">Follow one topic across the labs' system cards</p>
+      <h1 class="title">{topic.name}</h1>
+      <p class="lede">{topic.about}</p>
+      <p class="muted facts">{data.found} of {data.cards} system and model cards mention it · the search is <a class="link mono" href={`/search?query=${encodeURIComponent(query)}&kind=system_card`}>{topic.queries.join(' or ')}</a>, and each result below is a citation</p>
+      <nav class="topics" aria-label="Topics">
+        {TOPICS.map((t) => <a href={`/follow/${t.id}`} aria-current={t.id === topic.id ? 'page' : undefined}>{t.name}</a>)}
+      </nav>
+    </header>
+
+    {data.from && (
+      <div class="strip" role="img" aria-label={`Each lab's cards by date from ${data.from} to ${data.to}. A filled mark is a card that mentions ${topic.name.toLowerCase()}: ${shown.map((l) => `${l.org}, ${l.found.length} of ${l.found.length + l.silent.length}`).join('; ')}.`}>
+        {labs.map((lab) => (
+          <div class="lane">
+            <span class="lab">{lab.org}</span>
+            <span class="track">
+              {lab.silent.filter((d) => d.published).map((d) => <i style={`left:${at(d.published!)}%`} />)}
+              {lab.found.filter((f) => f.doc.published).map((f) => <i data-found style={`left:${at(f.doc.published!)}%`} />)}
+            </span>
+          </div>
+        ))}
+        <div class="lane axis"><span class="lab"></span><span class="track">{years.map((y) => <span style={`left:${at(String(y) + '-01')}%`}>{y}</span>)}</span></div>
+        <p class="key"><i data-found /> mentions it <i /> does not</p>
+      </div>
+    )}
+
+    {shown.length === 0 && <p class="muted">No system or model card in the library mentions it.</p>}
+    {labs.map((lab) => (
+      <section class="lab-section" aria-labelledby={`lab-${lab.org.replace(/\W+/g, '-')}`}>
+        <h2 id={`lab-${lab.org.replace(/\W+/g, '-')}`}><span class="org">{lab.org}</span><span class="muted">{lab.found.length} of {lab.found.length + lab.silent.length} cards</span></h2>
+        <ol class="cards">
+          {lab.found.map(({ doc, hits, count }) => (
+            <li>
+              <span class="meta">{formatDate(doc.published).replace(/^\d+ /, '') || 'Undated'}</span>
+              <div class="card-body">
+                <a class="name" href={citePath(doc.doc_id)}>{doc.title}</a>
+                {hits.map((hit) => (
+                  <a class="hit" href={citePath(hit.cite)}>
+                    <span class="hit-head"><span class="chip" data-state="cited"><span class="sr">Page only: </span><span class="chip-label">{anchorLabel(hit.anchor)}</span></span>{(hit.anchor[0] === 'p' ? sectionOf(doc, hit) : hit.anchor_label.replace(/\s*¶\d+$/, '')) && <span class="sect">{hit.anchor[0] === 'p' ? sectionOf(doc, hit) : hit.anchor_label.replace(/\s*¶\d+$/, '')}</span>}</span>
+                    <span class="snippet">{parts(hit).map((p) => (typeof p === 'string' ? p : <mark>{p.mark}</mark>))}</span>
+                  </a>
+                ))}
+                {count > hits.length && <a class="rest link" href={`/search?query=${encodeURIComponent(query)}&doc=${encodeURIComponent(doc.doc_id)}`}>All {count} {doc.anchor_kind === 'page' ? 'pages' : 'paragraphs'} that mention it</a>}
+              </div>
+            </li>
+          ))}
+        </ol>
+        {lab.silent.length > 0 && (
+          <details class="silent">
+            <summary>{lab.silent.length} {lab.silent.length === 1 ? 'card does' : 'cards do'} not mention it</summary>
+            <ul>{lab.silent.map((d) => <li><a href={citePath(d.doc_id)}>{d.title}</a> <span class="muted">{formatDate(d.published).replace(/^\d+ /, '')}</span></li>)}</ul>
+          </details>
+        )}
+      </section>
+    ))}
+    <p class="note how">This page is a search, not a judgement. A card is listed when the words appear in it; a card that discusses the topic in other words is not. The library holds {data.cards} system and model cards, and some labs publish none.</p>
+  </div>
+</Base>
+<style>
+  .facts { max-width: 80ch; }
+  .topics { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2); margin-top: var(--s-2); }
+  .topics a { display: inline-flex; align-items: center; min-height: 32px; padding-inline: var(--s-3); border: 1px solid var(--rule); border-radius: var(--r-1); color: var(--ink-2); font-size: var(--t-13); }
+  .topics a:hover { color: var(--ink); border-color: var(--edge); }
+  .topics a[aria-current] { color: var(--ink); border-color: var(--ink-3); font-weight: 500; }
+
+  .strip { margin-block: var(--s-2) var(--s-6); padding-block: var(--s-4); border-block: 1px solid var(--edge); display: grid; gap: var(--s-2); }
+  .lane { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: var(--s-5); align-items: center; min-height: 20px; }
+  .lab { font-size: var(--t-13); color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track { position: relative; height: 12px; border-bottom: 1px solid var(--rule); margin-right: 6px; }
+  .strip i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-3); background: var(--bg); }
+  .strip i[data-found] { background: var(--accent); border-color: var(--accent); }
+  .track i { position: absolute; top: 6px; transform: translate(-50%, -50%); }
+  .axis .track { border: 0; height: 16px; }
+  .axis .track span { position: absolute; top: 0; font: 400 var(--t-12)/1.3 var(--mono); color: var(--ink-2); border-left: 1px solid var(--edge); padding-left: var(--s-1); }
+  .key { display: flex; align-items: center; gap: var(--s-2); font-size: var(--t-12); color: var(--ink-2); padding-left: calc(9.5rem + var(--s-5)); }
+  .key i + i { margin-left: var(--s-3); }
+
+  .lab-section { margin-top: var(--s-6); }
+  .lab-section h2 { display: flex; align-items: baseline; gap: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1px solid var(--edge); font: 400 var(--t-13)/1.4 var(--sans); }
+  .lab-section .org { font: 400 var(--t-28)/1.2 var(--serif); }
+  .cards > li { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: var(--s-1) var(--s-5); padding-block: var(--s-4); border-bottom: 1px solid var(--rule); }
+  .cards .meta { color: var(--ink-2); font-size: var(--t-13); padding-top: 3px; }
+  .card-body { display: grid; gap: var(--s-2); justify-items: start; min-width: 0; }
+  .name { font: 400 var(--t-18)/1.3 var(--serif); min-height: 24px; }
+  .name:hover { color: var(--accent); }
+  .hit { display: grid; gap: var(--s-1); padding-left: var(--s-4); border-left: 2px solid var(--rule); max-width: 78ch; }
+  .hit:hover { border-color: var(--accent); }
+  .hit-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-1) var(--s-3); }
+  .hit .chip { color: var(--accent); }
+  .hit .chip::before { display: none; }
+  .sect { font-size: var(--t-13); color: var(--ink-2); }
+  .snippet { font: 400 var(--t-16)/1.5 var(--serif); color: var(--ink-2); }
+  .snippet mark { color: var(--ink); }
+  .rest { font-size: var(--t-13); min-height: 24px; display: inline-flex; align-items: center; }
+  .silent { margin-top: var(--s-3); font-size: var(--t-13); color: var(--ink-2); }
+  .silent summary { cursor: pointer; min-height: 32px; display: inline-flex; align-items: center; }
+  .silent ul { columns: 2; column-gap: var(--s-6); margin-top: var(--s-2); }
+  .silent li { break-inside: avoid; padding-block: 3px; }
+  .silent li a { color: var(--ink); }
+  .silent li a:hover { color: var(--accent); }
+  .how { margin-top: var(--s-7); max-width: 78ch; }
+  @media (max-width: 700px) {
+    .lane { grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s-3); }
+    .key { padding-left: 0; }
+    .cards > li { grid-template-columns: 1fr; }
+    .silent ul { columns: 1; }
+    .lab-section .org { font-size: var(--t-22); }
+  }
+</style>

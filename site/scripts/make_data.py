@@ -2,11 +2,10 @@
 
     uv run --group fixtures --group build python site/scripts/make_data.py
 
-Writes `site/public/data/` in the layout of a snapshot's `public/` (docs/ARCHITECTURE.md
+Writes `site/.data/` in the layout of a snapshot's `public/` (docs/ARCHITECTURE.md
 section 7): document cards, unit text with layout, page images at 800 and 1600 px. Not
-committed; a real snapshot's `public/` replaces it (SAFETYPAGE_PUBLIC_DIR). Also writes
-`site/src/content/landing.json`, the landing page's two example checks, from the core
-library's own `verify_quote`.
+committed, and not copied into a build: the site reads it where a real snapshot's `public/`
+would be (SAFETYPAGE_PUBLIC_DIR), and the host serves it at /data.
 """
 
 from __future__ import annotations
@@ -24,13 +23,11 @@ from PIL import Image
 from safetypage.bundle import load_bundles
 from safetypage.corpus import Corpus
 from safetypage.ids import DocId, parse_citation
-from safetypage.quote import Verdict
 from safetypage.snapshot import public_doc_path, public_page_image_path, public_text_path
 
 SITE = Path(__file__).resolve().parents[1]
 FIXTURES = SITE.parent / "fixtures" / "corpus"
-DATA = SITE / "public" / "data"
-CONTENT = SITE / "src" / "content"
+DATA = SITE / ".data"
 WIDTHS = (800, 1600)
 
 
@@ -93,26 +90,6 @@ def public_tree(corpus: Any) -> None:
         print("public:", doc_id)
 
 
-PAPER = "arxiv:2305.15324/v2"
-
-
-def landing(corpus: Any) -> None:
-    good = corpus.verify_quote("not the only tool available for AI risk assessment", f"{PAPER}/p6")
-    bad = corpus.verify_quote(
-        "Model evaluation is the only tool available for AI risk assessment", f"{PAPER}/p6"
-    )
-    if (good.verdict, bad.verdict) != (Verdict.EXACT, Verdict.NEAR_MISS):
-        raise SystemExit("the landing examples no longer check out as written")
-    dump(
-        CONTENT / "landing.json",
-        {
-            "doc": corpus.document_card("arxiv:2305.15324").model_dump(mode="json"),
-            "verified": good.model_dump(mode="json"),
-            "rejected": bad.model_dump(mode="json"),
-        },
-    )
-
-
 def add_missing_words(corpus: Any) -> None:
     """Most fixture bundles carry no word boxes. Read them from the fixture PDFs so every
     open page gets a text layer, as ingestion supplies for the real corpus."""
@@ -148,8 +125,6 @@ def main() -> None:
     load_bundles(corpus, FIXTURES / "bundles")
     add_missing_words(corpus)
     public_tree(corpus)
-    landing(corpus)
-    print("landing examples written")
 
 
 if __name__ == "__main__":

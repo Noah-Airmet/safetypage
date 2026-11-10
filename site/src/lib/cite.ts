@@ -28,11 +28,17 @@ export function anchorLabel(anchor: string): string {
   return b ? `¶${n}–${b.replace(/^b/, '')}` : `¶${n}`;
 }
 
+// arXiv's PDFs are fetched from its bulk mirror; a reader is sent to arxiv.org.
+export const atSource = (url: string) => url.replace(/^https:\/\/storage\.googleapis\.com\/arxiv-dataset\/arxiv\/arxiv\/pdf\/\d+\/([^#]+?)\.pdf/, 'https://arxiv.org/pdf/$1');
+
+/** The site a link goes to, as a reader would name it: `anthropic.com`, not `www-cdn.anthropic.com`. */
+export const hostOf = (url: string) => new URL(url).hostname.replace(/^(www(-cdn)?|cdn|assets)\./, '');
+
 /** Opens the source at the place: `#page=N` for PDFs; a text fragment for HTML when we have words. */
 export function sourceLink(sourceUrl: string, anchor: string | undefined, paged: boolean, words?: string): string {
   const base = sourceUrl.split('#')[0];
   if (!anchor) return base;
-  if (paged) return `${base}#page=${anchorNumber(anchor)}`;
+  if (paged) return `${base.replace(/^(https:\/\/arxiv\.org)\/abs\//, '$1/pdf/')}#page=${anchorNumber(anchor)}`;
   return words ? `${base}#:~:text=${encodeURIComponent(words)}` : base;
 }
 
@@ -62,6 +68,23 @@ export const KINDS: Record<string, string> = {
   eval_report: 'Evaluation report', forum_post: 'Forum post', blog: 'Blog post', article: 'Article',
   government: 'Government', book: 'Book',
 };
+
+// A paper's publisher is where it was posted; everything else names its organisation.
+const SOURCES: Record<string, string> = { arxiv: 'arXiv', acl: 'ACL Anthology', openreview: 'OpenReview', lw: 'LessWrong' };
+export const publisherOf = (doc: Pick<DocumentCard, 'org' | 'doc_id'>) => doc.org ?? SOURCES[doc.doc_id.split(':')[0]] ?? 'Other';
+
+// The shelves, in the order the library lists them. A collection not named here still gets a shelf.
+export const SHELVES: Record<string, { name: string; about: string }> = {
+  labs: { name: 'Lab system cards and frameworks', about: 'System cards, model cards, safety frameworks and policies from the labs that train frontier models.' },
+  papers: { name: 'Research papers', about: 'Interpretability, alignment, evaluations and control, from arXiv and the ACL Anthology.' },
+  'lab-research-web': { name: 'Lab research on the web', about: 'Research the labs publish as web pages: Transformer Circuits, Distill, alignment blogs.' },
+  evaluators: { name: 'Evaluators and safety organisations', about: 'Independent evaluation reports and research: METR, Apollo, Redwood, Epoch, FAR.AI and others.' },
+  government: { name: 'Government', about: 'NIST and CAISI, the UK AI Security Institute, the EU AI Office, the International AI Safety Report.' },
+  forum: { name: 'Alignment Forum and LessWrong', about: 'Posts from the Alignment Forum, and LessWrong posts on AI safety.' },
+  welfare: { name: 'Model welfare', about: 'Research on whether AI systems could be moral patients, and what follows.' },
+};
+export const shelfName = (id: string) => SHELVES[id]?.name ?? id[0].toUpperCase() + id.slice(1).replace(/[-_]/g, ' ');
+export const shelfOrder = (id: string) => { const at = Object.keys(SHELVES).indexOf(id); return at < 0 ? 99 : at; };
 
 export function formatDate(iso: string | null | undefined): string {
   if (!iso) return '';

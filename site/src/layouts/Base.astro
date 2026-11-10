@@ -13,7 +13,7 @@ const { title, description = 'A library of the AI safety record. Every result op
 const fullTitle = title ? `${title} · SafetyPage` : 'SafetyPage: the AI safety record, cited to the page';
 const here = Astro.url.pathname;
 const nav = [
-  ['/library', 'Library'], ['/search', 'Search'], ['/check', 'Check'], ['/r', 'Replay'], ['/citationbench', 'CitationBench'], ['/connect', 'Connect'],
+  ['/library', 'Library'], ['/search', 'Search'], ['/follow', 'Follow'], ['/check', 'Check'], ['/citationbench', 'CitationBench'], ['/connect', 'Connect'],
 ];
 const abs = (p: string) => new URL(p, Astro.site).href;
 ---
@@ -55,6 +55,7 @@ const abs = (p: string) => new URL(p, Astro.site).href;
         <div class="wrap foot-in">
           <span>Built by Noah Airmet</span>
           <a href="https://github.com/Noah-Airmet/safetypage">Source on GitHub</a>
+          <a href="/r">Replays</a>
           <a href="/about">How it works</a>
           <a href="/about#licences">Licence policy</a>
         </div>
