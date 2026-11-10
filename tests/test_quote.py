@@ -120,7 +120,9 @@ def test_scope_distinguishes_here_from_elsewhere() -> None:
     assert not elsewhere.in_scope
     assert elsewhere.spans[0].text == "Reward hacking was observed"
     # every fragment must be in scope, not just the first
-    split = verify_quote("the model does not reliably refuse ... Reward hacking", SOURCE, scope=here)
+    split = verify_quote(
+        "the model does not reliably refuse ... Reward hacking", SOURCE, scope=here
+    )
     assert split.verdict is Verdict.ELSEWHERE
 
 
@@ -135,6 +137,12 @@ def test_ambiguity_is_reported_not_hidden() -> None:
     assert result.ambiguous
     assert len(result.other_spans) == 1
     assert result.other_spans[0].start > result.spans[0].start
+    # an exact occurrence is preferred over an earlier one that needs normalising
+    twice = "He said the Model Refuses. Later: the model refuses."
+    result = verify_quote("the model refuses", twice)
+    assert result.verdict is Verdict.EXACT
+    assert result.spans[0].start == twice.index("the model refuses")
+    assert [s.text for s in result.other_spans] == ["the Model Refuses"]
     assert not verify_quote("Reward hacking was observed", SOURCE).ambiguous
 
 
@@ -146,7 +154,9 @@ def test_fragments_must_appear_in_order_and_not_overlap() -> None:
 
 
 def test_split_quote() -> None:
-    assert split_quote('"In order to [really] save … costs," [...] he said. . . finally....done') == [
+    assert split_quote(
+        '"In order to [really] save … costs," [...] he said. . . finally....done'
+    ) == [
         "In order to",
         "save",
         "costs",
@@ -194,7 +204,9 @@ def _old_quote_found(quote: str, page_text: str, gap: int = 3) -> bool:
     for start in (i for i, w in enumerate(page) if w == words[0]):
         j, ok = start, True
         for word in words[1:]:
-            nxt = next((k for k in range(j + 1, min(j + 2 + gap, len(page))) if page[k] == word), None)
+            nxt = next(
+                (k for k in range(j + 1, min(j + 2 + gap, len(page))) if page[k] == word), None
+            )
             if nxt is None:
                 ok = False
                 break
@@ -224,7 +236,9 @@ def _old_quote_found(quote: str, page_text: str, gap: int = 3) -> bool:
 )
 def test_regression_a_quote_with_not_deleted_fails(source: str, quote: str) -> None:
     """A gap-tolerant matcher accepts a quotation with the negation removed. This one must not."""
-    assert _old_quote_found(quote, source), "the old rule is expected to pass this (that is the bug)"
+    assert _old_quote_found(quote, source), (
+        "the old rule is expected to pass this (that is the bug)"
+    )
     result = verify_quote(quote, source)
     assert result.verdict is Verdict.NEAR_MISS
     assert not result.passed

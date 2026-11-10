@@ -22,16 +22,6 @@
  },
  "outline": [
   {
-   "anchor": "p1",
-   "level": 1,
-   "title": "Executive Summary"
-  },
-  {
-   "anchor": "p1",
-   "level": 1,
-   "title": "Part 1: Foundational Information"
-  },
-  {
    "anchor": "p9",
    "level": 1,
    "title": "Framing Risk"
@@ -117,11 +107,6 @@
    "title": "Effectiveness of the AI RMF"
   },
   {
-   "anchor": "p24",
-   "level": 1,
-   "title": "Part 2: Core and Profiles"
-  },
-  {
    "anchor": "p25",
    "level": 1,
    "title": "AI RMF Core"
@@ -150,26 +135,6 @@
    "anchor": "p38",
    "level": 1,
    "title": "AI RMF Profiles"
-  },
-  {
-   "anchor": "p38",
-   "level": 1,
-   "title": "Appendix A: Descriptions of AI Actor Tasks from Figures 2 and 3"
-  },
-  {
-   "anchor": "p38",
-   "level": 1,
-   "title": "Appendix B: How AI Risks Differ from Traditional Software Risks"
-  },
-  {
-   "anchor": "p38",
-   "level": 1,
-   "title": "Appendix C: AI Risk Management and Human-AI Interaction"
-  },
-  {
-   "anchor": "p46",
-   "level": 1,
-   "title": "Appendix D: Attributes of the AI RMF"
   }
  ],
  "pages": [

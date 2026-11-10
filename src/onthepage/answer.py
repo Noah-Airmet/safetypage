@@ -9,7 +9,7 @@ The rules, in full:
 * A citation is a canonical URL or a bare cite string (:func:`onthepage.ids.find_citations`).
 * A quotation is a markdown blockquote (lines starting with ``>``) or text inside double quotation
   marks (``"..."`` or ``“...”``) with at least :data:`onthepage.quote.MIN_QUOTE_CHARS` letters
-  and digits.
+  and digits. Inline quotation marks around one or two words are a term, not a quotation.
 * A blockquote belongs to the first citation inside it; failing that, to the first citation on
   the next non-blank line.
 * An inline quotation belongs to the nearest citation after it in the same paragraph; failing
@@ -28,7 +28,8 @@ from onthepage.quote import MIN_QUOTE_CHARS, skeleton
 
 __all__ = ["AnswerQuote", "ParsedAnswer", "parse_answer"]
 
-_INLINE_RE: Final = re.compile(r"“([^“”]{1,4000})”|\"([^\"\n]{1,4000})\"")
+MIN_INLINE_WORDS: Final = 3
+_INLINE_RE: Final = re.compile(r"“([^“”]{1,4000})”|\"([^\"]{1,4000})\"")
 _MD_LINK_RE: Final = re.compile(r"\[([^\]]*)\]\([^)\s]*\)")
 _URL_RE: Final = re.compile(r"https?://\S+")
 _BLOCKQUOTE_RE: Final = re.compile(r"^[ \t]{0,3}>[ \t]?", re.MULTILINE)
@@ -124,7 +125,7 @@ def parse_answer(text: str) -> ParsedAnswer:
             if any(c.start <= m.start() < c.end for c in in_para):
                 continue  # a quotation mark inside a URL
             body = _clean(m.group(1) or m.group(2) or "")
-            if not _long_enough(body):
+            if not _long_enough(body) or len(body.split()) < MIN_INLINE_WORDS:
                 continue
             after = next((c for c in in_para if c.start >= m.end()), None)
             before = next((c for c in reversed(in_para) if c.end <= m.start()), None)

@@ -31,13 +31,15 @@ ignore = [
     "PLR0911", # branch-count limits: judged in review, not by a counter
     "PLR0912",
     "PLR0915",
+    "PLW2901", # reassigning a loop variable to its cleaned form is clear enough
+    "PT018",   # compound asserts are fine in tests
     "RUF001",  # this code is about confusable Unicode
     "RUF002",
     "RUF003",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "S608", "PLR0915", "ARG001"]
+"tests/**" = ["S101", "S608", "S603", "ARG001", "E501"]
 "fixtures/**" = ["ARG002"]
 
 [tool.pyright]

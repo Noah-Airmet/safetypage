@@ -382,14 +382,16 @@ def _diagnose(
     return SegmentResult(fragment, Verdict.NOT_FOUND, None)
 
 
-def _others(sk: Skeleton, needle: str, hi: int, first: int) -> tuple[Span, ...]:
+def _others(sk: Skeleton, needle: str, lo: int, hi: int, chosen: int) -> tuple[Span, ...]:
+    """Every other whole-word occurrence of a single-fragment quote in ``[lo, hi)``."""
     spans: list[Span] = []
-    pos = first + 1
+    pos = lo
     while len(spans) < MAX_OTHER_LOCATIONS:
         i, _ = _find_whole(sk, needle, pos, hi)
         if i < 0:
             break
-        spans.append(_span(sk, i, i + len(needle)))
+        if i != chosen:
+            spans.append(_span(sk, i, i + len(needle)))
         pos = i + 1
     return tuple(spans)
 
@@ -435,7 +437,9 @@ def verify_quote(
                 for f, n, s in zip(fragments, needles, starts, strict=True)
             )
         )
-        others = _others(sk, needles[0], search[1], starts[0]) if len(needles) == 1 else ()
+        others = (
+            _others(sk, needles[0], search[0], search[1], starts[0]) if len(needles) == 1 else ()
+        )
         if not in_scope:
             return QuoteResult(
                 Verdict.ELSEWHERE,
@@ -456,11 +460,30 @@ def verify_quote(
             other_spans=others,
         )
 
-    starts = _match_in_order(sk, needles, *cited)
+    def place(search: tuple[int, int]) -> list[int] | None:
+        starts = _match_in_order(sk, needles, *search)
+        if starts is None or len(needles) > 1:
+            return starts
+        # One fragment that occurs more than once: prefer a character-for-character occurrence
+        # over an earlier one that only matches after normalisation.
+        first = _span(sk, starts[0], starts[0] + len(needles[0]))
+        if _grade(fragments[0], first) is Verdict.EXACT:
+            return starts
+        pos = starts[0] + 1
+        for _ in range(MAX_OTHER_LOCATIONS):
+            i, _inside = _find_whole(sk, needles[0], pos, search[1])
+            if i < 0:
+                break
+            if _grade(fragments[0], _span(sk, i, i + len(needles[0]))) is Verdict.EXACT:
+                return [i]
+            pos = i + 1
+        return starts
+
+    starts = place(cited)
     if starts is not None:
         return found(starts, cited, in_scope=True)
     if cited != whole:
-        starts = _match_in_order(sk, needles, *whole)
+        starts = place(whole)
         if starts is not None:
             return found(starts, whole, in_scope=False)
 

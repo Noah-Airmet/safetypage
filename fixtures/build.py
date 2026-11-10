@@ -71,13 +71,18 @@ def pdf_pages(path: Path, *, with_words: bool) -> list[NewPage]:
     return pages
 
 
-def pdf_outline(path: Path) -> list[OutlineEntry]:
+def pdf_outline(path: Path, pages: list[NewPage]) -> list[OutlineEntry]:
+    """The PDF's own bookmarks, keeping only those whose title really is on the page they point
+    at (some PDFs carry bookmarks with broken destinations)."""
+    entries: list[OutlineEntry] = []
     with pymupdf.open(path) as doc:
-        return [
-            OutlineEntry(level=level, title=" ".join(title.split()), anchor=f"p{page}")
-            for level, title, page in doc.get_toc()
-            if 1 <= page <= doc.page_count and title.strip()
-        ]
+        for level, title, page in doc.get_toc():
+            title = " ".join(title.split())
+            if not title or not 1 <= page <= len(pages):
+                continue
+            if skeleton(title).text in skeleton(pages[page - 1].text).text:
+                entries.append(OutlineEntry(level=level, title=title, anchor=f"p{page}"))
+    return entries
 
 
 # --------------------------------------------------------------------------- HTML
@@ -322,7 +327,7 @@ def build(entry: dict[str, Any]) -> Bundle:
     if parser in {"pdf", "pdf+latexml"}:
         pdf = SOURCES / files["pdf"]["name"]
         pages = pdf_pages(pdf, with_words=bool(entry.get("words")))
-        outline = pdf_outline(pdf)
+        outline = pdf_outline(pdf, pages)
         primary = "pdf"
         if parser == "pdf+latexml":
             raw = html_blocks(SOURCES / files["html"]["name"], _LatexmlBlocks())

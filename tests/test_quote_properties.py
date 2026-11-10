@@ -37,7 +37,9 @@ def words_and_range(draw: st.DrawFn, min_len: int = 3) -> tuple[list[str], int, 
     return words, i, j
 
 
-_SEPARATORS = st.sampled_from([" ", "  ", "\n", " \n ", "\t", ", ", "; ", " — ", ". ", " (", ") ", ' "'])
+_SEPARATORS = st.sampled_from(
+    [" ", "  ", "\n", " \n ", "\t", ", ", "; ", " — ", ". ", " (", ") ", ' "']
+)
 
 
 def render(words: list[str], seps: list[str]) -> str:
@@ -61,7 +63,9 @@ def test_any_run_of_whole_words_from_the_source_is_exact(
 
 
 @given(words_and_range(min_len=4), st.data())
-def test_deleting_one_word_never_passes(case: tuple[list[str], int, int], data: st.DataObject) -> None:
+def test_deleting_one_word_never_passes(
+    case: tuple[list[str], int, int], data: st.DataObject
+) -> None:
     words, i, j = case
     quoted = words[i:j]
     k = data.draw(st.integers(1, len(quoted) - 2))  # an interior word
@@ -72,7 +76,9 @@ def test_deleting_one_word_never_passes(case: tuple[list[str], int, int], data: 
 
 
 @given(words_and_range(), st.data())
-def test_changing_one_word_never_passes(case: tuple[list[str], int, int], data: st.DataObject) -> None:
+def test_changing_one_word_never_passes(
+    case: tuple[list[str], int, int], data: st.DataObject
+) -> None:
     words, i, j = case
     quoted = list(words[i:j])
     k = data.draw(st.integers(0, len(quoted) - 1))
@@ -81,7 +87,9 @@ def test_changing_one_word_never_passes(case: tuple[list[str], int, int], data: 
 
 
 @given(words_and_range(), st.data())
-def test_inserting_one_word_never_passes(case: tuple[list[str], int, int], data: st.DataObject) -> None:
+def test_inserting_one_word_never_passes(
+    case: tuple[list[str], int, int], data: st.DataObject
+) -> None:
     words, i, j = case
     quoted = list(words[i:j])
     k = data.draw(st.integers(1, len(quoted) - 1))
@@ -120,7 +128,9 @@ def broken_source(draw: st.DrawFn, words: list[str]) -> str:
     for word in words:
         if len(word) > 3 and draw(st.booleans()):
             cut = draw(st.integers(1, len(word) - 1))
-            joiner = draw(st.sampled_from(["-\n", "-\n  ", "\u00ad", "\u200b", "\u00ad\n", "-\r\n"]))
+            joiner = draw(
+                st.sampled_from(["-\n", "-\n  ", "\u00ad", "\u200b", "\u00ad\n", "-\r\n"])
+            )
             # a soft hyphen followed by a newline needs a visible hyphen to be a line-break join
             word = word[:cut] + (joiner if joiner != "\u00ad\n" else "\u00ad-\n") + word[cut:]
         out.append(word)

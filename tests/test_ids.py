@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import contextlib
+
 import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
 from onthepage.ids import (
     Anchor,
+    AnchorKind,
     Citation,
     DocId,
     IdError,
@@ -34,7 +37,9 @@ def test_cite_string_and_url_are_the_same_parts() -> None:
 
 
 def test_url_round_trips_with_a_quote() -> None:
-    c = Citation(DocId("nist", "ai-100-1"), "r1", Anchor.page(12), quote='risk is "a composite" & more')
+    c = Citation(
+        DocId("nist", "ai-100-1"), "r1", Anchor.page(12), quote='risk is "a composite" & more'
+    )
     url = c.url(BASE + "/")
     assert url.startswith("https://onthepage.test/d/nist/ai-100-1/r1/p12?q=")
     ref, quote = parse_url(url)
@@ -44,7 +49,9 @@ def test_url_round_trips_with_a_quote() -> None:
 
 def test_parse_url_accepts_a_bare_path_and_any_host() -> None:
     assert parse_url("/d/distill/zoom-in/r1/b14")[0] == parse_ref("distill:zoom-in/r1/b14")
-    assert parse_url("http://localhost:8000/d/distill/zoom-in")[0] == Ref(DocId("distill", "zoom-in"))
+    assert parse_url("http://localhost:8000/d/distill/zoom-in")[0] == Ref(
+        DocId("distill", "zoom-in")
+    )
     assert parse_url("https://x.example/d/distill/zoom-in/r1/")[0].version == "r1"
 
 
@@ -71,11 +78,12 @@ def test_anchor_parse(text: str, kind: str, start: int, end: int) -> None:
     assert (a.kind, a.start, a.end) == (kind, start, end)
     assert str(a) == text
     assert a.size == end - start + 1
-    assert [str(s) for s in a.singles()][0] == f"{kind}{start}"
+    assert str(a.singles()[0]) == f"{kind}{start}"
 
 
 @pytest.mark.parametrize(
-    "bad", ["", "p0", "p01", "6", "page6", "P6", "p6-b8", "p8-p6", "p6-p6", "p6-", "s4.3", "b1.5", "p-1"]
+    "bad",
+    ["", "p0", "p01", "6", "page6", "P6", "p6-b8", "p8-p6", "p6-p6", "p6-", "s4.3", "b1.5", "p-1"],
 )
 def test_anchor_rejects(bad: str) -> None:
     with pytest.raises(IdError):
@@ -117,7 +125,12 @@ def test_refs() -> None:
     assert parse_ref("arxiv:2305.15324/v2").version == "v2"
     assert parse_ref("arxiv:2305.15324/v2/p6-p8").anchor == Anchor.page(6, 8)
     assert parse_ref("arxiv:2305.15324").url(BASE) == "https://onthepage.test/d/arxiv/2305.15324"
-    for bad in ["arxiv:2305.15324/p6", "arxiv:2305.15324/v0/p6", "arxiv:2305.15324/v2/p6/x", "arxiv:1/2"]:
+    for bad in [
+        "arxiv:2305.15324/p6",
+        "arxiv:2305.15324/v0/p6",
+        "arxiv:2305.15324/v2/p6/x",
+        "arxiv:1/2",
+    ]:
         with pytest.raises(IdError):
             parse_ref(bad)
 
@@ -192,13 +205,19 @@ def test_source_links() -> None:
 
 _ns = st.from_regex(r"[a-z][a-z0-9-]{0,10}", fullmatch=True)
 _local = st.from_regex(r"[A-Za-z0-9]([A-Za-z0-9._-]{0,20}[A-Za-z0-9])?", fullmatch=True)
-_version = st.builds(lambda k, n: f"{k}{n}", st.sampled_from("vr"), st.integers(1, 999))
-_anchor = st.builds(
-    lambda k, a, n: Anchor(k, a, a + n),
-    st.sampled_from(["p", "b"]),
-    st.integers(1, 5000),
-    st.integers(0, 40),
-)
+
+
+def _make_version(kind: str, number: int) -> str:
+    return f"{kind}{number}"
+
+
+def _make_anchor(kind: AnchorKind, start: int, extra: int) -> Anchor:
+    return Anchor(kind, start, start + extra)
+
+
+_kinds: st.SearchStrategy[AnchorKind] = st.sampled_from(["p", "b"])
+_version = st.builds(_make_version, st.sampled_from("vr"), st.integers(1, 999))
+_anchor = st.builds(_make_anchor, _kinds, st.integers(1, 5000), st.integers(0, 40))
 _citation = st.builds(Citation, st.builds(DocId, _ns, _local), _version, _anchor)
 
 
@@ -220,8 +239,6 @@ def test_quotes_survive_the_url(c: Citation, quote: str) -> None:
 @given(st.text(max_size=60))
 def test_parsers_never_crash(text: str) -> None:
     for parse in (parse_ref, parse_citation, Anchor.parse, DocId.parse, parse_url):
-        try:
+        with contextlib.suppress(IdError):
             parse(text)
-        except IdError:
-            pass
     find_citations(text)

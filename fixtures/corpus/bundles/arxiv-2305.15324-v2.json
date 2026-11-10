@@ -1271,16 +1271,6 @@
    "title": "Extreme risks from general-purpose models"
   },
   {
-   "anchor": "p4",
-   "level": 1,
-   "title": "Model evaluation as critical governance infrastructure"
-  },
-  {
-   "anchor": "p6",
-   "level": 2,
-   "title": "Responsible training"
-  },
-  {
    "anchor": "p7",
    "level": 2,
    "title": "Responsible deployment"
