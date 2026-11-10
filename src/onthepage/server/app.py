@@ -142,6 +142,14 @@ class Server:
             return False
         return True
 
+    def close(self) -> None:
+        """Release each backend's threads and connections, then the call log."""
+        for library in {id(v): v for v in self.libraries.values()}.values():
+            close = getattr(library.backend, "close", None)
+            if callable(close):
+                close()
+        self.ops.close()
+
     def library(self, snapshot: str = "current") -> Library:
         library = self.libraries.get(snapshot)
         if library is None:
@@ -482,7 +490,7 @@ def build_app(server: Server, *, allowed_hosts: list[str] | None = None) -> Star
             for endpoint in endpoints.values():
                 await stack.enter_async_context(endpoint.run())
             yield
-        server.ops.close()
+        server.close()
 
     middleware = [
         Middleware(RateLimit, limits=server.limits),
