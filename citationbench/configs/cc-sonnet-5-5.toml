@@ -2,12 +2,12 @@
 agent = "claude-code"
 model = "claude-sonnet-5-5"
 questions = "citationbench/heldout/test.jsonl"
-limit = 150
+limit = 50
 corpus = "data/snapshots/2026.11.3"
 server = "http://localhost:8766"
 ops_db = "citationbench/work/ops.sqlite"
 surface = "default"
 epochs = 1
-batch = 150
+batch = 50
 pause = 10
-max_used = { five_hour = 0.55, seven_day = 0.45 }  # 0.6 for everything on the account, less room for other use
+max_used = 1.0  # no ceiling: the run stops only when the CLI reports a real usage limit

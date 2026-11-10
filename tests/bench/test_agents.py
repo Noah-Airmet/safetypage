@@ -182,6 +182,38 @@ def test_antigravity_marks_web_search(tmp_path: Path, monkeypatch: pytest.Monkey
     assert is_cli_model("codex:x") and not is_cli_model("anthropic/claude-haiku-5-5")
 
 
+def test_cursor_marks_successful_non_library_calls(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def call(
+        kind: str, result: dict[str, Any], args: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
+        return {
+            "type": "tool_call",
+            "subtype": "completed",
+            "tool_call": {kind: {"args": args or {}, "result": result}},
+        }
+
+    lines = [
+        call("shellToolCall", {"permissionDenied": {"command": "ls"}}),
+        call("globToolCall", {"success": {"files": []}}),
+        call("mcpToolCall", {"success": {}}, {"providerIdentifier": "safetypage"}),
+        call("getMcpToolsToolCall", {"success": {}}),
+        {
+            "type": "result",
+            "is_error": False,
+            "result": "hi",
+            "usage": {"inputTokens": 10, "outputTokens": 2, "cacheReadTokens": 4},
+        },
+    ]
+    monkeypatch.setattr(agents, "CURSOR_BIN", _fake(tmp_path, "cursor-agent", lines))
+    monkeypatch.setattr(agents.Path, "home", lambda: tmp_path)
+    run = run_agent("cursor", "composer-2.5", "q", mcp_url="http://x/mcp", headers={})
+    assert run.off_library == ["glob"] and run.answer == "hi"
+    assert run.usage["input"] == 10 and run.usage["cache_read"] == 4
+    assert complete("cursor:composer-2.5", "q") == "hi"
+
+
 def _ops(path: Path, run_id: str, sample: str) -> None:
     conn = sqlite3.connect(path)
     migrate(conn, "ops")

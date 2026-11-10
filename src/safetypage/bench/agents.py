@@ -13,10 +13,15 @@ only way to look anything up:
                  configured) and permission rules denying commands, files and URLs. Its web
                  search cannot be turned off, so any step that is not a library call marks the
                  sample ``contaminated`` and it scores as wrong.
+``cursor``       ``cursor-agent -p`` on the Cursor login, with its own ``HOME`` (only the library
+                 server, permission rules denying shell, reads, writes and fetches) and an empty
+                 workspace outside the repository. Its file search (glob) ignores the rules, so
+                 any successful tool call that is not the library's marks the sample
+                 ``contaminated``.
 
 :func:`complete` is the same CLIs with no tools at all, for drafting, checking and judging.
-Model specs: ``claude-code:<model>``, ``codex:<model>``, ``antigravity:<model>``; anything else
-is an Inspect model id.
+Model specs: ``claude-code:<model>``, ``codex:<model>``, ``antigravity:<model>``,
+``cursor:<model>``; anything else is an Inspect model id.
 """
 
 from __future__ import annotations
@@ -40,13 +45,14 @@ __all__ = [
     "run_agent",
 ]
 
-AGENTS = ("claude-code", "codex", "antigravity")
+AGENTS = ("claude-code", "codex", "antigravity", "cursor")
 REPO = Path(__file__).resolve().parents[3]
 WORK = REPO / "citationbench" / "work"
 
 CLAUDE_BIN = os.environ.get("CITATIONBENCH_CLAUDE", "claude")
 CODEX_BIN = os.environ.get("CITATIONBENCH_CODEX", "codex")
 AGY_BIN = os.environ.get("CITATIONBENCH_AGY", "agy")
+CURSOR_BIN = os.environ.get("CITATIONBENCH_CURSOR", "cursor-agent")
 
 LIMIT_RE = re.compile(
     r"rate.?limit|usage limit|limit reached|quota|resource.?exhausted|\b429\b|too many requests"
@@ -404,7 +410,82 @@ def _agy(
     return run
 
 
-_RUNNERS = {"claude-code": _claude, "codex": _codex, "antigravity": _agy}
+# ------------------------------------------------------------------------------ Cursor
+
+
+CURSOR_CONFIG = {
+    "version": 1,
+    "permissions": {
+        "allow": ["Mcp(safetypage:*)"],
+        "deny": ["Shell(*)", "Read(**)", "Write(**)", "WebFetch(*)"],
+    },
+    "approvalMode": "allowlist",
+    "sandbox": {"mode": "enabled"},
+}
+CURSOR_OK_CALLS = {"mcpToolCall", "getMcpToolsToolCall", "listMcpResourcesToolCall"}
+
+
+def _cursor_home(mcp_url: str | None, headers: dict[str, str]) -> Path:
+    home = WORK / "cursor-home"
+    (home / ".cursor").mkdir(parents=True, exist_ok=True)
+    (home / ".config").mkdir(parents=True, exist_ok=True)
+    for link, target in (
+        (home / "Library", Path.home() / "Library"),  # the login lives in the keychain
+        (home / ".config" / "cursor", Path.home() / ".config" / "cursor"),
+    ):
+        if not link.is_symlink() and not link.exists():
+            link.symlink_to(target)
+    servers = {"safetypage": {"url": mcp_url, "headers": headers}} if mcp_url else {}
+    (home / ".cursor" / "mcp.json").write_text(
+        json.dumps({"mcpServers": servers}), encoding="utf-8"
+    )
+    (home / ".cursor" / "cli-config.json").write_text(json.dumps(CURSOR_CONFIG), encoding="utf-8")
+    return home
+
+
+def _cursor(
+    prompt: str, model: str, *, mcp_url: str | None, headers: dict[str, str], timeout: int
+) -> AgentRun:
+    home = _cursor_home(mcp_url, headers)
+    cwd = Path.home() / ".cache" / "citationbench" / "cursor-workspace"  # empty, outside the repo
+    cwd.mkdir(parents=True, exist_ok=True)
+    cmd = [CURSOR_BIN, "-p", prompt, "--model", model, "--output-format", "stream-json",
+           "--approve-mcps", "--trust", "--workspace", str(cwd)]  # fmt: skip
+    out, err, code, secs = _run(cmd, env=dict(os.environ, HOME=str(home)), cwd=cwd, timeout=timeout)
+    run = AgentRun(answer="", seconds=secs, agent_version=f"cursor {_version(CURSOR_BIN)}", raw=out)
+    usage = {"input": 0, "output": 0, "cache_read": 0, "cache_write": 0, "reasoning": 0}
+    for e in _jsonl(out):
+        if e.get("type") == "tool_call" and e.get("subtype") == "completed":
+            call = _d(e.get("tool_call"))
+            for kind, body in call.items():
+                if not isinstance(body, dict):
+                    continue
+                result = _d(_d(body).get("result"))
+                # Denied calls reached nothing; only one that succeeded counts.
+                if kind not in CURSOR_OK_CALLS and "success" in result:
+                    run.off_library.append(kind.removesuffix("ToolCall"))
+                if kind == "mcpToolCall":
+                    server = _d(_d(body).get("args")).get("providerIdentifier")
+                    if server not in (None, "safetypage"):
+                        run.off_library.append(f"mcp:{server}")
+        elif e.get("type") == "result":
+            run.answer = str(e.get("result") or "")
+            u = _d(e.get("usage"))
+            usage["input"] += int(u.get("inputTokens", 0))
+            usage["output"] += int(u.get("outputTokens", 0))
+            usage["cache_read"] += int(u.get("cacheReadTokens", 0))
+            usage["cache_write"] += int(u.get("cacheWriteTokens", 0))
+            if e.get("is_error"):
+                run.error = str(e.get("result") or e.get("subtype"))[-400:]
+    run.usage = usage
+    if not run.answer and not run.error:
+        run.error = err.strip()[-400:] or f"exit {code}"
+    if run.error and LIMIT_RE.search(run.error + err[-400:]):
+        raise UsageLimitError(run.error)
+    return run
+
+
+_RUNNERS = {"claude-code": _claude, "codex": _codex, "antigravity": _agy, "cursor": _cursor}
 
 
 def run_agent(
