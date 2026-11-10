@@ -10,6 +10,7 @@ alone (arXiv 2607.20527).
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import re
@@ -22,6 +23,7 @@ from inspect_ai.model import GenerateConfig, get_model
 
 from onthepage.trace import Judgement
 
+from .agents import complete, is_cli_model
 from .score import Judge
 
 __all__ = [
@@ -81,8 +83,12 @@ def make_judge(model: str, *, agreement: float | None = None, max_chars: int = 2
 
     async def judge(claim: str, cite: str, text: str) -> Judgement:
         prompt = JUDGE_PROMPT.format(claim=claim, cite=cite, text=text[:max_chars])
-        output = await get_model(model).generate(prompt, config=GenerateConfig(max_tokens=4000))
-        label = parse_label(output.completion) or "unsupported"
+        if is_cli_model(model):
+            reply = await asyncio.to_thread(complete, model, prompt)
+        else:
+            output = await get_model(model).generate(prompt, config=GenerateConfig(max_tokens=4000))
+            reply = output.completion
+        label = parse_label(reply) or "unsupported"
         return Judgement(judge=jid, label=label, agreement=agreement)
 
     return judge

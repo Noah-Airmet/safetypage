@@ -1,3 +1,5 @@
 heldout/
 logs/
 work/
+local/
+vault.local.toml

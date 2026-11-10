@@ -1,4 +1,4 @@
-# PageCite
+# CitationBench
 
 A benchmark of whether an agent with a library tool cites the right page, quotes it accurately,
 and makes claims the page supports. The harness is on [Inspect](https://inspect.aisi.org.uk);
@@ -7,7 +7,7 @@ the code is in [`src/onthepage/bench/`](../src/onthepage/bench/) and its tests i
 
 Checking that a citation points at real text is nearly solved. Checking that the cited page
 supports the claim is not: on identical outputs the measured unsupported-citation rate moves
-from about 3% to 18% depending only on the verifier (arXiv 2607.20527). So PageCite keeps the
+from about 3% to 18% depending only on the verifier (arXiv 2607.20527). So CitationBench keeps the
 checks code can make apart from the one a model makes, and publishes the judge's agreement
 with people next to any support number.
 
@@ -48,7 +48,7 @@ Not written by hand. Each records how it was made (`made`) and how it was checke
    gold pages. Real "the source does not say that" cases come through when the drafter's
    verdict on a real citing sentence is `not_supported`. For diffs and shared sections, code
    has located both units; the model writes only the question.
-3. **Check** (`check`): a second model from another family (Azure `gpt-5-mini`) reads the
+3. **Check** (`check`): a second model from another family (Codex `gpt-6-luna`) reads the
    question, the expected answer and the gold text, and must agree; otherwise the question is
    rejected. A person can then accept questions (`checks` level `human`).
 4. **Split** (`split`): by a hash of the cited document, so one document's questions never sit
@@ -59,26 +59,57 @@ Results are reported per construction method (`by_method`), since perturbed clai
 easier to call than real misattributions.
 
 **First batch** (fixture corpus, six documents): 3 candidates mined (2 citing sentences, 1
-version diff), 5 questions drafted by `claude-opus-5-5`, all gold quotes verified by code, all 5
-passed the `gpt-5-mini` check; 4 in `questions/dev.jsonl`, 1 held out. The real set is built
+version diff), 5 questions drafted by `claude-opus-5-5` (through the API, before the move to
+subscriptions), all gold quotes verified by code, all 5 passed the `gpt-5-mini` check; 4 in `questions/dev.jsonl`, 1 held out. The real set is built
 the same way when the real corpus lands.
 
 ## Run it
 
+Runs use subscription logins, not API keys. A leaderboard row is an **agent plus a model**
+(Claude Code with Opus 5.5, Codex with GPT-6.1 Sol), and the results file names both.
+
+| Agent | Login | How it is isolated |
+|---|---|---|
+| `claude-code` | `claude` | `--tools ""` (no built-in tools), `--strict-mcp-config` with only the library, `--setting-sources ""` (no user settings, plugins or hooks), no saved session |
+| `codex` | the ChatGPT login | its own `CODEX_HOME` (no user AGENTS.md or config; `auth.json` is a link to the real one), shell, apps, plugins, browser, images, memories and web search off. Its code mode stays on because GPT-6 calls MCP tools through it; it has no file system, imports or network |
+| `antigravity` | the Google login (`agy`) | its own `HOME` with only the library server, permission rules denying commands, files and URLs. Its web search cannot be turned off: a sample that uses it, or any other non-library tool, is marked `contaminated` and scores as wrong |
+| `inspect` | none, or an API key | Inspect's `react` agent; used for local models on oMLX, and by anyone with API keys |
+
 ```sh
 uv sync --all-groups
-# a server on the fixture corpus (port 8000 is a local oMLX server)
-uv run --group server python -m onthepage.server --fixtures --port 8765 &
+ONTHEPAGE_OPS_DB=pagecite/work/ops.sqlite \
+  uv run --group server python -m onthepage.server --fixtures --port 8766 &
 uv run --group bench python -m onthepage.bench run pagecite/configs/smoke.toml
 ```
 
-A run writes the Inspect log to `logs/` (not committed; open it with `inspect view`), a
-results file to `results/<run_id>.json` and a trace per sample to `traces/<run_id>/`. The
-configuration in the results file reruns it. API keys come from the environment;
-missing ones can be read from a 1Password vault.
+One question per fresh session. Every tool call carries `X-OnThePage-Run` and
+`X-OnThePage-Sample`, so the server's call log (`ops.sqlite`) is the record of what the agent
+saw; the CLI's output gives the answer, tokens and the account's usage meter. Scoring is the
+same code as above. A run writes `results/<run_id>.json` and `traces/<run_id>/`; the raw
+per-sample records are in `work/runs/<run_id>/` (not committed).
 
-Configurations in [`configs/`](configs/): `smoke` (Haiku, fixtures), `baseline` and one per
-ablation. Each ablation changes one thing against `baseline`:
+**Usage safety.** A batch runs at most `batch` samples with `pause` seconds between them, and
+stops cleanly, recording why and which sample is next in `work/runs/<run_id>/stopped.json`, when:
+
+- the CLI reports a rate or usage limit;
+- the account's usage meter passes `max_used` (default 0.8);
+- the next sample would not finish before `--until HH:MM`.
+
+Rerunning the same configuration resumes where it stopped. Usage meters: Claude Code reports
+the 5-hour and 7-day windows' used share on every run (`rate_limit_event`). Codex writes the
+same two windows into its session file. Antigravity reports tokens but no meter. Meters are
+account-wide, so other use of the account moves them too.
+
+API keys are never the default. A configuration reads them from the 1Password vault only when it
+says `vault = ["anthropic"]` (see `configs/inspect-api.toml`), and only through a local,
+untracked `vault.local.toml` (copy [`vault.example.toml`](vault.example.toml)),
+and `draft`, `check` and `agreement` only with `--vault`. Drafting, checking and judging default
+to the CLIs: `claude-code:claude-opus-5-5` drafts, `codex:gpt-6-luna` checks (another model
+family), and `claude-code:claude-sonnet-5-5` judges.
+
+Configurations in [`configs/`](configs/): `smoke` (Claude Code, Haiku), `cc-*`, `codex-*`,
+`agy-*`, `local-*`, and the ablations, each changing one thing against `ablation-default`
+(Claude Code with Sonnet 5.5):
 
 | Config | Server surface | Question it answers |
 |---|---|---|
@@ -88,20 +119,29 @@ ablation. Each ablation changes one thing against `baseline`:
 | `ablation-arm-bm25` / `-dense` / `-hybrid` | `arm-<arm>` | Keyword versus dense versus hybrid retrieval (needs the snapshot's arms and the server surfaces) |
 
 ```sh
-python -m onthepage.bench compare results/<baseline>.json results/<ablation>.json --measure correct
-python -m onthepage.bench estimate results/<smoke>.json --questions 300 --epochs 3   # cost of a full run
-python -m onthepage.bench publish                                                   # the site's leaderboard, runs, traces
+python -m onthepage.bench compare results/<a>.json results/<b>.json --measure correct
+python -m onthepage.bench publish      # the site's leaderboard, runs and traces
 ```
 
-Local models (Qwen on a local oMLX server) run as `openai-api/omlx/<model>`. Local model work runs
-overnight only, 22:00 to 06:00.
+### Local models, overnight
+
+`python -m onthepage.bench nightly` runs the configurations in
+[`configs/nightly.txt`](configs/nightly.txt) on a local oMLX server, between 04:00 and 06:25. It
+starts oMLX and the library server if they are down (and stops them afterwards if it started
+them). Before each model it checks free memory against the model's `size_gb` plus 6 GB, and
+skips the model that night if it does not fit. It resumes the next night. A model downloaded
+only for testing has `hf_repo`, `download = true` and `delete_after = true` in its
+configuration, and its files are removed from `~/.cache/huggingface/hub` once its run is
+complete. Models that were already on disk are never deleted. To schedule it, fill in
+[`nightly.plist.example`](nightly.plist.example) and install it as a LaunchAgent; machine-specific
+copies live in `local/`, which is not committed. The log is `work/nightly.log`.
 
 ## Validating the judge
 
 ```sh
 python -m onthepage.bench pairs --traces pagecite/traces     # claim-citation pairs from questions and runs
 python -m onthepage.bench label --who <name>                 # label in the terminal, blind to the judge
-python -m onthepage.bench agreement --judge anthropic/claude-sonnet-5-5
+python -m onthepage.bench agreement --judge claude-code:claude-sonnet-5-5
 ```
 
 `labels/pairs.jsonl` holds claims and cite strings only, never document text. Labels go to

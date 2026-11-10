@@ -16,6 +16,7 @@ each quote (``made``), and each check it has passed (``checks``).
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import re
@@ -27,6 +28,7 @@ from inspect_ai.model import GenerateConfig, Model, get_model
 from onthepage.corpus import Corpus, NotFoundError
 from onthepage.quote import QuoteTooShortError
 
+from .agents import complete, is_cli_model
 from .mine import Candidate
 from .questions import Check, Made, Question, question_id
 
@@ -163,6 +165,8 @@ def _passing(evidence: list[dict[str, str]]) -> list[str]:
 
 
 async def _generate(model: str | Model, prompt: str) -> str:
+    if isinstance(model, str) and is_cli_model(model):
+        return await asyncio.to_thread(complete, model, prompt)
 
     out = await get_model(model).generate(prompt, config=GenerateConfig(max_tokens=8000))
     return out.completion

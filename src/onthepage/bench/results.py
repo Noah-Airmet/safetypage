@@ -21,7 +21,7 @@ from collections import defaultdict
 from collections.abc import Sequence
 from datetime import datetime
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 from inspect_ai.event import ToolEvent as InspectToolEvent
 from inspect_ai.log import read_eval_log
@@ -69,6 +69,10 @@ class Estimate(BaseModel):
 class Cost(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    billing: Literal["subscription", "api", "local"] = "api"
+    """How the run was paid for. For ``subscription`` and ``local`` runs the dollar figures are
+    what the same tokens would cost at the table's list prices, not money spent."""
+
     price_table: str | None
     priced: bool
     """False for a model the table has no price for (local models are priced at 0 and marked
@@ -102,6 +106,9 @@ class RunResult(BaseModel):
     name: str
     """The run configuration's name, e.g. ``ablation-no-verify``."""
     created_at: str
+    agent: str
+    """The agent harness and its version: ``claude-code 2.1.321``, ``codex 0.167.0``,
+    ``inspect react-baseline@1``. A leaderboard row is an agent plus a model."""
     model: str
     solver: str
     surface: str
@@ -112,12 +119,21 @@ class RunResult(BaseModel):
     """``{"file", "sha256", "n"}``."""
     epochs: int
     samples: int
+    planned_samples: int
+    complete: bool
+    stopped: str | None = None
+    """Why and where a run stopped early (a usage limit, a time window), if it did."""
     errors: int
+    contaminated: int = 0
+    """Samples where the agent used something other than the library (scored as wrong)."""
+    seconds_per_sample: float | None = None
     judge: JudgeInfo | None
     measures: dict[str, Estimate]
     by_method: dict[str, dict[str, Estimate]]
     by_kind: dict[str, dict[str, Estimate]]
     cost: Cost
+    meter: dict[str, Any] = Field(default_factory=dict[str, Any])
+    """The account's usage meter as the agent CLI reported it, before and after the run."""
     config: dict[str, Any]
     """The run configuration as given: enough to rerun it (``python -m onthepage.bench run``)."""
     log: str
@@ -140,7 +156,10 @@ class PriceTable(BaseModel):
         return cls.model_validate_json(path.read_text(encoding="utf-8"))
 
     def price(self, model: str) -> dict[str, float] | None:
-        entry = self.models.get(model) or self.models.get(model.split("/", 1)[-1])
+        entry = self.models.get(model) or next(
+            (v for k, v in self.models.items() if k.rsplit("/", 1)[-1] == model.rsplit("/", 1)[-1]),
+            None,
+        )
         if entry is None:
             return None
         return {k: float(v) for k, v in entry.items() if k != "local"}
@@ -317,14 +336,9 @@ def write_run(
 
     price = prices.price(model) if prices else None
     rows: list[dict[str, Any]] = []
-    totals = {"input": 0, "output": 0, "cache_read": 0, "cache_write": 0}
-    errors = 0
-    costs: list[float] = []
     judge_id: str | None = None
     for sample in log.samples or []:
         question = Question.model_validate(sample.metadata["question"])
-        if sample.error is not None:
-            errors += 1
         u = sample.model_usage.get(model)
         tokens = {
             "input": u.input_tokens if u else 0,
@@ -332,12 +346,9 @@ def write_run(
             "cache_read": (u.input_tokens_cache_read or 0) if u else 0,
             "cache_write": (u.input_tokens_cache_write or 0) if u else 0,
         }
-        for k, v in tokens.items():
-            totals[k] += v
         cost = None
         if price is not None:
             cost = sum(tokens[k] * price.get(k, price.get("input", 0.0)) for k in tokens) / 1e6
-            costs.append(cost)
         usage = Usage(
             input_tokens=tokens["input"],
             output_tokens=tokens["output"],
@@ -360,44 +371,113 @@ def write_run(
                 "method": question.made.method,
                 "kind": question.kind,
                 "correct": float(values.get("correct") or 0.0),
+                "tokens": tokens,
+                "error": sample.error is not None,
+                "question_id": question.id,
             }
         )
 
+    result = summarize(
+        rows,
+        run_id=run_id,
+        created_at=log.eval.created,
+        model=model,
+        agent=f"inspect {config.get('solver', 'react-baseline@1')}",
+        epochs=int(log.eval.config.epochs or 1),
+        config=config,
+        log=Path(log_path).name,
+        prices=prices,
+        judge=judge_id,
+        agreements=agreements,
+        billing="local" if model.startswith("openai-api/omlx/") else "api",
+    )
+    return write_result(result, out)
+
+
+def write_result(result: RunResult, out: Path) -> Path:
+    path = out / "results" / f"{result.run_id}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(result.model_dump_json(by_alias=True, indent=1), encoding="utf-8")
+    return path
+
+
+def summarize(
+    rows: list[dict[str, Any]],
+    *,
+    run_id: str,
+    created_at: str,
+    model: str,
+    agent: str,
+    epochs: int,
+    config: dict[str, Any],
+    log: str,
+    prices: PriceTable | None,
+    judge: str | None,
+    agreements: dict[str, Any] | None,
+    billing: str,
+    meter: dict[str, Any] | None = None,
+    stopped: str | None = None,
+    planned: int | None = None,
+) -> RunResult:
+    """A results file from per-sample rows: ``scores``, ``cluster``, ``method``, ``kind``,
+    ``correct``, ``tokens`` (``input``, ``output``, ``cache_read``, ``cache_write``), ``error``,
+    and optionally ``seconds`` and ``contaminated``."""
+    price = prices.price(config.get("price_as", model)) if prices else None
+    totals = {"input": 0, "output": 0, "cache_read": 0, "cache_write": 0}
+    costs: list[float] = []
+    for r in rows:
+        for k in totals:
+            totals[k] += int(r["tokens"].get(k, 0))
+        if price is not None:
+            costs.append(
+                sum(r["tokens"].get(k, 0) * price.get(k, price.get("input", 0.0)) for k in totals)
+                / 1e6
+            )
     clusters = [r["cluster"] for r in rows]
     total_usd = sum(costs) if price is not None else None
     per_correct = (
         _ratio_bootstrap(costs, [r["correct"] for r in rows], clusters)
-        if price is not None
+        if price is not None and rows
         else Estimate(mean=None, ci_low=None, ci_high=None, n=len(rows))
     )
     qfile = Path(str(config.get("questions", "")))
+    if not qfile.is_absolute():
+        qfile = Path(__file__).resolve().parents[3] / qfile
     qhash = hashlib.sha256(qfile.read_bytes()).hexdigest() if qfile.is_file() else None
     judge_info = None
-    if judge_id is not None:
-        jid = make_judge_id(judge_id)
+    if judge is not None:
+        jid = make_judge_id(judge)
         judge_info = JudgeInfo(id=jid, agreement=(agreements or {}).get(jid))
-    result = RunResult(
+    seconds = [float(r["seconds"]) for r in rows if r.get("seconds") is not None]
+    return RunResult(
         run_id=run_id,
         name=str(config.get("name", run_id)),
-        created_at=log.eval.created,
+        created_at=created_at,
+        agent=agent,
         model=model,
-        solver=str(config.get("solver", "react-baseline@1")),
+        solver=str(config.get("solver", agent)),
         surface=str(config.get("surface", "default")),
         server=config.get("server"),
         snapshot=str(config.get("corpus", "fixtures")),
         questions={
             "file": str(config.get("questions", "")),
             "sha256": qhash,
-            "n": len({r["cluster"] + str(i) for i, r in enumerate(rows)}),
+            "n": len({r.get("question_id", i) for i, r in enumerate(rows)}),
         },
-        epochs=int(log.eval.config.epochs or 1),
+        epochs=epochs,
         samples=len(rows),
-        errors=errors,
+        planned_samples=planned if planned is not None else len(rows),
+        complete=stopped is None,
+        stopped=stopped,
+        errors=sum(bool(r.get("error")) for r in rows),
+        contaminated=sum(bool(r.get("contaminated")) for r in rows),
+        seconds_per_sample=sum(seconds) / len(seconds) if seconds else None,
         judge=judge_info,
         measures=_estimates(rows)["all"] if rows else {},
         by_method=_estimates(rows, "method"),
         by_kind=_estimates(rows, "kind"),
         cost=Cost(
+            billing=billing,  # type: ignore[arg-type]
             price_table=prices.id if prices else None,
             priced=price is not None,
             input_tokens=totals["input"],
@@ -408,13 +488,10 @@ def write_run(
             per_sample_usd=total_usd / len(rows) if total_usd is not None and rows else None,
             per_correct_usd=per_correct,
         ),
+        meter=meter or {},
         config=config,
-        log=Path(log_path).name,
+        log=log,
     )
-    path = out / "results" / f"{run_id}.json"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(result.model_dump_json(by_alias=True, indent=1), encoding="utf-8")
-    return path
 
 
 def compare(a: Path, b: Path, measure: str = "correct") -> Estimate:
@@ -471,7 +548,9 @@ def publish(results: Sequence[Path], content: Path, *, version: str) -> Path:
         ]
         rows.append(
             {
+                "agent": run.agent,
                 "model": run.model,
+                "billing": run.cost.billing,
                 "solver": run.solver,
                 "surface": run.surface,
                 "run_id": run.run_id,

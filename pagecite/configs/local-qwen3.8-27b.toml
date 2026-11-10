@@ -1,0 +1,14 @@
+# Local model on a local oMLX server, through the Inspect agent. Overnight only (nightly.txt).
+agent = "inspect"
+model = "openai-api/omlx/Jundot--Qwen3.8-27B-oQ4e-mtp"
+vault = ["omlx"]          # the oMLX server's key and URL; not a paid API
+size_gb = 17              # weights in memory, for the free-memory check
+judge = "claude-code:claude-sonnet-5-5"
+questions = "pagecite/questions/dev.jsonl"
+corpus = "fixtures"
+server = "http://localhost:8766"
+ops_db = "pagecite/work/ops.sqlite"
+surface = "default"
+epochs = 1
+pause = 5
+timeout = 1500

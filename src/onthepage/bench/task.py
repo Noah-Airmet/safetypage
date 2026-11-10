@@ -155,6 +155,7 @@ def pagecite(  # noqa: PLR0917  (task arguments are given by name from the CLI)
     judge: str | None = None,
     message_limit: int = 40,
     tools: Sequence[Tool | ToolSource] | None = None,
+    headers: dict[str, str] | None = None,
 ) -> Task:
     """PageCite. ``tools`` replaces the MCP server (tests use it); everything else is a string
     so the task runs from the command line."""
@@ -163,7 +164,11 @@ def pagecite(  # noqa: PLR0917  (task arguments are given by name from the CLI)
         path = REPO / path
     dataset = MemoryDataset([_sample(q) for q in load_questions(path)], name=path.stem)
     if tools is None:
-        tools = [mcp_server_http(name="onthepage", url=surface_url(server, surface), timeout=30)]
+        tools = [
+            mcp_server_http(
+                name="onthepage", url=surface_url(server, surface), timeout=30, headers=headers
+            )
+        ]
     return Task(
         dataset=dataset,
         solver=react(prompt=INSTRUCTIONS, tools=list(tools)),

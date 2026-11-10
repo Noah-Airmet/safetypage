@@ -18,15 +18,19 @@ import subprocess
 import sys
 import tomllib
 from collections import Counter
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
 from inspect_ai import eval as inspect_eval  # pyright: ignore[reportUnknownVariableType]
 
+from .agents import AGENTS
+from .cli_run import rescore, run_cli
 from .draft import check_question, draft
 from .judge import agreement, judge_id, load_agreements, make_judge
 from .label import label_loop, pairs_from_questions, pairs_from_traces, read_jsonl, unit_text
 from .mine import Candidate, citing_contexts, shared_sections, version_diffs
+from .nightly import nightly
 from .questions import Question, assign_split, load_questions, save_questions
 from .results import PriceTable, RunResult, compare, publish, write_run
 from .task import open_corpus, pagecite
@@ -62,15 +66,26 @@ def _env_from_vault(mapping: dict[str, str]) -> None:
         os.environ[var] = value
 
 
-def keys_for(*models: str | None) -> None:
-    """Make sure the API keys the named models need are in the environment."""
+def keys_for(*models: str | None, vault: bool | list[str] = False) -> None:
+    """Read API keys from the vault, only when asked to (``--vault``, or ``vault = [...]`` in a
+    run configuration). API keys are never the default: subscription CLIs are."""
+    if not vault:
+        return
     prefixes = {"anthropic/": "anthropic", "openai/azure/": "azure", "openai-api/omlx/": "omlx"}
     sections = {s for m in models if m for p, s in prefixes.items() if m.startswith(p)}
+    if isinstance(vault, list):
+        sections &= set(vault)
     if not sections:
         return
-    vault = tomllib.loads((PC / "vault.toml").read_text(encoding="utf-8"))
+    local = PC / "vault.local.toml"
+    if not local.is_file():
+        sys.exit(
+            f"API keys for {sorted(sections)} were asked for from the vault, but {local} does not "
+            "exist. Set the environment variables, or copy vault.example.toml to it."
+        )
+    refs = tomllib.loads(local.read_text(encoding="utf-8"))
     for section in sorted(sections):
-        _env_from_vault(vault[section])
+        _env_from_vault(refs[section])
 
 
 # ----------------------------------------------------------------------------- questions
@@ -88,7 +103,7 @@ def cmd_mine(a: argparse.Namespace) -> None:
 
 def cmd_draft(a: argparse.Namespace) -> None:
 
-    keys_for(a.model)
+    keys_for(a.model, vault=a.vault)
     corpus = _corpus(a.corpus)
     rows = [json.loads(x) for x in Path(a.candidates).read_text().splitlines() if x.strip()]
     candidates = [Candidate.load(r) for r in rows][: a.limit or None]
@@ -111,7 +126,7 @@ def cmd_draft(a: argparse.Namespace) -> None:
 
 def cmd_check(a: argparse.Namespace) -> None:
 
-    keys_for(a.model)
+    keys_for(a.model, vault=a.vault)
     corpus = _corpus(a.corpus)
     path = Path(a.questions)
     questions = load_questions(path)
@@ -154,7 +169,14 @@ def load_config(path: Path) -> dict[str, Any]:
 def cmd_run(a: argparse.Namespace) -> None:
 
     config = load_config(Path(a.config))
-    keys_for(config["model"], config.get("judge"))
+    if config.get("agent") in (*AGENTS, "inspect"):
+        keys_for(config["model"], config.get("judge"), vault=config.get("vault", False))
+        outcome = run_cli(config, batch=a.batch or None, until=_until(a.until))
+        print(json.dumps(outcome.__dict__, default=str, indent=1))
+        if outcome.stopped and outcome.done < outcome.planned:
+            sys.exit(3)
+        return
+    keys_for(config["model"], config.get("judge"), vault=config.get("vault", False))
     task = pagecite(
         questions=config.get("questions", "pagecite/questions/dev.jsonl"),
         corpus=config.get("corpus", "fixtures"),
@@ -182,6 +204,33 @@ def cmd_run(a: argparse.Namespace) -> None:
         agreements=load_agreements(AGREEMENT),
     )
     print(out)
+
+
+def _until(text: str | None) -> datetime | None:
+    if not text:
+        return None
+    hour, minute = (int(x) for x in text.split(":"))
+    now = datetime.now().astimezone()
+    end = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    return end if end > now else end + timedelta(days=1)
+
+
+def cmd_rescore(a: argparse.Namespace) -> None:
+    config = load_config(Path(a.config))
+    keys_for(config.get("judge"), vault=config.get("vault", False))
+    print(rescore(config))
+
+
+def cmd_nightly(a: argparse.Namespace) -> None:
+    names = [
+        line.strip()
+        for line in (PC / "configs" / "nightly.txt").read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.startswith("#")
+    ]
+    configs = [load_config(PC / "configs" / name) for name in names]
+    keys_for(*(c["model"] for c in configs), vault=["omlx"])
+    until = _until(a.until) or datetime.now().astimezone()
+    sys.exit(nightly(configs, until=until, dry_run=a.dry_run))
 
 
 def cmd_results(a: argparse.Namespace) -> None:
@@ -261,7 +310,7 @@ def cmd_label(a: argparse.Namespace) -> None:
 
 def cmd_agreement(a: argparse.Namespace) -> None:
 
-    keys_for(a.judge)
+    keys_for(a.judge, vault=a.vault)
     corpus = _corpus(a.corpus)
     pairs = {p["pair_id"]: p for p in read_jsonl(Path(a.pairs))}
     human: dict[str, str] = {}
@@ -322,7 +371,8 @@ def main(argv: list[str] | None = None) -> None:
     )
     s.add_argument("--corpus", default="fixtures", help=corpus_help)
     s.add_argument("--candidates", default=str(PC / "work" / "candidates.jsonl"))
-    s.add_argument("--model", default="anthropic/claude-opus-5-5")
+    s.add_argument("--model", default="claude-code:claude-opus-5-5")
+    s.add_argument("--vault", action="store_true", help="read API keys from the vault")
     s.add_argument("--out", default=str(PC / "work" / "questions.jsonl"))
     s.add_argument("--limit", type=int, default=0)
     s.add_argument("--concurrency", type=int, default=4)
@@ -331,7 +381,8 @@ def main(argv: list[str] | None = None) -> None:
     s = sub.add_parser("check", help="a second model from another family checks each draft")
     s.add_argument("--corpus", default="fixtures", help=corpus_help)
     s.add_argument("--questions", default=str(PC / "work" / "questions.jsonl"))
-    s.add_argument("--model", default="openai/azure/gpt-5-mini")
+    s.add_argument("--model", default="codex:gpt-6-luna")
+    s.add_argument("--vault", action="store_true", help="read API keys from the vault")
     s.set_defaults(fn=cmd_check)
 
     s = sub.add_parser("split", help="assign dev/test by cited document and write both files")
@@ -343,8 +394,19 @@ def main(argv: list[str] | None = None) -> None:
 
     s = sub.add_parser("run", help="run a configuration, write results and traces")
     s.add_argument("config")
-    s.add_argument("--limit", type=int, default=0)
+    s.add_argument("--limit", type=int, default=0, help="Inspect runs: at most this many samples")
+    s.add_argument("--batch", type=int, default=0, help="CLI runs: samples in this batch")
+    s.add_argument("--until", default=None, help="CLI runs: stop before HH:MM local time")
     s.set_defaults(fn=cmd_run)
+
+    s = sub.add_parser("rescore", help="score a CLI run's saved answers again (no agent runs)")
+    s.add_argument("config")
+    s.set_defaults(fn=cmd_rescore)
+
+    s = sub.add_parser("nightly", help="the overnight local-model run (configs/nightly.txt)")
+    s.add_argument("--until", default="06:25", help="stop before HH:MM local time")
+    s.add_argument("--dry-run", action="store_true")
+    s.set_defaults(fn=cmd_nightly)
 
     s = sub.add_parser("results", help="(re)write results and traces from an Inspect log")
     s.add_argument("log")
@@ -384,7 +446,8 @@ def main(argv: list[str] | None = None) -> None:
     s = sub.add_parser("agreement", help="run a judge on the labelled pairs and measure agreement")
     s.add_argument("--corpus", default="fixtures", help=corpus_help)
     s.add_argument("--pairs", default=str(PC / "labels" / "pairs.jsonl"))
-    s.add_argument("--judge", default="anthropic/claude-sonnet-5-5")
+    s.add_argument("--judge", default="claude-code:claude-sonnet-5-5")
+    s.add_argument("--vault", action="store_true", help="read API keys from the vault")
     s.set_defaults(fn=cmd_agreement)
 
     s = sub.add_parser("schema", help="write schemas/pagecite/*.schema.json")

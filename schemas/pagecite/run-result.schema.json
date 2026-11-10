@@ -3,6 +3,16 @@
     "Cost": {
       "additionalProperties": false,
       "properties": {
+        "billing": {
+          "default": "api",
+          "enum": [
+            "subscription",
+            "api",
+            "local"
+          ],
+          "title": "Billing",
+          "type": "string"
+        },
         "cache_read_tokens": {
           "title": "Cache Read Tokens",
           "type": "integer"
@@ -155,6 +165,10 @@
   "additionalProperties": false,
   "description": "One run: one model, one tool surface, one question file. What the leaderboard reads.",
   "properties": {
+    "agent": {
+      "title": "Agent",
+      "type": "string"
+    },
     "by_kind": {
       "additionalProperties": {
         "additionalProperties": {
@@ -175,10 +189,19 @@
       "title": "By Method",
       "type": "object"
     },
+    "complete": {
+      "title": "Complete",
+      "type": "boolean"
+    },
     "config": {
       "additionalProperties": true,
       "title": "Config",
       "type": "object"
+    },
+    "contaminated": {
+      "default": 0,
+      "title": "Contaminated",
+      "type": "integer"
     },
     "cost": {
       "$ref": "#/$defs/Cost"
@@ -216,6 +239,11 @@
       "title": "Measures",
       "type": "object"
     },
+    "meter": {
+      "additionalProperties": true,
+      "title": "Meter",
+      "type": "object"
+    },
     "model": {
       "title": "Model",
       "type": "string"
@@ -223,6 +251,10 @@
     "name": {
       "title": "Name",
       "type": "string"
+    },
+    "planned_samples": {
+      "title": "Planned Samples",
+      "type": "integer"
     },
     "questions": {
       "additionalProperties": true,
@@ -241,6 +273,18 @@
       "default": "pagecite.result/1",
       "title": "Schema",
       "type": "string"
+    },
+    "seconds_per_sample": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Seconds Per Sample"
     },
     "server": {
       "anyOf": [
@@ -261,6 +305,18 @@
       "title": "Solver",
       "type": "string"
     },
+    "stopped": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Stopped"
+    },
     "surface": {
       "title": "Surface",
       "type": "string"
@@ -270,6 +326,7 @@
     "run_id",
     "name",
     "created_at",
+    "agent",
     "model",
     "solver",
     "surface",
@@ -278,6 +335,8 @@
     "questions",
     "epochs",
     "samples",
+    "planned_samples",
+    "complete",
     "errors",
     "judge",
     "measures",

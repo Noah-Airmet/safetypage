@@ -98,7 +98,7 @@ def tool_event(
     order; a result that is an error returns nothing (an error message that lists the pages
     that do exist has not shown the agent those pages)."""
     returned: list[ToolReturn] = []
-    if error is None:
+    if error is None and tool != "check_answer":  # it echoes the agent's own citations
         seen: set[str] = set()
         for found in find_citations(result):
             for unit in units_of(found.citation):
@@ -128,14 +128,25 @@ def tool_event(
 
 
 def claim_context(answer: str, start: int, end: int, *, limit: int = 700) -> str:
-    """The claim a citation is attached to: its paragraph, with citations removed."""
-    para_start = answer.rfind("\n\n", 0, start)
-    para_end = answer.find("\n\n", end)
-    para = answer[para_start + 1 if para_start >= 0 else 0 : para_end if para_end >= 0 else None]
-    for found in find_citations(para):
-        para = para.replace(found.raw, "")
-    para = re.sub(r"\[\s*\]\(\s*\)|\(\s*\)|\[\s*\]", "", para)
-    return " ".join(para.split())[:limit]
+    """The claim a citation is attached to: the sentence it is in, and the sentence before it
+    on the same line (where the quotation it cites usually is), with citations removed. One
+    line, not the paragraph, so each item of a list is judged on its own."""
+    line_start = answer.rfind("\n", 0, start) + 1
+    line_end = answer.find("\n", end)
+    line = answer[line_start : line_end if line_end >= 0 else None]
+    at = start - line_start
+    spans = [
+        (m.start(), m.end())
+        for m in re.finditer(r"[^.!?]*(?:[.!?](?=\s|$)|$)", line, re.S)
+        if m.end() > m.start()
+    ]
+    index = next((n for n, (s, e) in enumerate(spans) if s <= at < e or at < s), len(spans) - 1)
+    first = max(0, index - 1)
+    text = line[spans[first][0] : spans[index][1]] if spans else line
+    for found in find_citations(text):
+        text = text.replace(found.raw, "")
+    text = re.sub(r"\[\s*\]\(\s*\)|\(\s*\)|\[\s*\]", "", text)
+    return " ".join(text.split())[:limit]
 
 
 @dataclass
