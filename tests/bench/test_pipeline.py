@@ -118,7 +118,7 @@ def test_cli_mine_split_schema_estimate(
         [
             "split",
             "--questions",
-            str(cli.PC / "questions" / "dev.jsonl"),
+            str(cli.PC / "questions" / "fixtures.jsonl"),
             "--dev",
             str(dev),
             "--test",
@@ -126,7 +126,7 @@ def test_cli_mine_split_schema_estimate(
         ]
     )
     assert len(load_questions(dev)) + len(load_questions(test)) == len(
-        load_questions(cli.PC / "questions" / "dev.jsonl")
+        load_questions(cli.PC / "questions" / "fixtures.jsonl")
     )
 
     monkeypatch.setattr(cli, "REPO", tmp_path)
@@ -168,7 +168,7 @@ def test_cli_draft_check_pairs_label_agreement(
     )
     assert load_questions(questions) == []
 
-    dev = cli.REPO / "citationbench" / "questions" / "dev.jsonl"
+    dev = cli.REPO / "citationbench" / "questions" / "fixtures.jsonl"
     pairs = pc / "labels" / "pairs.jsonl"
     cli.main(["pairs", "--questions", str(dev), "--out", str(pairs), "--traces", str(tmp_path)])
     assert pairs.read_text().strip()
@@ -191,7 +191,7 @@ def test_cli_draft_check_pairs_label_agreement(
 
 def test_cli_check_rejects_on_no(tmp_path: Path) -> None:
     path = tmp_path / "q.jsonl"
-    path.write_text((cli.PC / "questions" / "dev.jsonl").read_text())
+    path.write_text((cli.PC / "questions" / "fixtures.jsonl").read_text())
     qs = load_questions(path)
     for q in qs:
         q.checks = [c for c in q.checks if c.level != "model"]

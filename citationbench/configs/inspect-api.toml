@@ -1,7 +1,7 @@
 # The Inspect path with an API key, for anyone who has one. Not used for our own runs.
 model = "anthropic/claude-haiku-5-5"
 vault = ["anthropic"]   # Noah's machine: read the key from the vault. Others: set ANTHROPIC_API_KEY.
-questions = "citationbench/questions/dev.jsonl"
+questions = "citationbench/questions/fixtures.jsonl"
 corpus = "fixtures"
 server = "http://localhost:8766"
 surface = "default"

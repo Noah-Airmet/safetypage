@@ -1,5 +1,5 @@
 # Configurations the 04:00 local-model job runs, in order, until 06:25. One per line.
 # A model downloaded only for testing has hf_repo, download = true and delete_after = true
 # in its configuration; models already on disk have neither and are never deleted.
-local-qwen3.8-27b.toml
 local-qwen3.6-35b-a3b.toml
+local-qwen3.8-27b.toml

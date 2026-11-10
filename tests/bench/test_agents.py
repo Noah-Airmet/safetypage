@@ -219,7 +219,7 @@ def test_runner_scores_from_the_call_log_resumes_and_stops(
 ) -> None:
     pc = tmp_path / "pc"
     monkeypatch.setattr(cli_run, "PC", pc)
-    questions = cli_run.REPO / "citationbench" / "questions" / "dev.jsonl"
+    questions = cli_run.REPO / "citationbench" / "questions" / "fixtures.jsonl"
     ops = tmp_path / "ops.sqlite"
     config = {
         "name": "t",

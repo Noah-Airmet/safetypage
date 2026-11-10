@@ -79,6 +79,8 @@ COMPARE_PROMPT = """\
 Write one question for a research-literature benchmark. The answer must need BOTH passages
 below. Do not quote them; ask about the substance, and name the document(s) and the
 version(s) or edition(s) so the question is answerable from a library of many documents.
+Never give a cite string, page number, paragraph number or revision label (r1, v2): finding
+the pages is part of the task. Name versions by date or edition instead.
 
 {context}
 
@@ -107,7 +109,7 @@ with a short reason and then a last line "OK: yes" or "OK: no".
 """
 
 PROMPT_ID = "draft@" + hashlib.sha256((CLAIM_PROMPT + COMPARE_PROMPT).encode()).hexdigest()[:6]
-MAX_DOC_CHARS = 60_000
+MAX_DOC_CHARS = 40_000
 
 
 def now() -> str:
@@ -260,11 +262,10 @@ async def draft(corpus: Corpus, candidate: Candidate, model: str | Model) -> lis
     else:
         texts: list[str] = []
         for cite in gold:
-            units = corpus.read_units(cite)
             title = corpus.document(cite.split("/", 1)[0])
             texts.append(
                 f"{title.title if title else cite} ({cite}), section "
-                f"'{candidate.source_text}':\n{(units[0].text or '')[:6000]}"
+                f"'{candidate.source_text}':\n{_unit_text(corpus, cite)[:6000]}"
             )
         context = "\n\n".join(texts)
     data = _json(await _generate(model, COMPARE_PROMPT.format(context=context)))
@@ -289,6 +290,13 @@ async def draft(corpus: Corpus, candidate: Candidate, model: str | Model) -> lis
             checks=[Check(level="code", by="mine", at=now(), note="gold units located by code")],
         )
     ]
+
+
+def _unit_text(corpus: Corpus, cite: str) -> str:
+    """A unit's text of record, whatever its licence tier: questions are built from it, as the
+    scorer checks quotes against it. It never leaves the benchmark's own files."""
+    r = corpus.resolve(cite)
+    return "" if r.scope is None else corpus.private_spine_text(r.version)[r.scope[0] : r.scope[1]]
 
 
 async def check_question(corpus: Corpus, question: Question, model: str | Model) -> Check | None:

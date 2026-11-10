@@ -58,10 +58,36 @@ Not written by hand. Each records how it was made (`made`) and how it was checke
 Results are reported per construction method (`by_method`), since perturbed claims are
 easier to call than real misattributions.
 
-**First batch** (fixture corpus, six documents): 3 candidates mined (2 citing sentences, 1
-version diff), 5 questions drafted by `claude-opus-5-5` (through the API, before the move to
-subscriptions), all gold quotes verified by code, all 5 passed the `gpt-5-mini` check; 4 in `questions/dev.jsonl`, 1 held out. The real set is built
-the same way when the real corpus lands.
+**Version 1** (snapshot `2026.11.3`). `mine` found 135,807 candidates (133,930 citing
+sentences, 231 version diffs, 1,646 shared sections). `pick` chose 510 of them spread across
+the kind of document asked about (system cards, frameworks, government guidance, model cards
+and evaluator reports before papers and forum posts; at most two per document, three for
+version diffs, one per citing-and-cited pair):
+
+```sh
+python -m safetypage.bench pick --corpus data/snapshots/2026.11.3 \
+  --candidates citationbench/work/real/candidates.jsonl --out citationbench/work/real/picked.jsonl \
+  citing_sentence/system_card=120 citing_sentence/framework=60 citing_sentence/government=60 \
+  citing_sentence/model_card=40 citing_sentence/eval_report=40 citing_sentence/paper=220 \
+  citing_sentence/forum_post=50 citing_sentence/blog=25 citing_sentence/article=25 \
+  version_diff=50 shared_section/system_card=45 shared_section/model_card=12 \
+  shared_section/eval_report=10 shared_section/government=6
+```
+
+`claude-code:claude-opus-5-5` drafted 435 questions from them (candidates whose quotes did
+not verify, whose reference match was wrong, or whose sentence only names the work drop out
+here). `codex:gpt-6-luna` rejected 40 (9%): 28 of 184 citing sentences (15%), 8 of 195
+perturbed claims (4%), 2 of 18 version diffs, 2 of 38 shared sections. Of the 395 left,
+201 are in `questions/dev.jsonl` (113 documents) and 194 held out (111 documents). The
+leaderboard runs the first 150 or 50 held-out questions in id order (`limit`), so a
+50-question row is a subset of a 150-question one. The fixture corpus's five questions are in
+`questions/fixtures.jsonl`, for the smoke and ablation configurations.
+
+Known weaknesses of version 1: perturbed claims are about half of every split, and are easier
+than real misattributions (report `by_method`); few real citing sentences are judged
+`not_supported`; some sentences cite several works at once in author-year form, so which work
+is being checked is left to the agent; some sentences carry PDF artifacts (hyphenation,
+equations, running headers).
 
 ## Run it
 

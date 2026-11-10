@@ -8,6 +8,6 @@ server = "http://localhost:8766"
 ops_db = "citationbench/work/ops.sqlite"
 surface = "default"
 epochs = 1
-batch = 25
+batch = 150
 pause = 10
-max_used = { five_hour = 0.6, seven_day = 0.45 }
+max_used = { five_hour = 0.55, seven_day = 0.45 }  # 0.6 for everything on the account, less room for other use

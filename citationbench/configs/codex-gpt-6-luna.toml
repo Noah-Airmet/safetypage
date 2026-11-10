@@ -10,4 +10,4 @@ surface = "default"
 epochs = 1
 batch = 50
 pause = 10
-max_used = { five_hour = 0.8, seven_day = 0.45 }
+max_used = { five_hour = 0.8, seven_day = 0.41 }  # the weekly meter started near 0.21
