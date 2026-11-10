@@ -1,0 +1,14 @@
+---
+// The reader's shell. Every /d/<ns>/<id>/<version>/<anchor> address is this one file: the host
+// rewrites those paths here (edge/worker.js on Cloudflare Pages, scripts/serve.mjs locally)
+// and src/scripts/reader.ts draws the document named in the address.
+import Base from '../layouts/Base.astro';
+import '../styles/reader.css';
+---
+<Base title="Reader" description="A page of a document in the library." room="reader">
+  <div class="reader" data-reader><div class="reader-wait" aria-busy="true"></div></div>
+</Base>
+
+<script>
+  import '../scripts/reader.ts';
+</script>

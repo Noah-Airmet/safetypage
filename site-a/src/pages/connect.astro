@@ -1,0 +1,107 @@
+---
+// Connect an agent: the address, the steps for each client, things to ask, and the four tools.
+import Base from '../layouts/Base.astro';
+import I from '../components/I.astro';
+import { mcpUrl } from '../lib/env';
+const site = Astro.site!.origin;
+const mcp = mcpUrl(site);
+const cli = `claude mcp add --transport http safetypage ${mcp}`;
+const prompts = [
+  'What do the labs’ system cards say about sabotage evaluations? Quote each one and cite the page.',
+  'Find where “alignment faking” is first defined, and check the quote against the page.',
+  'Check every citation in this paragraph against SafetyPage and tell me which are rejected.',
+];
+const tools = [
+  'search(query, collection?, org?, kind?, date_from?, date_to?, doc?, mode?, sort?, limit?)',
+  'fetch(id)',
+  'verify_quote(quote, cite?, doc?)',
+  'check_answer(text)',
+];
+const api = [
+  ['GET', '/api/search?query=…', 'SearchResponse'],
+  ['GET', '/api/doc/<ns>/<id>[/<version>]', 'DocumentCard'],
+  ['GET', '/api/units/<ns>/<id>/<version>/<anchor>', 'UnitText[]'],
+  ['POST', '/api/verify', 'QuoteCheck'],
+  ['POST', '/api/check', 'AnswerAudit'],
+];
+---
+<Base title="Connect an agent" place="Connect an agent" room="place" description="Connect an agent to the library over MCP: search, fetch, verify_quote, check_answer.">
+  <div class="page guide" data-ai="code">
+    <header class="head"><h1>Connect an agent</h1></header>
+
+    <div class="addrs">
+      <div class="addr"><span class="k">MCP</span><code>{mcp}</code><button type="button" class="copy-btn" data-copy={mcp} aria-label="Copy the address"><I name="copy" /><span>Copy</span></button></div>
+    </div>
+
+    <div class="pick"><div class="seg" role="radiogroup" aria-label="Client">
+      <button type="button" role="radio" aria-checked="true" data-ai="code">Claude Code</button>
+      <button type="button" role="radio" aria-checked="false" data-ai="claude">Claude</button>
+      <button type="button" role="radio" aria-checked="false" data-ai="chatgpt">ChatGPT</button>
+    </div></div>
+
+    <ol class="walk" data-for="code">
+      <li class="step"><h3>Add the server</h3>
+        <div class="addr"><code>{cli}</code><button type="button" class="copy-btn" data-copy={cli} aria-label="Copy the command"><I name="copy" /><span>Copy</span></button></div></li>
+      <li class="step"><h3>Ask</h3></li>
+    </ol>
+    <ol class="walk" data-for="claude">
+      <li class="step"><h3>Open <span class="ui">Customize</span></h3></li>
+      <li class="step"><h3><span class="ui">Connectors</span> <I name="forward" class="sm" /> <span class="ui">Add custom connector</span></h3></li>
+      <li class="step"><h3>Paste the address</h3></li>
+      <li class="step"><h3><span class="ui">Add</span></h3></li>
+    </ol>
+    <ol class="walk" data-for="chatgpt">
+      <li class="step"><h3>Open <span class="ui">Plugins</span> <I name="forward" class="sm" /> <span class="ui">Add</span></h3></li>
+      <li class="step"><h3>Paste the address</h3></li>
+      <li class="step"><h3><span class="ui">Authentication</span> <I name="forward" class="sm" /> <span class="ui">No authentication</span></h3></li>
+      <li class="step"><h3><span class="ui">Create</span></h3></li>
+    </ol>
+
+    <section class="sec gsec">
+      <h2>Try it</h2>
+      <div class="prompts">
+        {prompts.map((p) => <div class="prompt"><q>{p}</q><button type="button" class="copy-btn" data-copy={p} aria-label="Copy"><I name="copy" /><span>Copy</span></button></div>)}
+      </div>
+    </section>
+
+    <section class="sec gsec">
+      <h2>A citation</h2>
+      <p class="anatomy" aria-label="arxiv:2305.15324/v2/p6: document, version, place">
+        <span><code>arxiv:2305.15324</code><small>Document</small></span><i>/</i><span><code>v2</code><small>Version</small></span><i>/</i><span><code>p6</code><small>Page</small></span>
+      </p>
+      <div class="addrs links">
+        <a class="addr" href="/d/arxiv/2305.15324/v2/p6"><code>{site}/d/arxiv/2305.15324/v2/p6</code><I name="forward" /></a>
+        <a class="addr" href="/d/arxiv/2305.15324/v2/p6?q=not%20the%20only%20tool"><code>{site}/d/arxiv/2305.15324/v2/p6?q=not%20the%20only%20tool</code><I name="forward" /></a>
+        <a class="addr" href="/d/distill/zoom-in/r1/b21"><code>distill:zoom-in/r1/b21</code><I name="forward" /></a>
+      </div>
+    </section>
+
+    <section class="sec gsec">
+      <h2>Tools<small>MCP</small></h2>
+      <ul class="sigs">{tools.map((sig) => <li><code>{sig}</code></li>)}</ul>
+    </section>
+
+    <section class="sec gsec">
+      <h2>Routes<small>HTTP</small></h2>
+      <ul class="sigs routes">{api.map(([m, route, model]) => <li><span class="m">{m}</span><code>{route}</code><span class="ret">{model}</span></li>)}</ul>
+      <div class="ctl">
+        <a class="btn" href="https://github.com/Noah-Airmet/safetypage/tree/main/schemas" rel="noopener"><I name="external" /><span>Schemas</span></a>
+        <a class="btn" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md" rel="noopener"><I name="external" /><span>Architecture</span></a>
+      </div>
+    </section>
+  </div>
+</Base>
+<script>
+  // Claude Code, Claude or ChatGPT: remembered, and linkable (#claude, #chatgpt)
+  const page = document.querySelector<HTMLElement>('.guide')!;
+  const pick = (ai: string, keep = true) => {
+    if (!page.querySelector(`[data-for="${ai}"]`)) return;
+    page.dataset.ai = ai;
+    page.querySelectorAll<HTMLElement>('.seg [data-ai]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.ai === ai)));
+    if (keep) { try { localStorage.setItem('sp-ai', ai); } catch { /* not kept */ } }
+  };
+  let first = location.hash.slice(1);
+  try { first ||= localStorage.getItem('sp-ai') ?? ''; } catch { /* default */ }
+  if (first) pick(first, false);
+  page.querySelectorAll<HTMLElement>('.seg [data-ai]').forEach((b) => b.addEventListener('click', () => { pick(b.dataset.ai!); history.replaceState(history.state, '', `#${b.dataset.ai}`); }));
+</script>

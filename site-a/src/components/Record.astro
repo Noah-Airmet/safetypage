@@ -1,0 +1,107 @@
+---
+// A document's record: its cover, the catalogue entry, the way in (Read), the contents, and
+// in the side column how it is cited, its versions and its licence with the evidence for it.
+import type { DocumentCard } from '../lib/types';
+import { KINDS, anchorLabel, bibtex, citePath, formatDate, hostOf, licenceName, shelfName, sourceLink, titleParts } from '../lib/cite';
+import { hasUnit } from '../lib/data';
+import Cover from './Cover.astro';
+import I from './I.astro';
+
+interface Props { doc: DocumentCard; version: string }
+const { doc, version } = Astro.props;
+const summary = doc.versions.find((v) => v.version === version)!;
+const latest = version === doc.version;
+const ref = `${doc.doc_id}/${version}`;
+// The card describes the latest version. For an older one, the published text says which kind of anchor it has.
+const paged = latest ? doc.anchor_kind === 'page' : hasUnit(doc.doc_id, version, 'p1') || (!hasUnit(doc.doc_id, version, 'b1') && doc.anchor_kind === 'page');
+const count = latest ? doc.unit_count : 0;
+const first = latest ? (count ? (paged ? 'p1' : 'b1') : undefined) : paged ? 'p1' : 'b1';
+const open = summary.tier === 'open';
+const host = hostOf(doc.source_url);
+const authors = doc.authors.length > 8 ? [...doc.authors.slice(0, 7), `${doc.authors.length - 7} more`] : doc.authors;
+const evidence = latest ? doc.licence_evidence : null;
+const site = Astro.site!.origin;
+const citeExample = first ? `${ref}/${first}` : ref;
+const shelf = doc.collection;
+const { main, sub } = titleParts(doc.title);
+const units = count ? `${count.toLocaleString('en')} ${paged ? (count === 1 ? 'page' : 'pages') : count === 1 ? 'paragraph' : 'paragraphs'}` : '';
+---
+<article class="page record">
+  <div class="rec-top">
+    <Cover doc={{ ...doc, version, tier: summary.tier, anchor_kind: paged ? 'page' : 'block' }} eager />
+    <header class="head">
+      <nav class="crumbs" aria-label="Up"><a href="/library">Library</a><I name="forward" />{shelf && <><a href={`/library/${shelf}`}>{shelfName(shelf)}</a><I name="forward" /></>}</nav>
+      <h1 class:list={[{ long: doc.title.length > 70 }]}>{main}{sub && <span class="sub">: {sub}</span>}</h1>
+      {authors.length > 0 && <p class="by">{authors.join(', ')}</p>}
+      <p class="meta">{[KINDS[doc.kind] ?? doc.kind, doc.org, formatDate(summary.published ?? doc.published), units, !latest && version].filter(Boolean).join(' · ')}</p>
+      <div class="ctl">
+        {open && first && <a class="pill" href={citePath(`${ref}/${first}`)}><I name="book" /><span>Read</span></a>}
+        <a class={open ? 'btn' : 'pill'} href={open ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener"><I name="external" /><span>{open ? host : `Read at ${host}`}</span></a>
+        <button class="btn" type="button" data-open="cite-pop" aria-haspopup="dialog"><I name="quote" /><span>Cite</span></button>
+        {!latest && <a class="btn" href={citePath(doc.doc_id)}><span>Latest · {doc.version}</span></a>}
+      </div>
+      {latest && count > 0 && (
+        <form class="find inside" action="/search" role="search">
+          <I name="search" />
+          <input type="hidden" name="doc" value={doc.doc_id} />
+          <input type="search" name="query" placeholder="Search in document" aria-label="Search in this document" autocomplete="off" />
+        </form>
+      )}
+    </header>
+  </div>
+
+  <div class="cols">
+    <section aria-labelledby="outline-h">
+      <h2 class="sh" id="outline-h">Contents</h2>
+      {latest && doc.outline.length > 0 ? (
+        <ol class="outline flist">
+          {doc.outline.map((item) => (
+            <li style={`--level:${item.level - 1}`}>
+              <a class="frow" href={citePath(item.cite)}>
+                <span class="o-title">{item.title}</span>
+                <span class="x">{anchorLabel(item.anchor)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      ) : first ? (
+        <div class="flist"><a class="frow" href={citePath(`${ref}/${first}`)}><span class="o-title">{main}</span><span class="x">{anchorLabel(first)}</span></a></div>
+      ) : <p class="none">Empty</p>}
+    </section>
+
+    <aside class="side">
+      <section aria-labelledby="versions-h">
+        <h2 class="sh" id="versions-h">Versions</h2>
+        <div class="flist versions">
+          {[...doc.versions].reverse().map((v) => (
+            <a class="frow" href={citePath(v.latest ? doc.doc_id : `${doc.doc_id}/${v.version}`)} aria-current={v.version === version ? 'true' : undefined}>
+              <span class="v">{v.version}</span>
+              <span class="when">{formatDate(v.published) || formatDate(v.observed_at)}</span>
+              <span class="x">{v.tier === 'open' ? 'Read here' : 'Read at source'}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="licence-h">
+        <h2 class="sh" id="licence-h">Licence</h2>
+        <p class="lic"><b>{licenceName(summary.licence)}</b><span>{open ? 'Read here' : 'Read at source'}</span></p>
+        {evidence && (
+          <figure class="qcard">
+            <blockquote>{evidence.quote}</blockquote>
+            <figcaption class="why"><a href={evidence.url} rel="noopener">{hostOf(evidence.url)}</a><span>{formatDate(evidence.observed_at)}</span></figcaption>
+          </figure>
+        )}
+      </section>
+    </aside>
+  </div>
+
+  <section class="layer" id="cite-pop" data-layer="tool" hidden aria-label="Cite">
+    <div class="grab"></div>
+    <div class="body cite-rows">
+      <div class="addr"><code>{citeExample}</code><button type="button" class="copy-btn" data-copy={citeExample} aria-label="Copy the citation"><I name="copy" /><span>Copy</span></button></div>
+      <div class="addr"><code>{site}{citePath(citeExample)}</code><button type="button" class="copy-btn" data-copy={site + citePath(citeExample)} aria-label="Copy the link"><I name="link" /><span>Copy</span></button></div>
+      <div class="addr bib"><code>{bibtex(doc)}</code><button type="button" class="copy-btn" data-copy={bibtex(doc)} aria-label="Copy BibTeX"><I name="copy" /><span>BibTeX</span></button></div>
+    </div>
+  </section>
+</article>

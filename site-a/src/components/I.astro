@@ -1,0 +1,6 @@
+---
+// An icon from the sprite (public/icons.svg): one glyph per meaning.
+interface Props { name: string; class?: string }
+const { name, class: cls } = Astro.props;
+---
+<svg class:list={['i', cls]} aria-hidden="true"><use href={`/icons.svg#${name}`}></use></svg>

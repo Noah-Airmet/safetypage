@@ -1,0 +1,56 @@
+---
+// One run: its measures with intervals, and every question with a link to its replay.
+import Base from '../../../layouts/Base.astro';
+import I from '../../../components/I.astro';
+import Tally from '../../../components/Tally.astro';
+import { allRuns, allTraces } from '../../../lib/data';
+import { questionParts } from '../../../lib/cite';
+import type { RunResult } from '../../../lib/types';
+
+export const getStaticPaths = () => allRuns().map((run) => ({ params: { id: run.run_id }, props: { run } }));
+const { run } = Astro.props as { run: RunResult };
+const traces = allTraces().filter((t) => t.header.run_id === run.run_id);
+const pct = (x: number | null | undefined) => (x == null ? '–' : `${Math.round(x * 100)}`);
+const NAMES: Record<string, string> = {
+  correct: 'Correct', verdict_correct: 'Verdict correct', page_precision: 'Page precision', page_recall: 'Page recall',
+  quote_fidelity: 'Quote fidelity', quoted: 'Answers that quote', seen_rate: 'Citations opened', support_rate: 'Claim support',
+};
+const HEAD = ['correct', 'page_precision', 'quote_fidelity', 'support_rate'];
+const rest = Object.entries(run.measures).filter(([k]) => !HEAD.includes(k));
+const model = run.model.split('/').pop()!;
+---
+<Base title={`${model} · ${run.name}`} name={model} place="CitationBench" room="place" description={`A CitationBench run: ${run.samples} questions, each with its replay.`}>
+  <div class="page bench run">
+    <header class="head">
+      <nav class="crumbs" aria-label="Up"><a href="/citationbench">CitationBench</a><I name="forward" /></nav>
+      <h1>{model}</h1>
+      <p class="meta facts">{[run.solver.replace(/ \(.*\)$/, ''), `Snapshot ${run.snapshot}`, run.created_at.slice(0, 10), run.judge && `Judge ${run.judge.id.split('#')[0].split(':').pop()}`].filter(Boolean).join(' · ')}</p>
+    </header>
+
+    <div class="stats">
+      {HEAD.filter((k) => run.measures[k]).map((k) => {
+        const e = run.measures[k];
+        return <div class="stat"><b>{pct(e.mean)}</b><span>{NAMES[k]}{k === 'support_rate' && <> <span class="flag">Judge</span></>}</span><span class="gauge" aria-hidden="true">{e.mean != null && <i class="at" style={`width:${e.mean * 100}%`}></i>}</span></div>;
+      })}
+    </div>
+    <div class="stats minor">
+      {rest.map(([k, e]) => <div class="stat small"><b>{pct(e.mean)}</b><span>{NAMES[k] ?? k}</span></div>)}
+      {run.cost.priced && run.cost.total_usd != null && <div class="stat small"><b>${run.cost.total_usd.toFixed(2)}</b><span>Cost</span></div>}
+    </div>
+
+    <section class="sec">
+      <h2 id="q-h">Questions<small>{traces.length}</small></h2>
+      <div class="flist rows">
+        {traces.map((t) => {
+          const q = questionParts(t.header.question);
+          return (
+            <a class="frow two" href={`/r/${t.header.trace_id}`}>
+              <span class="ent"><span class="t name">{q.quoted ?? q.lead}</span><span class="a"><Tally citations={t.answer?.citations ?? []} /></span></span>
+              <span class="x">{t.scores?.correct === 1 ? 'Correct' : t.scores?.correct === 0 ? 'Not correct' : ''}</span>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  </div>
+</Base>

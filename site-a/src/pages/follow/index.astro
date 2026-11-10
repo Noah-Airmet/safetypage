@@ -1,0 +1,23 @@
+---
+// /follow: the topics that can be followed across the labs' system cards.
+import Base from '../../layouts/Base.astro';
+import { TOPICS, follow } from '../../lib/follow';
+const topics = await Promise.all(TOPICS.map(follow));
+---
+<Base title="Follow a topic" name="Follow a topic" description="One evaluation or topic across every lab's system cards, by lab and date. Each mention opens the page.">
+  <div class="page">
+    <header class="head">
+      <h1>Follow a topic</h1>
+      <p class="meta">{topics.length} topics · {topics[0]?.cards ?? 0} system cards</p>
+    </header>
+    <div class="flist rows topics">
+      {topics.map((t) => (
+        <a class="frow" href={`/follow/${t.topic.id}`}>
+          <span class="ent"><span class="t name">{t.topic.name}</span><span class="a">{t.topic.about}</span></span>
+          <span class="dots" aria-hidden="true">{t.labs.filter((l) => l.found.length + l.silent.length > 0).slice(0, 12).map((l) => <i style={`--p:${l.found.length / (l.found.length + l.silent.length)}`}></i>)}</span>
+          <span class="x">{t.found} cards · {t.labs.filter((l) => l.found.length).length} labs</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>

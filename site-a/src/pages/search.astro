@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import Search from '../islands/Search.tsx';
+import { libraryCounts } from '../lib/data';
+import { GRAMMAR, GRAMMAR_SMALL, big } from '../lib/grammar';
+---
+<Base title="Search" name="Search" description="Search the AI safety record to the page.">
+  <div class="page narrow search">
+    <Search client:load examples={big(libraryCounts().documents) ? GRAMMAR : GRAMMAR_SMALL} />
+  </div>
+</Base>

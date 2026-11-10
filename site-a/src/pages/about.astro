@@ -1,0 +1,106 @@
+---
+// About the library: its numbers, its shelves as spines in their cloth, how much is read here,
+// and one page quoted twice, once exactly and once with a word dropped.
+import Base from '../layouts/Base.astro';
+import I from '../components/I.astro';
+import PageCrop from '../components/PageCrop.astro';
+import { allShelves, getDoc, getUnit, libraryCounts } from '../lib/data';
+import { anchorLabel, citePath, clothOf, shelfOrder, shelfShort, shortLabel } from '../lib/cite';
+import { EXAMPLE, landingChecks } from '../lib/checks';
+import { spanInUnit } from '../lib/quote';
+
+const n = libraryCounts();
+const num = (x: number) => x.toLocaleString('en');
+const shelves = [...allShelves()].sort((a, b) => shelfOrder(a.id) - shelfOrder(b.id) || b.docs.length - a.docs.length);
+const most = Math.max(...shelves.map((s) => s.docs.length));
+// A spine as wide as its shelf is large, on a square-root scale so the smallest still stands.
+const width = (count: number) => Math.round(28 + 150 * Math.sqrt(count / most));
+const height = (i: number) => 118 + ((i * 37) % 5) * 7;
+
+// The example is checked by the server when the site is built: what is shown here is its answer.
+const { verified, rejected } = await landingChecks();
+const doc = getDoc(EXAMPLE.cite.split('/')[0])!;
+const where = verified.locations[0];
+const unit = getUnit(where.cite)!;
+const label = `${shortLabel(doc)} · ${anchorLabel(where.anchor)}`;
+const found = spanInUnit(unit, [where.spine_start, where.spine_end])!;
+const near = rejected.locations[0];
+const nearRange = spanInUnit(unit, [near.spine_start, near.spine_end])!;
+const missing = rejected.segments[0].diff.filter((d) => d.op === 'insert').map((d) => d.source);
+const sourceWords = near.text.replace(/\s+/g, ' ').split(' ');
+const built = n.built ? new Date(n.built).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : null;
+---
+<Base title="About the library" place="About the library" room="place" description="How SafetyPage checks a citation, what the licence tiers mean, and how it is built.">
+  <div class="page about">
+    <header class="head">
+      <h1>About the library</h1>
+      <p class="meta">{[n.snapshot && `Snapshot ${n.snapshot}`, built].filter(Boolean).join(' · ')}</p>
+    </header>
+
+    <div class="stats">
+      <div class="stat"><b>{num(n.documents)}</b><span>documents</span></div>
+      <div class="stat"><b>{num(n.pages)}</b><span>pages</span></div>
+      <div class="stat"><b>{num(n.paragraphs)}</b><span>paragraphs</span></div>
+    </div>
+
+    <section class="sec asec">
+      <h2>The shelves</h2>
+      <div class="stacks">
+        {shelves.map((s, i) => (
+          <a class="stack" href={`/library/${s.id}`} style={`--cloth:${clothOf(s.id)}`}>
+            <span class="spine" style={`width:${width(s.docs.length)}px;height:${height(i)}px`}><span class="title">{shelfShort(s.id)}</span></span>
+            <span class="board" style={`width:${width(s.docs.length) + 10}px`}></span>
+            <span class="held"><b>{num(s.docs.length)}</b></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="sec asec">
+      <h2>Read here<small>{((n.open / n.documents) * 100).toFixed(0)}% of documents</small></h2>
+      <div class="stats">
+        <div class="stat small"><b>{num(n.open)}</b><span>read here</span></div>
+        <div class="stat small"><b>{num(n.documents - n.open)}</b><span>read at source</span></div>
+      </div>
+      <div class="catbar"><i style={`width:${(n.open / n.documents) * 100}%`}></i></div>
+    </section>
+
+    <section class="sec asec proof" data-proof data-show="verified" aria-labelledby="proof-h">
+      <h2 id="proof-h">A checked quote<a class="all" href="/check?example=1">Check a quote<I name="forward" /></a></h2>
+      <div class="proof-cols">
+        <div class="claims">
+          <button type="button" class="qcard claim" data-state="verified" data-pick="verified" aria-pressed="true">
+            <span class="q">“{verified.quote}”</span>
+            <span class="why"><span class="cite chip" data-state="verified"><I name="check" /><span class="sr">Verified: </span><span class="chip-label">{label}</span></span><span class="flag">Word for word</span></span>
+          </button>
+          <button type="button" class="qcard claim" data-state="rejected" data-pick="rejected" aria-pressed="false">
+            <span class="q">“{rejected.quote}”</span>
+            <span class="why"><span class="cite chip" data-state="rejected"><I name="close" /><span class="sr">Rejected: </span><span class="chip-label">{label}</span></span><span class="flag">The page says</span></span>
+            <span class="says">“{sourceWords.map((w, i) => <>{i > 0 && ' '}{missing.includes(w) ? <ins class="diff">{w}</ins> : w}</>)}”</span>
+          </button>
+        </div>
+        <a class="pagepane" href={citePath(where.cite, verified.quote)} aria-label={`${doc.title}, ${anchorLabel(where.anchor)}`}>
+          <div data-pane="verified"><PageCrop unit={unit} ranges={[found]} alt={`${doc.title}, ${anchorLabel(where.anchor)}, with the quoted passage highlighted`} eager /></div>
+          <div data-pane="rejected"><PageCrop unit={unit} ranges={[nearRange]} kind="reject" alt={`${doc.title}, ${anchorLabel(near.anchor)}, with the sentence the quotation misquotes outlined`} /></div>
+        </a>
+      </div>
+    </section>
+
+    <p class="colophon">
+      <a href="https://github.com/Noah-Airmet/safetypage" rel="noopener">Source</a>
+      <a href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md" rel="noopener">Architecture</a>
+      <a href="https://github.com/Noah-Airmet/safetypage/blob/main/LICENSE" rel="noopener">Apache-2.0</a>
+      <span>Noah Airmet</span>
+    </p>
+  </div>
+</Base>
+
+<script>
+  const proof = document.querySelector<HTMLElement>('[data-proof]')!;
+  proof.querySelectorAll<HTMLElement>('[data-pick]').forEach((card) =>
+    card.addEventListener('click', () => {
+      proof.dataset.show = card.dataset.pick;
+      proof.querySelectorAll('[data-pick]').forEach((c) => c.setAttribute('aria-pressed', String(c === card)));
+    }),
+  );
+</script>

@@ -1,0 +1,10 @@
+---
+// How a run's citations came out: 2 verified · 1 page only · 2 rejected.
+interface Props { citations: { state: string }[] }
+const count = (s: string) => Astro.props.citations.filter((c) => c.state === s).length;
+---
+<span class="tally">
+  <span data-state="verified"><b>{count('verified')}</b> verified</span>
+  <span data-state="cited"><b>{count('cited')}</b> page only</span>
+  <span data-state="rejected"><b>{count('rejected')}</b> rejected</span>
+</span>

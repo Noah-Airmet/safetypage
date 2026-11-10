@@ -1,0 +1,16 @@
+---
+// A document's cover: its first page when the library may show it, otherwise a bare binding in
+// its shelf's cloth with the glyph of where it is read.
+import I from './I.astro';
+import { clothOf } from '../lib/cite';
+import { pageImageUrl } from '../lib/env';
+import type { DocumentCard } from '../lib/types';
+interface Props { doc: Pick<DocumentCard, 'doc_id' | 'version' | 'tier' | 'anchor_kind' | 'collection'>; eager?: boolean; width?: 800 | 1600 }
+const { doc, eager, width = 800 } = Astro.props;
+const page = doc.tier === 'open' && doc.anchor_kind === 'page';
+---
+<span class="cv" style={`--cloth:${clothOf(doc.collection)}`}>
+  {page
+    ? <img alt="" loading={eager ? 'eager' : 'lazy'} decoding="async" src={pageImageUrl(`${doc.doc_id}/${doc.version}/p1`, width)} onload="this.classList.add('in')" />
+    : <I name={doc.tier === 'open' ? 'doc' : 'external'} />}
+</span>

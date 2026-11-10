@@ -1,0 +1,31 @@
+---
+// The library by shelf: a card for each, fanning its newest first pages over the shelf's cloth,
+// or a bare binding in the cloth where the shelf is read at its sources.
+import Base from '../../layouts/Base.astro';
+import { allShelves, libraryCounts } from '../../lib/data';
+import { clothOf, shelfName, shelfOrder, shelfShort } from '../../lib/cite';
+import { pageImageUrl } from '../../lib/env';
+const shelves = [...allShelves()].sort((a, b) => shelfOrder(a.id) - shelfOrder(b.id) || b.docs.length - a.docs.length);
+const n = libraryCounts();
+const num = (x: number) => x.toLocaleString('en');
+const covers = (s: (typeof shelves)[number]) => s.docs.filter((d) => d.tier === 'open' && d.anchor_kind === 'page').slice(0, 3);
+---
+<Base title="Library" name="Library" description={`${num(n.documents)} documents on ${shelves.length} shelves, each citable to the page.`}>
+  <div class="page">
+    <header class="head">
+      <h1>Library</h1>
+      <p class="meta">{shelves.length} shelves · {num(n.documents)} documents</p>
+    </header>
+    <div class="folders shelves">
+      {shelves.map((s) => (
+        <a class="fcard shelf" href={`/library/${s.id}`} style={`--cloth:${clothOf(s.id)}`}>
+          <span class="fan">
+            {covers(s).map((d) => <img alt="" loading="lazy" decoding="async" src={pageImageUrl(`${d.doc_id}/${d.version}/p1`, 800)} onload="this.classList.add('in')" />)}
+            <span class="bare">{shelfShort(s.id)}</span>
+          </span>
+          <span class="n"><span class="name">{shelfName(s.id)}</span><span class="c">{num(s.docs.length)}</span></span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
