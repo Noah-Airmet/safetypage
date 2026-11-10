@@ -3,7 +3,7 @@
 import Base from '../../layouts/Base.astro';
 import Replay from '../../islands/Replay.tsx';
 import { allDocs, allTraces, getDoc } from '../../lib/data';
-import { docIdOf } from '../../lib/cite';
+import { docIdOf, questionParts } from '../../lib/cite';
 import type { Trace } from '../../lib/types';
 
 export function getStaticPaths() {
@@ -12,11 +12,9 @@ export function getStaticPaths() {
 const { trace } = Astro.props as { trace: Trace };
 const ids = new Set(trace.events.flatMap((e) => (e.kind === 'tool' ? e.returned.map((r) => docIdOf(r.cite)) : e.kind === 'cite' ? [docIdOf(e.cite)] : [])));
 const docs = Object.fromEntries([...ids].map((id) => getDoc(id)).filter((d) => !!d).map((d) => [d.doc_id, { doc_id: d.doc_id, title: d.title, authors: d.authors, org: d.org, published: d.published, unit_count: d.unit_count, anchor_kind: d.anchor_kind, tier: d.tier, source_url: d.source_url }]));
-const sample = /sample/.test(trace.header.model);
 ---
-<Base title={trace.header.question} description={`A research run by ${trace.header.model}, played back step by step.`} og={`/og/r/${trace.header.trace_id}.png`} bare>
+<Base title={(questionParts(trace.header.question).quoted ?? trace.header.question).slice(0, 80)} description={`A research run by ${trace.header.model.split('/').pop()}, played back step by step: what it searched, what it read, and how each citation checked out.`} og={`/og/r/${trace.header.trace_id}.png`} bare>
   <div class="wrap rp-wrap">
-    {sample && <p class="note" data-kind="sample"><strong>Sample.</strong> This run is scripted to show the replay. Its searches and every verdict are real; no model wrote the answer.</p>}
     <Replay client:load trace={trace} docs={docs} librarySize={allDocs().length} />
   </div>
 </Base>
@@ -26,7 +24,10 @@ const sample = /sample/.test(trace.header.model);
   .rp-wrap > .note { margin-bottom: var(--s-3); }
   .replay { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--s-3); height: calc(100dvh - var(--bar) - var(--s-3) - var(--s-7)); min-height: 560px; }
   .rp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-5); }
-  .rp-head h1 { font: 400 var(--t-22)/1.25 var(--serif); text-wrap: balance; }
+  .rp-head h1 { font: 400 var(--t-18)/1.3 var(--serif); text-wrap: pretty; max-width: 90ch; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+  .rp-head > div { min-width: 0; }
+  .rp-head .rubric { margin-bottom: 2px; }
+  .rp-rest { color: var(--ink-2); font-size: var(--t-13); margin-top: var(--s-1); max-width: 110ch; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .rp-meta { color: var(--ink-2); font-size: var(--t-13); margin-top: var(--s-1); }
   .rp-tally { display: flex; gap: var(--s-4); font-family: var(--mono); padding-top: var(--s-1); }
   .rp-tally .state { font-size: var(--t-16); }
@@ -47,6 +48,7 @@ const sample = /sample/.test(trace.header.model);
   .rp-trace .think { color: var(--ink-2); font: italic 400 var(--t-14)/1.45 var(--serif); }
   .rp-trace .sub { display: block; color: var(--ink-2); }
   .rp-trace .bad, .rp-caption .bad { color: var(--reject); }
+  .rp-trace .judge { font-size: var(--t-12); }
   .rp-trace pre { margin: 0 var(--s-2) var(--s-2); font-size: var(--t-12); max-height: 14rem; }
 
   .shelf { display: grid; gap: var(--s-2); margin-bottom: var(--s-3); }
@@ -69,7 +71,12 @@ const sample = /sample/.test(trace.header.model);
   .rp-caption a { white-space: nowrap; }
 
   .rp-answer { overflow-y: auto; }
+  .rp-answer { position: relative; scrollbar-width: thin; }
   .rp-answer .prose { font-size: var(--t-16); line-height: 1.7; }
+  .rp-answer .prose p + p { margin-top: 0.7em; }
+  .rp-answer .prose p.item { padding-left: 1.1em; position: relative; }
+  .rp-answer .prose p.item::before { content: '–'; position: absolute; left: 0; color: var(--ink-3); }
+  .rp-answer .prose p.item + p.item { margin-top: 0.35em; }
   .rp-answer .chip { margin-inline: 2px; }
   .rp-answer .chip[data-state='pending'] { animation: pulse 900ms var(--ease) infinite alternate; }
   @keyframes pulse { to { border-color: var(--ink-3); } }
@@ -95,7 +102,7 @@ const sample = /sample/.test(trace.header.model);
 
   @media (max-width: 1000px) {
     .replay { height: auto; min-height: 0; display: block; padding-bottom: 76px; }
-    .rp-head { margin-bottom: var(--s-3); flex-direction: column; gap: var(--s-2); }
+    .rp-head { margin-bottom: var(--s-3); flex-direction: column; align-items: stretch; gap: var(--s-2); }
     .rp-panes { display: flex; flex-direction: column; gap: var(--s-5); }
     .rp-library { order: 1; position: sticky; top: 0; z-index: 3; background: var(--bg); padding-bottom: var(--s-2); border-bottom: 1px solid var(--rule); }
     .rp-library .h2-sub { display: none; }

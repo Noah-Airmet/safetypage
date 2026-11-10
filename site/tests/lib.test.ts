@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import { citePath, parseCite, anchorLabel, sourceLink } from '../src/lib/cite';
 import { findQuote, highlightRects, spanInUnit } from '../src/lib/quote';
-import { stateAt, holdAfter } from '../src/lib/replay';
+import { answerSegments, stateAt, holdAfter } from '../src/lib/replay';
 import type { Trace, UnitText } from '../src/lib/types';
 
 describe('cite', () => {
@@ -46,14 +46,13 @@ describe('highlight', () => {
 });
 
 describe('replay', () => {
-  const trace = JSON.parse(fs.readFileSync('src/content/traces/sample-evals.json', 'utf8')) as Trace;
+  // A real PageCite trace: three verified citations, one rejected, one page-only.
+  const trace = JSON.parse(fs.readFileSync('../pagecite/traces/GVTHZaZca3mVqmnh9t79KL/pc-7abbdba8ab.1.json', 'utf8')) as Trace;
   const last = trace.events.length - 1;
   it('ends on the tally the trace records', () => {
-    const end = stateAt(trace.events, last);
     const want = { verified: 0, cited: 0, rejected: 0 };
     for (const c of trace.answer!.citations) want[c.state]++;
-    expect(end.tally).toEqual(want);
-    expect(end.answer.filter((p) => p.type === 'text').map((p) => p.text).join('')).toBe(trace.answer!.text);
+    expect(stateAt(trace.events, last).tally).toEqual(want);
   });
   it('is a pure function of the step: scrubbing back gives the earlier state', () => {
     const early = JSON.stringify([...stateAt(trace.events, 3).hits]);
@@ -61,11 +60,29 @@ describe('replay', () => {
     expect(JSON.stringify([...stateAt(trace.events, 3).hits])).toBe(early);
     expect(stateAt(trace.events, 0).answer).toEqual([]);
   });
-  it('shows a citation as pending until it is checked, and a rejection on the page with the words', () => {
+  it('shows a citation as pending until it is checked, then rejected on the page', () => {
     const cite = trace.events.findIndex((e) => e.kind === 'cite');
     expect(stateAt(trace.events, cite).answer.at(-1)).toMatchObject({ state: 'pending' });
     const rejected = trace.events.findIndex((e) => e.kind === 'verify' && e.state === 'rejected');
-    expect(stateAt(trace.events, rejected).focus).toMatchObject({ kind: 'reject' });
+    // Not found anywhere: the cited paragraph is shown, with nothing outlined.
+    expect(stateAt(trace.events, rejected).focus).toMatchObject({ cite: 'distill:zoom-in/r1/b66', span: null });
     expect(holdAfter(trace.events, rejected)).toBeGreaterThanOrEqual(1400);
+  });
+  it('puts each citation where the answer wrote it, and keeps every word of the answer', () => {
+    const segments = answerSegments(stateAt(trace.events, last).answer);
+    const cites = segments.filter((s) => typeof s !== 'string');
+    expect(cites).toHaveLength(trace.answer!.citations.length);
+    const text = segments.filter((s) => typeof s === 'string').join('');
+    expect(text).not.toContain('arxiv:2309.08600/v3/p1)');
+    expect(text).toContain('polysemantic neurons are a major challenge');
+    expect(typeof segments[0]).toBe('string');
+  });
+  it('places a citation with no cite string in the text where it arrived', () => {
+    const parts = stateAt([
+      { seq: 0, t_ms: 0, kind: 'answer', delta: 'One. ' },
+      { seq: 1, t_ms: 1, kind: 'cite', cite_id: 'c1', cite: 'a:b/v1/p1' },
+      { seq: 2, t_ms: 2, kind: 'answer', delta: 'Two.' },
+    ], 2).answer;
+    expect(answerSegments(parts).map((s) => (typeof s === 'string' ? s : s.cite_id))).toEqual(['One. ', 'c1', 'Two.']);
   });
 });

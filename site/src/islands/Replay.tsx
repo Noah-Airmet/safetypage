@@ -2,8 +2,8 @@
 // and the answer share one scrubber, and the state at any step is computed from the events
 // up to it (lib/replay.ts), so scrubbing in either direction is the same operation.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { anchorLabel, anchorOf, citePath, docIdOf, shortLabel } from '../lib/cite';
-import { REASONS, focusFor, holdAfter, stateAt, type AnswerCite, type Focus } from '../lib/replay';
+import { anchorLabel, anchorOf, citePath, docIdOf, questionParts, shortLabel } from '../lib/cite';
+import { REASONS, answerSegments, focusFor, holdAfter, stateAt, type AnswerCite, type Focus } from '../lib/replay';
 import type { DocumentCard, Trace, TraceEvent } from '../lib/types';
 import { Chip, PageView } from './shared';
 
@@ -12,6 +12,30 @@ interface Props { trace: Trace; docs: Record<string, DocLite>; librarySize: numb
 
 const clock = (ms: number) => `${String(Math.floor(ms / 60000)).padStart(2, '0')}:${String(Math.floor(ms / 1000) % 60).padStart(2, '0')}`;
 const SPEEDS = [1, 2, 4, 0.5];
+const TOOLS: Record<string, string> = { verify_quote: 'verify', check_answer: 'audit' };
+const VERDICTS: Record<string, string> = { exact: 'on the page, word for word', normalized: 'on the page', elsewhere: 'on another page', near_miss: 'not these words', not_found: 'not found' };
+const JUDGED: Record<string, string> = { supported: 'supports the claim', partially_supported: 'partly supports the claim', unsupported: 'does not support the claim' };
+
+/** The answer's own light markdown: paragraphs, lists, bold and italic. Chips sit where the citations are. */
+function Rich({ segments, chip }: { segments: (string | AnswerCite)[]; chip: (c: AnswerCite, key: number) => React.ReactNode }) {
+  const inline = (text: string, key: string) =>
+    text.split(/(\*\*[^*]+\*\*|\*[^*\n]+\*)/).map((piece, i) =>
+      piece.startsWith('**') ? <strong key={key + i}>{piece.slice(2, -2)}</strong> : piece.startsWith('*') && piece.length > 2 ? <em key={key + i}>{piece.slice(1, -1)}</em> : piece);
+  // Lines of nodes: a blank line starts a paragraph, "- " starts a list item.
+  const blocks: { item: boolean; nodes: React.ReactNode[] }[] = [{ item: false, nodes: [] }];
+  segments.forEach((seg, si) => {
+    if (typeof seg !== 'string') { blocks[blocks.length - 1].nodes.push(chip(seg, si)); return; }
+    seg.split('\n').forEach((lineText, li) => {
+      if (li > 0) blocks.push({ item: false, nodes: [] });
+      const block = blocks[blocks.length - 1];
+      let text = lineText;
+      if (block.nodes.length === 0 && /^\s*[-*] /.test(text)) { block.item = true; text = text.replace(/^\s*[-*] /, ''); }
+      if (block.nodes.length === 0) text = text.replace(/^#+ /, '');
+      if (text) block.nodes.push(...inline(text, `${si}-${li}-`));
+    });
+  });
+  return <>{blocks.filter((b) => b.nodes.length).map((b, i) => <p key={i} className={b.item ? 'item' : undefined}>{b.nodes}</p>)}</>;
+}
 
 export default function Replay({ trace, docs, librarySize }: Props) {
   const events = trace.events;
@@ -69,6 +93,13 @@ export default function Replay({ trace, docs, librarySize }: Props) {
     if (list && line) list.scrollTo({ top: line.offsetTop - list.clientHeight / 2 });
   }, [step]);
 
+  const answerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const pane = answerRef.current;
+    const chip = pane?.querySelector<HTMLElement>('[aria-current="true"]');
+    if (pane && chip && pane.scrollHeight > pane.clientHeight) pane.scrollTo({ top: chip.offsetTop - pane.clientHeight / 2, behavior: 'smooth' });
+  }, [step]);
+
   const focus = pinned ?? state.focus;
   const focusDoc = focus ? docs[docIdOf(focus.cite)] : undefined;
   const touched = useMemo(() => {
@@ -82,22 +113,26 @@ export default function Replay({ trace, docs, librarySize }: Props) {
   const citeStates = new Map(state.answer.filter((p): p is AnswerCite => p.type === 'cite').map((c) => [c.cite, c.state]));
   const shown = events.slice(0, step + 1).filter((e) => e.kind !== 'answer' || events[e.seq - 1]?.kind !== 'answer' && events[e.seq - 1]?.kind !== 'verify');
   const reads = state.read.size;
+  const asked = questionParts(trace.header.question);
+  const segments = useMemo(() => answerSegments(state.answer), [state]);
 
   const line = (e: TraceEvent) => {
     if (e.kind === 'think') return <><span className="k">think</span><span className="think">{e.text}</span></>;
-    if (e.kind === 'tool' && e.tool === 'search') return <><span className="k">search</span><span><span className="mono q">{String(e.args.query ?? '')}</span><span className="sub">{e.total ?? e.returned.length} {e.total === 1 ? 'page' : 'pages'}</span></span></>;
-    if (e.kind === 'tool') return <><span className="k">{e.tool}</span><span>{e.returned[0] ? label(e.returned[0].cite) : String(e.args.id ?? '')}{e.error && <span className="sub bad">{e.error}</span>}</span></>;
+    if (e.kind === 'tool' && e.tool === 'search') return <><span className="k">search</span><span><span className="mono q">{String(e.args.query ?? '')}</span>{e.error ? <span className="sub bad">error</span> : <span className="sub">{e.total ?? e.returned.length} {(e.total ?? e.returned.length) === 1 ? 'page' : 'pages'}</span>}</span></>;
+    if (e.kind === 'tool') return <><span className="k">{TOOLS[e.tool] ?? e.tool}</span><span>{e.returned[0] ? label(e.returned[0].cite) : String(e.args.id ?? e.args.cite ?? '').replace(/^https?:\/\/[^/]+\/d\/([^/]+)\//, '$1:')}{e.verdict && <span className={e.verdict === 'exact' || e.verdict === 'normalized' ? 'sub' : 'sub bad'}>{VERDICTS[e.verdict]}</span>}{e.error && <span className="sub bad">error</span>}</span></>;
     if (e.kind === 'answer') return <><span className="k">answer</span><span className="sub">writing</span></>;
     if (e.kind === 'cite') return <><span className="k">cite</span><span>{label(e.cite)}{e.quote && <span className="sub">“{e.quote.length > 60 ? e.quote.slice(0, 60) + '…' : e.quote}”</span>}</span></>;
-    return <><span className="k">check</span><span><span className="state" data-state={e.state}>{e.state === 'cited' ? 'Page only' : e.state === 'verified' ? `Verified · ${e.quote_verdict === 'exact' ? 'word for word' : 'normalised'}` : 'Rejected'}</span>{e.reason && <span className="sub bad">{REASONS[e.reason] ?? e.reason}{e.closest && e.reason === 'quote_elsewhere' ? `: ${anchorLabel(anchorOf(e.closest))}` : ''}</span>}</span></>;
+    return <><span className="k">check</span><span><span className="state" data-state={e.state}>{e.state === 'cited' ? 'Page only' : e.state === 'verified' ? `Verified · ${e.quote_verdict === 'exact' ? 'word for word' : 'normalised'}` : 'Rejected'}</span>{e.reason && <span className="sub bad">{REASONS[e.reason] ?? e.reason}{e.closest && e.reason === 'quote_elsewhere' ? `: ${anchorLabel(anchorOf(e.closest))}` : ''}</span>}{e.judgement && <span className="sub judge" title={e.judgement.judge}>judge: {JUDGED[e.judgement.label] ?? e.judgement.label}</span>}</span></>;
   };
 
   return (
     <div className="replay">
       <header className="rp-head">
         <div>
-          <h1>{trace.header.question}</h1>
-          <p className="rp-meta">{[trace.header.model, trace.header.started_at.slice(0, 10), `${events.length} steps`, `${reads} ${reads === 1 ? 'page' : 'pages'} read`, trace.header.usage?.cost_usd != null ? `$${trace.header.usage.cost_usd.toFixed(2)}` : null].filter(Boolean).join(' · ')}</p>
+          {asked.quoted && <p className="rubric">{asked.lead}</p>}
+          <h1>{asked.quoted ? `“${asked.quoted}”` : asked.lead}</h1>
+          {asked.rest && <p className="rp-rest">{asked.rest}</p>}
+          <p className="rp-meta">{[trace.header.model.split('/').pop(), trace.header.started_at.slice(0, 10), `${events.length} steps`, `${reads} ${reads === 1 ? 'page' : 'pages'} read`, trace.header.usage?.cost_usd != null ? `$${trace.header.usage.cost_usd.toFixed(trace.header.usage.cost_usd < 0.1 ? 3 : 2)}` : null].filter(Boolean).join(' · ')}</p>
         </div>
         <p className="rp-tally" aria-label="Citations so far">
           <span className="state" data-state="verified">{state.tally.verified}<span className="sr"> verified</span></span>
@@ -157,13 +192,11 @@ export default function Replay({ trace, docs, librarySize }: Props) {
           </div>
         </section>
 
-        <section className="rp-answer" aria-label="Answer">
+        <section className="rp-answer" aria-label="Answer" ref={answerRef}>
           <h2 className="h2">Answer</h2>
           <div className="prose">
             {state.answer.length === 0 && <p className="muted wait">Not written yet.</p>}
-            {state.answer.map((part, i) => part.type === 'text'
-              ? <span key={i}>{part.text.split('\n\n').map((para, j) => <span key={j}>{j > 0 && <><br /><br /></>}{para}</span>)}</span>
-              : <Chip key={i} state={part.state} label={label(part.cite)} current={focus?.cite === focusFor(part).cite && focus?.cited === focusFor(part).cited} onClick={() => { setPlaying(false); setPinned(focusFor(part)); }} />)}
+            <Rich segments={segments} chip={(part, key) => <Chip key={key} state={part.state} label={label(part.cite)} current={focus?.cite === focusFor(part).cite && (focus?.cited ?? focus?.cite) === part.cite} onClick={() => { setPlaying(false); setPinned(focusFor(part)); }} />} />
           </div>
           {state.answer.filter((p): p is AnswerCite => p.type === 'cite' && p.state === 'rejected').map((c) => (
             <p className="rp-reason" key={c.cite_id}><span className="state" data-state="rejected">{label(c.cite)}</span> {REASONS[c.reason ?? ''] ?? c.reason}{c.closest && c.closest !== c.cite ? `: ${anchorLabel(anchorOf(c.closest))}` : ''}.</p>

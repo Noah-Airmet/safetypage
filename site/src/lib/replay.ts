@@ -6,6 +6,10 @@ export interface AnswerCite {
   type: 'cite'; cite_id: string; cite: string; quote: string | null;
   state: CitationState | 'pending'; reason: string | null; verdict: Verdict | null;
   span: [number, number] | null; closest: string | null;
+  /** A judge's label on support, kept apart from the code's verdict. */
+  judgement: { judge: string; label: string; agreement?: number | null } | null;
+  /** How much answer text had been written when the citation appeared. */
+  at: number;
 }
 export type AnswerPart = { type: 'text'; text: string } | AnswerCite;
 
@@ -22,7 +26,11 @@ export interface ReplayState {
 
 export function focusFor(c: AnswerCite): Focus {
   if (c.state === 'verified') return { cite: c.cite, span: c.span, kind: 'found' };
-  if (c.state === 'rejected' && c.closest) return { cite: c.closest, span: c.span, kind: 'reject', cited: c.cite };
+  if (c.state === 'rejected') {
+    // Outline the page's own wording only when the checker found some: a near miss, or the words on another page.
+    const located = c.verdict === 'near_miss' || c.verdict === 'elsewhere';
+    return { cite: (located && c.closest) || c.cite, span: located ? c.span : null, kind: located ? 'reject' : null, cited: c.cite };
+  }
   return { cite: c.cite, span: null, kind: null };
 }
 
@@ -36,23 +44,24 @@ export function stateAt(events: TraceEvent[], step: number): ReplayState {
       const top = Math.max(1e-9, ...e.returned.map((r) => r.score ?? 0));
       for (const r of e.returned) {
         if (e.tool === 'search') state.hits.set(r.cite, Math.max(state.hits.get(r.cite) ?? 0, r.score ? r.score / top : 1));
-        else state.read.add(r.cite);
+        else if (e.tool === 'fetch') state.read.add(r.cite);
         if (current) state.fresh.add(r.cite);
       }
-      if (e.tool !== 'search' && e.returned[0]) state.focus = { cite: e.returned[0].cite, span: null, kind: null };
+      if ((e.tool === 'fetch' || e.tool === 'verify_quote') && e.returned[0]) state.focus = { cite: e.returned[0].cite, span: null, kind: null };
     } else if (e.kind === 'answer') {
       const last = state.answer[state.answer.length - 1];
       if (last?.type === 'text') last.text += e.delta;
       else state.answer.push({ type: 'text', text: e.delta });
     } else if (e.kind === 'cite') {
-      const part: AnswerCite = { type: 'cite', cite_id: e.cite_id, cite: e.cite, quote: e.quote ?? null, state: 'pending', reason: null, verdict: null, span: null, closest: null };
+      const part: AnswerCite = { type: 'cite', cite_id: e.cite_id, cite: e.cite, quote: e.quote ?? null, state: 'pending', reason: null, verdict: null, span: null, closest: null, judgement: null,
+        at: state.answer.reduce((n, p) => n + (p.type === 'text' ? p.text.length : 0), 0) };
       cites.set(e.cite_id, part);
       state.answer.push(part);
       state.focus = focusFor(part);
     } else if (e.kind === 'verify') {
       const part = cites.get(e.cite_id);
       if (!part) continue;
-      Object.assign(part, { state: e.state, reason: e.reason ?? null, verdict: e.quote_verdict ?? null, span: e.span ?? null, closest: e.closest ?? null });
+      Object.assign(part, { state: e.state, reason: e.reason ?? null, verdict: e.quote_verdict ?? null, span: e.span ?? null, closest: e.closest ?? null, judgement: e.judgement ?? null });
       state.tally[e.state]++;
       state.focus = focusFor(part);
     }
@@ -80,3 +89,38 @@ export const REASONS: Record<string, string> = {
 };
 
 export const finalTally = (trace: Trace) => stateAt(trace.events, trace.events.length - 1).tally;
+
+/** The answer as text and citations in reading order. A citation written into the text as its
+ *  cite string (or URL) is shown where it was written; otherwise where it arrived. */
+export function answerSegments(parts: AnswerPart[]): (string | AnswerCite)[] {
+  const text = parts.map((p) => (p.type === 'text' ? p.text : '')).join('');
+  const cites = parts.filter((p): p is AnswerCite => p.type === 'cite');
+  const cuts: { start: number; end: number; cite: AnswerCite }[] = [];
+  const taken = (i: number) => cuts.some((c) => i >= c.start && i < c.end);
+  for (const cite of cites) {
+    const forms = [cite.cite, '/d/' + cite.cite.replace(':', '/')];
+    let start = -1, end = -1;
+    for (const form of forms) {
+      let i = text.indexOf(form);
+      while (i >= 0 && (taken(i) || /[\w-]/.test(text[i + form.length] ?? ''))) i = text.indexOf(form, i + 1);
+      if (i >= 0) {
+        start = i; end = i + form.length;
+        while (start > 0 && /[^\s()\[\]<>]/.test(text[start - 1])) start--;   // the rest of a URL
+        break;
+      }
+    }
+    if (start < 0) { start = end = Math.min(cite.at, text.length); }
+    else if (/[([]/.test(text[start - 1] ?? '') && /[)\]]/.test(text[end] ?? '')) { start--; end++; }
+    cuts.push({ start, end, cite });
+  }
+  cuts.sort((a, b) => a.start - b.start || cites.indexOf(a.cite) - cites.indexOf(b.cite));
+  const out: (string | AnswerCite)[] = [];
+  let at = 0;
+  for (const cut of cuts) {
+    if (cut.start > at) out.push(text.slice(at, cut.start));
+    out.push(cut.cite);
+    at = Math.max(at, cut.end);
+  }
+  if (at < text.length) out.push(text.slice(at));
+  return out;
+}

@@ -2,8 +2,8 @@
 import Base from '../layouts/Base.astro';
 import PageCrop from '../components/PageCrop.astro';
 import Tally from '../components/Tally.astro';
-import { allDocs, allTraces, content, getUnit } from '../lib/data';
-import { KINDS, anchorLabel, citePath, formatDate, shortLabel } from '../lib/cite';
+import { allDocs, allRuns, content, featuredTrace, getUnit } from '../lib/data';
+import { KINDS, anchorLabel, citePath, formatDate, questionParts, shortLabel } from '../lib/cite';
 import { spanInUnit } from '../lib/quote';
 import { MCP_URL } from '../lib/env';
 import type { DocumentCard, QuoteCheck } from '../lib/types';
@@ -19,8 +19,9 @@ const nearRange = spanInUnit(unit, [near.spine_start, near.spine_end])!;
 const missing = rejected.segments[0].diff.filter((d) => d.op === 'insert').map((d) => d.source);
 // The source's wording with the words the quotation dropped marked.
 const sourceWords = near.text.replace(/\s+/g, ' ').split(' ');
-const trace = allTraces()[0];
-const board = content<{ sample: boolean; metrics: { key: string; label: string }[]; rows: { model: string; rank_band: number[]; scores: Record<string, { value: number }> }[] }>('leaderboard.json');
+const trace = featuredTrace();
+const asked = trace && questionParts(trace.header.question);
+const runs = allRuns();
 const mcp = MCP_URL || `${Astro.site!.origin}/mcp`;
 const connect = `claude mcp add --transport http onthepage ${mcp}`;
 const examples = ['"risk assessment" evaluation', 'sparse autoencoder features', 'risk tolerance'];
@@ -65,14 +66,14 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
       {trace && (
         <a class="door" href={`/r/${trace.header.trace_id}`}>
           <h2 class="h2">Watch an agent research</h2>
-          <p class="door-main">{trace.header.question}</p>
+          <p class="door-main clamp">{asked!.quoted ? `Does the source it cites support this? “${asked!.quoted}”` : asked!.lead}</p>
           <Tally citations={trace.answer?.citations ?? []} />
         </a>
       )}
       <a class="door" href="/pagecite">
         <h2 class="h2">PageCite, the benchmark</h2>
-        <p class="door-main">Does an agent cite the right page, and quote it faithfully?</p>
-        <p class="door-foot">{board.sample ? 'Sample data until the first runs land' : `${board.rows.length} agents ranked`}</p>
+        <p class="door-main">Does an agent cite the right page, and quote it accurately?</p>
+        <p class="door-foot">{runs.length ? `${runs.length} ${runs.length === 1 ? 'run' : 'runs'}, every number linked to its pages` : 'First runs soon'}</p>
       </a>
       <a class="door" href="/check">
         <h2 class="h2">Check a paragraph</h2>
@@ -139,6 +140,7 @@ const examples = ['"risk assessment" evaluation', 'sparse autoencoder features',
   .door + .door { padding-left: var(--s-4); border-left: 1px solid var(--rule); }
   .door .h2 { margin: 0; }
   .door-main { font: 400 var(--t-18)/1.35 var(--serif); text-wrap: pretty; }
+  .clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
   .door-foot { margin-top: auto; padding-top: var(--s-2); color: var(--ink-2); font-size: var(--t-13); }
   a.door:hover .door-main { color: var(--accent); }
   .door .codeline { margin-top: auto; }

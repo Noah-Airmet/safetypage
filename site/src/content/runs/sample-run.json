@@ -1,1 +1,0 @@
-{"schema":"onthepage.run/1","sample":true,"run_id":"sample-run","model":"scripted sample (no model)","solver":"hand-written","snapshot":"fixture","started_at":"2026-11-10T00:00:00Z","samples":[{"sample_id":"sample-1","trace_id":"sample-evals","question":"Is model evaluation enough on its own to assess extreme risks from AI?","tally":{"verified":2,"cited":1,"rejected":2}}]}

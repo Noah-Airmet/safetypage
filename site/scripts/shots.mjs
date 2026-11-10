@@ -13,7 +13,7 @@ const pages = {
   'reader-source': '/d/example/link-only-eval-report/r1/p2',
   search: '/search?query=' + encodeURIComponent('"risk assessment" evaluation'),
   check: '/check?example=1',
-  replay: '/r/sample-evals?step=19',
+  replay: '/r/GVTHZaZca3mVqmnh9t79KL-pc-7abbdba8ab-1?step=30',
   pagecite: '/pagecite',
   connect: '/connect',
   library: '/library',

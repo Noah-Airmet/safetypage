@@ -13,7 +13,7 @@ export default {
     { name: 'reader-source', path: '/d/example/link-only-eval-report/r1/p2' },
     { name: 'search', path: `/search?query=${q('"risk assessment" evaluation')}` },
     { name: 'check', path: '/check?example=1' },
-    { name: 'replay', path: '/r/sample-evals?step=19' },
+    { name: 'replay', path: '/r/GVTHZaZca3mVqmnh9t79KL-pc-7abbdba8ab-1?step=30' },
     { name: 'pagecite', path: '/pagecite' },
     { name: 'connect', path: '/connect' },
   ],

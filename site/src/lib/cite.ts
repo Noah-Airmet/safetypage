@@ -88,3 +88,15 @@ export function bibtex(doc: DocumentCard): string {
   ].filter(Boolean);
   return `@misc{${key},\n${fields.join(',\n')}\n}`;
 }
+
+/** A benchmark question often quotes a sentence in a blockquote: split it into the lead, the quoted sentence and the rest. */
+export function questionParts(question: string): { lead: string; quoted: string | null; rest: string } {
+  const blocks = question.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
+  const at = blocks.findIndex((b) => b.startsWith('>'));
+  if (at < 0) return { lead: question.trim(), quoted: null, rest: '' };
+  return {
+    lead: blocks.slice(0, at).join(' '),
+    quoted: blocks[at].replace(/^>\s?/gm, '').replace(/\s+/g, ' '),
+    rest: blocks.slice(at + 1).join(' '),
+  };
+}

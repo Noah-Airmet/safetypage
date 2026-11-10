@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "data": "cd .. && uv run --group fixtures --group build python site/scripts/make_data.py",
-    "api": "cd .. && uv run python site/scripts/dev_api.py",
+    "api": "cd .. && uv run --group server python -m onthepage.server --fixtures --port",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",

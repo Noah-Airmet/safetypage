@@ -75,3 +75,14 @@ export interface Trace {
   answer?: { text: string; citations: { cite_id: string; cite: string; quote?: string | null; state: CitationState; reason?: string | null }[] } | null;
   scores?: Record<string, number>;
 }
+
+// PageCite: schemas/pagecite/run-result.schema.json
+export interface Estimate { mean: number | null; ci_low: number | null; ci_high: number | null; n: number }
+export interface RunResult {
+  schema: string; run_id: string; name: string; created_at: string; model: string; solver: string; surface: string;
+  snapshot: string; questions: { file?: string; n?: number }; epochs: number; samples: number; errors: number;
+  complete?: boolean; judge: { id: string; agreement: Record<string, unknown> | null } | null;
+  measures: Record<string, Estimate>; by_method: Record<string, Record<string, Estimate>>;
+  cost: { billing?: string; priced: boolean; price_table: string | null; total_usd: number | null; per_correct_usd: Estimate };
+  config: Record<string, unknown>;
+}

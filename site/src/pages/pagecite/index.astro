@@ -1,86 +1,104 @@
 ---
-// The leaderboard, read from a results file. Every number links to the run it came from,
-// every run lists its questions, and every question opens its replay.
+// The leaderboard, read from PageCite's results files (one per run). Every number links to
+// the run it came from, every run lists its questions, and every question opens its replay.
 import Base from '../../layouts/Base.astro';
-import { content } from '../../lib/data';
+import { allRuns } from '../../lib/data';
+import type { Estimate, RunResult } from '../../lib/types';
 
-interface Score { value: number; ci: [number, number]; n: number }
-interface Board {
-  sample: boolean; benchmark: string; version: string; questions: number; updated: string; snapshot: string; harness: string;
-  judge: { name: string; agreement: number; n: number } | null;
-  metrics: { key: string; label: string; source: 'deterministic' | 'judge'; better: string }[];
-  rows: { model: string; solver: string; run_id: string; rank_band: [number, number]; scores: Record<string, Score>; cost_per_correct_usd: number | null }[];
-}
-const board = content<Board>('leaderboard.json');
-const pct = (x: number) => Math.round(x * 100);
-const band = ([a, b]: [number, number]) => (a === b ? `${a}` : `${a}–${b}`);
-const lead = board.metrics[0];
+const runs = allRuns();
+const COLUMNS = [
+  { key: 'correct', label: 'Correct', source: 'code' },
+  { key: 'page_precision', label: 'Page precision', source: 'code' },
+  { key: 'quote_fidelity', label: 'Quote fidelity', source: 'code' },
+  { key: 'support_rate', label: 'Claim support', source: 'judge' },
+];
+const pct = (x: number | null | undefined) => (x == null ? '–' : String(Math.round(x * 100)));
+// No interval is printed when the bootstrap gave none (a handful of questions from one or two documents).
+const half = (e: Estimate) => (e.ci_low == null || e.ci_high == null || e.ci_high === e.ci_low ? null : Math.round(((e.ci_high - e.ci_low) / 2) * 100));
+// A rank band from the intervals on Correct: a run shares a band with every run it overlaps.
+const band = (run: RunResult) => {
+  const me = run.measures.correct;
+  const better = runs.filter((r) => (r.measures.correct.ci_low ?? 0) > (me.ci_high ?? 0)).length;
+  const notWorse = runs.filter((r) => (r.measures.correct.ci_high ?? 0) >= (me.ci_low ?? 0)).length;
+  return better + 1 === notWorse ? `${notWorse}` : `${better + 1}–${notWorse}`;
+};
+const judges = [...new Map(runs.filter((r) => r.judge).map((r) => [r.judge!.id, r.judge!])).values()];
+const updated = runs.map((r) => r.created_at.slice(0, 10)).sort().at(-1);
+const small = runs.some((r) => r.samples < 50);
 ---
-<Base title="PageCite" description="A benchmark of page-level citation: does an agent cite the right page, and quote it faithfully?">
+<Base title="PageCite" description="A benchmark of page-level citation: does an agent cite the right page, quote it accurately, and make claims the page supports?">
   <div class="wrap">
     <header class="pagehead">
       <h1 class="title">PageCite</h1>
-      <p class="lede">Does an agent cite the right page, and are the words it quotes on that page?</p>
-      <p class="muted facts mono">{board.benchmark} {board.version} · {board.questions} {board.questions === 1 ? 'question' : 'questions'} · updated {board.updated} · snapshot {board.snapshot} · harness {board.harness}</p>
-      {board.sample && <p class="note" data-kind="sample"><strong>Sample data.</strong> These rows are placeholders that show the layout. They are not results for any model. Real runs replace this file.</p>}
+      <p class="lede">Does an agent cite the right page, quote it accurately, and make claims the page supports?</p>
+      {runs.length > 0 && <p class="muted facts mono">{runs.length} {runs.length === 1 ? 'run' : 'runs'} · updated {updated}</p>}
+      {small && <p class="note">These are early runs on a handful of questions over the six-document fixture library. They show that the harness works end to end; they are too small to compare models.</p>}
     </header>
 
-    <div class="scroll" tabindex="0" role="region" aria-label="Table">
-      <table class="table board">
-        <thead>
-          <tr>
-            <th>Rank</th><th>Agent</th>
-            {board.metrics.map((m) => <th class="num">{m.label}<span class="src">{m.source === 'judge' ? 'judge' : 'code'} · {m.better} is better</span></th>)}
-            <th class="whisk"><span class="sr">{lead.label}, with its 95% interval</span></th>
-            <th class="num">$ per correct<span class="src">cited answer</span></th>
-            <th class="num">Run</th>
-          </tr>
-        </thead>
-        <tbody>
-          {board.rows.map((row) => {
-            const run = `/pagecite/runs/${row.run_id}`;
-            const s = row.scores[lead.key];
-            return (
-              <tr>
-                <td class="mono">{band(row.rank_band)}</td>
-                <td><span class="model">{row.model}</span><span class="solver mono">{row.solver}</span></td>
-                {board.metrics.map((m) => {
-                  const v = row.scores[m.key];
-                  return <td class="num"><a href={run} title={`${pct(v.ci[0])} to ${pct(v.ci[1])}, n = ${v.n}`}>{pct(v.value)} <span class="pm">±{Math.round(((v.ci[1] - v.ci[0]) / 2) * 100)}</span></a></td>;
-                })}
-                <td class="whisk">
-                  <span class="whisker"><i class="ci" style={`left:${s.ci[0] * 100}%;width:${(s.ci[1] - s.ci[0]) * 100}%`}></i><i class="dot" style={`left:${s.value * 100}%`}></i></span>
-                </td>
-                <td class="num"><a href={run}>{row.cost_per_correct_usd == null ? '–' : `$${row.cost_per_correct_usd.toFixed(2)}`}</a></td>
-                <td class="num"><a class="link" href={run}>{row.scores[lead.key].n} ›</a></td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    {runs.length === 0 ? <p class="muted">No runs yet.</p> : (
+      <div class="scroll" tabindex="0" role="region" aria-label="Results">
+        <table class="table board">
+          <thead>
+            <tr>
+              <th>Rank</th><th>Agent</th>
+              {COLUMNS.map((c) => <th class="num">{c.label}<span class="src">{c.source} · higher is better</span></th>)}
+              <th class="whisk"><span class="sr">Correct, with its 95% interval</span></th>
+              <th class="num">$ per correct<span class="src">answer · lower is better</span></th>
+              <th class="num">Questions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {runs.map((run) => {
+              const href = `/pagecite/runs/${run.run_id}`;
+              const c = run.measures.correct;
+              const cost = run.cost.per_correct_usd.mean;
+              return (
+                <tr>
+                  <td class="mono">{band(run)}</td>
+                  <td><a href={href}><span class="model">{run.model.split('/').pop()}</span><span class="solver mono">{run.solver} · {run.name} · {run.snapshot}</span></a></td>
+                  {COLUMNS.map((col) => {
+                    const e = run.measures[col.key];
+                    return <td class="num"><a href={href} title={e?.mean == null ? 'not measured' : `${pct(e.ci_low)} to ${pct(e.ci_high)}, n = ${e.n}`}>{pct(e?.mean)}{e && half(e) != null && <span class="pm"> ±{half(e)}</span>}</a></td>;
+                  })}
+                  <td class="whisk">
+                    {c.mean != null && <span class="whisker"><i class="ci" style={`left:${(c.ci_low ?? c.mean) * 100}%;width:${((c.ci_high ?? c.mean) - (c.ci_low ?? c.mean)) * 100}%`}></i><i class="dot" style={`left:${c.mean * 100}%`}></i></span>}
+                  </td>
+                  <td class="num"><a href={href}>{cost == null || !run.cost.priced ? '–' : cost < 0.1 ? `$${cost.toFixed(3)}` : `$${cost.toFixed(2)}`}</a></td>
+                  <td class="num"><a class="link" href={href}>{run.samples} ›</a></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    )}
 
     <div class="notes">
-      <p><strong>Rank</strong> is a band, not a position. Agents whose 95% intervals overlap share a band; the harness computes the bands.</p>
+      <p><strong>Correct</strong> is the headline: the verdict is right, at least one cited page is a gold page, and no citation is rejected by code.</p>
       <p><strong>Code</strong> columns are deterministic: the cited page exists, the run opened it, and the quoted words are on it. No model is involved.</p>
-      <p><strong>Judge</strong> columns come from a model. {board.judge ? `The judge is ${board.judge.name}; it agrees with human labels on ${pct(board.judge.agreement)}% of ${board.judge.n} pairs.` : 'The judge is named here, with its measured agreement with human labels, once a run uses one.'}</p>
-      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page.</p>
+      <p><strong>Judge</strong> columns come from a model, and are labelled so. {judges.length > 0
+        ? <>{judges.length === 1 ? 'The judge is ' : 'The judges are '}{judges.map((j, i) => <>{i > 0 && ' and '}<span class="mono">{j.id}</span></>)}. {judges.some((j) => j.agreement) ? 'Agreement with human labels is published with each run.' : 'Their agreement with human labels has not been measured yet, so read this column as provisional.'}</>
+        : 'The judge is named here, with its measured agreement with human labels, once a run uses one.'}</p>
+      <p><strong>Rank</strong> is a band, not a position: runs whose 95% intervals on Correct overlap share a band. Intervals come from a bootstrap over questions, clustered by document.</p>
+      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page. <a class="link" href="https://github.com/Noah-Airmet/onthepage/tree/main/pagecite">How the questions are made, and how to run it</a></p>
     </div>
   </div>
 </Base>
 <style>
   .facts { font-size: var(--t-12); }
   .scroll { margin-top: var(--s-4); }
-  .board { min-width: 720px; }
+  .board { min-width: 920px; }
+  .board td { vertical-align: top; line-height: 24px; }
+  .board td:nth-child(2) { min-width: 17rem; }
   .board th .src { display: block; font: 400 var(--t-12)/1.3 var(--sans); color: var(--ink-3); }
   .board td { padding-block: var(--s-3); }
-  .board td a { display: inline-block; min-height: 24px; line-height: 24px; }
-  .board td.num a:hover { color: var(--accent); }
-  .model { font: 400 var(--t-18)/1.3 var(--serif); display: block; }
-  .solver { color: var(--ink-2); font-size: var(--t-12); }
+  .board td a { display: inline-block; min-height: 24px; }
+  .board td a:hover, .board td a:hover .model { color: var(--accent); }
+  .model { font: 400 var(--t-18)/24px var(--serif); display: block; }
+  .solver { color: var(--ink-2); font-size: var(--t-12); display: block; line-height: 1.4; }
   .pm { color: var(--ink-2); }
-  .whisk { width: 9rem; padding-right: var(--s-4) !important; vertical-align: middle !important; }
-  .whisker { position: relative; display: block; height: 12px; background: linear-gradient(var(--rule), var(--rule)) center / 100% 1px no-repeat; }
+  .whisk { width: 8rem; padding-right: var(--s-4) !important; }
+  .whisker { position: relative; display: block; height: 12px; margin-top: 6px; background: linear-gradient(var(--rule), var(--rule)) center / 100% 1px no-repeat; }
   .whisker .ci { position: absolute; top: 5px; height: 2px; background: var(--ink-2); }
   .whisker .dot { position: absolute; top: 2px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--accent); }
   .notes { margin-top: var(--s-6); display: grid; gap: var(--s-2); color: var(--ink-2); max-width: 76ch; font-size: var(--t-13); }

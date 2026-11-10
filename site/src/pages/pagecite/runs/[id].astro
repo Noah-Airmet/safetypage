@@ -1,42 +1,64 @@
 ---
+// One run: its measures with intervals, and every question with a link to its replay.
 import Base from '../../../layouts/Base.astro';
-import { content, contentFiles } from '../../../lib/data';
+import Tally from '../../../components/Tally.astro';
+import { allRuns, allTraces } from '../../../lib/data';
+import { questionParts } from '../../../lib/cite';
+import type { RunResult } from '../../../lib/types';
 
-interface Run {
-  sample: boolean; run_id: string; model: string; solver: string; snapshot: string; started_at: string;
-  samples: { sample_id: string; trace_id: string; question: string; tally: Record<string, number> }[];
-}
-export function getStaticPaths() {
-  return contentFiles('runs').map((f) => ({ params: { id: f.replace(/\.json$/, '') }, props: { run: content<Run>(`runs/${f}`) } }));
-}
-const { run } = Astro.props;
+export const getStaticPaths = () => allRuns().map((run) => ({ params: { id: run.run_id }, props: { run } }));
+const { run } = Astro.props as { run: RunResult };
+const traces = allTraces().filter((t) => t.header.run_id === run.run_id);
+const pct = (x: number | null | undefined) => (x == null ? '–' : `${Math.round(x * 100)}`);
+const NAMES: Record<string, string> = {
+  correct: 'Correct', verdict_correct: 'Verdict correct', page_precision: 'Page precision', page_recall: 'Page recall',
+  quote_fidelity: 'Quote fidelity', quoted: 'Answers that quote', seen_rate: 'Citations the run opened', support_rate: 'Claim support (judge)',
+};
 ---
-<Base title={`Run ${run.run_id}`} description={`${run.model}: ${run.samples.length} questions, each with its replay.`}>
+<Base title={`${run.model.split('/').pop()} · ${run.name}`} description={`A PageCite run: ${run.samples} questions, each with its replay.`}>
   <div class="wrap">
     <header class="pagehead">
       <p class="rubric"><a href="/pagecite">PageCite</a> · Run</p>
-      <h1 class="title">{run.model}</h1>
-      <p class="muted mono facts">{run.run_id} · {run.solver} · snapshot {run.snapshot} · {run.started_at.slice(0, 10)}</p>
-      {run.sample && <p class="note" data-kind="sample"><strong>Sample data.</strong> A scripted run that shows the layout, not a model's results.</p>}
+      <h1 class="title">{run.model.split('/').pop()}</h1>
+      <p class="muted mono facts">{[run.run_id, run.solver, `surface ${run.surface}`, `snapshot ${run.snapshot}`, run.created_at.slice(0, 10), run.judge && `judge ${run.judge.id}`].filter(Boolean).join(' · ')}</p>
     </header>
-    <div class="rows">
-      {run.samples.map((s) => (
-        <a href={`/r/${s.trace_id}`}>
-          <span class="meta mono">{s.sample_id}</span>
-          <span>
-            <span class="name">{s.question}</span>
-            <span class="tally">
-              <span class="state" data-state="verified">{s.tally.verified ?? 0} verified</span>
-              <span class="state" data-state="cited">{s.tally.cited ?? 0} page only</span>
-              <span class="state" data-state="rejected">{s.tally.rejected ?? 0} rejected</span>
-            </span>
-          </span>
-        </a>
-      ))}
+
+    <div class="cols">
+      <section aria-labelledby="q-h">
+        <h2 class="h2" id="q-h">{traces.length} questions</h2>
+        <div class="rows">
+          {traces.map((t) => {
+            const q = questionParts(t.header.question);
+            return (
+              <a href={`/r/${t.header.trace_id}`}>
+                <span class="meta"><span class="mono">{t.header.sample_id}</span><br />{t.scores?.correct === 1 ? 'Correct' : t.scores?.correct === 0 ? 'Not correct' : ''}</span>
+                <span>
+                  <span class="name">{q.quoted ?? q.lead}</span>
+                  <Tally citations={t.answer?.citations ?? []} />
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+      <aside aria-labelledby="m-h">
+        <h2 class="h2" id="m-h">Measures · 95% interval</h2>
+        <table class="table">
+          <tbody>
+            {Object.entries(run.measures).map(([key, e]) => (
+              <tr><td>{NAMES[key] ?? key}</td><td class="num">{pct(e.mean)}</td><td class="num muted">{e.mean == null ? '' : `${pct(e.ci_low)}–${pct(e.ci_high)}`}</td><td class="num muted">n {e.n}</td></tr>
+            ))}
+            {run.cost.priced && run.cost.total_usd != null && <tr><td>Cost of the run</td><td class="num">${run.cost.total_usd.toFixed(3)}</td><td class="num muted" colspan="2">prices {run.cost.price_table}</td></tr>}
+          </tbody>
+        </table>
+      </aside>
     </div>
   </div>
 </Base>
 <style>
-  .facts { font-size: var(--t-12); }
-  .tally { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); margin-top: var(--s-1); }
+  .facts { font-size: var(--t-12); overflow-wrap: anywhere; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); gap: var(--s-7); align-items: start; }
+  .name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+  .rows .meta { line-height: 1.6; }
+  @media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); } }
 </style>

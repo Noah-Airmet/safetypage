@@ -80,30 +80,41 @@ test('checker: marks each citation Verified, Page only or Rejected, with the rea
   await expect(page.locator('.findings .hl[data-kind="reject"]').first()).toBeVisible();
 });
 
-test('replay: a link opens at its step, with the rejection shown on the page', async ({ page }) => {
-  await page.goto('/r/sample-evals?step=19');
-  await expect(page.locator('.rp-answer .chip[data-state="rejected"]')).toHaveCount(2);
-  await expect(page.locator('.rp-page .hl[data-kind="reject"]').first()).toBeVisible();
-  await expect(page.locator('.rp-tally')).toHaveText(/1.*0.*2/);
+// A real PageCite run: three verified citations, one rejected, one page-only.
+const TRACE = '/r/GVTHZaZca3mVqmnh9t79KL-pc-7abbdba8ab-1';
+
+test('replay: a link opens at its step, with the rejection struck through', async ({ page }) => {
+  await page.goto(`${TRACE}?step=30`);
+  const rejected = page.locator('.rp-answer .chip[data-state="rejected"]');
+  await expect(rejected).toHaveCount(1);
+  await expect(rejected.locator('.chip-label')).toHaveCSS('text-decoration-line', 'line-through');
+  await expect(page.locator('.rp-trace li[aria-current]')).toContainText('Rejected');
+  await expect(page.locator('.rp-tally')).toHaveText(/3.*0.*1/);
   await page.locator('.rp-track input').focus();
   await page.keyboard.press('End');
   await expect(page.locator('.rp-answer .chip')).toHaveCount(5);
-  await expect(page.locator('.rp-tally')).toHaveText(/2.*1.*2/);
+  await expect(page.locator('.rp-tally')).toHaveText(/3.*1.*1/);
   await page.locator('.rp-answer .chip[data-state="verified"]').first().click();
-  await expect(page.locator('.rp-page .hl:not([data-kind])').first()).toBeVisible();
+  await expect(page.locator('.rp-page .hl').first()).toBeVisible();
+  await page.locator('.rp-track input').focus();
+  await page.keyboard.press('Home');
+  await expect(page.locator('.rp-answer .chip')).toHaveCount(0);
 });
 
-test('leaderboard: a number leads to the run, the run to the replay', async ({ page }) => {
+test('leaderboard: a number leads to the run, the run to the replay, the replay to the page', async ({ page }) => {
   await page.goto('/pagecite');
-  await expect(page.locator('.note[data-kind="sample"]')).toBeVisible();
   await page.locator('.board tbody tr').first().locator('td.num a').first().click();
-  await expect(page).toHaveURL(/\/pagecite\/runs\/sample-run/);
+  await expect(page).toHaveURL(/\/pagecite\/runs\/GVTHZaZca3mVqmnh9t79KL/);
   await page.locator('.rows a').first().click();
-  await expect(page).toHaveURL(/\/r\/sample-evals/);
+  await expect(page).toHaveURL(/\/r\/GVTHZaZca3mVqmnh9t79KL-/);
+  await page.locator('.rp-track input').focus();
+  await page.keyboard.press('End');
+  await page.locator('.rp-caption a').click();
+  await expect(page).toHaveURL(/\/d\//);
 });
 
 const SCREENS = ['/', '/library', '/d/arxiv/2305.15324', PAGE6, '/d/distill/zoom-in/r1/b21', '/d/example/link-only-eval-report/r1/p2',
-  '/search?query=evaluation', '/check?example=1', '/r/sample-evals?step=19', '/pagecite', '/pagecite/runs/sample-run', '/connect', '/about'];
+  '/search?query=evaluation', '/check?example=1', `${TRACE}?step=30`, '/pagecite', '/pagecite/runs/GVTHZaZca3mVqmnh9t79KL', '/connect', '/about'];
 
 for (const scheme of ['light', 'dark'] as const) {
   test.describe(`accessibility, ${scheme}`, () => {

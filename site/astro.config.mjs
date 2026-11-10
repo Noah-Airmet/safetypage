@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 
 // Static output: the whole site can be served from a bucket. The JSON API (search, quote
-// check, answer check) is the search server's; in dev, /api is proxied to the stand-in.
+// check, answer check) is the search server's (docs/SERVER.md); in dev, /api is proxied to it.
 export default defineConfig({
   site: process.env.SITE_URL ?? 'http://localhost:4321',
   output: 'static',
