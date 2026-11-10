@@ -906,8 +906,8 @@ test checks.
 
 ## 13. What is built, and what each track builds against
 
-Built in this repository now: the core library and its tests, the two schemas with migrations,
-the JSON Schemas, and the fixture corpus.
+The core library, with its tests, the two schemas with migrations, the JSON Schemas and the
+fixture corpus:
 
 | Module | Holds |
 |---|---|
@@ -922,7 +922,7 @@ the JSON Schemas, and the fixture corpus.
 | `safetypage.api`, `safetypage.trace`, `safetypage.schemas` | wire contracts, the trace format, JSON Schema export |
 | `safetypage.migrate` | the migration runner |
 
-Not built yet, and the contract each builds against:
+The parts built on it, and the contract each was built against:
 
 | Track | Builds | Against |
 |---|---|---|
