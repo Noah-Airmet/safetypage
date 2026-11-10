@@ -1,6 +1,6 @@
 """The official MCP conformance suite against the server, over a real socket.
 
-Opt-in (it needs Node and fetches the suite with npx): ``ONTHEPAGE_CONFORMANCE=1 uv run pytest
+Opt-in (it needs Node and fetches the suite with npx): ``SAFETYPAGE_CONFORMANCE=1 uv run pytest
 tests/server/test_conformance.py``. Only the scenarios that apply to a tools-only server run; the
 rest of the suite calls the suite's own reference tools (``test_image_content`` and so on),
 resources and prompts, which this server does not have by design.
@@ -19,14 +19,14 @@ from collections.abc import Iterator
 import pytest
 import uvicorn
 
-from onthepage.server.app import Server, build_app
+from safetypage.server.app import Server, build_app
 
 SUITE = "@modelcontextprotocol/conformance@0.1.16"
 SCENARIOS = ["server-initialize", "ping", "tools-list", "dns-rebinding-protection"]
 
 pytestmark = pytest.mark.skipif(
-    os.environ.get("ONTHEPAGE_CONFORMANCE") != "1" or shutil.which("npx") is None,
-    reason="set ONTHEPAGE_CONFORMANCE=1 (needs npx) to run the MCP conformance suite",
+    os.environ.get("SAFETYPAGE_CONFORMANCE") != "1" or shutil.which("npx") is None,
+    reason="set SAFETYPAGE_CONFORMANCE=1 (needs npx) to run the MCP conformance suite",
 )
 
 

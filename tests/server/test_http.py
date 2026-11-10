@@ -12,9 +12,9 @@ import httpx2
 import pytest
 from mcp_types import TextContent
 
-from onthepage.api import AnswerAudit, FetchResult, QuoteCheck, ResponseMeta, SearchResponse
-from onthepage.server.app import HOSTED, Limits, RateLimit, Server, build_app, client_family
-from onthepage.server.library import Library
+from safetypage.api import AnswerAudit, FetchResult, QuoteCheck, ResponseMeta, SearchResponse
+from safetypage.server.app import HOSTED, Limits, RateLimit, Server, build_app, client_family
+from safetypage.server.library import Library
 
 from .conftest import mcp_client, running
 
@@ -28,7 +28,7 @@ def _text(result: Any) -> str:
 
 
 def _meta(result: Any) -> ResponseMeta:
-    return ResponseMeta.model_validate(result.meta["onthepage"])
+    return ResponseMeta.model_validate(result.meta["safetypage"])
 
 
 async def test_default_surface_tools(http: httpx2.AsyncClient, server: Server) -> None:
@@ -43,7 +43,7 @@ async def test_default_surface_tools(http: httpx2.AsyncClient, server: Server) -
         r = await client.call_tool("search", {"query": "risk assessment", "limit": 2})
         assert not r.is_error
         search = SearchResponse.model_validate(r.structured_content)
-        assert search.hits[0].url.startswith("https://onthepage.test/d/")
+        assert search.hits[0].url.startswith("https://safetypage.test/d/")
         meta = _meta(r)
         assert meta.surface_id == server.surfaces["default"].surface_id
         assert meta.snapshot == "fixtures" and meta.arm == "bm25"
@@ -121,7 +121,7 @@ async def test_call_log_keeps_nothing_from_the_public(
     async with mcp_client(http) as client:
         await client.call_tool("search", {"query": "secret public question"})
     async with mcp_client(
-        http, headers={"X-OnThePage-Run": "run_1", "X-OnThePage-Sample": "s1"}
+        http, headers={"X-SafetyPage-Run": "run_1", "X-SafetyPage-Sample": "s1"}
     ) as client:
         await client.call_tool("search", {"query": "risk assessment", "limit": 2})
         await client.call_tool("fetch", {"id": "arxiv:2305.15324/v2/p99"})
@@ -142,8 +142,8 @@ async def test_call_log_keeps_nothing_from_the_public(
 
 
 async def test_time_limit(lib: Library, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from onthepage.server.oplog import OpsLog  # noqa: PLC0415
-    from onthepage.server.surfaces import load_surfaces  # noqa: PLC0415
+    from safetypage.server.oplog import OpsLog  # noqa: PLC0415
+    from safetypage.server.surfaces import load_surfaces  # noqa: PLC0415
 
     server = Server(
         {"current": lib, "fixtures": lib}, load_surfaces(), OpsLog(None), Limits(timeout_s=0.05)

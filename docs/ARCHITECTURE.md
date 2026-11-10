@@ -1,6 +1,6 @@
 # Architecture
 
-On the Page is a library of the AI safety record (research papers, system cards, safety
+SafetyPage is a library of the AI safety record (research papers, system cards, safety
 frameworks, evaluation reports, government guidance) in which every result opens an exact page
 or paragraph, and every citation can be checked against that page by code.
 
@@ -36,17 +36,17 @@ Contents:
                                                                   └─► static files (public/ only)
                                                                         reader, page images, records
 
- benchmark harness (PageCite, on Inspect) ──► calls the tools ──► traces ──► scores, leaderboard
+ benchmark harness (CitationBench, on Inspect) ──► calls the tools ──► traces ──► scores, leaderboard
  site (Astro) ──► reads static files and the JSON API ──► reader, replay view, checker
 ```
 
 | Part | Language | State it owns |
 |---|---|---|
-| Core library (`src/onthepage/`, this repository's foundation) | Python | none; every other part imports it |
+| Core library (`src/safetypage/`, this repository's foundation) | Python | none; every other part imports it |
 | Ingestion: source adapters, parsers, corpus scope | Python | the working `corpus.sqlite` and the blob store |
 | Search and snapshots: index builders, retrieval arms, snapshot builder | Python | sealed snapshots |
 | Server: the four tools over MCP, and the same functions as a JSON API | Python | `ops.sqlite` (call log) |
-| PageCite: the benchmark harness on Inspect | Python | runs and traces in `ops.sqlite`, `.eval` logs |
+| CitationBench: the benchmark harness on Inspect | Python | runs and traces in `ops.sqlite`, `.eval` logs |
 | Site: reader, replay view, landing page | Astro + React islands | none (static) |
 | Edge: caching and rate limits | TypeScript Worker | none |
 
@@ -70,7 +70,7 @@ search is down.
 
 ## 2. Identity: documents, versions, anchors
 
-Implemented in [`onthepage.ids`](../src/onthepage/ids.py).
+Implemented in [`safetypage.ids`](../src/safetypage/ids.py).
 
 ### Documents
 
@@ -167,7 +167,7 @@ for HTML. That is what a link-only document's "open at source" button uses.
 API:
 
 ```python
-from onthepage.ids import parse_citation, parse_ref, parse_url, find_citations
+from safetypage.ids import parse_citation, parse_ref, parse_url, find_citations
 
 c = parse_citation("arxiv:2305.15324/v2/p6")
 c.doc, c.version, c.anchor  # DocId('arxiv', '2305.15324'), 'v2', Anchor('p', 6, 6)
@@ -181,9 +181,9 @@ find_citations(answer_text)  # every canonical URL and bare cite string, in orde
 
 ## 4. The document model and the corpus schema
 
-Implemented in [`onthepage.model`](../src/onthepage/model.py),
-[`onthepage.corpus`](../src/onthepage/corpus.py) and
-[`migrations/corpus/`](../src/onthepage/migrations/corpus/0001_initial.sql).
+Implemented in [`safetypage.model`](../src/safetypage/model.py),
+[`safetypage.corpus`](../src/safetypage/corpus.py) and
+[`migrations/corpus/`](../src/safetypage/migrations/corpus/0001_initial.sql).
 
 ```
 Document        arxiv:2305.15324           one work, with a permanent id
@@ -200,7 +200,7 @@ Document        arxiv:2305.15324           one work, with a permanent id
 For anything with a PDF, the text of record is the PDF's own text layer, extracted in reading
 order and stored one row per page. For HTML-only documents it is the text of the parsed blocks.
 A model's transcription is never the text of record. Text passes through
-`onthepage.text.clean_text` before it is stored, which removes only what a reader cannot see
+`safetypage.text.clean_text` before it is stored, which removes only what a reader cannot see
 (Unicode tag characters, bidirectional overrides, control characters) and unifies line endings.
 Nothing is re-spelled, de-hyphenated or re-ordered at ingest.
 
@@ -237,7 +237,7 @@ All tables are `STRICT`. Document kinds: `paper`, `system_card`, `model_card`, `
 ### Writing: bundles
 
 Ingestion hands storage one **bundle** per version
-([`onthepage.bundle`](../src/onthepage/bundle.py)): the catalogue record, the licence fact, the
+([`safetypage.bundle`](../src/safetypage/bundle.py)): the catalogue record, the licence fact, the
 renditions by hash, and the pages or blocks. `import_bundle` is the only code that turns a
 bundle into rows. The write methods on `Corpus` keep the invariants:
 
@@ -252,7 +252,7 @@ snapshot is not sealed unless it returns none.
 ### Migrations
 
 Numbered plain-SQL files, tracked in `PRAGMA user_version`, applied in a transaction each
-([`onthepage.migrate`](../src/onthepage/migrate.py)). There are two schemas: `corpus` and
+([`safetypage.migrate`](../src/safetypage/migrate.py)). There are two schemas: `corpus` and
 `ops`. The working corpus is migrated in place. A snapshot's copy is never migrated: a
 read-only open refuses a database whose schema version differs from the code's, and the
 snapshot is rebuilt instead.
@@ -261,7 +261,7 @@ snapshot is rebuilt instead.
 
 ## 5. Quote verification
 
-Implemented in [`onthepage.quote`](../src/onthepage/quote.py). Deterministic, no model.
+Implemented in [`safetypage.quote`](../src/safetypage/quote.py). Deterministic, no model.
 
 ### Verdicts
 
@@ -343,12 +343,12 @@ substring of `unable to refuse`, `a trivial rate` of `a non-trivial rate`, and `
 ### API
 
 ```python
-from onthepage.quote import verify_quote  # plain strings; tier-agnostic; internal
+from safetypage.quote import verify_quote  # plain strings; tier-agnostic; internal
 
 result = verify_quote(quote, page_text, scope=(start, end))
 result.verdict, result.passed, result.segments[0].span.text, result.segments[0].diff
 
-from onthepage.corpus import Corpus  # against a stored document; applies the tier
+from safetypage.corpus import Corpus  # against a stored document; applies the tier
 
 check = corpus.verify_quote(quote, "arxiv:2305.15324/v2/p6")  # -> api.QuoteCheck
 check.verdict, check.locations[0].cite, check.locations[0].spine_start
@@ -358,8 +358,8 @@ check.verdict, check.locations[0].cite, check.locations[0].spine_start
 
 ## 6. Licence tiers
 
-Implemented in [`onthepage.licence`](../src/onthepage/licence.py) and
-[`onthepage.policy`](../src/onthepage/policy.py).
+Implemented in [`safetypage.licence`](../src/safetypage/licence.py) and
+[`safetypage.policy`](../src/safetypage/policy.py).
 
 | Tier | Which documents | What is served |
 |---|---|---|
@@ -381,7 +381,7 @@ It is never served.
 3. **Callers cannot set a tier.** `Corpus.add_version` and `Corpus.record_licence` compute it.
    The `tier` column is a cache for filtering; `Corpus.validate()` recomputes it from the
    stored fact, so a hand-edited row fails the snapshot gate.
-4. **The limits are enforced on the server side**, in `onthepage.policy`, for every surface:
+4. **The limits are enforced on the server side**, in `safetypage.policy`, for every surface:
 
    | | `open` | `link_only` |
    |---|---|---|
@@ -411,8 +411,8 @@ abstract pages link to.
 
 ## 7. Storage on disk: blobs and snapshots
 
-Implemented in [`onthepage.blobs`](../src/onthepage/blobs.py) and
-[`onthepage.snapshot`](../src/onthepage/snapshot.py).
+Implemented in [`safetypage.blobs`](../src/safetypage/blobs.py) and
+[`safetypage.snapshot`](../src/safetypage/snapshot.py).
 
 ```
 <data root>/
@@ -464,7 +464,7 @@ tier), independent of file layout and build time, so the same inputs give the sa
 Snapshot ids are `YYYY.MM.N`. The server opens any number of snapshots read-only; a benchmark
 names the one it runs against.
 
-**`ops.sqlite`** ([schema](../src/onthepage/migrations/ops/0001_initial.sql)) holds `runs`,
+**`ops.sqlite`** ([schema](../src/safetypage/migrations/ops/0001_initial.sql)) holds `runs`,
 `traces`, `trace_events` and `tool_calls`. It is the only state that cannot be rebuilt from
 sources and code.
 
@@ -472,7 +472,7 @@ sources and code.
 
 ## 8. The search interface
 
-Contract in [`onthepage.api`](../src/onthepage/api.py): `SearchRequest`, `SearchResponse`,
+Contract in [`safetypage.api`](../src/safetypage/api.py): `SearchRequest`, `SearchResponse`,
 `Hit`, `DocumentHit`, `SearchBackend`.
 
 ```python
@@ -514,7 +514,7 @@ Rules for any backend:
   per unit; no free-floating chunks.
 - **Deterministic.** For a given snapshot, arm and request the response is identical. Ties
   break on score, then cite string. No recency boosts, no cache that can change results.
-- **Tier limits inside the backend.** Snippets are clipped with `onthepage.policy` before they
+- **Tier limits inside the backend.** Snippets are clipped with `safetypage.policy` before they
   leave it. Link-only units are indexed in full and returned as snippets only.
 - **Bounded work.** A per-query work budget and a concurrency cap, from day one.
 
@@ -523,13 +523,13 @@ keyword index, a flat `.npy` matrix per embedding model with exact search. Lexic
 Dense, hybrid and the rest are arms measured on the benchmark's dev split, and the default
 public arm is whichever wins there.
 
-### As built: `onthepage.search` and `onthepage.build`
+### As built: `safetypage.search` and `safetypage.build`
 
 `SnapshotSearch(snapshot_dir, base_url=...)` in
-[`onthepage.search.backend`](../src/onthepage/search/backend.py) is the `SearchBackend` for one
+[`safetypage.search.backend`](../src/safetypage/search/backend.py) is the `SearchBackend` for one
 sealed snapshot.
 
-**The query grammar** ([`onthepage.search.grammar`](../src/onthepage/search/grammar.py)):
+**The query grammar** ([`safetypage.search.grammar`](../src/safetypage/search/grammar.py)):
 
 | Query | Means |
 |---|---|
@@ -573,10 +573,10 @@ so. `hybrid-rerank` and `contextual` are not built: asking for them raises
 **Limits.** Each backend runs searches on its own pool: at most 8 at once, a 2 s time limit
 per query (`SearchTimeoutError`), 1 s to wait for a slot (`SearchBusyError`). A query past its
 limit finishes in the background but keeps its slot, so slow queries cannot pile up. All
-errors derive from `onthepage.search.errors.SearchError` and their messages are written for an
+errors derive from `safetypage.search.errors.SearchError` and their messages are written for an
 agent.
 
-**Building a snapshot** ([`onthepage.build.snapshot`](../src/onthepage/build/snapshot.py)):
+**Building a snapshot** ([`safetypage.build.snapshot`](../src/safetypage/build/snapshot.py)):
 `build_snapshot(corpus_db, root, id)` stages, writes `lexical/`, `public/` (cards for every
 document; for open versions each unit's `read_units(layout=True)` JSON, the source PDF or
 HTML, and WebP page images at 800 and 1600 px), assembles `dense/<model>/` if the embedding
@@ -590,10 +590,10 @@ command refuses to start outside 22:00–06:00 (local model work runs overnight)
 `--now`, and stops at 06:00.
 
 ```sh
-uv run python -m onthepage.search build   --root data --id 2026.11.0 --current
-uv run python -m onthepage.search query   --root data '"reward hacking" -benchmark' --kind paper
-uv run python -m onthepage.search latency --root data
-uv sync --extra embed && uv run python -m onthepage.search embed --root data   # at night
+uv run python -m safetypage.search build   --root data --id 2026.11.0 --current
+uv run python -m safetypage.search query   --root data '"reward hacking" -benchmark' --kind paper
+uv run python -m safetypage.search latency --root data
+uv sync --extra embed && uv run python -m safetypage.search embed --root data   # at night
 ```
 
 The site's JSON API is the same functions over HTTP, with `/s/<snapshot>/` as an optional
@@ -614,7 +614,7 @@ prefix to pin a snapshot (unprefixed routes serve `current`):
 Four tools on the official Python MCP SDK, stateless Streamable HTTP, no authentication, all
 read-only (`readOnlyHint: true`, `destructiveHint: false`, `idempotentHint: true`,
 `openWorldHint: false`). Each returns a compact markdown `content` block for the model and a
-`structuredContent` object whose schema is one of the models in `onthepage.api`.
+`structuredContent` object whose schema is one of the models in `safetypage.api`.
 
 | Tool | Signature | `structuredContent` |
 |---|---|---|
@@ -647,7 +647,7 @@ cited page supports the claim made about it, and says so in every result
 (`support_checked: false`). Core call: `Corpus.check_answer`.
 
 How quotations attach to citations is one rule set, in
-[`onthepage.answer`](../src/onthepage/answer.py), shared with the scorer: a blockquote belongs
+[`safetypage.answer`](../src/safetypage/answer.py), shared with the scorer: a blockquote belongs
 to the first citation inside it or on the next non-blank line; an inline quotation of three or
 more words belongs to the nearest citation after it in the same paragraph, failing that the
 nearest before it.
@@ -664,7 +664,7 @@ against.
 
 A **surface** is a named configuration: which tools, which descriptions, which retrieval arm,
 which snapshot, which result shape. Surfaces are files in the repository and are how tool
-design is ablated: one TOML file each in `src/onthepage/server/surfaces/`, with description
+design is ablated: one TOML file each in `src/safetypage/server/surfaces/`, with description
 files in `surfaces/descriptions/` (see [SERVER.md](SERVER.md#surfaces)).
 
 - `/mcp` serves the default surface on the current snapshot.
@@ -673,20 +673,20 @@ files in `surfaces/descriptions/` (see [SERVER.md](SERVER.md#surfaces)).
 - `surface_id` is `<name>@<first 6 hex of the SHA-256 of the resolved config and its
   description files>`.
 
-Every result carries `ResponseMeta` in MCP `_meta` under the key `onthepage` (error results
+Every result carries `ResponseMeta` in MCP `_meta` under the key `safetypage` (error results
 too), and in API responses as the headers `X-Server-Version`, `X-Surface`, `X-Snapshot`, `X-Arm`
 and `X-Request-Id`: `server_version`, `surface_id`, `snapshot`, `arm`, `request_id`. The harness
 asserts the first four are constant within a run.
 
-A benchmark run identifies itself with the HTTP headers `X-OnThePage-Run: <run_id>` and
-`X-OnThePage-Sample: <sample_id>` on every MCP request. How to run, call and deploy the server,
+A benchmark run identifies itself with the HTTP headers `X-SafetyPage-Run: <run_id>` and
+`X-SafetyPage-Sample: <sample_id>` on every MCP request. How to run, call and deploy the server,
 and how to add it to claude.ai and ChatGPT: [SERVER.md](SERVER.md).
 
 ---
 
 ## 10. Traces
 
-Contract in [`onthepage.trace`](../src/onthepage/trace.py); JSON Schema in
+Contract in [`safetypage.trace`](../src/safetypage/trace.py); JSON Schema in
 [`schemas/trace.schema.json`](../schemas/trace.schema.json).
 
 A trace is one question, everything the agent did, and how each citation checked out. The
@@ -696,7 +696,7 @@ canonical benchmark record) and scores from it. The replay view plays it back. S
 
 ```jsonc
 {
-  "schema": "onthepage.trace/1",
+  "schema": "safetypage.trace/1",
   "header": {
     "trace_id": "t_01", "run_id": "r_01", "sample_id": "pc-0412",
     "question": "…", "model": "…", "solver": "react-baseline@1",
@@ -746,7 +746,7 @@ Deterministic checks and a judge's opinion are never mixed. A model's verdict on
 
 In `ops.sqlite`, `traces` holds the header and `trace_events` holds one event per row.
 `tool_calls` is the server's own log, one row per call; `request_id` joins it to a trace.
-Calls that belong to a benchmark run (an `X-OnThePage-Run` header) keep their arguments, the
+Calls that belong to a benchmark run (an `X-SafetyPage-Run` header) keep their arguments, the
 cites returned and the error message. Public calls keep none of these (only the kind of error),
 and no IP address is ever written.
 
@@ -887,7 +887,7 @@ needs no new verdict and no tunable wildcard width.
 ### DR-12. The ingestion pipeline extracts PDFs with pypdfium2
 
 **Chosen:** pypdfium2 (Apache-2.0 / BSD) for page text, word boxes, page labels and bookmarks
-in `onthepage.ingest.pdf`. pdfium's mark for a hyphen at a line break (U+FFFE) is written as
+in `safetypage.ingest.pdf`. pdfium's mark for a hyphen at a line break (U+FFFE) is written as
 the `-` the page shows.
 **Alternative:** PyMuPDF, which the fixture builder uses (AGPL, in its own dependency group).
 **Why:** On the fixture PDFs, a two-column ACL paper, an arXiv paper and a 42-page system card,
@@ -911,16 +911,16 @@ the JSON Schemas, and the fixture corpus.
 
 | Module | Holds |
 |---|---|
-| `onthepage.ids` | doc ids, versions, anchors, refs, citations, URLs, finding citations in text |
-| `onthepage.quote` | skeleton, fragments, `verify_quote`, verdicts |
-| `onthepage.licence`, `onthepage.policy` | licence facts, `decide_tier`, what each tier may be served |
-| `onthepage.text` | `clean_text` |
-| `onthepage.model`, `onthepage.bundle` | the document model; the ingestion hand-off |
-| `onthepage.corpus` | the `Corpus` database: writes, resolving, reading with the tier applied, quote checking, `check_answer`, validation |
-| `onthepage.answer` | pairing quotations with citations in a written answer |
-| `onthepage.blobs`, `onthepage.snapshot` | content-addressed files; staging, sealing, verifying and publishing snapshots |
-| `onthepage.api`, `onthepage.trace`, `onthepage.schemas` | wire contracts, the trace format, JSON Schema export |
-| `onthepage.migrate` | the migration runner |
+| `safetypage.ids` | doc ids, versions, anchors, refs, citations, URLs, finding citations in text |
+| `safetypage.quote` | skeleton, fragments, `verify_quote`, verdicts |
+| `safetypage.licence`, `safetypage.policy` | licence facts, `decide_tier`, what each tier may be served |
+| `safetypage.text` | `clean_text` |
+| `safetypage.model`, `safetypage.bundle` | the document model; the ingestion hand-off |
+| `safetypage.corpus` | the `Corpus` database: writes, resolving, reading with the tier applied, quote checking, `check_answer`, validation |
+| `safetypage.answer` | pairing quotations with citations in a written answer |
+| `safetypage.blobs`, `safetypage.snapshot` | content-addressed files; staging, sealing, verifying and publishing snapshots |
+| `safetypage.api`, `safetypage.trace`, `safetypage.schemas` | wire contracts, the trace format, JSON Schema export |
+| `safetypage.migrate` | the migration runner |
 
 Not built yet, and the contract each builds against:
 
@@ -928,6 +928,6 @@ Not built yet, and the contract each builds against:
 |---|---|---|
 | Ingestion and corpus scope | source adapters, parsers, HTML-to-page alignment, licence readers, scope | Emit a `Bundle` per version; `import_bundle` stores it. Text through `clean_text`. Licence as a `LicenceFact` with evidence. Files into `BlobStore`. `Corpus.validate()` must stay empty |
 | Search and snapshots | Tantivy index, embeddings, arms, the `public/` export, page images | Index the `units` view. Implement `SearchBackend`. Clip with `policy`. `stage_snapshot` → build → `seal_snapshot`; paths from `public_*_path` |
-| MCP server | the four tools, surfaces, the JSON API, the call log | `onthepage.api` models as `structuredContent`; `Corpus.read_units`, `document_card`, `verify_quote`, `check_answer`; `ResponseMeta`; `tool_calls` in `ops.sqlite` |
+| MCP server | the four tools, surfaces, the JSON API, the call log | `safetypage.api` models as `structuredContent`; `Corpus.read_units`, `document_card`, `verify_quote`, `check_answer`; `ResponseMeta`; `tool_calls` in `ops.sqlite` |
 | Site and reader | reader, record pages, replay view, checker | `schemas/*.schema.json`; URL routes in section 3; `public/` layout in section 7; `page_words` for highlights; trace states in section 10 |
-| PageCite on Inspect | tasks, solvers, scorers, leaderboard data | `Trace` and `citation_state`; `parse_answer`; `Corpus.verify_quote` on the pinned snapshot; gold labels as cite strings |
+| CitationBench on Inspect | tasks, solvers, scorers, leaderboard data | `Trace` and `citation_state`; `parse_answer`; `Corpus.verify_quote` on the pinned snapshot; gold labels as cite strings |

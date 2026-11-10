@@ -11,12 +11,12 @@ from pathlib import Path
 import pytest
 from inspect_ai.model import ModelOutput, get_model
 
-from onthepage.bench import __main__ as cli
-from onthepage.bench.draft import check_question, draft
-from onthepage.bench.label import pairs_from_questions, pairs_from_traces, unit_text
-from onthepage.bench.mine import Candidate, citing_contexts, version_diffs
-from onthepage.bench.questions import load_questions, save_questions
-from onthepage.bench.task import open_corpus
+from safetypage.bench import __main__ as cli
+from safetypage.bench.draft import check_question, draft
+from safetypage.bench.label import pairs_from_questions, pairs_from_traces, unit_text
+from safetypage.bench.mine import Candidate, citing_contexts, version_diffs
+from safetypage.bench.questions import load_questions, save_questions
+from safetypage.bench.task import open_corpus
 
 POLY = "Neural networks often contain"
 
@@ -130,7 +130,7 @@ def test_cli_mine_split_schema_estimate(
 
     monkeypatch.setattr(cli, "REPO", tmp_path)
     cli.main(["schema"])
-    assert (tmp_path / "schemas" / "pagecite" / "run-result.schema.json").is_file()
+    assert (tmp_path / "schemas" / "citationbench" / "run-result.schema.json").is_file()
 
     results = sorted((cli.PC / "results").glob("*.json"))
     if results:
@@ -139,9 +139,9 @@ def test_cli_mine_split_schema_estimate(
 
 
 def test_vault_values(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.delenv("PAGECITE_TEST_SETTING", raising=False)
-    cli._env_from_vault({"PAGECITE_TEST_SETTING": "plain"})  # pyright: ignore[reportPrivateUsage]
-    assert os.environ["PAGECITE_TEST_SETTING"] == "plain"
+    monkeypatch.delenv("CITATIONBENCH_TEST_SETTING", raising=False)
+    cli._env_from_vault({"CITATIONBENCH_TEST_SETTING": "plain"})  # pyright: ignore[reportPrivateUsage]
+    assert os.environ["CITATIONBENCH_TEST_SETTING"] == "plain"
 
 
 def test_cli_draft_check_pairs_label_agreement(
@@ -167,7 +167,7 @@ def test_cli_draft_check_pairs_label_agreement(
     )
     assert load_questions(questions) == []
 
-    dev = cli.REPO / "pagecite" / "questions" / "dev.jsonl"
+    dev = cli.REPO / "citationbench" / "questions" / "dev.jsonl"
     pairs = pc / "labels" / "pairs.jsonl"
     cli.main(["pairs", "--questions", str(dev), "--out", str(pairs), "--traces", str(tmp_path)])
     assert pairs.read_text().strip()

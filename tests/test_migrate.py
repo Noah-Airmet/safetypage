@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from onthepage.migrate import MigrationError, current_version, load_migrations, migrate
+from safetypage.migrate import MigrationError, current_version, load_migrations, migrate
 
 CORPUS_TABLES = {
     "documents",

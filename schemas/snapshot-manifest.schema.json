@@ -112,8 +112,8 @@
       "type": "array"
     },
     "schema": {
-      "const": "onthepage.snapshot/1",
-      "default": "onthepage.snapshot/1",
+      "const": "safetypage.snapshot/1",
+      "default": "safetypage.snapshot/1",
       "title": "Schema",
       "type": "string"
     },

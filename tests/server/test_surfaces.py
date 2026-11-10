@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from onthepage.server.surfaces import SURFACES_DIR, SurfaceError, load_surface, load_surfaces
+from safetypage.server.surfaces import SURFACES_DIR, SurfaceError, load_surface, load_surfaces
 
 
 def test_shipped_surfaces() -> None:

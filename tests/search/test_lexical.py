@@ -7,9 +7,9 @@ from pathlib import Path
 import pytest
 import tantivy
 
-from onthepage.search.grammar import parse_query
-from onthepage.search.highlight import find_spans
-from onthepage.search.lexical import ANALYZER, analyzer, compile_query, date_key, schema
+from safetypage.search.grammar import parse_query
+from safetypage.search.highlight import find_spans
+from safetypage.search.lexical import ANALYZER, analyzer, compile_query, date_key, schema
 
 TEXTS = {
     "gap0": "alpha beta",

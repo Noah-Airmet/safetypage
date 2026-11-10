@@ -3,10 +3,10 @@ from __future__ import annotations
 from hypothesis import given
 from hypothesis import strategies as st
 
-from onthepage import policy
-from onthepage.licence import Tier
-from onthepage.search.grammar import parse_query
-from onthepage.search.highlight import SNIPPET_CHARS, find_spans, snippet
+from safetypage import policy
+from safetypage.licence import Tier
+from safetypage.search.grammar import parse_query
+from safetypage.search.highlight import SNIPPET_CHARS, find_spans, snippet
 
 PAGE = (
     "Model evaluation for extreme risks\n\nModel evaluation is not the only tool available "

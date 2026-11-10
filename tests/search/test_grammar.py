@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from onthepage.search.grammar import (
+from safetypage.search.grammar import (
     DEFAULT_NEAR,
     Near,
     ParsedQuery,

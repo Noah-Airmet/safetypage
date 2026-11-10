@@ -11,9 +11,9 @@ from typing import Any
 
 import pytest
 
-from onthepage.bench import agents, cli_run
-from onthepage.bench.agents import AgentRun, UsageLimitError, complete, is_cli_model, run_agent
-from onthepage.migrate import migrate
+from safetypage.bench import agents, cli_run
+from safetypage.bench.agents import AgentRun, UsageLimitError, complete, is_cli_model, run_agent
+from safetypage.migrate import migrate
 
 GOLD = "arxiv:2305.15324/v2/p6"
 ANSWER = (
@@ -42,7 +42,7 @@ def test_claude_code_parse(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> N
     lines = [
         {
             "type": "assistant",
-            "message": {"content": [{"type": "tool_use", "name": "mcp__onthepage__search"}]},
+            "message": {"content": [{"type": "tool_use", "name": "mcp__safetypage__search"}]},
         },
         {
             "type": "rate_limit_event",
@@ -92,7 +92,7 @@ def test_claude_code_limit_stops(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 
 def test_codex_parse_and_meter(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     lines = [
-        {"type": "item.completed", "item": {"type": "mcp_tool_call", "server": "onthepage"}},
+        {"type": "item.completed", "item": {"type": "mcp_tool_call", "server": "safetypage"}},
         {"type": "item.completed", "item": {"type": "web_search"}},
         {"type": "item.completed", "item": {"type": "agent_message", "text": ANSWER}},
         {
@@ -219,7 +219,7 @@ def test_runner_scores_from_the_call_log_resumes_and_stops(
 ) -> None:
     pc = tmp_path / "pc"
     monkeypatch.setattr(cli_run, "PC", pc)
-    questions = cli_run.REPO / "pagecite" / "questions" / "dev.jsonl"
+    questions = cli_run.REPO / "citationbench" / "questions" / "dev.jsonl"
     ops = tmp_path / "ops.sqlite"
     config = {
         "name": "t",
@@ -233,9 +233,9 @@ def test_runner_scores_from_the_call_log_resumes_and_stops(
     calls: list[str] = []
 
     def fake_run(agent: str, model: str, prompt: str, **kw: Any) -> AgentRun:
-        sample = kw["headers"]["X-OnThePage-Sample"]
+        sample = kw["headers"]["X-SafetyPage-Sample"]
         calls.append(sample)
-        _ops(ops, kw["headers"]["X-OnThePage-Run"], sample)
+        _ops(ops, kw["headers"]["X-SafetyPage-Run"], sample)
         return AgentRun(
             answer=ANSWER,
             usage={"input": 1, "output": 2},

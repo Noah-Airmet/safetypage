@@ -1,0 +1,16 @@
+# Copy to vault.local.toml (not committed) to have `python -m safetypage.bench` read missing
+# keys from a password manager with `agent-op read <reference>`, into the process only. Used
+# only when a run configuration says `vault = [...]` or a command gets `--vault`. Without this
+# file, set the environment variables yourself. Values not starting op:// are plain settings.
+
+[anthropic]
+ANTHROPIC_API_KEY = "op://<vault>/<item>/<field>"
+
+[azure]
+AZURE_OPENAI_API_KEY = "op://<vault>/<item>/<field>"
+AZURE_OPENAI_ENDPOINT = "op://<vault>/<item>/<field>"
+OPENAI_API_VERSION = "2025-04-01-preview"  # the Responses API needs a 2025 version
+
+[omlx]
+OMLX_API_KEY = "op://<vault>/<item>/<field>"
+OMLX_BASE_URL = "http://localhost:8000/v1"

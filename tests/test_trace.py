@@ -6,9 +6,9 @@ import sqlite3
 import pytest
 from pydantic import ValidationError
 
-from onthepage.migrate import migrate
-from onthepage.quote import Verdict
-from onthepage.trace import (
+from safetypage.migrate import migrate
+from safetypage.quote import Verdict
+from safetypage.trace import (
     AnswerEvent,
     CiteEvent,
     Judgement,
@@ -79,7 +79,7 @@ def example() -> Trace:
 def test_round_trip_through_json() -> None:
     trace = example()
     data = json.loads(trace.model_dump_json(by_alias=True))
-    assert data["schema"] == "onthepage.trace/1"
+    assert data["schema"] == "safetypage.trace/1"
     assert [e["kind"] for e in data["events"]] == ["tool", "tool", "answer", "cite", "verify"]
     assert data["events"][4]["quote_verdict"] == "exact"
     assert Trace.model_validate(data) == trace

@@ -1,7 +1,7 @@
 # The corpus inventory
 
 `scope/` is the list of what the library holds, and the source of truth for ingestion
-(`python -m onthepage.ingest`, see [`src/onthepage/ingest/`](../src/onthepage/ingest/__init__.py)).
+(`python -m safetypage.ingest`, see [`src/safetypage/ingest/`](../src/safetypage/ingest/__init__.py)).
 Fetched files are never committed; they live in the gitignored `data/` directory.
 
 | File | Rows | What |
@@ -33,4 +33,4 @@ listed elsewhere, pointers to sections of documents listed elsewhere, and duplic
 `unfetched.jsonl` (rows that could not be fetched, or need a browser, with the reason) and
 `set-aside.jsonl` (rows fetched but not ingested: scans that need OCR, unsupported files). A
 browser session can save a page and hand it in with
-`python -m onthepage.ingest add-file <url> <path>`; the next run ingests it.
+`python -m safetypage.ingest add-file <url> <path>`; the next run ingests it.

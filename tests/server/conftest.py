@@ -10,13 +10,13 @@ from mcp.client import Client
 from mcp.client.streamable_http import streamable_http_client
 from starlette.applications import Starlette
 
-from onthepage.server.app import Limits, Server, build_app
-from onthepage.server.library import Library
-from onthepage.server.oplog import OpsLog
-from onthepage.server.run import fixture_library
-from onthepage.server.surfaces import load_surfaces
+from safetypage.server.app import Limits, Server, build_app
+from safetypage.server.library import Library
+from safetypage.server.oplog import OpsLog
+from safetypage.server.run import fixture_library
+from safetypage.server.surfaces import load_surfaces
 
-BASE_URL = "https://onthepage.test"
+BASE_URL = "https://safetypage.test"
 
 
 @pytest.fixture(scope="session")

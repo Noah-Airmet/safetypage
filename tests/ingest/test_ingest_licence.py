@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from onthepage.ingest.items import Item
-from onthepage.ingest.licence import licence_for
-from onthepage.licence import Tier, decide_tier
+from safetypage.ingest.items import Item
+from safetypage.ingest.licence import licence_for
+from safetypage.licence import Tier, decide_tier
 
 NOW = "2026-11-10T00:00:00Z"
 

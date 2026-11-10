@@ -6,7 +6,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from onthepage.ids import (
+from safetypage.ids import (
     Anchor,
     AnchorKind,
     Citation,
@@ -25,14 +25,14 @@ from onthepage.ids import (
     version_number,
 )
 
-BASE = "https://onthepage.test"
+BASE = "https://safetypage.test"
 
 
 def test_cite_string_and_url_are_the_same_parts() -> None:
     c = parse_citation("arxiv:2305.15324/v2/p6")
     assert (str(c.doc), c.version, str(c.anchor)) == ("arxiv:2305.15324", "v2", "p6")
     assert str(c) == "arxiv:2305.15324/v2/p6"
-    assert c.url(BASE) == "https://onthepage.test/d/arxiv/2305.15324/v2/p6"
+    assert c.url(BASE) == "https://safetypage.test/d/arxiv/2305.15324/v2/p6"
     assert c.path == "/d/arxiv/2305.15324/v2/p6"
 
 
@@ -41,7 +41,7 @@ def test_url_round_trips_with_a_quote() -> None:
         DocId("nist", "ai-100-1"), "r1", Anchor.page(12), quote='risk is "a composite" & more'
     )
     url = c.url(BASE + "/")
-    assert url.startswith("https://onthepage.test/d/nist/ai-100-1/r1/p12?q=")
+    assert url.startswith("https://safetypage.test/d/nist/ai-100-1/r1/p12?q=")
     ref, quote = parse_url(url)
     assert ref == c.ref
     assert quote == c.quote
@@ -124,7 +124,7 @@ def test_refs() -> None:
     assert str(parse_ref("arxiv:2305.15324")) == "arxiv:2305.15324"
     assert parse_ref("arxiv:2305.15324/v2").version == "v2"
     assert parse_ref("arxiv:2305.15324/v2/p6-p8").anchor == Anchor.page(6, 8)
-    assert parse_ref("arxiv:2305.15324").url(BASE) == "https://onthepage.test/d/arxiv/2305.15324"
+    assert parse_ref("arxiv:2305.15324").url(BASE) == "https://safetypage.test/d/arxiv/2305.15324"
     for bad in [
         "arxiv:2305.15324/p6",
         "arxiv:2305.15324/v0/p6",
@@ -174,7 +174,7 @@ def test_mint_local_id() -> None:
 def test_find_citations_in_prose() -> None:
     text = (
         "Evaluations inform training decisions "
-        "[p. 6](https://onthepage.test/d/arxiv/2305.15324/v2/p6?q=critical%20governance) and, per "
+        "[p. 6](https://safetypage.test/d/arxiv/2305.15324/v2/p6?q=critical%20governance) and, per "
         "nist:ai-100-1/r1/p12-p13, risk is contextual. See also (distill:zoom-in/r1/b14). "
         "Not citations: http://example.org/d/x, arxiv:2305.15324, a:b/c/d, 10:30/v2/p1."
     )
@@ -186,7 +186,7 @@ def test_find_citations_in_prose() -> None:
     ]
     assert found[0].citation.quote == "critical governance"
     assert text[found[1].start : found[1].end] == "nist:ai-100-1/r1/p12-p13"
-    assert found[0].raw.startswith("https://onthepage.test/d/arxiv/")
+    assert found[0].raw.startswith("https://safetypage.test/d/arxiv/")
 
 
 def test_source_links() -> None:

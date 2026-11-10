@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from onthepage.server.library import Library, ToolError
-from onthepage.server.run import load_server
-from onthepage.snapshot import resolve_snapshot, seal_snapshot, set_current, stage_snapshot
+from safetypage.server.library import Library, ToolError
+from safetypage.server.run import load_server
+from safetypage.snapshot import resolve_snapshot, seal_snapshot, set_current, stage_snapshot
 
 from .conftest import BASE_URL
 
@@ -33,8 +33,8 @@ def test_load_from_a_data_root_and_from_one_snapshot(lib: Library, tmp_path: Pat
 
 def test_tantivy_snapshot(lib: Library, tmp_path: Path) -> None:
     """With a lexical index the server uses the search track's backend; the tools work the same."""
-    lexical = pytest.importorskip("onthepage.search.lexical")
-    from onthepage.corpus import Corpus  # noqa: PLC0415
+    lexical = pytest.importorskip("safetypage.search.lexical")
+    from safetypage.corpus import Corpus  # noqa: PLC0415
 
     root = tmp_path / "data"
     staging = stage_snapshot(lib.corpus_path, root, "2026.11.1")

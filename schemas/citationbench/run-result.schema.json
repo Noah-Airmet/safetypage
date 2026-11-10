@@ -1,0 +1,351 @@
+{
+  "$defs": {
+    "Cost": {
+      "additionalProperties": false,
+      "properties": {
+        "billing": {
+          "default": "api",
+          "enum": [
+            "subscription",
+            "api",
+            "local"
+          ],
+          "title": "Billing",
+          "type": "string"
+        },
+        "cache_read_tokens": {
+          "title": "Cache Read Tokens",
+          "type": "integer"
+        },
+        "cache_write_tokens": {
+          "title": "Cache Write Tokens",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "per_correct_usd": {
+          "$ref": "#/$defs/Estimate"
+        },
+        "per_sample_usd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Per Sample Usd"
+        },
+        "price_table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Price Table"
+        },
+        "priced": {
+          "title": "Priced",
+          "type": "boolean"
+        },
+        "total_usd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Total Usd"
+        }
+      },
+      "required": [
+        "price_table",
+        "priced",
+        "input_tokens",
+        "output_tokens",
+        "cache_read_tokens",
+        "cache_write_tokens",
+        "total_usd",
+        "per_sample_usd",
+        "per_correct_usd"
+      ],
+      "title": "Cost",
+      "type": "object"
+    },
+    "Estimate": {
+      "additionalProperties": false,
+      "properties": {
+        "ci_high": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ci High"
+        },
+        "ci_low": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ci Low"
+        },
+        "mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Mean"
+        },
+        "n": {
+          "title": "N",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "mean",
+        "ci_low",
+        "ci_high",
+        "n"
+      ],
+      "title": "Estimate",
+      "type": "object"
+    },
+    "JudgeInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "agreement": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Agreement"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "JudgeInfo",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One run: one model, one tool surface, one question file. What the leaderboard reads.",
+  "properties": {
+    "agent": {
+      "title": "Agent",
+      "type": "string"
+    },
+    "by_kind": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "$ref": "#/$defs/Estimate"
+        },
+        "type": "object"
+      },
+      "title": "By Kind",
+      "type": "object"
+    },
+    "by_method": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "$ref": "#/$defs/Estimate"
+        },
+        "type": "object"
+      },
+      "title": "By Method",
+      "type": "object"
+    },
+    "complete": {
+      "title": "Complete",
+      "type": "boolean"
+    },
+    "config": {
+      "additionalProperties": true,
+      "title": "Config",
+      "type": "object"
+    },
+    "contaminated": {
+      "default": 0,
+      "title": "Contaminated",
+      "type": "integer"
+    },
+    "cost": {
+      "$ref": "#/$defs/Cost"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "epochs": {
+      "title": "Epochs",
+      "type": "integer"
+    },
+    "errors": {
+      "title": "Errors",
+      "type": "integer"
+    },
+    "judge": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/JudgeInfo"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "log": {
+      "title": "Log",
+      "type": "string"
+    },
+    "measures": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Estimate"
+      },
+      "title": "Measures",
+      "type": "object"
+    },
+    "meter": {
+      "additionalProperties": true,
+      "title": "Meter",
+      "type": "object"
+    },
+    "model": {
+      "title": "Model",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "planned_samples": {
+      "title": "Planned Samples",
+      "type": "integer"
+    },
+    "questions": {
+      "additionalProperties": true,
+      "title": "Questions",
+      "type": "object"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "samples": {
+      "title": "Samples",
+      "type": "integer"
+    },
+    "schema": {
+      "default": "citationbench.result/1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "seconds_per_sample": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Seconds Per Sample"
+    },
+    "server": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Server"
+    },
+    "snapshot": {
+      "title": "Snapshot",
+      "type": "string"
+    },
+    "solver": {
+      "title": "Solver",
+      "type": "string"
+    },
+    "stopped": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Stopped"
+    },
+    "surface": {
+      "title": "Surface",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "name",
+    "created_at",
+    "agent",
+    "model",
+    "solver",
+    "surface",
+    "server",
+    "snapshot",
+    "questions",
+    "epochs",
+    "samples",
+    "planned_samples",
+    "complete",
+    "errors",
+    "judge",
+    "measures",
+    "by_method",
+    "by_kind",
+    "cost",
+    "config",
+    "log"
+  ],
+  "title": "RunResult",
+  "type": "object"
+}

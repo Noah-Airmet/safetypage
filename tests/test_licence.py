@@ -4,7 +4,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from onthepage.licence import (
+from safetypage.licence import (
     LicenceFact,
     Tier,
     decide_tier,

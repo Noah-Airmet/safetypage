@@ -9,9 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from onthepage.blobs import sha256_file
-from onthepage.bundle import Bundle
-from onthepage.licence import licence_from_url
+from safetypage.blobs import sha256_file
+from safetypage.bundle import Bundle
+from safetypage.licence import licence_from_url
 
 REPO = Path(__file__).parent.parent
 CORPUS = REPO / "fixtures" / "corpus"

@@ -1,0 +1,14 @@
+# Ablation: retrieval arm 'bm25'. Needs a snapshot with that arm and a server surface 'arm-bm25';
+# set corpus to that snapshot's directory.
+agent = "claude-code"
+model = "claude-sonnet-5-5"
+judge = "claude-code:claude-sonnet-5-5"
+questions = "citationbench/questions/dev.jsonl"
+corpus = "fixtures"
+server = "http://localhost:8766"
+ops_db = "citationbench/work/ops.sqlite"
+surface = "arm-bm25"
+epochs = 1
+batch = 10
+pause = 30
+max_used = 0.7

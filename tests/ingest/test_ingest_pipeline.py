@@ -6,9 +6,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from onthepage.ingest.fetch import FetchError
-from onthepage.ingest.items import load_items
-from onthepage.ingest.pipeline import Pipeline
+from safetypage.ingest.fetch import FetchError
+from safetypage.ingest.items import load_items
+from safetypage.ingest.pipeline import Pipeline
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "corpus" / "sources"
 

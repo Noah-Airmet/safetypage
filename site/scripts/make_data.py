@@ -4,7 +4,7 @@
 
 Writes `site/public/data/` in the layout of a snapshot's `public/` (docs/ARCHITECTURE.md
 section 7): document cards, unit text with layout, page images at 800 and 1600 px. Not
-committed; a real snapshot's `public/` replaces it (OTP_PUBLIC_DIR). Also writes
+committed; a real snapshot's `public/` replaces it (SAFETYPAGE_PUBLIC_DIR). Also writes
 `site/src/content/landing.json`, the landing page's two example checks, from the core
 library's own `verify_quote`.
 """
@@ -21,11 +21,11 @@ from typing import Any
 import pymupdf
 from PIL import Image
 
-from onthepage.bundle import load_bundles
-from onthepage.corpus import Corpus
-from onthepage.ids import DocId, parse_citation
-from onthepage.quote import Verdict
-from onthepage.snapshot import public_doc_path, public_page_image_path, public_text_path
+from safetypage.bundle import load_bundles
+from safetypage.corpus import Corpus
+from safetypage.ids import DocId, parse_citation
+from safetypage.quote import Verdict
+from safetypage.snapshot import public_doc_path, public_page_image_path, public_text_path
 
 SITE = Path(__file__).resolve().parents[1]
 FIXTURES = SITE.parent / "fixtures" / "corpus"

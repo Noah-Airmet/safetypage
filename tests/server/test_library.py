@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import pytest
 
-from onthepage import policy
-from onthepage.api import SearchRequest
-from onthepage.licence import Tier
-from onthepage.server import render
-from onthepage.server.library import Library, ToolError
+from safetypage import policy
+from safetypage.api import SearchRequest
+from safetypage.licence import Tier
+from safetypage.server import render
+from safetypage.server.library import Library, ToolError
 
 LINK_ONLY = "example:link-only-eval-report"
 
@@ -18,7 +18,7 @@ def test_search_hits_are_citable_units(lib: Library) -> None:
     assert r.total > 3 and len(r.hits) == 3 and r.next_cursor == "3"
     hit = r.hits[0]
     assert hit.id == hit.cite == "arxiv:2305.15324/v2/p6"
-    assert hit.url == "https://onthepage.test/d/arxiv/2305.15324/v2/p6"
+    assert hit.url == "https://safetypage.test/d/arxiv/2305.15324/v2/p6"
     assert hit.title.endswith("— p. 6")
     assert hit.source_url.endswith("#page=6")
     assert all(0 <= a < b <= len(hit.snippet) for a, b in hit.match_spans)
@@ -86,7 +86,7 @@ def test_fetch_card(lib: Library) -> None:
 
 
 def test_fetch_open_unit_returns_text(lib: Library) -> None:
-    r = lib.fetch("https://onthepage.test/d/arxiv/2305.15324/v2/p6")
+    r = lib.fetch("https://safetypage.test/d/arxiv/2305.15324/v2/p6")
     (unit,) = r.units
     assert unit.text and "not the only tool" in unit.text
     assert r.url == unit.url and r.title.endswith("p. 6")
@@ -135,7 +135,7 @@ def test_verify_quote_elsewhere_points_to_the_page(lib: Library) -> None:
         cite="arxiv:2305.15324/v2/p3",
     )
     assert check.verdict == "elsewhere"
-    assert "Cite https://onthepage.test/d/arxiv/2305.15324/v2/p6 instead" in render.quote(check)
+    assert "Cite https://safetypage.test/d/arxiv/2305.15324/v2/p6 instead" in render.quote(check)
 
 
 def test_verify_quote_without_cite_searches(lib: Library) -> None:
@@ -159,7 +159,7 @@ def test_verify_quote_link_only_is_checked_but_not_served(lib: Library) -> None:
 def test_check_answer_says_support_is_not_checked(lib: Library) -> None:
     audit = lib.check_answer(
         'It says "model evaluation is not the only tool available" '
-        "(https://onthepage.test/d/arxiv/2305.15324/v2/p6), and cites arxiv:2305.15324/v2/p99."
+        "(https://safetypage.test/d/arxiv/2305.15324/v2/p6), and cites arxiv:2305.15324/v2/p99."
     )
     assert audit.support_checked is False
     assert audit.citation_count == 2 and audit.resolved_count == 1 and audit.passed_count == 1

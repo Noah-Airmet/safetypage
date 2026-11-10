@@ -1,14 +1,14 @@
 // Build-time reading of a snapshot's public/ tree (docs/ARCHITECTURE.md section 7).
-// OTP_PUBLIC_DIR points at it; the default is the fixture tree that `npm run data` writes.
+// SAFETYPAGE_PUBLIC_DIR points at it; the default is the fixture tree that `npm run data` writes.
 import fs from 'node:fs';
 import path from 'node:path';
 import type { DocumentCard, RunResult, Trace, UnitText } from './types';
 
-export const PUBLIC_DIR = process.env.OTP_PUBLIC_DIR ?? path.resolve('public/data');
+export const PUBLIC_DIR = process.env.SAFETYPAGE_PUBLIC_DIR ?? path.resolve('public/data');
 const CONTENT = path.resolve('src/content');
-// CitationBench's output (pagecite/README.md): one results file per run, one trace per sample.
-const RESULTS_DIR = process.env.OTP_RESULTS_DIR ?? path.resolve('../pagecite/results');
-const TRACES_DIR = process.env.OTP_TRACES_DIR ?? path.resolve('../pagecite/traces');
+// CitationBench's output (citationbench/README.md): one results file per run, one trace per sample.
+const RESULTS_DIR = process.env.SAFETYPAGE_RESULTS_DIR ?? path.resolve('../citationbench/results');
+const TRACES_DIR = process.env.SAFETYPAGE_TRACES_DIR ?? path.resolve('../citationbench/traces');
 
 const readJson = <T>(file: string): T => JSON.parse(fs.readFileSync(file, 'utf8')) as T;
 
@@ -16,7 +16,7 @@ let cards: DocumentCard[] | undefined;
 export function allDocs(): DocumentCard[] {
   if (cards) return cards;
   const root = path.join(PUBLIC_DIR, 'docs');
-  if (!fs.existsSync(root)) throw new Error(`No library data at ${PUBLIC_DIR}. Run "npm run data" or set OTP_PUBLIC_DIR.`);
+  if (!fs.existsSync(root)) throw new Error(`No library data at ${PUBLIC_DIR}. Run "npm run data" or set SAFETYPAGE_PUBLIC_DIR.`);
   cards = fs.readdirSync(root).flatMap((ns) =>
     fs.readdirSync(path.join(root, ns)).filter((f) => f.endsWith('.json')).map((f) => readJson<DocumentCard>(path.join(root, ns, f))),
   );

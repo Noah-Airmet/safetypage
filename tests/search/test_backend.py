@@ -6,13 +6,13 @@ from pathlib import Path
 
 import pytest
 
-from onthepage import policy
-from onthepage.api import SearchBackend, SearchRequest, SearchResponse
-from onthepage.corpus import Corpus
-from onthepage.licence import Tier
-from onthepage.search.backend import Limits, SnapshotSearch
-from onthepage.search.dense import Embedder, embed_units
-from onthepage.search.errors import (
+from safetypage import policy
+from safetypage.api import SearchBackend, SearchRequest, SearchResponse
+from safetypage.corpus import Corpus
+from safetypage.licence import Tier
+from safetypage.search.backend import Limits, SnapshotSearch
+from safetypage.search.dense import Embedder, embed_units
+from safetypage.search.errors import (
     ArmUnavailableError,
     FilterError,
     QuerySyntaxError,
@@ -39,7 +39,7 @@ def test_phrase_hit_is_the_page_with_offsets(lexical_backend: SnapshotSearch) ->
     assert response.arm == "bm25" and response.snapshot == "2026.11.0"
     assert cites(response) == ["arxiv:2305.15324/v2/p6"]
     hit = response.hits[0]
-    assert hit.id == hit.cite and hit.url == "https://onthepage.test/d/arxiv/2305.15324/v2/p6"
+    assert hit.id == hit.cite and hit.url == "https://safetypage.test/d/arxiv/2305.15324/v2/p6"
     assert hit.title.endswith("— p. 6") and hit.anchor_label == "p. 6"
     assert hit.tier is Tier.OPEN and hit.licence == "CC-BY-4.0" and hit.kind == "paper"
     assert hit.source_url.endswith("#page=6")

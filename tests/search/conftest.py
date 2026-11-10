@@ -7,11 +7,11 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from onthepage.build.snapshot import build_snapshot
-from onthepage.corpus import Corpus
-from onthepage.search.backend import SnapshotSearch
-from onthepage.search.dense import Matrix, embed_units, model_slug
-from onthepage.search.grammar import words
+from safetypage.build.snapshot import build_snapshot
+from safetypage.corpus import Corpus
+from safetypage.search.backend import SnapshotSearch
+from safetypage.search.dense import Matrix, embed_units, model_slug
+from safetypage.search.grammar import words
 
 FAKE_MODEL = "test/fake-embedding"
 
@@ -64,7 +64,7 @@ def search_root(fixture_db: Path, tmp_path_factory: pytest.TempPathFactory) -> P
 @pytest.fixture(scope="session")
 def lexical_backend(search_root: Path) -> Iterator[SnapshotSearch]:
     backend = SnapshotSearch(
-        search_root / "snapshots" / "2026.11.0", base_url="https://onthepage.test"
+        search_root / "snapshots" / "2026.11.0", base_url="https://safetypage.test"
     )
     yield backend
     backend.close()
@@ -74,7 +74,7 @@ def lexical_backend(search_root: Path) -> Iterator[SnapshotSearch]:
 def dense_backend(search_root: Path) -> Iterator[SnapshotSearch]:
     backend = SnapshotSearch(
         search_root / "snapshots" / "2026.11.1",
-        base_url="https://onthepage.test",
+        base_url="https://safetypage.test",
         embedder=FakeEmbedder(),
     )
     yield backend

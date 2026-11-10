@@ -23,11 +23,11 @@ from typing import Any
 import pymupdf
 from rapidfuzz.distance import Levenshtein
 
-from onthepage.blobs import sha256_file
-from onthepage.bundle import Bundle, BundleLicence, BundleVersion
-from onthepage.model import Document, NewBlock, NewPage, OutlineEntry, Rendition
-from onthepage.quote import skeleton
-from onthepage.text import clean_text
+from safetypage.blobs import sha256_file
+from safetypage.bundle import Bundle, BundleLicence, BundleVersion
+from safetypage.model import Document, NewBlock, NewPage, OutlineEntry, Rendition
+from safetypage.quote import skeleton
+from safetypage.text import clean_text
 
 ROOT = Path(__file__).parent / "corpus"
 SOURCES = ROOT / "sources"

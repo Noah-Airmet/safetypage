@@ -7,12 +7,12 @@ from pathlib import Path
 import pytest
 from hypothesis import settings
 
-from onthepage.bundle import load_bundles
-from onthepage.corpus import Corpus
+from safetypage.bundle import load_bundles
+from safetypage.corpus import Corpus
 
 REPO = Path(__file__).parent.parent
 FIXTURES = REPO / "fixtures" / "corpus"
-BASE_URL = "https://onthepage.test"
+BASE_URL = "https://safetypage.test"
 
 settings.register_profile("default", deadline=None, max_examples=200)
 settings.register_profile("ci", deadline=None, max_examples=500)

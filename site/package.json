@@ -1,10 +1,10 @@
 {
-  "name": "onthepage-site",
+  "name": "safetypage-site",
   "private": true,
   "type": "module",
   "scripts": {
     "data": "cd .. && uv run --group fixtures --group build python site/scripts/make_data.py",
-    "api": "cd .. && uv run --group server python -m onthepage.server --fixtures --port",
+    "api": "cd .. && uv run --group server python -m safetypage.server --fixtures --port",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",

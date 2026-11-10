@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from onthepage.corpus import Corpus
-from onthepage.ids import parse_citation, parse_ref
-from onthepage.snapshot import (
+from safetypage.corpus import Corpus
+from safetypage.ids import parse_citation, parse_ref
+from safetypage.snapshot import (
     CORPUS_DB,
     MANIFEST,
     SnapshotError,
@@ -81,7 +81,7 @@ def test_stage_seal_verify_and_publish(fixture_db: Path, tmp_path: Path) -> None
     }
     assert load_manifest(final) == manifest
     on_disk = json.loads((final / MANIFEST).read_text())
-    assert on_disk["schema"] == "onthepage.snapshot/1"
+    assert on_disk["schema"] == "safetypage.snapshot/1"
     assert verify_snapshot(final) == []
 
     # the snapshot's corpus opens read-only and answers like the working copy

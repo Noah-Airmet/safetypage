@@ -1,0 +1,278 @@
+{
+ "schema": "citationbench.result/1",
+ "run_id": "cc-sonnet-5-5-43677d",
+ "name": "cc-sonnet-5-5",
+ "created_at": "2026-11-10T03:11:02.729680+00:00",
+ "agent": "claude-code 2.1.321 (Claude Code)",
+ "model": "claude-sonnet-5-5",
+ "solver": "claude-code 2.1.321 (Claude Code)",
+ "surface": "default",
+ "server": "http://localhost:8766",
+ "snapshot": "fixtures",
+ "questions": {
+  "file": "citationbench/questions/dev.jsonl",
+  "sha256": "e27a8d6cfb1cd1ddedfe58debaa9b928e13324e51f84dbd7f859d7f3a7dda5c6",
+  "n": 4
+ },
+ "epochs": 1,
+ "samples": 4,
+ "planned_samples": 4,
+ "complete": true,
+ "stopped": null,
+ "errors": 0,
+ "contaminated": 0,
+ "seconds_per_sample": 13.408820114749915,
+ "judge": {
+  "id": "claude-code:claude-sonnet-5-5#12160b",
+  "agreement": null
+ },
+ "measures": {
+  "correct": {
+   "mean": 0.0,
+   "ci_low": 0.0,
+   "ci_high": 0.0,
+   "n": 4
+  },
+  "verdict_correct": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 4
+  },
+  "page_precision": {
+   "mean": 0.2928571428571428,
+   "ci_low": 0.2928571428571428,
+   "ci_high": 0.2928571428571428,
+   "n": 4
+  },
+  "page_recall": {
+   "mean": 0.5833333333333333,
+   "ci_low": 0.5833333333333333,
+   "ci_high": 0.5833333333333333,
+   "n": 4
+  },
+  "quote_fidelity": {
+   "mean": 0.6041666666666666,
+   "ci_low": 0.6041666666666666,
+   "ci_high": 0.6041666666666666,
+   "n": 4
+  },
+  "quoted": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 4
+  },
+  "seen_rate": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 4
+  },
+  "support_rate": {
+   "mean": 0.44047619047619047,
+   "ci_low": 0.44047619047619047,
+   "ci_high": 0.44047619047619047,
+   "n": 4
+  }
+ },
+ "by_method": {
+  "perturbed_claim": {
+   "correct": {
+    "mean": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "n": 2
+   },
+   "verdict_correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 2
+   },
+   "page_precision": {
+    "mean": 0.14285714285714285,
+    "ci_low": 0.14285714285714285,
+    "ci_high": 0.14285714285714285,
+    "n": 2
+   },
+   "page_recall": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.3333333333333333,
+    "ci_high": 0.3333333333333333,
+    "n": 2
+   },
+   "quote_fidelity": {
+    "mean": 0.5,
+    "ci_low": 0.5,
+    "ci_high": 0.5,
+    "n": 2
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 2
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 2
+   },
+   "support_rate": {
+    "mean": 0.23809523809523808,
+    "ci_low": 0.23809523809523808,
+    "ci_high": 0.23809523809523808,
+    "n": 2
+   }
+  },
+  "citing_sentence": {
+   "correct": {
+    "mean": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "n": 2
+   },
+   "verdict_correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 2
+   },
+   "page_precision": {
+    "mean": 0.44285714285714284,
+    "ci_low": 0.44285714285714284,
+    "ci_high": 0.44285714285714284,
+    "n": 2
+   },
+   "page_recall": {
+    "mean": 0.8333333333333333,
+    "ci_low": 0.8333333333333333,
+    "ci_high": 0.8333333333333333,
+    "n": 2
+   },
+   "quote_fidelity": {
+    "mean": 0.7083333333333333,
+    "ci_low": 0.7083333333333333,
+    "ci_high": 0.7083333333333333,
+    "n": 2
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 2
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 2
+   },
+   "support_rate": {
+    "mean": 0.6428571428571428,
+    "ci_low": 0.6428571428571428,
+    "ci_high": 0.6428571428571428,
+    "n": 2
+   }
+  }
+ },
+ "by_kind": {
+  "claim": {
+   "correct": {
+    "mean": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "n": 4
+   },
+   "verdict_correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 4
+   },
+   "page_precision": {
+    "mean": 0.2928571428571428,
+    "ci_low": 0.2928571428571428,
+    "ci_high": 0.2928571428571428,
+    "n": 4
+   },
+   "page_recall": {
+    "mean": 0.5833333333333333,
+    "ci_low": 0.5833333333333333,
+    "ci_high": 0.5833333333333333,
+    "n": 4
+   },
+   "quote_fidelity": {
+    "mean": 0.6041666666666666,
+    "ci_low": 0.6041666666666666,
+    "ci_high": 0.6041666666666666,
+    "n": 4
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 4
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 4
+   },
+   "support_rate": {
+    "mean": 0.44047619047619047,
+    "ci_low": 0.44047619047619047,
+    "ci_high": 0.44047619047619047,
+    "n": 4
+   }
+  }
+ },
+ "cost": {
+  "billing": "subscription",
+  "price_table": "2026-11",
+  "priced": true,
+  "input_tokens": 36,
+  "output_tokens": 6061,
+  "cache_read_tokens": 192093,
+  "cache_write_tokens": 76868,
+  "total_usd": 0.2720613,
+  "per_sample_usd": 0.068015325,
+  "per_correct_usd": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 4
+  }
+ },
+ "meter": {
+  "after_first": {
+   "status": "allowed",
+   "five_hour_used": 0.16,
+   "seven_day_used": 0.11
+  },
+  "after_last": {
+   "status": "allowed",
+   "five_hour_used": 0.22,
+   "seven_day_used": 0.12
+  }
+ },
+ "config": {
+  "agent": "claude-code",
+  "model": "claude-sonnet-5-5",
+  "judge": "claude-code:claude-sonnet-5-5",
+  "questions": "citationbench/questions/dev.jsonl",
+  "corpus": "fixtures",
+  "server": "http://localhost:8766",
+  "ops_db": "citationbench/work/ops.sqlite",
+  "surface": "default",
+  "epochs": 1,
+  "batch": 10,
+  "pause": 30,
+  "max_used": 0.7,
+  "name": "cc-sonnet-5-5"
+ },
+ "log": "work/runs/cc-sonnet-5-5-43677d"
+}

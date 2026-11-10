@@ -3,7 +3,7 @@ from __future__ import annotations
 from hypothesis import given
 from hypothesis import strategies as st
 
-from onthepage.text import clean_text, is_clean
+from safetypage.text import clean_text, is_clean
 
 
 def test_hazards_are_removed_and_nothing_else() -> None:

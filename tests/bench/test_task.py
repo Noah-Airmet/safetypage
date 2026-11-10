@@ -13,10 +13,10 @@ from inspect_ai import eval as inspect_eval  # pyright: ignore[reportUnknownVari
 from inspect_ai.model import ModelOutput, get_model
 from inspect_ai.tool import Tool, tool
 
-from onthepage.bench import __main__ as cli
-from onthepage.bench import results
-from onthepage.bench.questions import Made, Question, save_questions
-from onthepage.bench.task import open_corpus, pagecite
+from safetypage.bench import __main__ as cli
+from safetypage.bench import results
+from safetypage.bench.questions import Made, Question, save_questions
+from safetypage.bench.task import citationbench, open_corpus
 
 GOLD = "arxiv:2305.15324/v2/p6"
 
@@ -64,11 +64,11 @@ def test_task_scores_a_mock_run(tmp_path: Path) -> None:
             ModelOutput.for_tool_call("mockllm/model", "submit", {"answer": answer}),
         ],
     )
-    task = pagecite(questions=str(_question(tmp_path)), tools=[fetch()])
+    task = citationbench(questions=str(_question(tmp_path)), tools=[fetch()])
     [log] = inspect_eval(task, model=model, log_dir=str(tmp_path / "logs"), display="none")
     assert log.status == "success", log.error
     assert log.samples is not None
-    value = log.samples[0].scores["pagecite_scorer"].value  # type: ignore[index]
+    value = log.samples[0].scores["citationbench_scorer"].value  # type: ignore[index]
     assert isinstance(value, dict)
     assert value["correct"] == 1.0
     assert value["page_precision"] == 1.0
@@ -91,6 +91,6 @@ def test_task_scores_a_mock_run(tmp_path: Path) -> None:
     cli.main(["compare", str(results_file), str(results_file)])
     board = results.publish([out], tmp_path / "site", version="test")
     data = json.loads(board.read_text())
-    assert data["schema"] == "onthepage.leaderboard/1" and data["rows"][0]["rank_band"] == [1, 1]
+    assert data["schema"] == "safetypage.leaderboard/1" and data["rows"][0]["rank_band"] == [1, 1]
     run = json.loads((tmp_path / "site" / "runs" / f"{data['rows'][0]['run_id']}.json").read_text())
     assert run["samples"][0]["tally"]["verified"] == 1

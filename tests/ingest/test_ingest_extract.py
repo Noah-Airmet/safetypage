@@ -9,10 +9,10 @@ from pathlib import Path
 import pypdfium2 as pdfium
 import pytest
 
-from onthepage.ingest.html import ExtractError, blocks_from_html, outline_of, page_blocks
-from onthepage.ingest.pdf import NeedsOcrError, PdfError, pdf_outline, pdf_pages
-from onthepage.quote import skeleton, verify_quote
-from onthepage.text import is_clean
+from safetypage.ingest.html import ExtractError, blocks_from_html, outline_of, page_blocks
+from safetypage.ingest.pdf import NeedsOcrError, PdfError, pdf_outline, pdf_pages
+from safetypage.quote import skeleton, verify_quote
+from safetypage.text import is_clean
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "corpus"
 

@@ -6,12 +6,12 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from onthepage.blobs import BlobStore
-from onthepage.build import snapshot as build
-from onthepage.build.snapshot import build_snapshot
-from onthepage.corpus import Corpus
-from onthepage.ids import parse_citation, parse_ref
-from onthepage.snapshot import (
+from safetypage.blobs import BlobStore
+from safetypage.build import snapshot as build
+from safetypage.build.snapshot import build_snapshot
+from safetypage.corpus import Corpus
+from safetypage.ids import parse_citation, parse_ref
+from safetypage.snapshot import (
     Manifest,
     SnapshotError,
     load_manifest,

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from onthepage.answer import parse_answer
-from onthepage.corpus import Corpus
-from onthepage.quote import Verdict
+from safetypage.answer import parse_answer
+from safetypage.corpus import Corpus
+from safetypage.quote import Verdict
 
-BASE = "https://onthepage.test"
+BASE = "https://safetypage.test"
 PAPER = "arxiv:2305.15324"
 
 ANSWER = f"""\

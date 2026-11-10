@@ -8,10 +8,10 @@ from __future__ import annotations
 
 import pytest
 
-from onthepage.corpus import Corpus, NotFoundError
-from onthepage.ids import Anchor, parse_citation
-from onthepage.licence import Tier
-from onthepage.quote import Verdict
+from safetypage.corpus import Corpus, NotFoundError
+from safetypage.ids import Anchor, parse_citation
+from safetypage.licence import Tier
+from safetypage.quote import Verdict
 
 PAPER = "arxiv:2305.15324"
 
@@ -136,7 +136,9 @@ def test_quotes_against_the_paper(
         assert check.locations == []
     else:
         assert check.locations[0].cite == found_at
-        assert check.locations[0].url == f"https://onthepage.test/d/{found_at.replace(':', '/', 1)}"
+        assert (
+            check.locations[0].url == f"https://safetypage.test/d/{found_at.replace(':', '/', 1)}"
+        )
 
 
 def test_the_not_deleted_near_miss_shows_the_missing_word(library: Corpus) -> None:
@@ -248,7 +250,7 @@ def test_reading_an_open_document_returns_the_page(library: Corpus) -> None:
     )
     assert unit.excerpt is None
     assert unit.anchor_label == "p. 6"
-    assert unit.url == "https://onthepage.test/d/arxiv/2305.15324/v2/p6"
+    assert unit.url == "https://safetypage.test/d/arxiv/2305.15324/v2/p6"
     assert unit.source_url == "https://arxiv.org/pdf/2305.15324v2#page=6"
     units = library.read_units(f"{PAPER}/v2/p6-p8")
     assert [u.anchor for u in units] == ["p6", "p7", "p8"]
@@ -273,7 +275,7 @@ def test_document_card(library: Corpus) -> None:
     assert [(v.version, v.latest) for v in card.versions] == [("v1", False), ("v2", True)]
     assert card.unit_count == 20
     assert card.anchor_kind == "page"
-    assert card.url == "https://onthepage.test/d/arxiv/2305.15324"
+    assert card.url == "https://safetypage.test/d/arxiv/2305.15324"
     assert card.outline[0].title == "Introduction"
     assert card.outline[0].cite == f"{PAPER}/v2/p1"
     assert library.document_card(f"{PAPER}/v1").version == "v1"

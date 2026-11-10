@@ -47,7 +47,7 @@ describe('highlight', () => {
 
 describe('replay', () => {
   // A real CitationBench trace: three verified citations, one rejected, one page-only.
-  const trace = JSON.parse(fs.readFileSync('../pagecite/traces/GVTHZaZca3mVqmnh9t79KL/pc-7abbdba8ab.1.json', 'utf8')) as Trace;
+  const trace = JSON.parse(fs.readFileSync('../citationbench/traces/GVTHZaZca3mVqmnh9t79KL/pc-7abbdba8ab.1.json', 'utf8')) as Trace;
   const last = trace.events.length - 1;
   it('ends on the tally the trace records', () => {
     const want = { verified: 0, cited: 0, rejected: 0 };

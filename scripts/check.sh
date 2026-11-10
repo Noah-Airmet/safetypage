@@ -19,10 +19,10 @@ step "types"
 uv run pyright
 
 step "JSON Schemas are current"
-uv run python -m onthepage.schemas --check
+uv run python -m safetypage.schemas --check
 
 step "fixture bundles rebuild byte for byte"
 uv run python fixtures/build.py --check
 
 step "tests"
-uv run pytest --cov=onthepage --cov-report=term --cov-fail-under=85 "$@"
+uv run pytest --cov=safetypage --cov-report=term --cov-fail-under=85 "$@"

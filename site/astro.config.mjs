@@ -9,6 +9,6 @@ export default defineConfig({
   integrations: [react()],
   devToolbar: { enabled: false },
   vite: {
-    server: { proxy: { '/api': process.env.OTP_API ?? 'http://127.0.0.1:8791' } },
+    server: { proxy: { '/api': process.env.SAFETYPAGE_API ?? 'http://127.0.0.1:8791' } },
   },
 });

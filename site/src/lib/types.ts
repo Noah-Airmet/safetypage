@@ -76,7 +76,7 @@ export interface Trace {
   scores?: Record<string, number>;
 }
 
-// CitationBench: schemas/pagecite/run-result.schema.json
+// CitationBench: schemas/citationbench/run-result.schema.json
 export interface Estimate { mean: number | null; ci_low: number | null; ci_high: number | null; n: number }
 export interface RunResult {
   schema: string; run_id: string; name: string; created_at: string; model: string; solver: string; surface: string;

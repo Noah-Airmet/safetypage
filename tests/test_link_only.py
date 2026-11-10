@@ -12,11 +12,11 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from onthepage import policy
-from onthepage.corpus import Corpus
-from onthepage.licence import Tier
-from onthepage.policy import TierViolationError
-from onthepage.quote import QuoteTooShortError, Verdict
+from safetypage import policy
+from safetypage.corpus import Corpus
+from safetypage.licence import Tier
+from safetypage.policy import TierViolationError
+from safetypage.quote import QuoteTooShortError, Verdict
 
 REPORT = "example:link-only-eval-report"
 POST = "example:unlicensed-post"

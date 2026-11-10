@@ -7,11 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from onthepage.bundle import Bundle, import_bundle
-from onthepage.corpus import MAX_UNITS_PER_READ, Corpus, CorpusError, NotFoundError
-from onthepage.ids import parse_citation
-from onthepage.licence import LicenceFact, Tier
-from onthepage.model import Document, NewBlock, NewPage, OutlineEntry, Rendition
+from safetypage.bundle import Bundle, import_bundle
+from safetypage.corpus import MAX_UNITS_PER_READ, Corpus, CorpusError, NotFoundError
+from safetypage.ids import parse_citation
+from safetypage.licence import LicenceFact, Tier
+from safetypage.model import Document, NewBlock, NewPage, OutlineEntry, Rendition
 
 CC_BY = LicenceFact(
     licence="CC-BY-4.0",

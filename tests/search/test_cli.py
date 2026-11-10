@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from onthepage.search.__main__ import main
+from safetypage.search.__main__ import main
 
 
 def test_query_and_latency(search_root: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -25,7 +25,7 @@ def test_query_and_latency(search_root: Path, capsys: pytest.CaptureFixture[str]
 
 
 def test_embed_waits_for_night(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from onthepage.search import __main__ as cli  # noqa: PLC0415
+    from safetypage.search import __main__ as cli  # noqa: PLC0415
 
     class Noon:
         @staticmethod

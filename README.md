@@ -1,4 +1,4 @@
-# On the Page
+# SafetyPage
 
 A complete, page-cited library of the AI safety record, built for people and for AI agents:
 interpretability, alignment, evals and model welfare research; frontier-lab system cards, model
@@ -8,13 +8,13 @@ Every search result opens an exact page or paragraph. Every citation names a doc
 version and a place in it, and can be checked against that place by code. We check that the
 page says it, and show you the page.
 
-*On the Page is a working name.*
+*SafetyPage is a working name.*
 
 ## Status
 
 This repository holds the foundation: the core library that every other part imports, its
 tests, and the design the rest is built against. The search index, the MCP server, the site
-and the benchmark (PageCite) are being built on top of it.
+and the benchmark (CitationBench) are being built on top of it.
 
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** is the design: ids and anchors, the citation
   string and URL, the SQLite schema, the snapshot layout, the search interface, the tools, the
@@ -33,7 +33,7 @@ names a version, because pages move when a paper is revised.
 ## Checking a quote
 
 ```python
-from onthepage.quote import verify_quote
+from safetypage.quote import verify_quote
 
 page = "We find that the model does not reliably refuse harmful requests."
 
@@ -56,8 +56,8 @@ Against a stored document, with the citation as the scope:
 
 ```python
 from pathlib import Path
-from onthepage.bundle import load_bundles
-from onthepage.corpus import Corpus
+from safetypage.bundle import load_bundles
+from safetypage.corpus import Corpus
 
 corpus = Corpus.memory()
 load_bundles(corpus, Path("fixtures/corpus/bundles"))  # the checked-in fixture corpus
@@ -86,7 +86,7 @@ not left to callers.
 ## Layout
 
 ```
-src/onthepage/     the core library (ids, quote, licence, policy, corpus, snapshot, api, trace)
+src/safetypage/     the core library (ids, quote, licence, policy, corpus, snapshot, api, trace)
 tests/             unit, property and end-to-end tests
 fixtures/corpus/   real, openly licensed documents used by the tests
 schemas/           JSON Schemas for every wire contract, generated from the models

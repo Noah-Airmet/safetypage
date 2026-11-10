@@ -6,7 +6,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from onthepage.blobs import BlobError, BlobStore, sha256_bytes, sha256_file
+from safetypage.blobs import BlobError, BlobStore, sha256_bytes, sha256_file
 
 
 def test_put_get_round_trip_and_layout(tmp_path: Path) -> None:

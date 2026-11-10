@@ -9,7 +9,7 @@ from __future__ import annotations
 from hypothesis import assume, given
 from hypothesis import strategies as st
 
-from onthepage.quote import (
+from safetypage.quote import (
     MIN_QUOTE_CHARS,
     QuoteTooShortError,
     Verdict,

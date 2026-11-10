@@ -7,16 +7,16 @@ from pathlib import Path
 
 import pytest
 
-from onthepage import schemas
-from onthepage.api import Hit, SearchBackend, SearchRequest, SearchResponse
-from onthepage.licence import Tier
-from onthepage.quote import Verdict
+from safetypage import schemas
+from safetypage.api import Hit, SearchBackend, SearchRequest, SearchResponse
+from safetypage.licence import Tier
+from safetypage.quote import Verdict
 
 REPO = Path(__file__).parent.parent
 
 
 def test_checked_in_schemas_are_current() -> None:
-    assert schemas.stale(REPO / "schemas") == [], "run: uv run python -m onthepage.schemas"
+    assert schemas.stale(REPO / "schemas") == [], "run: uv run python -m safetypage.schemas"
 
 
 def test_schemas_use_the_one_vocabulary() -> None:
@@ -33,7 +33,7 @@ def test_schemas_use_the_one_vocabulary() -> None:
         )
     }
     assert kinds == {"think", "tool", "answer", "cite", "verify"}
-    assert trace["properties"]["schema"]["const"] == "onthepage.trace/1"
+    assert trace["properties"]["schema"]["const"] == "safetypage.trace/1"
 
 
 def test_write_and_stale(tmp_path: Path) -> None:
@@ -66,7 +66,7 @@ def test_a_backend_can_satisfy_the_search_protocol() -> None:
             hit = Hit(
                 id="arxiv:2305.15324/v2/p6",
                 title="Model evaluation for extreme risks — p. 6",
-                url="https://onthepage.test/d/arxiv/2305.15324/v2/p6",
+                url="https://safetypage.test/d/arxiv/2305.15324/v2/p6",
                 cite="arxiv:2305.15324/v2/p6",
                 doc_id="arxiv:2305.15324",
                 version="v2",
@@ -101,7 +101,7 @@ def test_a_backend_can_satisfy_the_search_protocol() -> None:
 
 def test_the_module_runs_as_a_check() -> None:
     result = subprocess.run(
-        [sys.executable, "-m", "onthepage.schemas", "--check"],
+        [sys.executable, "-m", "safetypage.schemas", "--check"],
         cwd=REPO,
         capture_output=True,
         check=False,

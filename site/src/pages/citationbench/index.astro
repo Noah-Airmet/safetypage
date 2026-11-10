@@ -80,7 +80,7 @@ const small = runs.some((r) => r.samples < 50);
         ? <>{judges.length === 1 ? 'The judge is ' : 'The judges are '}{judges.map((j, i) => <>{i > 0 && ' and '}<span class="mono">{j.id}</span></>)}. {judges.some((j) => j.agreement) ? 'Agreement with human labels is published with each run.' : 'Their agreement with human labels has not been measured yet, so read this column as provisional.'}</>
         : 'The judge is named here, with its measured agreement with human labels, once a run uses one.'}</p>
       <p><strong>Rank</strong> is a band, not a position: runs whose 95% intervals on Correct overlap share a band. Intervals come from a bootstrap over questions, clustered by document.</p>
-      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page. <a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/pagecite">How the questions are made, and how to run it</a></p>
+      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page. <a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/citationbench">How the questions are made, and how to run it</a></p>
     </div>
   </div>
 </Base>

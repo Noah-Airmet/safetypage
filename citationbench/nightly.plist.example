@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A LaunchAgent that runs the overnight local-model job at 04:00. Copy to
+     ~/Library/LaunchAgents/<label>.plist, set the label and the repository path, then
+     launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/<label>.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>LABEL</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string><string>-lc</string>
+    <string>cd REPOSITORY &amp;&amp; uv run --group bench --group server python -m safetypage.bench nightly --until 06:25</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>4</integer><key>Minute</key><integer>0</integer></dict>
+  <key>StandardOutPath</key><string>/tmp/citationbench-nightly.out</string>
+  <key>StandardErrorPath</key><string>/tmp/citationbench-nightly.err</string>
+</dict>
+</plist>

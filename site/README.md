@@ -22,15 +22,15 @@ tests, and the end-to-end and accessibility tests against a fresh build.
 
 | What | From | Setting |
 |---|---|---|
-| Document cards, unit text with layout, page images | a snapshot's `public/` tree ([ARCHITECTURE §7](../docs/ARCHITECTURE.md#7-storage-on-disk-blobs-and-snapshots)), at build time and in the browser | `OTP_PUBLIC_DIR` (build, default `public/data`), `PUBLIC_DATA_BASE` (browser, default `/data`) |
-| Search, quote checks, answer audits | the server's JSON API | `PUBLIC_API_BASE` (default: same origin; in dev `/api` is proxied to `OTP_API`) |
-| Leaderboard | CitationBench's results files, one per run | `OTP_RESULTS_DIR` (default `../pagecite/results`) |
-| Replays | CitationBench's traces, one per sample | `OTP_TRACES_DIR` (default `../pagecite/traces`) |
+| Document cards, unit text with layout, page images | a snapshot's `public/` tree ([ARCHITECTURE §7](../docs/ARCHITECTURE.md#7-storage-on-disk-blobs-and-snapshots)), at build time and in the browser | `SAFETYPAGE_PUBLIC_DIR` (build, default `public/data`), `PUBLIC_DATA_BASE` (browser, default `/data`) |
+| Search, quote checks, answer audits | the server's JSON API | `PUBLIC_API_BASE` (default: same origin; in dev `/api` is proxied to `SAFETYPAGE_API`) |
+| Leaderboard | CitationBench's results files, one per run | `SAFETYPAGE_RESULTS_DIR` (default `../citationbench/results`) |
+| Replays | CitationBench's traces, one per sample | `SAFETYPAGE_TRACES_DIR` (default `../citationbench/traces`) |
 | The MCP address shown on Connect | | `PUBLIC_MCP_URL` (default `<site>/mcp`) |
 | The site's own address, for links and preview cards | | `SITE_URL` |
 
 `scripts/make_data.py` builds the `public/` layout from the fixture corpus with the core
-library, so the site has pages to show before a real snapshot exists. Point `OTP_PUBLIC_DIR`
+library, so the site has pages to show before a real snapshot exists. Point `SAFETYPAGE_PUBLIC_DIR`
 at a sealed snapshot's `public/` and nothing else changes.
 
 ## Routes

@@ -6,7 +6,7 @@ import re
 
 import pytest
 
-from onthepage.quote import (
+from safetypage.quote import (
     MIN_QUOTE_CHARS,
     PASSING,
     QuoteTooShortError,

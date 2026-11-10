@@ -1,6 +1,6 @@
 // Finding a quote in a page's text, for the highlight. This places words on a page; it is not
 // the verdict. Verdicts come from the core library's verify_quote, through the API.
-// Same idea as onthepage.quote: match on a skeleton of case-folded letters and digits that
+// Same idea as safetypage.quote: match on a skeleton of case-folded letters and digits that
 // keeps each character's source offset, whole words only, fragments in order.
 import type { UnitText } from './types';
 

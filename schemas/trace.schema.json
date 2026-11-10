@@ -729,8 +729,8 @@
       "$ref": "#/$defs/TraceHeader"
     },
     "schema": {
-      "const": "onthepage.trace/1",
-      "default": "onthepage.trace/1",
+      "const": "safetypage.trace/1",
+      "default": "safetypage.trace/1",
       "title": "Schema",
       "type": "string"
     },

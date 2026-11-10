@@ -2287,100 +2287,6 @@ wheels = [
 ]
 
 [[package]]
-name = "onthepage"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "pydantic" },
-    { name = "rapidfuzz" },
-]
-
-[package.optional-dependencies]
-embed = [
-    { name = "sentence-transformers" },
-]
-
-[package.dev-dependencies]
-bench = [
-    { name = "agent-client-protocol" },
-    { name = "anthropic" },
-    { name = "inspect-ai" },
-    { name = "openai" },
-]
-build = [
-    { name = "pillow" },
-    { name = "pymupdf" },
-]
-dev = [
-    { name = "hypothesis" },
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-fixtures = [
-    { name = "pymupdf" },
-]
-ingest = [
-    { name = "httpx" },
-    { name = "pypdfium2" },
-    { name = "trafilatura" },
-]
-search = [
-    { name = "numpy" },
-    { name = "tantivy" },
-]
-server = [
-    { name = "mcp" },
-    { name = "pyyaml" },
-    { name = "starlette" },
-    { name = "uvicorn" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "pydantic", specifier = ">=2.14.3" },
-    { name = "rapidfuzz", specifier = ">=3.14.6" },
-    { name = "sentence-transformers", marker = "extra == 'embed'", specifier = ">=6.2.0" },
-]
-provides-extras = ["embed"]
-
-[package.metadata.requires-dev]
-bench = [
-    { name = "agent-client-protocol", specifier = "<1" },
-    { name = "anthropic", specifier = ">=2.7.0" },
-    { name = "inspect-ai", specifier = ">=0.3.288" },
-    { name = "openai", specifier = ">=3.48.0" },
-]
-build = [
-    { name = "pillow", specifier = ">=13.0.0" },
-    { name = "pymupdf", specifier = ">=2.1" },
-]
-dev = [
-    { name = "hypothesis", specifier = ">=6.170.15" },
-    { name = "pyright", specifier = ">=1.1.414" },
-    { name = "pytest", specifier = ">=9.2.0" },
-    { name = "pytest-cov", specifier = ">=7.1.0" },
-    { name = "ruff", specifier = ">=0.17.4" },
-]
-fixtures = [{ name = "pymupdf", specifier = ">=2.1" }]
-ingest = [
-    { name = "httpx", specifier = ">=0.28" },
-    { name = "pypdfium2", specifier = ">=4.30" },
-    { name = "trafilatura", specifier = ">=2.0" },
-]
-search = [
-    { name = "numpy", specifier = ">=2.5.4" },
-    { name = "tantivy", specifier = ">=0.27.0" },
-]
-server = [
-    { name = "mcp", specifier = ">=2.3.0" },
-    { name = "pyyaml", specifier = ">=6.0.3" },
-    { name = "starlette", specifier = ">=1.10.0" },
-    { name = "uvicorn", specifier = ">=0.54.0" },
-]
-
-[[package]]
 name = "openai"
 version = "3.48.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3349,6 +3255,98 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/8e/3f/73ccf82579412b4a71c4ca673f10b5f1f888d7cf5af7fe24f27d30307be4/safetensors-0.8.0-cp310-abi3-win32.whl", hash = "sha256:2ddf52eac562eda224f99acfa7889d02968c1fd59a5b011ae7d8137c37e9c02d", size = 342401, upload-time = "2026-06-09T07:52:28.895Z" },
     { url = "https://files.pythonhosted.org/packages/1b/6d/3fba214c1e5e0f69991677ec3bc17023f0421776975e1de0c682dca475e2/safetensors-0.8.0-cp310-abi3-win_amd64.whl", hash = "sha256:096ec1a98435df7beb08853bb5aa9081a84f23d0adc67ed1a0a10550f608373f", size = 355540, upload-time = "2026-06-09T07:52:27.832Z" },
     { url = "https://files.pythonhosted.org/packages/8d/fc/7eedc3510d97878876e32774eebbeb61c43f148a96e915c84229a3e967aa/safetensors-0.8.0-cp310-abi3-win_arm64.whl", hash = "sha256:f7838e5135a406ad3e02efdcb8cf2e5397d368b0154537c4fec682dbc544d452", size = 340500, upload-time = "2026-06-09T07:52:26.745Z" },
+]
+
+[[package]]
+name = "safetypage"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "pydantic" },
+    { name = "rapidfuzz" },
+]
+
+[package.optional-dependencies]
+embed = [
+    { name = "sentence-transformers" },
+]
+
+[package.dev-dependencies]
+bench = [
+    { name = "agent-client-protocol" },
+    { name = "anthropic" },
+    { name = "inspect-ai" },
+    { name = "openai" },
+]
+build = [
+    { name = "pillow" },
+    { name = "pymupdf" },
+]
+dev = [
+    { name = "hypothesis" },
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+fixtures = [
+    { name = "pymupdf" },
+]
+ingest = [
+    { name = "httpx" },
+    { name = "pypdfium2" },
+    { name = "trafilatura" },
+]
+search = [
+    { name = "numpy" },
+    { name = "tantivy" },
+]
+server = [
+    { name = "mcp" },
+    { name = "starlette" },
+    { name = "uvicorn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pydantic", specifier = ">=2.14.3" },
+    { name = "rapidfuzz", specifier = ">=3.14.6" },
+    { name = "sentence-transformers", marker = "extra == 'embed'", specifier = ">=6.2.0" },
+]
+provides-extras = ["embed"]
+
+[package.metadata.requires-dev]
+bench = [
+    { name = "agent-client-protocol", specifier = "<1" },
+    { name = "anthropic", specifier = ">=2.7.0" },
+    { name = "inspect-ai", specifier = ">=0.3.288" },
+    { name = "openai", specifier = ">=3.48.0" },
+]
+build = [
+    { name = "pillow", specifier = ">=13.0.0" },
+    { name = "pymupdf", specifier = ">=2.1" },
+]
+dev = [
+    { name = "hypothesis", specifier = ">=6.170.15" },
+    { name = "pyright", specifier = ">=1.1.414" },
+    { name = "pytest", specifier = ">=9.2.0" },
+    { name = "pytest-cov", specifier = ">=7.1.0" },
+    { name = "ruff", specifier = ">=0.17.4" },
+]
+fixtures = [{ name = "pymupdf", specifier = ">=2.1" }]
+ingest = [
+    { name = "httpx", specifier = ">=0.28" },
+    { name = "pypdfium2", specifier = ">=4.30" },
+    { name = "trafilatura", specifier = ">=2.0" },
+]
+search = [
+    { name = "numpy", specifier = ">=2.5.4" },
+    { name = "tantivy", specifier = ">=0.27.0" },
+]
+server = [
+    { name = "mcp", specifier = ">=2.3.0" },
+    { name = "starlette", specifier = ">=1.10.0" },
+    { name = "uvicorn", specifier = ">=0.54.0" },
 ]
 
 [[package]]

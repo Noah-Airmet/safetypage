@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import asyncio
 
-from onthepage.bench.judge import agreement, parse_label
-from onthepage.bench.mine import citing_contexts, split_sentences, version_diffs
-from onthepage.bench.questions import Made, Question, assign_split
-from onthepage.bench.results import bootstrap
-from onthepage.bench.score import grade, parse_verdict, tool_event
-from onthepage.bench.task import open_corpus
-from onthepage.trace import Judgement
+from safetypage.bench.judge import agreement, parse_label
+from safetypage.bench.mine import citing_contexts, split_sentences, version_diffs
+from safetypage.bench.questions import Made, Question, assign_split
+from safetypage.bench.results import bootstrap
+from safetypage.bench.score import grade, parse_verdict, tool_event
+from safetypage.bench.task import open_corpus
+from safetypage.trace import Judgement
 
 GOLD = "arxiv:2305.15324/v2/p6"
 QUOTE = "Model evaluation is not the only tool available for AI risk assessment"
