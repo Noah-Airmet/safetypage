@@ -2,7 +2,7 @@
 // every quoted citation in a trace. A check made in the checker is not stored (no write path).
 import { createHash } from 'node:crypto';
 import { api } from './api';
-import { allTraces, getDoc } from './data';
+import { allTraces, getDoc, otherSnapshot } from './data';
 import { docIdOf } from './cite';
 import type { QuoteCheck } from './types';
 
@@ -30,8 +30,9 @@ export async function allChecks(): Promise<StoredCheck[]> {
     const where = check.locations[0];
     add({ quote: check.quote, cite: check.cite!, passed: check.passed, verdict: check.verdict, shown: where?.cite ?? check.cite!, span: where ? [where.spine_start, where.spine_end] : null });
   }
-  // A run made on another corpus may cite documents this library does not hold; those have no page to show.
+  // A run made on another snapshot numbers its pages that snapshot's way; it has no page to show here.
   for (const trace of allTraces()) {
+    if (otherSnapshot(trace)) continue;
     for (const e of trace.events) {
       if (e.kind !== 'verify' || !e.quote_verdict) continue;
       const cite = trace.events.find((c) => c.kind === 'cite' && c.cite_id === e.cite_id);

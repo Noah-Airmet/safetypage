@@ -40,7 +40,7 @@ import Base from '../layouts/Base.astro';
   .desk .sheet { width: min(100%, 860px); aspect-ratio: var(--shape, 612 / 792); scroll-margin-top: calc(var(--bar) + var(--s-4)); }
   @media (max-width: 700px) { .desk { padding: var(--s-2) 0 var(--s-7); gap: var(--s-2); } }
 
-  .textdoc { max-width: calc(var(--measure) + 8rem); padding-block: var(--s-7); }
+  .textdoc { max-width: calc(var(--measure) + 8rem); padding-block: var(--s-7); overflow-wrap: anywhere; }   /* a long URL or formula wraps instead of widening the page */
   .textdoc header { display: grid; gap: var(--s-3); margin-bottom: var(--s-6); padding-left: 4rem; }
   .block { position: relative; padding-left: 4rem; scroll-margin-top: calc(var(--bar) + var(--s-5)); }
   .block .t { font: 400 var(--t-18)/1.6 var(--serif); margin: 0 0 0.9em; max-width: var(--measure); white-space: pre-line; }
@@ -64,6 +64,8 @@ import Base from '../layouts/Base.astro';
   }
 
   .sourcecard { width: min(100%, 680px); background: var(--surface); box-shadow: 0 0 0 1px var(--edge); padding: clamp(var(--s-5), 7%, var(--s-8)); display: flex; flex-direction: column; gap: var(--s-4); align-items: flex-start; }
+  .sourcecard > * { max-width: 100%; min-width: 0; overflow-wrap: anywhere; }
+  .sourcecard .btn-primary { white-space: normal; height: auto; min-height: var(--control); padding-block: var(--s-2); text-align: left; }
   .sourcecard h1 { font: 400 var(--t-28)/1.2 var(--serif); text-wrap: balance; }
   .sourcecard .where { font-size: var(--t-13); }
   .sourcecard .where .muted { font-family: var(--sans); }

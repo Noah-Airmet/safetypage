@@ -7,7 +7,7 @@ import { Chip, PageView, citeLabel, useDocs } from './shared';
 
 const EXAMPLE = `Model evaluation matters, but its authors do not oversell it. They write that it is "not the only tool available for AI risk assessment" (arxiv:2305.15324/v2/p6), and they call it "one of the main tools we have for AI risk assessment" (arxiv:2305.15324/v2/p3).
 
-A looser summary claims that "Model evaluation is the only tool available for AI risk assessment" (arxiv:2305.15324/v2/p6). NIST frames risk measurement as an open challenge (nist:ai-100-1/r1/p10), and one version of this paragraph cited a page that does not exist (arxiv:2305.15324/v2/p41).`;
+A looser summary claims that "Model evaluation is the only tool available for AI risk assessment" (arxiv:2305.15324/v2/p6). Cunningham et al. propose sparse autoencoders as an answer to polysemantic neurons (arxiv:2309.08600/v3/p2), and one version of this paragraph cited a page that does not exist (arxiv:2305.15324/v2/p41).`;
 
 const stateOf = (c: CitationAudit): CitationState =>
   !c.resolves ? 'rejected' : c.quotes.length === 0 ? 'cited' : c.quotes.every((q) => q.check?.passed) ? 'verified' : 'rejected';

@@ -46,9 +46,11 @@ export function sourceLink(sourceUrl: string, anchor: string | undefined, paged:
 export function shortLabel(doc: Pick<DocumentCard, 'authors' | 'org' | 'published' | 'title'>): string {
   const year = doc.published?.slice(0, 4);
   if (doc.authors.length) {
-    const surname = doc.authors[0].split(' ').pop();
+    // `Chris Olah` and `Olah, Chris` are both Olah.
+    const last = (name: string) => (name.includes(',') ? name.split(',')[0] : name.split(' ').pop()!).trim();
+    const surname = last(doc.authors[0]);
     const who = doc.authors.length === 1 ? surname : doc.authors.length === 2
-      ? `${surname} & ${doc.authors[1].split(' ').pop()}` : `${surname} et al.`;
+      ? `${surname} & ${last(doc.authors[1])}` : `${surname} et al.`;
     return year ? `${who} ${year}` : `${who}`;
   }
   const who = doc.org ?? doc.title;

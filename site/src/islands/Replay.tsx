@@ -8,7 +8,9 @@ import type { DocumentCard, Trace, TraceEvent } from '../lib/types';
 import { Chip, PageView } from './shared';
 
 type DocLite = Pick<DocumentCard, 'doc_id' | 'title' | 'authors' | 'org' | 'published' | 'unit_count' | 'anchor_kind' | 'tier' | 'source_url'>;
-interface Props { trace: Trace; docs: Record<string, DocLite>; librarySize: number }
+// `other`: the snapshot the run read, when it is not the one this site is built on. Its page and
+// paragraph numbers are that snapshot's, so no page of the current library is shown for them.
+interface Props { trace: Trace; docs: Record<string, DocLite>; librarySize: number; other?: string }
 
 const clock = (ms: number) => `${String(Math.floor(ms / 60000)).padStart(2, '0')}:${String(Math.floor(ms / 1000) % 60).padStart(2, '0')}`;
 const SPEEDS = [1, 2, 4, 0.5];
@@ -37,7 +39,7 @@ function Rich({ segments, chip }: { segments: (string | AnswerCite)[]; chip: (c:
   return <>{blocks.filter((b) => b.nodes.length).map((b, i) => <p key={i} className={b.item ? 'item' : undefined}>{b.nodes}</p>)}</>;
 }
 
-export default function Replay({ trace, docs, librarySize }: Props) {
+export default function Replay({ trace, docs, librarySize, other }: Props) {
   const events = trace.events;
   const last = events.length - 1;
   const [step, setStep] = useState(0);
@@ -157,7 +159,7 @@ export default function Replay({ trace, docs, librarySize }: Props) {
         </section>
 
         <section className="rp-library" aria-label="Library">
-          <h2 className="h2">Library <span className="h2-sub">{touched.length} of {librarySize} documents touched</span></h2>
+          <h2 className="h2">Library <span className="h2-sub">{other ? `${touched.length} documents touched · snapshot ${other}` : `${touched.length} of ${librarySize.toLocaleString('en')} documents touched`}</span></h2>
           <ul className="shelf">
             {touched.map(([docId, version]) => {
               const doc = docs[docId];
@@ -182,10 +184,16 @@ export default function Replay({ trace, docs, librarySize }: Props) {
           <div className="rp-page">
             {focus ? (
               <>
-                <PageView key={focus.cite} cite={focus.cite} span={focus.span} kind={focus.kind} doc={focusDoc} />
+                {other ? (
+                  <div className="pv pv-source">
+                    <p className="mono muted">{anchorLabel(anchorOf(focus.cite))}</p>
+                    <p className="pv-title">{focusDoc?.title ?? docIdOf(focus.cite)}</p>
+                    <p className="muted">This run read the <span className="mono">{other}</span> snapshot, a small test corpus. Its page and paragraph numbers are that snapshot's, so the page is not shown from the library here.</p>
+                  </div>
+                ) : <PageView key={focus.cite} cite={focus.cite} span={focus.span} kind={focus.kind} doc={focusDoc} />}
                 <p className="rp-caption">
                   <span>{label(focus.cite)}{focus.cited && focus.cited !== focus.cite && <span className="bad"> · cited as {anchorLabel(anchorOf(focus.cited))}</span>}</span>
-                  <a className="link" href={citePath(focus.cite)}>Open the page</a>
+                  {!other && <a className="link" href={citePath(focus.cite)}>Open the page</a>}
                 </p>
               </>
             ) : <div className="pv pv-empty rp-wait"><p>The page the agent is reading appears here.</p></div>}

@@ -106,6 +106,12 @@ export function allTraces(): Trace[] {
   return traces;
 }
 
+/** The snapshot a run read, when it is not the one this site is built on (a build with no manifest is the test corpus the runs used). */
+export const otherSnapshot = (trace: Trace): string | undefined => {
+  const here = libraryCounts().snapshot;
+  return here && trace.header.snapshot !== here ? trace.header.snapshot : undefined;
+};
+
 export function allRuns(): RunResult[] {
   if (!fs.existsSync(RESULTS_DIR)) return [];
   return fs.readdirSync(RESULTS_DIR).filter((f) => f.endsWith('.json')).map((f) => readJson<RunResult>(path.join(RESULTS_DIR, f)))

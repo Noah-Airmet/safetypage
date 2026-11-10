@@ -68,7 +68,7 @@ const notFound = async (env, url) => new Response((await env.ASSETS.fetch(new UR
 // `Shevlane et al. 2023`, or the organisation when there are no authors (as in site/src/lib/cite.ts).
 function shortLabel(card) {
   const year = card.published?.slice(0, 4);
-  const surname = (name) => name.trim().split(/\s+/).pop();
+  const surname = (name) => (name.includes(',') ? name.split(',')[0] : name.trim().split(/\s+/).pop()).trim();
   const who = !card.authors.length ? (card.org ?? card.title)
     : card.authors.length === 1 ? surname(card.authors[0])
     : card.authors.length === 2 ? `${surname(card.authors[0])} & ${surname(card.authors[1])}` : `${surname(card.authors[0])} et al.`;

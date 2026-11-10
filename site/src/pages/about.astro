@@ -1,11 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import { allShelves, libraryCounts } from '../lib/data';
+const n = libraryCounts();
+const num = (x: number) => x.toLocaleString('en');
 ---
 <Base title="How it works" description="How SafetyPage checks a citation, what the licence tiers mean, and how it is built.">
   <div class="wrap narrow">
     <header class="pagehead"><h1 class="title">How it works</h1></header>
     <div class="prose">
       <p>SafetyPage is a library of the AI safety record: research papers, system cards, safety frameworks, evaluation reports and government guidance. Every search result opens an exact page or paragraph. Every citation names a document, a version and a place in it, and code can check it against that place.</p>
+      <p>It holds {num(n.documents)} documents on <a class="link" href="/library">{allShelves().length} shelves</a>: {num(n.pages)} PDF pages and {num(n.paragraphs)} paragraphs of web documents, each one citable. {num(n.open)} documents are openly licensed and read in full here; the other {num(n.documents - n.open)} are searched, cited and quote-checked here and read at their source.</p>
 
       <h2>What a citation is</h2>
       <p><code>arxiv:2305.15324/v2/p6</code> is a document, a version and a page. The version is always there, because pages move when a paper is revised. The same three parts make the link: <code>/d/arxiv/2305.15324/v2/p6</code>.</p>

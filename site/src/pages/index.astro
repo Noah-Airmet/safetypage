@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageCrop from '../components/PageCrop.astro';
 import Tally from '../components/Tally.astro';
-import { allRuns, allShelves, featuredTrace, getDoc, getUnit, libraryCounts } from '../lib/data';
+import { allRuns, allShelves, featuredTrace, getDoc, getUnit, libraryCounts, otherSnapshot } from '../lib/data';
 import { KINDS, anchorLabel, citePath, formatDate, questionParts, shelfName, shelfOrder, shortLabel } from '../lib/cite';
 import { EXAMPLE, landingChecks } from '../lib/checks';
 import { TOPICS, follow } from '../lib/follow';
@@ -96,6 +96,7 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
           <h2 class="h2">Watch an agent research</h2>
           <p class="door-main clamp">{asked!.quoted ? `Does the source it cites support this? “${asked!.quoted}”` : asked!.lead}</p>
           <Tally citations={trace.answer?.citations ?? []} />
+          {otherSnapshot(trace) && <p class="door-foot">An early run on a six-document test corpus</p>}
         </a>
       )}
       <a class="door" href="/citationbench">
@@ -218,6 +219,7 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
     .search { margin-top: var(--s-6); }
     .doors { grid-template-columns: 1fr; margin-top: var(--s-6); }
     .numbers { gap: var(--s-3) var(--s-5); }
+    .follow { grid-template-columns: 1fr 1fr; }
     .numbers dd { font-size: var(--t-22); }
     .shelves-recent { grid-template-columns: 1fr; gap: var(--s-6); }
     .door, .door + .door { padding: var(--s-4) 0; border-left: 0; }

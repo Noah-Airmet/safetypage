@@ -245,8 +245,7 @@ function start(root: HTMLElement, o: Opened) {
       const block = document.getElementById(target);
       if (!block) return;
       block.dataset.target = '';
-      block.scrollIntoView({ block: quote ? 'center' : 'start' });
-      if (!quote) return void document.fonts.ready.then(() => block.scrollIntoView({ block: 'start' }));
+      if (!quote) return void land(block, 'start');
       const node = block.querySelector('.t')!.firstChild as Text | null;
       const ranges = node ? findQuote(node.data, quote) : null;
       if (node && ranges) {
@@ -257,10 +256,9 @@ function start(root: HTMLElement, o: Opened) {
           range.surroundContents(document.createElement('mark'));
         }
         say('verified', `In ${anchorLabel(target)}`);
-        const mark = block.querySelector('mark')!;
-        mark.scrollIntoView({ block: 'center' });
-        document.fonts.ready.then(() => mark.scrollIntoView({ block: 'center' }));   // text reflows when the fonts arrive
+        land(block.querySelector('mark')!, 'center');
       } else {
+        land(block, 'center');
         say('rejected', `Not in ${anchorLabel(target)}`, checkLink());
         remote();
       }
@@ -418,6 +416,16 @@ function start(root: HTMLElement, o: Opened) {
     const shown = root.querySelector<HTMLDetailsElement>('details.contents[open]');
     if (shown && !shown.contains(event.target as Node)) shown.removeAttribute('open');
   });
+}
+
+/** Scroll to a place and stay on it while the text reflows (fonts arrive for a few seconds), until the reader scrolls. */
+function land(el: Element, block: ScrollLogicalPosition) {
+  const go = () => el.scrollIntoView({ block });
+  go();
+  document.fonts.addEventListener('loadingdone', go);
+  const stop = () => document.fonts.removeEventListener('loadingdone', go);
+  for (const type of ['wheel', 'touchstart', 'keydown', 'mousedown']) addEventListener(type, stop, { once: true, passive: true });
+  setTimeout(stop, 4000);
 }
 
 /** For a quote that runs over a page break: the fragments of it that are on this page. */

@@ -1,8 +1,7 @@
 node_modules/
 dist/
+dist-*/
 .astro/
 .data/
-dist-real/
 test-results/
 playwright-report/
-dist-e2e/
