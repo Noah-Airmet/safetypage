@@ -38,7 +38,11 @@ class ExtractError(Exception):
 def _text(el: Any, *, keep_lines: bool = False) -> str:
     parts: list[str] = []
     for node in el.iter():
-        tag = node.tag if isinstance(node.tag, str) else ""
+        if not isinstance(node.tag, str):  # a comment: not shown, but the text after it is
+            if node is not el and node.tail:
+                parts.append(node.tail)
+            continue
+        tag = node.tag
         if tag in _SKIP:
             continue
         if tag == "br":

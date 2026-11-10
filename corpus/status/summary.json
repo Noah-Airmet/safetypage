@@ -1,17 +1,17 @@
 {
-  "documents": 13910,
-  "versions": 13966,
-  "pages": 168573,
-  "blocks": 493765,
+  "documents": 13902,
+  "versions": 13949,
+  "pages": 168572,
+  "blocks": 492570,
   "by_tier": {
-    "link_only": 10452,
+    "link_only": 10435,
     "open": 3514
   },
   "by_licence": {
     "unknown": 5816,
     "CC-BY-4.0": 3200,
     "arXiv-nonexclusive-1.0": 2480,
-    "all-rights-reserved": 1708,
+    "all-rights-reserved": 1691,
     "CC-BY-NC-SA-4.0": 243,
     "CC-BY-NC-ND-4.0": 205,
     "CC-BY-SA-4.0": 173,
@@ -22,7 +22,7 @@
     "CC-BY-3.0": 1
   },
   "licence_evidence": {
-    "manual / inventory:corpus/scope@2026-11-09": 7533,
+    "manual / inventory:corpus/scope@2026-11-09": 7516,
     "licence_link / ingest.licence@1 (arXiv OAI-PMH metadata via the inventory snapshot)": 6101,
     "publisher_rule / ingest.licence@1": 166,
     "page_statement / ingest.licence@1": 95,
@@ -55,8 +55,8 @@
       "open_versions": 52
     },
     "labs": {
-      "link_only_documents": 337,
-      "link_only_versions": 382,
+      "link_only_documents": 329,
+      "link_only_versions": 365,
       "open_documents": 2,
       "open_versions": 9
     },
@@ -95,7 +95,7 @@
     "labs": {
       "duplicate": 7,
       "fetch_failed": 4,
-      "ok": 391
+      "ok": 374
     },
     "papers": {
       "fetch_failed": 362,

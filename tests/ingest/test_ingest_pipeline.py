@@ -8,7 +8,8 @@ from typing import Any
 
 from safetypage.ingest.fetch import FetchError
 from safetypage.ingest.items import load_items
-from safetypage.ingest.pipeline import Pipeline
+from safetypage.ingest.pipeline import Pipeline, _version_source  # pyright: ignore[reportPrivateUsage]
+from safetypage.model import Rendition
 
 FIXTURES = Path(__file__).parents[2] / "fixtures" / "corpus" / "sources"
 
@@ -207,3 +208,23 @@ def test_paper_and_forum_items(tmp_path: Path) -> None:
     assert by_id["openreview:SJlKrkSFPH"].kind == "paper"
     assert by_id["lw:aiQabnugDhcrFtr9n"].adapter == "lw"
     assert unfetchable == ["Nothing"]
+
+    # An arXiv version opens on arxiv.org; the mirror it was fetched from stays the fetch record.
+    new = by_id["arxiv:2305.15324"]
+    rendition = Rendition(
+        kind="pdf",
+        sha256="0" * 64,
+        bytes=1,
+        media_type="application/pdf",
+        source_url="https://storage.googleapis.com/arxiv-dataset/arxiv/arxiv/pdf/2305/2305.15324v2.pdf",
+        fetched_at="2026-11-09T00:00:00Z",
+    )
+    assert _version_source(new, rendition, "v2") == "https://arxiv.org/pdf/2305.15324v2"
+    assert new.source_url == "https://arxiv.org/abs/2305.15324v2"
+
+
+def test_surname_first_names_are_turned_round() -> None:
+    from safetypage.ingest.items import _authors  # noqa: PLC0415  # pyright: ignore[reportPrivateUsage]
+
+    row = {"authors": ["Olah, Chris", "Lubana, Ekdeep Singh", "Anthropic", "Jacy Reese Anthis"]}
+    assert _authors(row) == ["Chris Olah", "Ekdeep Singh Lubana", "Anthropic", "Jacy Reese Anthis"]

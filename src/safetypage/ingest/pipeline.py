@@ -79,6 +79,16 @@ def _gcs_url(arxiv_id: str, label: str) -> str:
     )
 
 
+def _version_source(item: Item, rendition: Rendition, label: str) -> str:
+    """Where a reader opens this version: arXiv's own PDF (not the mirror it was fetched from,
+    which the rendition records), the forum post, or the file that was fetched."""
+    if item.adapter == "arxiv":
+        return f"https://arxiv.org/pdf/{item.url}{label}"
+    if item.adapter == "lw":
+        return item.source_url
+    return rendition.source_url
+
+
 def _rfc_date(value: object) -> str | None:
     if not isinstance(value, str):
         return None
@@ -297,7 +307,7 @@ class Pipeline:
                 label=label,
                 anchor_kind="page" if pages else "block",
                 fidelity="text_layer" if pages else "html",
-                source_url=rendition.source_url if item.adapter != "lw" else item.source_url,
+                source_url=_version_source(item, rendition, label),
                 content_sha256=sha,
                 observed_at=fetched.fetched_at,
                 published=published,

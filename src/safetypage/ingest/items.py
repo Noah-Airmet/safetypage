@@ -74,6 +74,16 @@ def _date(value: Any) -> str | None:
     return m.group(0) if m else None
 
 
+def _authors(row: dict[str, Any]) -> list[str]:
+    """Names as people write them: some sources list "Olah, Chris"; we store "Chris Olah"."""
+    names: list[str] = []
+    listed: list[Any] = list(row.get("authors") or [])
+    for name in map(str, listed):
+        surname, comma, given = name.partition(", ")
+        names.append(f"{given} {surname}" if comma and "," not in given else name)
+    return names
+
+
 def _rows(path: Path) -> Iterator[dict[str, Any]]:
     with path.open(encoding="utf-8") as handle:
         for line in handle:
@@ -92,7 +102,7 @@ def _web(shelf: str, row: dict[str, Any]) -> Item:
         source_url=row["url"],
         kind=kind,
         title=row["title"],
-        authors=list(row.get("authors") or []),
+        authors=_authors(row),
         org=row["publisher"].split(" (")[0].strip() or None,
         published=_date(row.get("date")),
         licence=row["licence"],
@@ -105,7 +115,7 @@ def _paper(row: dict[str, Any]) -> Item | None:
         "shelf": "papers",
         "kind": "paper",
         "title": row["title"],
-        "authors": list(row.get("authors") or []),
+        "authors": _authors(row),
         "org": None,
         "published": _date(row.get("date")),
         "licence": row["licence"],
@@ -163,7 +173,7 @@ def _post(row: dict[str, Any]) -> Item:
         source_url=row["url"],
         kind="forum_post",
         title=row["title"],
-        authors=list(row.get("authors") or []),
+        authors=_authors(row),
         org="Alignment Forum" if row.get("af") else "LessWrong",
         published=_date(row.get("date")),
         licence=row["licence"],

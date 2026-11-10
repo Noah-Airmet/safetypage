@@ -151,3 +151,11 @@ def test_a_deployment_safety_hub_page_keeps_its_whole_main() -> None:
         *(f"{n}. Section" for n in range(1, 6)),
     ]
     assert not any("footer" in b.text or "Home" in b.text for b in blocks)
+
+
+def test_html_comments_are_not_text() -> None:
+    blocks = blocks_from_html(
+        "<body><p>Shown <!-- <b><i>hidden</i></b> --> and kept.</p>"
+        "<figure><figcaption>Caption<!--<b>draft</b>--></figcaption></figure></body>"
+    )
+    assert [b.text for b in blocks] == ["Shown and kept.", "Caption"]
