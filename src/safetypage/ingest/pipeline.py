@@ -321,14 +321,20 @@ class Pipeline:
             raise
         return Result("ok", None, version.ref, text_sha256=text_sha)
 
-    def _discard(self, doc_id: str, label: str) -> None:
-        """Remove a half-written version (import_bundle writes in several transactions)."""
+    def _discard(self, doc_id: str, label: str | None = None) -> None:
+        """Remove one version (a half-written one: import_bundle writes in several
+        transactions), or with no label the whole document."""
         conn = self.corpus.conn
-        row = conn.execute(
-            "SELECT version_id FROM versions WHERE doc_id = ? AND label = ?", (doc_id, label)
-        ).fetchone()
+        query = "SELECT version_id FROM versions WHERE doc_id = ?"
+        rows = conn.execute(
+            *((query, (doc_id,)) if label is None else (f"{query} AND label = ?", (doc_id, label)))
+        ).fetchall()
         with conn:
-            if row is not None:
+            for (version_id,) in rows:
+                conn.execute(
+                    "DELETE FROM anchor_map WHERE from_version_id = ? OR to_version_id = ?",
+                    (version_id, version_id),
+                )
                 for table in (
                     "page_words",
                     "pages",
@@ -338,11 +344,36 @@ class Pipeline:
                     "licence_facts",
                     "versions",
                 ):
-                    conn.execute(f"DELETE FROM {table} WHERE version_id = ?", (row[0],))  # noqa: S608
+                    conn.execute(f"DELETE FROM {table} WHERE version_id = ?", (version_id,))  # noqa: S608
             if not conn.execute("SELECT 1 FROM versions WHERE doc_id = ?", (doc_id,)).fetchone():
                 conn.execute("DELETE FROM documents WHERE doc_id = ?", (doc_id,))
-        if row is not None:
-            self.corpus._forget(int(row[0]))  # pyright: ignore[reportPrivateUsage]
+                conn.execute(
+                    "DELETE FROM facts WHERE subject = ? OR subject LIKE ?", (doc_id, f"{doc_id}/%")
+                )
+        for (version_id,) in rows:
+            self.corpus._forget(int(version_id))  # pyright: ignore[reportPrivateUsage]
+
+    def prune(self, refetch: Iterable[str] = ()) -> list[str]:
+        """Remove from the working corpus every document the inventory no longer lists, and the
+        documents in ``refetch``, with their ingest records, so the next run ingests those afresh.
+        Returns the doc ids removed."""
+        items, _ = load_items(self.scope)
+        listed = {i.doc_id for i in items}
+        refetch = set(refetch)
+        gone = sorted(
+            (set(self.corpus.doc_ids()) - listed) | (refetch & set(self.corpus.doc_ids()))
+        )
+        for doc_id in gone:
+            self._discard(doc_id)
+        keys = {i.key for i in items}
+        stale = [
+            key
+            for key, doc_id in self.state.execute("SELECT key, doc_id FROM items")
+            if key not in keys or doc_id in refetch
+        ]
+        self.state.executemany("DELETE FROM items WHERE key = ?", [(k,) for k in stale])
+        self.state.commit()
+        return gone
 
     # ------------------------------------------------------------------ one document
 

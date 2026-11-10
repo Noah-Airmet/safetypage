@@ -12,6 +12,7 @@ lines), passed through ``clean_text``. Anchors are minted by storage, in this or
 from __future__ import annotations
 
 from typing import Any, Final
+from urllib.parse import urlsplit
 
 import trafilatura
 from lxml import html as lxml_html
@@ -147,6 +148,8 @@ def page_blocks(data: bytes, url: str) -> list[NewBlock]:
     """A web page's main text as blocks. Raises ExtractError when there is no real text."""
     html = data.decode("utf-8", errors="replace")
     blocks = _d_article_blocks(html)
+    if blocks is None and urlsplit(url).netloc in _WHOLE_MAIN_HOSTS:
+        blocks = _whole_main_blocks(html)
     if blocks is None:
         blocks = _main_blocks(html, url)
     total = sum(len(b.text) for b in blocks)
@@ -180,6 +183,24 @@ def _d_article_blocks(html: str) -> list[NewBlock] | None:
     for article in articles:
         walker.walk(article)
     return walker.blocks
+
+
+_WHOLE_MAIN_HOSTS: Final = {"deploymentsafety.openai.com"}
+"""Sites whose ``<main>`` is the whole document and that a general extractor cuts short (it
+keeps only the introduction of an OpenAI system card)."""
+
+
+def _whole_main_blocks(html: str) -> list[NewBlock] | None:
+    mains: list[Any] = list(lxml_html.fromstring(html).iter("main"))
+    if not mains:
+        return None
+    walker = _Walker()
+    walker.walk([max(mains, key=_text_length)])
+    return walker.blocks
+
+
+def _text_length(el: Any) -> int:
+    return len(el.text_content())
 
 
 def _main_blocks(html: str, url: str) -> list[NewBlock]:

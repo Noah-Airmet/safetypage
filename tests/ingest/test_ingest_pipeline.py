@@ -118,6 +118,17 @@ def test_ingest_run(tmp_path: Path) -> None:
     aside = (tmp_path / "status" / "set-aside.jsonl").read_text(encoding="utf-8")
     assert "example:broken" in aside
 
+    # A row moved out of the inventory leaves the corpus; a refetched document comes back.
+    evaluators = pipeline.scope / "evaluators.jsonl"
+    rows = evaluators.read_text(encoding="utf-8").splitlines(keepends=True)
+    evaluators.write_text("".join(r for r in rows if "nist.pdf" not in r), encoding="utf-8")
+    assert pipeline.prune(["distill:zoom-in"]) == ["distill:zoom-in", "nist:ai-100-1"]
+    assert corpus.document("nist:ai-100-1") is None
+    assert corpus.validate() == []
+    assert pipeline.run(retry=False)["ok"] == 3
+    assert corpus.versions("distill:zoom-in")[0].label == "r1"
+    assert corpus.validate() == []
+
 
 def test_paper_and_forum_items(tmp_path: Path) -> None:
     scope = tmp_path / "scope"

@@ -4,6 +4,8 @@
     uv run --group ingest python -m safetypage.ingest run --shelf labs --limit 20
     uv run --group ingest python -m safetypage.ingest run --only anthropic:rsp
     uv run --group ingest python -m safetypage.ingest status               # write corpus/status/
+    uv run --group ingest python -m safetypage.ingest prune                # drop rows scope dropped
+    uv run --group ingest python -m safetypage.ingest prune --refetch ID   # and ingest ID afresh
     uv run --group ingest python -m safetypage.ingest add-file URL PATH    # a page a browser saved
 
 The data directory (fetched files, corpus.sqlite, ingest.sqlite) is ``$SAFETYPAGE_DATA``, else
@@ -42,6 +44,12 @@ def main(argv: list[str] | None = None) -> int:
         "--refresh", action="store_true", help="refetch; new bytes become new versions"
     )
     sub.add_parser("status", help="write corpus/status/ and print the summary")
+    prune = sub.add_parser(
+        "prune", help="remove documents the inventory no longer lists from the working corpus"
+    )
+    prune.add_argument(
+        "--refetch", action="append", default=[], help="also remove this doc id, to ingest again"
+    )
     add = sub.add_parser("add-file", help="store a file as the response for a URL")
     add.add_argument("url")
     add.add_argument("path", type=Path)
@@ -65,6 +73,12 @@ def main(argv: list[str] | None = None) -> int:
             print("  ", problem)
         pipeline.write_status(REPO / "corpus" / "status")
         return 1 if problems else 0
+    if args.command == "prune":
+        gone = pipeline.prune(args.refetch)
+        print(f"removed {len(gone)} documents")
+        for doc_id in gone:
+            print("  ", doc_id)
+        return 0
     if args.command == "status":
         print(json.dumps(pipeline.write_status(REPO / "corpus" / "status"), indent=2))
         return 0

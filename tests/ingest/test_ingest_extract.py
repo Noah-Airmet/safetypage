@@ -134,3 +134,20 @@ def test_a_script_shell_is_set_aside() -> None:
     shell = b"<html><body><p>Please enable javascript for this website.</p></body></html>"
     with pytest.raises(ExtractError):
         page_blocks(shell, "https://example.org/")
+
+
+def test_a_deployment_safety_hub_page_keeps_its_whole_main() -> None:
+    sections = "".join(
+        f"<article><h2>{n}. Section</h2><p>{'Evaluation text. ' * 30}</p></article>"
+        for n in range(1, 6)
+    )
+    page = (
+        "<html><body><nav><a>Home</a></nav><main><p>Published February 5, 2026</p>"
+        f"<h1>A System Card</h1>{sections}</main><footer>footer</footer></body></html>"
+    ).encode()
+    blocks = page_blocks(page, "https://deploymentsafety.openai.com/a-card")
+    assert [b.text for b in blocks if b.kind == "heading"] == [
+        "A System Card",
+        *(f"{n}. Section" for n in range(1, 6)),
+    ]
+    assert not any("footer" in b.text or "Home" in b.text for b in blocks)
