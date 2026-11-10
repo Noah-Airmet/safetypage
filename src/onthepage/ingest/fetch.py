@@ -26,7 +26,7 @@ from onthepage.corpus import utc_now
 __all__ = ["PARALLEL", "USER_AGENT", "FetchError", "Fetched", "Fetcher"]
 
 USER_AGENT: Final = "Mozilla/5.0 (compatible; corpus-ingest/0.1)"
-_INTERVALS: Final = {"www.lesswrong.com": 3.0, "export.arxiv.org": 3.0}
+_INTERVALS: Final = {"www.lesswrong.com": 3.0, "arxiv.org": 15.0}
 PARALLEL: Final = {"storage.googleapis.com": 6}
 """Hosts built for bulk download (arXiv's public bucket): several at once, no pacing."""
 

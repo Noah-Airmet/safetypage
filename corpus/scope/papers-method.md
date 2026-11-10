@@ -1,6 +1,6 @@
 # Papers and forum posts: how the lists were made
 
-Compiled 2026-11-09. Scripts are in `scripts/` (`run_all.sh` gives the order), and the raw pulls are in `data/`. Numbers below come from `scripts/stats.py`.
+Compiled 2026-11-09. The scripts and raw pulls that built these lists are not in this repository; the `scripts/` names below refer to them.
 
 ## Outputs
 
@@ -34,7 +34,7 @@ A paper is in if at least one route brings it in. There is one exception. Two ki
 
 **Recall check:** 48 of 49 canonical papers are present (`scripts/canon.txt`: Concrete Problems, debate, RLHF, IOI, CCS, CAI, SAEs, RepE, AI Control, Sleeper Agents, alignment faking, emergent misalignment, CoT monitorability, Taking AI Welfare Seriously, Butlin et al., and more). The one miss is FGSM (1412.6572), which is arguably out of scope. Llama 2 was correctly excluded.
 
-**Size:** 6,826 is above the 3–6k "whole corpus" aim before system cards and posts are counted. A tighter core would be the 1,276 papers with ≥2 route families, plus org, citation and BlackboxNLP papers. Alternatively, the overnight local-model labelling in arch-1 §1.9 can triage the 5,550 single-route papers.
+**Size:** 6,826 is above the 3–6k "whole corpus" aim before system cards and posts are counted. A tighter core would be the 1,276 papers with ≥2 route families, plus org, citation and BlackboxNLP papers. Alternatively, a model could triage the 5,550 single-route papers.9 can triage the 5,550 single-route papers.
 
 ## arXiv metadata and licences
 
@@ -66,7 +66,7 @@ A paper is in if at least one route brings it in. There is one exception. Two ki
 ### Licence and terms (LessWrong / AF)
 
 - The LW FAQ links the Terms of Use: a MIRI PDF dated 2015 (`intelligence.org/files/PrivacyandTerms-Lesswrong.com.pdf`). Under them, users "own all rights in and to [their] User-Generated Content" and grant MIRI a non-exclusive licence "for the normal and intended purposes of the Website". **There is no open licence**, so every post defaults to `licence: "unknown"`, which is the snippets-plus-link tier.
-- **Automated access conflict:** the same 2015 terms prohibit "using a spider, scraper, or other automated technology to access the Website". But the live site publishes `robots.txt` with `Crawl-Delay: 3`, an open GraphQL API, and an `/api/SKILL.md` that invites AI agents to read posts through `/api/...`. I collected metadata only, at the crawl delay. Whether to ingest post bodies at scale is worth asking Lightcone (Noah), along with the licence question.
+- **Automated access conflict:** the same 2015 terms prohibit "using a spider, scraper, or other automated technology to access the Website". But the live site publishes `robots.txt` with `Crawl-Delay: 3`, an open GraphQL API, and an `/api/SKILL.md` that invites AI agents to read posts through `/api/...`. I collected metadata only, at the crawl delay. Whether post bodies may be ingested at scale, and under what licence, is a question for Lightcone, which runs LessWrong.
 - **Open-licence exceptions found:**
   - Posts **hosted on the EA Forum** and cross-posted to LW on or after 2022-12-01 are CC BY 4.0. The EA Forum requires CC BY for all content posted from that date, but not for link-posts and not retroactively. That covers 28 posts in the default set and 149 in the wide set, flagged `licence: "CC-BY-4.0"` with evidence.
   - Posts **hosted on LW and mirrored to EAF** (221 in the default set) carry a `licence_note`. Whether EAF's rule covers them is unconfirmed.
@@ -76,10 +76,10 @@ A paper is in if at least one route brings it in. There is one exception. Two ki
 
 - **Org pages:** Apollo, FAR.AI, MATS, Goodfire, Google DeepMind and OpenAI pages gave 0 arXiv links (JS shells, own-page links, or 403). Their papers enter only through other routes. Following each org's paper pages one level deeper, or using an author-ID route (OpenAlex authorships), would close this.
 - **OpenReview** is not used directly (the API returns 403 without login). Venue coverage comes from the tracker, and only for ICLR, ICML and NeurIPS. SaTML, NeurIPS/ICML/ICLR safety workshops, AAAI, FAccT and ACL main-track safety papers come in only when another route has them.
-- **Forward citation expansion** ("papers citing ≥k seeds") is not done. OpenAlex's keyless budget is $0.10/day, about 1,000 list calls, shared per IP. This run used about 290. A free OpenAlex key gives $1/day, but signing up needs an email, so that's Noah's call.
-- **Welfare and consciousness papers:** only 90 are tagged welfare, and most arrive via the Anthropic blog route. The model-welfare literature is the other agent's part.
+- **Forward citation expansion** ("papers citing ≥k seeds") is not done. OpenAlex's keyless budget is $0.10/day, about 1,000 list calls, shared per IP. This run used about 290. A free OpenAlex key gives $1/day, but signing up needs an email.
+- **Welfare and consciousness papers:** only 90 are tagged welfare, and most arrive via the Anthropic blog route. The model-welfare literature is covered in `welfare.jsonl`.
 - **Stampy** stops at 2023-11. Slade's DB is thin before 2023: 341 papers in 2023, 146 before.
 - **Topics** come from transparent regexes plus the source lists' own categories (Slade `primary_area`, tracker subarea). 278 papers have none. They are a first pass and not a classifier.
 - **Title-only matches** (tracker, ACL) resolve to the first arXiv ID when two papers share a title. That is rare but possible.
-- arXiv copies of Transformer Circuits papers are in only when a route other than Slade lists their arXiv ID (Toy Models 2209.10652 is; Induction Heads 2209.11895 is not), because Slade files them under the Transformer Circuits venue, which is the other agent's shelf. Join the two lists on title.
+- arXiv copies of Transformer Circuits papers are in only when a route other than Slade lists their arXiv ID (Toy Models 2209.10652 is; Induction Heads 2209.11895 is not), because Slade files them under the Transformer Circuits venue, which is covered in `lab-research-web.jsonl`. Join the two lists on title.
 - The 694 non-arXiv papers have `versions: []`. 544 of them have `licence: "unknown"` (OpenReview, PMLR, NeurIPS); the venue licences were not checked.

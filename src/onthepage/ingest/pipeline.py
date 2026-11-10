@@ -175,9 +175,7 @@ class Pipeline:
             except FetchError as exc:
                 if exc.status != 404:
                     raise
-            return self.fetcher.get(
-                f"https://export.arxiv.org/pdf/{item.url}{label}", refresh=refresh
-            )
+            return self.fetcher.get(f"https://arxiv.org/pdf/{item.url}{label}", refresh=refresh)
         return self.fetcher.get(item.url, refresh=refresh)
 
     def _todo(self, group: list[Item], refresh: bool) -> list[Item]:
@@ -217,7 +215,9 @@ class Pipeline:
             )
             pages, outline, check_text = [], outline_of(blocks), ""
             if sum(len(b.text) for b in blocks) == 0:
-                return Result("unsupported", "the post has no text")
+                link = (post or {}).get("url")
+                reason = f"link-post with no text on the forum; the text is at {link}"
+                return Result("unsupported", reason if link else "the post has no text")
         elif _is_pdf(data):
             future = self._parsed.pop(fetched.sha256, None)
             try:
