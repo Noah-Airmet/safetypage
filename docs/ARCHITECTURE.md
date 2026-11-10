@@ -884,12 +884,20 @@ bracketed insertions as wildcards for up to four words.
 whole-word matching a short fragment is safe to check. Treating a bracketed insertion as a gap
 needs no new verdict and no tunable wildcard width.
 
+### DR-12. The ingestion pipeline extracts PDFs with pypdfium2
+
+**Chosen:** pypdfium2 (Apache-2.0 / BSD) for page text, word boxes, page labels and bookmarks
+in `onthepage.ingest.pdf`. pdfium's mark for a hyphen at a line break (U+FFFE) is written as
+the `-` the page shows.
+**Alternative:** PyMuPDF, which the fixture builder uses (AGPL, in its own dependency group).
+**Why:** On the fixture PDFs, a two-column ACL paper, an arXiv paper and a 42-page system card,
+the two give the same text on every page (skeleton similarity 1.0; 0.998 at worst on
+math-heavy pages, where pdfium's spacing is the better one), and the repository is Apache-2.0.
+The fixture builder keeps PyMuPDF; the fixture bundles still match pypdfium2's text, which a
+test checks.
+
 ### Open
 
-- **PDF text extraction library.** The fixture builder uses PyMuPDF (best reading order in our
-  tests; AGPL), isolated in its own dependency group so the core library does not depend on it.
-  Whether the pipeline keeps it or moves to a permissively licensed extractor is the ingestion
-  track's call and should be recorded here.
 - **Removing page furniture from the spine.** Running heads and page numbers interrupt
   sentences at page breaks (section 5, known limits). A furniture-aware spine would let such
   quotes pass without an ellipsis, at the cost of the spine no longer being the raw text layer.
