@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -15,7 +16,7 @@ BASE_URL = "https://onthepage.test"
 
 settings.register_profile("default", deadline=None, max_examples=200)
 settings.register_profile("ci", deadline=None, max_examples=500)
-settings.load_profile("default")
+settings.load_profile(os.environ.get("HYPOTHESIS_PROFILE", "default"))
 
 
 @pytest.fixture(scope="session")

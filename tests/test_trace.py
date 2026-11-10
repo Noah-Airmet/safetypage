@@ -168,4 +168,5 @@ def test_traces_store_in_the_ops_database() -> None:
             "scores": trace.scores,
         }
     )
+    conn.close()
     assert rebuilt == trace

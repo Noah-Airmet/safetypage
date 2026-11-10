@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sqlite3
+from collections.abc import Callable, Iterator
 from pathlib import Path
 
 import pytest
@@ -22,13 +23,30 @@ CORPUS_TABLES = {
 OPS_TABLES = {"runs", "traces", "trace_events", "tool_calls"}
 
 
+Connect = Callable[..., sqlite3.Connection]
+
+
+@pytest.fixture
+def connect() -> Iterator[Connect]:
+    """sqlite3.connect, with every connection closed when the test ends."""
+    opened: list[sqlite3.Connection] = []
+
+    def _connect(target: str | Path = ":memory:") -> sqlite3.Connection:
+        opened.append(sqlite3.connect(target))
+        return opened[-1]
+
+    yield _connect
+    for conn in opened:
+        conn.close()
+
+
 def tables(conn: sqlite3.Connection, kind: str = "table") -> set[str]:
     rows = conn.execute("SELECT name FROM sqlite_master WHERE type = ?", (kind,))
     return {r[0] for r in rows if not r[0].startswith("sqlite_")}
 
 
-def test_corpus_schema(tmp_path: Path) -> None:
-    conn = sqlite3.connect(tmp_path / "corpus.sqlite")
+def test_corpus_schema(tmp_path: Path, connect: Connect) -> None:
+    conn = connect(tmp_path / "corpus.sqlite")
     assert current_version(conn) == 0
     assert migrate(conn, "corpus") == len(load_migrations("corpus")) >= 1
     assert tables(conn) == CORPUS_TABLES
@@ -36,8 +54,8 @@ def test_corpus_schema(tmp_path: Path) -> None:
     assert current_version(conn) == len(load_migrations("corpus"))
 
 
-def test_ops_schema() -> None:
-    conn = sqlite3.connect(":memory:")
+def test_ops_schema(connect: Connect) -> None:
+    conn = connect()
     migrate(conn, "ops")
     assert tables(conn) == OPS_TABLES
     conn.execute(
@@ -54,8 +72,8 @@ def test_ops_schema() -> None:
         )
 
 
-def test_migrating_twice_changes_nothing() -> None:
-    conn = sqlite3.connect(":memory:")
+def test_migrating_twice_changes_nothing(connect: Connect) -> None:
+    conn = connect()
     migrate(conn, "corpus")
     before = conn.execute("SELECT sql FROM sqlite_master ORDER BY name").fetchall()
     assert migrate(conn, "corpus") == current_version(conn)
@@ -69,8 +87,10 @@ def write(directory: Path, files: dict[str, str]) -> Path:
     return directory
 
 
-def test_upgrade_applies_only_new_migrations_and_keeps_data(tmp_path: Path) -> None:
-    conn = sqlite3.connect(tmp_path / "db.sqlite")
+def test_upgrade_applies_only_new_migrations_and_keeps_data(
+    tmp_path: Path, connect: Connect
+) -> None:
+    conn = connect(tmp_path / "db.sqlite")
     v1 = write(
         tmp_path / "m", {"0001_first.sql": "CREATE TABLE t (id INTEGER PRIMARY KEY, a TEXT);"}
     )
@@ -89,8 +109,8 @@ def test_upgrade_applies_only_new_migrations_and_keeps_data(tmp_path: Path) -> N
     assert current_version(conn) == 2
 
 
-def test_a_failed_migration_rolls_back_completely(tmp_path: Path) -> None:
-    conn = sqlite3.connect(":memory:")
+def test_a_failed_migration_rolls_back_completely(tmp_path: Path, connect: Connect) -> None:
+    conn = connect()
     bad = write(
         tmp_path / "m",
         {
@@ -104,21 +124,21 @@ def test_a_failed_migration_rolls_back_completely(tmp_path: Path) -> None:
     assert tables(conn) == {"t"}  # 0001 stayed, the half-applied 0002 did not
 
 
-def test_migrations_must_be_numbered_without_gaps(tmp_path: Path) -> None:
+def test_migrations_must_be_numbered_without_gaps(tmp_path: Path, connect: Connect) -> None:
     gap = write(tmp_path / "m", {"0001_a.sql": "SELECT 1;", "0003_c.sql": "SELECT 1;"})
     with pytest.raises(MigrationError, match="without gaps"):
         load_migrations(gap)
 
 
-def test_a_database_from_the_future_is_refused() -> None:
-    conn = sqlite3.connect(":memory:")
+def test_a_database_from_the_future_is_refused(connect: Connect) -> None:
+    conn = connect()
     conn.execute("PRAGMA user_version = 999")
     with pytest.raises(MigrationError, match="newer than this code"):
         migrate(conn, "corpus")
 
 
-def test_schema_is_strict_about_ids(tmp_path: Path) -> None:
-    conn = sqlite3.connect(":memory:")
+def test_schema_is_strict_about_ids(tmp_path: Path, connect: Connect) -> None:
+    conn = connect()
     migrate(conn, "corpus")
     with pytest.raises(sqlite3.IntegrityError):  # doc_id must equal ns:local_id
         conn.execute(
