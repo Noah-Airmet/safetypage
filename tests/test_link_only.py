@@ -189,5 +189,7 @@ def test_no_public_call_returns_more_than_an_excerpt_of_a_link_only_document(
     for location in [*check.locations, *check.other_locations]:
         assert len(location.text.split()) <= limit
         assert len(location.text) <= LIMIT.snippet_chars + 1
+    diff_words = sum(len(d.source.split()) for s in check.segments for d in s.diff)
+    assert diff_words <= limit
     served += check.model_dump_json()
     assert private not in served

@@ -893,16 +893,27 @@ class Corpus:
     def _quote_check(
         self, quote: str, cite: str | None, version: Version, result: QuoteResult
     ) -> QuoteCheck:
-        segments = [
-            QuoteSegment(
-                quote=s.quote,
-                verdict=s.verdict,
-                location=None if s.span is None else self._location(version, s.span),
-                diff=[QuoteDiff(op=d.op, quote=d.quote, source=d.source) for d in s.diff],
-                similarity=s.similarity,
+        # A diff quotes the source too. For a link-only document the source words across all
+        # diffs share the tier's excerpt budget; past it, differences are no longer itemised.
+        budget = policy.access_for(version.tier).excerpt_words
+        segments: list[QuoteSegment] = []
+        for s in result.segments:
+            diff: list[QuoteDiff] = []
+            for d in s.diff:
+                if budget is not None:
+                    budget -= len(d.source.split())
+                    if budget < 0:
+                        break
+                diff.append(QuoteDiff(op=d.op, quote=d.quote, source=d.source))
+            segments.append(
+                QuoteSegment(
+                    quote=s.quote,
+                    verdict=s.verdict,
+                    location=None if s.span is None else self._location(version, s.span),
+                    diff=diff,
+                    similarity=s.similarity,
+                )
             )
-            for s in result.segments
-        ]
         return QuoteCheck(
             quote=quote,
             cite=cite,
