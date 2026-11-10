@@ -37,7 +37,6 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--shelf", action="append", choices=[*WEB_SHELVES, "papers", "forum"])
     run.add_argument("--only", action="append", default=[], help="a doc id prefix or item key")
     run.add_argument("--limit", type=int)
-    run.add_argument("--workers", type=int, default=16)
     run.add_argument("--no-retry", action="store_true", help="leave earlier failures alone")
     run.add_argument(
         "--refresh", action="store_true", help="refetch; new bytes become new versions"
@@ -50,7 +49,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.ERROR)  # pdfium and trafilatura warn on every odd file
 
-    pipeline = Pipeline(args.data, args.scope, workers=getattr(args, "workers", 16))
+    pipeline = Pipeline(args.data, args.scope)
     if args.command == "run":
         counts = pipeline.run(
             shelves=tuple(args.shelf) if args.shelf else None,

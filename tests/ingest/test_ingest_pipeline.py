@@ -55,7 +55,7 @@ def _scope(tmp: Path) -> Path:
 
 
 def test_ingest_run(tmp_path: Path) -> None:
-    pipeline = Pipeline(tmp_path / "data", _scope(tmp_path), workers=2)
+    pipeline = Pipeline(tmp_path / "data", _scope(tmp_path))
     pipeline.log = lambda _message: None
     record = pipeline.fetcher.record
     record(

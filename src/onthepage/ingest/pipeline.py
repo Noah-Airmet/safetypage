@@ -2,7 +2,7 @@
 
 For each document (inventory rows sharing a ``doc_id``, oldest first) every row is fetched,
 its text of record extracted (PDF: pages with word boxes; HTML: blocks), its licence fact made,
-and the version imported. Network work runs in a thread pool, one request at a time per host;
+and the version imported. Network work runs in one thread per host (a few for arXiv's bucket);
 parsing and database writes run on the main thread (pdfium is not thread-safe, and the corpus has
 one writer).
 
@@ -17,11 +17,11 @@ from __future__ import annotations
 import email.utils
 import hashlib
 import json
+import queue
 import sqlite3
 import threading
 from collections import OrderedDict, defaultdict
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Final
@@ -30,7 +30,7 @@ from urllib.parse import urlsplit
 from onthepage.blobs import BlobStore
 from onthepage.bundle import Bundle, BundleVersion, import_bundle
 from onthepage.corpus import Corpus, utc_now
-from onthepage.ingest.fetch import Fetched, Fetcher, FetchError
+from onthepage.ingest.fetch import PARALLEL, Fetched, Fetcher, FetchError
 from onthepage.ingest.html import ExtractError, blocks_from_html, outline_of, page_blocks
 from onthepage.ingest.items import Item, load_items
 from onthepage.ingest.licence import licence_for
@@ -41,6 +41,9 @@ from onthepage.model import Document, Rendition
 __all__ = ["DONE", "Pipeline", "Result"]
 
 DONE: Final = ("ok", "duplicate")
+
+type _Work = tuple[list[Item], list[Item]]
+"""One document's rows, and those of them still to do."""
 
 _SCHEMA: Final = """
 CREATE TABLE IF NOT EXISTS items (
@@ -93,9 +96,9 @@ def _host(item: Item) -> str:
 
 
 class Pipeline:
-    def __init__(self, data: Path, scope: Path, *, workers: int = 16) -> None:
+    def __init__(self, data: Path, scope: Path) -> None:
         data.mkdir(parents=True, exist_ok=True)
-        self.data, self.scope, self.workers = data, scope, workers
+        self.data, self.scope = data, scope
         self.corpus = Corpus.open(data / "corpus.sqlite")
         self.corpus.conn.execute("PRAGMA journal_mode=WAL")
         self.blobs = BlobStore(data / "blobs")
@@ -163,6 +166,8 @@ class Pipeline:
                 out.append((item, self._fetch(item, refresh)))
             except FetchError as exc:
                 out.append((item, exc))
+            except Exception as exc:  # a lane must never die: the main thread waits on it
+                out.append((item, FetchError(item.url, f"{type(exc).__name__}: {exc}")))
         return out
 
     # ------------------------------------------------------------------ one version
@@ -367,60 +372,62 @@ class Pipeline:
                 pending.append(group)
         if limit is not None:
             pending = pending[:limit]
-        # Interleave hosts so the pool is not queued behind one host's pacing.
+        # One lane per host, so a slow or heavily paced host never holds up the others. The
+        # lanes only fetch; parsing and writing happen here, on the main thread.
         by_host: dict[str, list[list[Item]]] = defaultdict(list)
         for group in pending:
             by_host[_host(group[0])].append(group)
         lw_groups = by_host.pop("lw", [])
-        ordered: list[list[Item]] = []
-        queues = list(by_host.values())
-        while queues:
-            ordered += [q.pop(0) for q in queues]
-            queues = [q for q in queues if q]
         self.log(
             f"{len(items)} items, {len(groups)} documents; {len(pending)} to do "
             f"({len(lw_groups)} forum posts); {len(unfetchable)} papers have no URL"
         )
+        lanes: list[list[_Work]] = []
+        for host, host_groups in by_host.items():
+            work = [(g, self._todo(g, refresh)) for g in host_groups]
+            n = PARALLEL.get(host, 1)
+            lanes += [work[k::n] for k in range(n)]
+        results: queue.Queue[tuple[list[Item], list[tuple[Item, Fetched | FetchError]]]] = (
+            queue.Queue()
+        )
 
-        lw_failed: dict[str, str] = {}
-        lw_thread = None
-        if lw_groups:
-            ids = [g[0].url for g in lw_groups]
+        def lane(work: list[_Work]) -> None:
+            for group, todo in work:
+                results.put((group, self._fetch_group(todo, refresh)))
 
-            def _lw() -> None:
-                lw_failed.update(
-                    fetch_posts(
-                        self.fetcher,
-                        ids,
-                        refresh=refresh,
-                        progress=lambda n, t: (
-                            self.log(f"  forum bodies {n}/{t}") if n % 500 < 10 else None
-                        ),
+        def forum_lane(work: list[_Work]) -> None:
+            ids = [g[0].url for g, _ in work]
+            failed = fetch_posts(
+                self.fetcher,
+                ids,
+                refresh=refresh,
+                progress=lambda n, t: self.log(f"  forum bodies {n}/{t}") if n % 500 < 10 else None,
+            )
+            for group, todo in work:
+                fetched = self._fetch_group(todo, False)
+                results.put(
+                    (
+                        group,
+                        [
+                            (i, FetchError(i.key, failed[i.url]) if i.url in failed else f)
+                            for i, f in fetched
+                        ],
                     )
                 )
 
-            lw_thread = threading.Thread(target=_lw, daemon=True)
-            lw_thread.start()
-
-        done = 0
-        with ThreadPoolExecutor(self.workers) as pool:
-            futures: dict[Future[list[tuple[Item, Fetched | FetchError]]], list[Item]] = {
-                pool.submit(self._fetch_group, self._todo(g, refresh), refresh): g for g in ordered
-            }
-            for future in as_completed(futures):
-                self._ingest_group(futures[future], future.result())
-                done += 1
-                if done % 100 == 0:
-                    self.log(f"  {done}/{len(ordered)} documents")
-        if lw_thread is not None:
-            lw_thread.join()
-            for group in lw_groups:
-                fetched = self._fetch_group(self._todo(group, refresh), False)
-                fetched = [
-                    (i, FetchError(i.key, lw_failed[i.url]) if i.url in lw_failed else f)
-                    for i, f in fetched
-                ]
-                self._ingest_group(group, fetched)
+        threads = [threading.Thread(target=lane, args=(w,), daemon=True) for w in lanes if w]
+        if lw_groups:
+            work = [(g, self._todo(g, refresh)) for g in lw_groups]
+            threads.append(threading.Thread(target=forum_lane, args=(work,), daemon=True))
+        for thread in threads:
+            thread.start()
+        for done in range(1, len(pending) + 1):
+            group, fetched = results.get()
+            self._ingest_group(group, fetched)
+            if done % 200 == 0:
+                self.log(f"  {done}/{len(pending)} documents")
+        for thread in threads:
+            thread.join()
         counts: dict[str, int] = defaultdict(int)
         for (status,) in self.state.execute("SELECT status FROM items"):
             counts[status] += 1

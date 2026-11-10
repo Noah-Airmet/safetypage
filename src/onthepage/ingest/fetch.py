@@ -23,11 +23,11 @@ import httpx
 from onthepage.blobs import BlobStore
 from onthepage.corpus import utc_now
 
-__all__ = ["USER_AGENT", "FetchError", "Fetched", "Fetcher"]
+__all__ = ["PARALLEL", "USER_AGENT", "FetchError", "Fetched", "Fetcher"]
 
 USER_AGENT: Final = "Mozilla/5.0 (compatible; corpus-ingest/0.1)"
 _INTERVALS: Final = {"www.lesswrong.com": 3.0, "export.arxiv.org": 3.0}
-_PARALLEL: Final = {"storage.googleapis.com": 6}
+PARALLEL: Final = {"storage.googleapis.com": 6}
 """Hosts built for bulk download (arXiv's public bucket): several at once, no pacing."""
 
 _SCHEMA: Final = """
@@ -109,7 +109,7 @@ class Fetcher:
 
     def _host_lock(self, host: str) -> threading.Semaphore:
         with self._guard:
-            return self._host_locks.setdefault(host, threading.Semaphore(_PARALLEL.get(host, 1)))
+            return self._host_locks.setdefault(host, threading.Semaphore(PARALLEL.get(host, 1)))
 
     def _robots_for(self, scheme: str, host: str) -> urllib.robotparser.RobotFileParser | None:
         if host in self._robots:
@@ -145,7 +145,7 @@ class Fetcher:
             if rules is not None and not rules.can_fetch(USER_AGENT, url):
                 self._record_error(url, None, "robots.txt disallows this path")
                 raise FetchError(url, "robots.txt disallows this path")
-            if host not in _PARALLEL:
+            if host not in PARALLEL:
                 wait = self._last.get(host, 0.0) + self._interval(host, rules) - time.monotonic()
                 if wait > 0:
                     time.sleep(wait)
