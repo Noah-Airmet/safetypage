@@ -75,13 +75,13 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
     <section class="section split">
       <div>
         <h2 class="h2" id="shelves-h"><a href="/library">Library</a></h2>
-        <div class="rows shelflist" aria-labelledby="shelves-h" style="margin-top: var(--s-3)">
+        <div class="rows shelflist" aria-labelledby="shelves-h">
           {shelves.map((s) => <a href={`/library/${s.id}`}><span class="name">{shelfName(s.id)}</span><span class="val">{num(s.docs.length)}</span></a>)}
         </div>
       </div>
       <div>
         <h2 class="h2" id="recent-h">New from the labs</h2>
-        <div class="rows" aria-labelledby="recent-h" style="margin-top: var(--s-3)">
+        <div class="rows" aria-labelledby="recent-h">
           {recent.map((d) => (
             <a href={citePath(d.doc_id)}>
               <span class="name">{d.title}</span>
@@ -106,10 +106,12 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
 
     <section class="section split" aria-labelledby="agents-h">
       <div class="agent">
-        <h2 class="h2" id="agents-h"><a href="/connect">For agents</a></h2>
+        <h2 class="h2" id="agents-h"><a href="/connect">Connect an agent</a></h2>
         <div class="codeline"><code tabindex="0">{connect}</code><button class="ib" data-copy={connect} aria-label="Copy command"><Icon name="copy" /></button></div>
-        <p class="tries" style="margin-top: 0"><a href="/connect">search</a><a href="/connect">fetch</a><a href="/connect">verify_quote</a><a href="/connect">check_answer</a></p>
+        <p class="tries"><a href="/connect">search</a><a href="/connect">fetch</a><a href="/connect">verify_quote</a><a href="/connect">check_answer</a></p>
       </div>
+      <div>
+      <h2 class="h2">Check the work</h2>
       <div class="rows">
         <a href="/check?example=1">
           <span class="name">Check a paragraph</span>
@@ -127,6 +129,7 @@ const recent = (shelves.find((s) => s.id === 'labs') ?? shelves[0]).docs.slice(0
           <span class="name">CitationBench</span>
           <span class="val">{runs.length ? `${runs.length} ${runs.length === 1 ? 'run' : 'runs'}` : ''}</span>
         </a>
+      </div>
       </div>
     </section>
   </div>

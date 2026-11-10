@@ -53,7 +53,7 @@ const cover = open && paged && first && hasUnit(doc.doc_id, version, 'p1');
       {latest && count > 0 && (
         <form class="inside" action="/search" role="search">
           <input type="hidden" name="doc" value={doc.doc_id} />
-          <Icon name="search" />
+          <Icon name="search" small />
           <input class="field" type="search" name="query" placeholder={`Search ${count.toLocaleString('en')} ${paged ? 'pages' : 'paragraphs'}`} aria-label="Search inside this document" autocomplete="off" />
         </form>
       )}

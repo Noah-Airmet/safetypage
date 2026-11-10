@@ -121,7 +121,6 @@ export default function Search() {
                     <Snippet hit={hit} />
                     <span className="meta">
                       {[section(hit), hit.org, KINDS[hit.kind] ?? hit.kind, formatDate(hit.date), hit.tier === 'open' ? 'Read here' : 'At source'].filter(Boolean).map((part) => <span key={part}>{part}</span>)}
-                      <span className="mono cite">{hit.cite}</span>
                     </span>
                   </a>
                 </li>
