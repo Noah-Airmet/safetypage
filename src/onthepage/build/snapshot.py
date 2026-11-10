@@ -93,7 +93,7 @@ def render_pdf_pages(
                 zoom = width / page.rect.width
                 pixmap = page.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), alpha=False)
                 image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
-                temporary = target.with_suffix(".tmp")
+                temporary = target.with_suffix(f".{os.getpid()}.tmp")
                 image.save(temporary, "WEBP", quality=WEBP_QUALITY, method=4)
                 temporary.replace(target)
                 rendered += 1
@@ -156,6 +156,12 @@ def export_public(
                     (out_dir, Citation(doc, version.label, Anchor.page(n)))
                     for n in range(1, pages + 1)
                 )
+    # Versions can share a PDF; render each file once, as far as any version needs.
+    by_file: dict[str, tuple[str, str, int]] = {}
+    for job in jobs:
+        if job[1] not in by_file or by_file[job[1]][2] < job[2]:
+            by_file[job[1]] = job
+    jobs = sorted(by_file.values(), key=lambda j: -j[2])
     if jobs:
         log(f"rendering page images for {len(jobs)} PDFs")
         with ProcessPoolExecutor(max_workers=workers) as pool:
