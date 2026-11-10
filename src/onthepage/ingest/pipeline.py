@@ -92,7 +92,11 @@ def _is_pdf(data: bytes) -> bool:
 
 
 def _host(item: Item) -> str:
-    return "lw" if item.adapter == "lw" else urlsplit(item.url).netloc
+    if item.adapter == "lw":
+        return "lw"
+    if item.adapter == "arxiv":
+        return "storage.googleapis.com"
+    return urlsplit(item.url).netloc
 
 
 class Pipeline:
