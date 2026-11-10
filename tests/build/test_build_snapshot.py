@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import random
 from pathlib import Path
 
 import pytest
@@ -127,3 +128,19 @@ def test_dense_skipped_without_vectors(root: Path, fixture_db: Path) -> None:
     (component,) = (v for k, v in manifest.components.items() if k.startswith("dense/"))
     assert "have no vector" in component["skipped"]
     assert load_manifest(root / "snapshots" / "2026.11.7").snapshot_id == "2026.11.7"
+
+
+def test_text_pages_are_palette_and_colour_figures_keep_their_colours(tmp_path: Path) -> None:
+    from PIL import Image, ImageDraw  # noqa: PLC0415
+
+    from safetypage.build.snapshot import save_page_image  # noqa: PLC0415
+
+    text = Image.new("RGB", (800, 400), "white")
+    ImageDraw.Draw(text).text((20, 20), "Body text on a page " * 5, fill="black")
+    assert save_page_image(text, tmp_path / "text.webp", 800) == "palette"
+
+    noise = random.Random(0).randbytes(800 * 400 * 3)  # noqa: S311  (a photograph, to a palette)
+    photo = Image.frombytes("RGB", (800, 400), noise)
+    assert save_page_image(photo, tmp_path / "photo.webp", 1600) == "lossy"
+    with Image.open(tmp_path / "photo.webp") as image:
+        assert image.format == "WEBP" and image.size == (800, 400)

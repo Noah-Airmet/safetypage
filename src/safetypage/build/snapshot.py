@@ -14,8 +14,13 @@
    the directory into place.
 
 Page images are rendered once per PDF and kept in ``<root>/cache/pages/<pdf sha256>/``, so a
-new snapshot renders only PDFs it has not seen. Files from the blob store and the image cache
-are hard-linked into the snapshot when the filesystem allows, copied otherwise.
+new snapshot renders only PDFs it has not seen (clear the cache after changing the encoding).
+A page that a few flat colours reproduce (text, tables, line art: most pages) is saved as a
+lossless WebP of 8, 16 or 64 colours, which keeps type sharp at a fraction of the size; a page
+those cannot reproduce (photographs, gradients) is saved as lossy WebP.
+
+Files from the blob store and the image cache are hard-linked into the snapshot when the
+filesystem allows, copied otherwise.
 """
 
 from __future__ import annotations
@@ -46,10 +51,15 @@ from safetypage.snapshot import (
     stage_snapshot,
 )
 
-__all__ = ["PAGE_WIDTHS", "build_snapshot", "export_public", "render_pdf_pages"]
+__all__ = ["PAGE_WIDTHS", "build_snapshot", "export_public", "render_pdf_pages", "save_page_image"]
 
 PAGE_WIDTHS: Final = (800, 1600)
-WEBP_QUALITY: Final = 80
+PALETTES: Final = (8, 16, 64)
+"""Palette sizes tried in turn; the first that reproduces the page is kept."""
+PALETTE_TOLERANCE: Final = 64
+"""A palette reproduces a page when all but 0.1% of pixels are within this of the original in
+every channel (0-255). Colour figures fail it and go lossy, so they keep their colours."""
+LOSSY_QUALITY: Final = {800: 45, 1600: 30}
 _SOURCE_EXTENSIONS: Final = {"pdf": "pdf", "html": "html"}
 
 
@@ -94,10 +104,37 @@ def render_pdf_pages(
                 pixmap = page.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), alpha=False)
                 image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
                 temporary = target.with_suffix(f".{os.getpid()}.tmp")
-                image.save(temporary, "WEBP", quality=WEBP_QUALITY, method=4)
+                save_page_image(image, temporary, width)
                 temporary.replace(target)
                 rendered += 1
     return rendered
+
+
+def save_page_image(image: Any, path: Path, width: int) -> str:
+    """Save a rendered page as WebP; returns ``"palette"`` or ``"lossy"``."""
+    from PIL import Image  # noqa: PLC0415
+
+    for colours in PALETTES:
+        palette = image.quantize(colours, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+        if _worst_error(palette.convert("RGB"), image) <= PALETTE_TOLERANCE:
+            palette.save(path, "WEBP", lossless=True, quality=100, method=4)
+            return "palette"
+    image.save(path, "WEBP", quality=LOSSY_QUALITY.get(width, 45), method=4)
+    return "lossy"
+
+
+def _worst_error(a: Any, b: Any) -> int:
+    """The per-pixel channel difference that all but 0.1% of pixels stay within."""
+    from PIL import ImageChops  # noqa: PLC0415
+
+    red, green, blue = ImageChops.difference(a, b).split()
+    histogram = ImageChops.lighter(ImageChops.lighter(red, green), blue).histogram()
+    allowed, seen = sum(histogram) // 1000, 0
+    for value in range(255, -1, -1):
+        seen += histogram[value]
+        if seen > allowed:
+            return value
+    return 0
 
 
 def _render_job(job: tuple[str, str, int]) -> int:
