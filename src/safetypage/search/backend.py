@@ -206,6 +206,12 @@ class SnapshotSearch:
         self._index = open_index(directory / LEXICAL_DIR)
         self._schema = self._index.schema
         self._searcher = self._index.searcher()
+        # Indexes built before titles were indexed have no record fields; search them as text.
+        try:
+            Query.term_query(self._schema, "title_key", "")
+            self._has_record = True
+        except ValueError:
+            self._has_record = False
         self._local = threading.local()
         self._opened: list[Corpus] = []
         self._opened_lock = threading.Lock()
@@ -457,7 +463,7 @@ class SnapshotSearch:
         Equal record scores (a crosspost under the same title) go to the document with more
         units matching the text, then by cite.
         """
-        if not parsed.must:
+        if not parsed.must or not self._has_record:
             return []
         query = compile_query(self._schema, parsed, filters.queries(self._schema), record_only=True)
         found = self._searcher.search(query, limit=NAMED_FIRST + 7, count=False)
