@@ -1,0 +1,144 @@
+{
+  "$defs": {
+    "FileEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "title": "Bytes",
+          "type": "integer"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "bytes"
+      ],
+      "title": "FileEntry",
+      "type": "object"
+    },
+    "Tier": {
+      "enum": [
+        "open",
+        "link_only"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "VersionEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "content_sha256": {
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "licence": {
+          "title": "Licence",
+          "type": "string"
+        },
+        "ref": {
+          "title": "Ref",
+          "type": "string"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier"
+        },
+        "units": {
+          "title": "Units",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "ref",
+        "content_sha256",
+        "tier",
+        "licence",
+        "units"
+      ],
+      "title": "VersionEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "code_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Code Version"
+    },
+    "components": {
+      "additionalProperties": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Components",
+      "type": "object"
+    },
+    "content_digest": {
+      "title": "Content Digest",
+      "type": "string"
+    },
+    "corpus_schema_version": {
+      "title": "Corpus Schema Version",
+      "type": "integer"
+    },
+    "counts": {
+      "additionalProperties": true,
+      "title": "Counts",
+      "type": "object"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/FileEntry"
+      },
+      "title": "Files",
+      "type": "array"
+    },
+    "schema": {
+      "const": "onthepage.snapshot/1",
+      "default": "onthepage.snapshot/1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "versions": {
+      "items": {
+        "$ref": "#/$defs/VersionEntry"
+      },
+      "title": "Versions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "created_at",
+    "code_version",
+    "corpus_schema_version",
+    "content_digest",
+    "counts",
+    "versions",
+    "files"
+  ],
+  "title": "Manifest",
+  "type": "object"
+}

@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "max_tokens": {
+      "default": 6000,
+      "maximum": 16000,
+      "minimum": 500,
+      "title": "Max Tokens",
+      "type": "integer"
+    },
+    "view": {
+      "default": "text",
+      "enum": [
+        "text",
+        "image"
+      ],
+      "title": "View",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "title": "FetchRequest",
+  "type": "object"
+}

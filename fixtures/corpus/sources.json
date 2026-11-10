@@ -1,0 +1,241 @@
+{
+  "about": "The fixture corpus: real, openly licensed documents plus two synthetic link-only ones. fixtures/build.py turns this list into bundles/. See README.md for licences and attributions.",
+  "versions": [
+    {
+      "bundle": "arxiv-2305.15324-v1",
+      "parser": "pdf+latexml",
+      "document": {
+        "doc_id": "arxiv:2305.15324",
+        "kind": "paper",
+        "title": "Model evaluation for extreme risks",
+        "authors": ["Toby Shevlane", "Sebastian Farquhar", "Ben Garfinkel", "Mary Phuong", "Jess Whittlestone", "Jade Leung", "Daniel Kokotajlo", "Nahema Marchal", "Markus Anderljung", "Noam Kolt", "Lewis Ho", "Divya Siddarth", "Shahar Avin", "Will Hawkins", "Been Kim", "Iason Gabriel", "Vijay Bolina", "Jack Clark", "Yoshua Bengio", "Paul Christiano", "Allan Dafoe"],
+        "org": null,
+        "collection": "evals",
+        "published": "2023-05-24",
+        "source_url": "https://arxiv.org/abs/2305.15324",
+        "added_at": "2026-11-10T02:00:00Z"
+      },
+      "version": {
+        "label": "v1",
+        "anchor_kind": "page",
+        "fidelity": "text_layer",
+        "source_url": "https://arxiv.org/pdf/2305.15324v1",
+        "observed_at": "2026-11-10T01:55:00Z",
+        "published": "2023-05-24"
+      },
+      "licence": {
+        "licence": "CC-BY-4.0",
+        "evidence_kind": "licence_link",
+        "evidence_url": "https://arxiv.org/abs/2305.15324v1",
+        "evidence_quote": "http://creativecommons.org/licenses/by/4.0/",
+        "observed_at": "2026-11-10T01:55:00Z",
+        "producer": "manual:fixture-build"
+      },
+      "files": {
+        "pdf": {"name": "arxiv-2305.15324v1.pdf", "url": "https://arxiv.org/pdf/2305.15324v1"},
+        "html": {"name": "arxiv-2305.15324v1.html", "url": "https://arxiv.org/html/2305.15324v1"}
+      }
+    },
+    {
+      "bundle": "arxiv-2305.15324-v2",
+      "parser": "pdf+latexml",
+      "words": true,
+      "document": {
+        "doc_id": "arxiv:2305.15324",
+        "kind": "paper",
+        "title": "Model evaluation for extreme risks",
+        "authors": ["Toby Shevlane", "Sebastian Farquhar", "Ben Garfinkel", "Mary Phuong", "Jess Whittlestone", "Jade Leung", "Daniel Kokotajlo", "Nahema Marchal", "Markus Anderljung", "Noam Kolt", "Lewis Ho", "Divya Siddarth", "Shahar Avin", "Will Hawkins", "Been Kim", "Iason Gabriel", "Vijay Bolina", "Jack Clark", "Yoshua Bengio", "Paul Christiano", "Allan Dafoe"],
+        "org": null,
+        "collection": "evals",
+        "published": "2023-05-24",
+        "source_url": "https://arxiv.org/abs/2305.15324",
+        "added_at": "2026-11-10T02:00:00Z"
+      },
+      "version": {
+        "label": "v2",
+        "anchor_kind": "page",
+        "fidelity": "text_layer",
+        "source_url": "https://arxiv.org/pdf/2305.15324v2",
+        "observed_at": "2026-11-10T01:55:00Z",
+        "published": "2023-09-22"
+      },
+      "licence": {
+        "licence": "CC-BY-4.0",
+        "evidence_kind": "licence_link",
+        "evidence_url": "https://arxiv.org/abs/2305.15324v2",
+        "evidence_quote": "http://creativecommons.org/licenses/by/4.0/",
+        "observed_at": "2026-11-10T01:55:00Z",
+        "producer": "manual:fixture-build"
+      },
+      "files": {
+        "pdf": {"name": "arxiv-2305.15324v2.pdf", "url": "https://arxiv.org/pdf/2305.15324v2"},
+        "html": {"name": "arxiv-2305.15324v2.html", "url": "https://arxiv.org/html/2305.15324v2"}
+      }
+    },
+    {
+      "bundle": "arxiv-2309.08600-v3",
+      "parser": "pdf+latexml",
+      "document": {
+        "doc_id": "arxiv:2309.08600",
+        "kind": "paper",
+        "title": "Sparse Autoencoders Find Highly Interpretable Features in Language Models",
+        "authors": ["Hoagy Cunningham", "Aidan Ewart", "Logan Riggs", "Robert Huben", "Lee Sharkey"],
+        "org": null,
+        "collection": "interpretability",
+        "published": "2023-09-15",
+        "source_url": "https://arxiv.org/abs/2309.08600",
+        "added_at": "2026-11-10T02:00:00Z"
+      },
+      "version": {
+        "label": "v3",
+        "anchor_kind": "page",
+        "fidelity": "text_layer",
+        "source_url": "https://arxiv.org/pdf/2309.08600v3",
+        "observed_at": "2026-11-10T01:56:00Z",
+        "published": "2023-10-04"
+      },
+      "licence": {
+        "licence": "CC-BY-4.0",
+        "evidence_kind": "licence_link",
+        "evidence_url": "https://arxiv.org/abs/2309.08600v3",
+        "evidence_quote": "http://creativecommons.org/licenses/by/4.0/",
+        "observed_at": "2026-11-10T01:56:00Z",
+        "producer": "manual:fixture-build"
+      },
+      "files": {
+        "pdf": {"name": "arxiv-2309.08600v3.pdf", "url": "https://arxiv.org/pdf/2309.08600v3"},
+        "html": {"name": "arxiv-2309.08600v3.html", "url": "https://arxiv.org/html/2309.08600v3"}
+      }
+    },
+    {
+      "bundle": "distill-zoom-in-r1",
+      "parser": "distill",
+      "document": {
+        "doc_id": "distill:zoom-in",
+        "kind": "article",
+        "title": "Zoom In: An Introduction to Circuits",
+        "authors": ["Chris Olah", "Nick Cammarata", "Ludwig Schubert", "Gabriel Goh", "Michael Petrov", "Shan Carter"],
+        "org": "Distill",
+        "collection": "interpretability",
+        "published": "2020-03-10",
+        "source_url": "https://distill.pub/2020/circuits/zoom-in/",
+        "added_at": "2026-11-10T02:00:00Z"
+      },
+      "version": {
+        "label": "r1",
+        "anchor_kind": "block",
+        "fidelity": "html",
+        "source_url": "https://distill.pub/2020/circuits/zoom-in/",
+        "observed_at": "2026-11-10T01:57:00Z",
+        "published": "2020-03-10"
+      },
+      "licence": {
+        "licence": "CC-BY-4.0",
+        "evidence_kind": "page_statement",
+        "evidence_url": "https://distill.pub/2020/circuits/zoom-in/",
+        "evidence_quote": "Diagrams and text are licensed under Creative Commons Attribution CC-BY 4.0 with the source available on GitHub, unless noted otherwise.",
+        "evidence_sha256": "e700aaa39eb5f050a1f66f6b51ad4f94ceb2af3d8363fa7afcc1c7f187a04e0c",
+        "observed_at": "2026-11-10T01:57:00Z",
+        "producer": "manual:fixture-build"
+      },
+      "files": {
+        "html": {"name": "distill-zoom-in.reduced.html", "url": "https://distill.pub/2020/circuits/zoom-in/"}
+      }
+    },
+    {
+      "bundle": "nist-ai-100-1-r1",
+      "parser": "pdf",
+      "document": {
+        "doc_id": "nist:ai-100-1",
+        "kind": "government",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "authors": [],
+        "org": "NIST",
+        "collection": "government",
+        "published": "2023-01",
+        "source_url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "added_at": "2026-11-10T02:00:00Z"
+      },
+      "version": {
+        "label": "r1",
+        "anchor_kind": "page",
+        "fidelity": "text_layer",
+        "source_url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "observed_at": "2026-11-10T01:58:00Z",
+        "published": "2023-01"
+      },
+      "licence": {
+        "licence": "public-domain-us-gov",
+        "evidence_kind": "statute",
+        "evidence_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title17-section105&num=0&edition=prelim",
+        "evidence_quote": "Copyright protection under this title is not available for any work of the United States Government (17 U.S.C. 105). NIST AI 100-1 is a publication of the National Institute of Standards and Technology, U.S. Department of Commerce.",
+        "observed_at": "2026-11-10T01:58:00Z",
+        "producer": "manual:fixture-build"
+      },
+      "files": {
+        "pdf": {"name": "nist-ai-100-1.pdf", "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf"}
+      }
+    },
+    {
+      "bundle": "example-link-only-eval-report-r1",
+      "parser": "text-pages",
+      "document": {
+        "doc_id": "example:link-only-eval-report",
+        "kind": "eval_report",
+        "title": "Refusal Robustness Evaluation of the Meridian-2 Model (synthetic fixture)",
+        "authors": [],
+        "org": "Example Lab",
+        "collection": "evals",
+        "published": "2026-03",
+        "source_url": "https://example.org/reports/meridian-2-refusal",
+        "added_at": "2026-11-10T02:00:00Z"
+      },
+      "version": {
+        "label": "r1",
+        "anchor_kind": "page",
+        "fidelity": "text_layer",
+        "source_url": "https://example.org/reports/meridian-2-refusal.pdf",
+        "observed_at": "2026-11-10T02:00:00Z",
+        "published": "2026-03"
+      },
+      "licence": {
+        "licence": "all-rights-reserved",
+        "evidence_kind": "page_statement",
+        "evidence_url": "https://example.org/reports/meridian-2-refusal.pdf",
+        "evidence_quote": "© 2026 Example Lab. All rights reserved.",
+        "observed_at": "2026-11-10T02:00:00Z",
+        "producer": "manual:fixture-build"
+      },
+      "files": {
+        "text": {"name": "example-link-only-eval-report.txt", "url": "https://example.org/reports/meridian-2-refusal.pdf"}
+      }
+    },
+    {
+      "bundle": "example-unlicensed-post-r1",
+      "parser": "text-blocks",
+      "document": {
+        "doc_id": "example:unlicensed-post",
+        "kind": "blog",
+        "title": "Notes on reading system cards (synthetic fixture)",
+        "authors": [],
+        "org": null,
+        "collection": null,
+        "published": "2026-06-02",
+        "source_url": "https://example.org/posts/reading-system-cards",
+        "added_at": "2026-11-10T02:00:00Z"
+      },
+      "version": {
+        "label": "r1",
+        "anchor_kind": "block",
+        "fidelity": "html",
+        "source_url": "https://example.org/posts/reading-system-cards",
+        "observed_at": "2026-11-10T02:00:00Z",
+        "published": "2026-06-02"
+      },
+      "licence": null,
+      "files": {
+        "text": {"name": "example-unlicensed-post.txt", "url": "https://example.org/posts/reading-system-cards"}
+      }
+    }
+  ]
+}

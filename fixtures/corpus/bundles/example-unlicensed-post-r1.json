@@ -1,0 +1,114 @@
+{
+ "blocks": [
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Notes on reading system cards"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "SYNTHETIC TEST FIXTURE. This is not a real post; it was written for the test suite."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "A system card is easiest to read backwards. Start with the limitations section, because that is where a lab says what it did not test, and only then read the headline results."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "What to look for"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Three questions do most of the work. Which model snapshot was evaluated? Who ran the evaluation, the lab or an outside party? And was the evaluation run before or after the safeguards that ship with the product were switched on?"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "When a card reports that the model “showed no evidence of sandbagging”, check the page for how many probes were run. A claim of absence is only as strong as the search behind it."
+  }
+ ],
+ "document": {
+  "added_at": "2026-11-10T02:00:00Z",
+  "authors": [],
+  "collection": null,
+  "doc_id": "example:unlicensed-post",
+  "kind": "blog",
+  "org": null,
+  "published": "2026-06-02",
+  "source_url": "https://example.org/posts/reading-system-cards",
+  "title": "Notes on reading system cards (synthetic fixture)"
+ },
+ "licence": null,
+ "outline": [
+  {
+   "anchor": "b1",
+   "level": 2,
+   "title": "Notes on reading system cards"
+  },
+  {
+   "anchor": "b4",
+   "level": 2,
+   "title": "What to look for"
+  }
+ ],
+ "pages": [],
+ "renditions": [
+  {
+   "bytes": 728,
+   "fetched_at": "2026-11-10T02:00:00Z",
+   "kind": "text",
+   "media_type": "text/plain",
+   "sha256": "09b3288035600f249ef3fbba3a3ca764a0c5641cbd4430c8b525c0380d0f1577",
+   "source_url": "https://example.org/posts/reading-system-cards"
+  }
+ ],
+ "version": {
+  "anchor_kind": "block",
+  "content_sha256": "09b3288035600f249ef3fbba3a3ca764a0c5641cbd4430c8b525c0380d0f1577",
+  "fidelity": "html",
+  "label": "r1",
+  "observed_at": "2026-11-10T02:00:00Z",
+  "published": "2026-06-02",
+  "source_url": "https://example.org/posts/reading-system-cards"
+ }
+}

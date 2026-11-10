@@ -1,0 +1,383 @@
+{
+  "$defs": {
+    "DocumentCard": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_kind": {
+          "enum": [
+            "page",
+            "block"
+          ],
+          "title": "Anchor Kind",
+          "type": "string"
+        },
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
+        "collection": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Collection"
+        },
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "fidelity": {
+          "enum": [
+            "text_layer",
+            "html",
+            "ocr"
+          ],
+          "title": "Fidelity",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "paper",
+            "system_card",
+            "model_card",
+            "framework",
+            "eval_report",
+            "forum_post",
+            "blog",
+            "article",
+            "government",
+            "book"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "licence": {
+          "title": "Licence",
+          "type": "string"
+        },
+        "org": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Org"
+        },
+        "outline": {
+          "items": {
+            "$ref": "#/$defs/OutlineItem"
+          },
+          "title": "Outline",
+          "type": "array"
+        },
+        "published": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Published"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Summary"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "unit_count": {
+          "title": "Unit Count",
+          "type": "integer"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "versions": {
+          "items": {
+            "$ref": "#/$defs/VersionSummary"
+          },
+          "title": "Versions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "doc_id",
+        "title",
+        "url",
+        "authors",
+        "org",
+        "kind",
+        "collection",
+        "published",
+        "source_url",
+        "version",
+        "versions",
+        "tier",
+        "licence",
+        "anchor_kind",
+        "fidelity",
+        "unit_count",
+        "outline"
+      ],
+      "title": "DocumentCard",
+      "type": "object"
+    },
+    "OutlineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "title": "Anchor",
+          "type": "string"
+        },
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "level": {
+          "title": "Level",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "title",
+        "anchor",
+        "cite",
+        "url"
+      ],
+      "title": "OutlineItem",
+      "type": "object"
+    },
+    "Tier": {
+      "enum": [
+        "open",
+        "link_only"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "UnitText": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "title": "Anchor",
+          "type": "string"
+        },
+        "anchor_label": {
+          "title": "Anchor Label",
+          "type": "string"
+        },
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excerpt"
+        },
+        "image_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Url"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Text"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cite",
+        "url",
+        "anchor",
+        "anchor_label",
+        "tier",
+        "text",
+        "source_url"
+      ],
+      "title": "UnitText",
+      "type": "object"
+    },
+    "VersionSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "latest": {
+          "title": "Latest",
+          "type": "boolean"
+        },
+        "licence": {
+          "title": "Licence",
+          "type": "string"
+        },
+        "observed_at": {
+          "title": "Observed At",
+          "type": "string"
+        },
+        "published": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Published"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "published",
+        "observed_at",
+        "tier",
+        "licence",
+        "url",
+        "latest"
+      ],
+      "title": "VersionSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "document": {
+      "$ref": "#/$defs/DocumentCard"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "truncated": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Truncated"
+    },
+    "units": {
+      "items": {
+        "$ref": "#/$defs/UnitText"
+      },
+      "title": "Units",
+      "type": "array"
+    },
+    "url": {
+      "title": "Url",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "document",
+    "title",
+    "text",
+    "url"
+  ],
+  "title": "FetchResult",
+  "type": "object"
+}

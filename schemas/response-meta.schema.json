@@ -1,0 +1,35 @@
+{
+  "additionalProperties": false,
+  "description": "Stamped on every tool result (MCP ``_meta``) and API response. Constant within a run.",
+  "properties": {
+    "arm": {
+      "title": "Arm",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "server_version": {
+      "title": "Server Version",
+      "type": "string"
+    },
+    "snapshot": {
+      "title": "Snapshot",
+      "type": "string"
+    },
+    "surface_id": {
+      "title": "Surface Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "server_version",
+    "surface_id",
+    "snapshot",
+    "arm",
+    "request_id"
+  ],
+  "title": "ResponseMeta",
+  "type": "object"
+}

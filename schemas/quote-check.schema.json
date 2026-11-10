@@ -1,0 +1,220 @@
+{
+  "$defs": {
+    "QuoteDiff": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "enum": [
+            "replace",
+            "delete",
+            "insert"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "quote",
+        "source"
+      ],
+      "title": "QuoteDiff",
+      "type": "object"
+    },
+    "QuoteLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "title": "Anchor",
+          "type": "string"
+        },
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "spine_end": {
+          "title": "Spine End",
+          "type": "integer"
+        },
+        "spine_start": {
+          "title": "Spine Start",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cite",
+        "url",
+        "anchor",
+        "spine_start",
+        "spine_end",
+        "text"
+      ],
+      "title": "QuoteLocation",
+      "type": "object"
+    },
+    "QuoteSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "diff": {
+          "items": {
+            "$ref": "#/$defs/QuoteDiff"
+          },
+          "title": "Diff",
+          "type": "array"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QuoteLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "similarity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Similarity"
+        },
+        "verdict": {
+          "$ref": "#/$defs/Verdict"
+        }
+      },
+      "required": [
+        "quote",
+        "verdict",
+        "location"
+      ],
+      "title": "QuoteSegment",
+      "type": "object"
+    },
+    "Tier": {
+      "enum": [
+        "open",
+        "link_only"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "Verdict": {
+      "description": "The one verdict vocabulary. Only the first two pass.",
+      "enum": [
+        "exact",
+        "normalized",
+        "elsewhere",
+        "near_miss",
+        "not_found"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguous": {
+      "default": false,
+      "title": "Ambiguous",
+      "type": "boolean"
+    },
+    "cite": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Cite"
+    },
+    "fidelity": {
+      "enum": [
+        "text_layer",
+        "html",
+        "ocr"
+      ],
+      "title": "Fidelity",
+      "type": "string"
+    },
+    "locations": {
+      "items": {
+        "$ref": "#/$defs/QuoteLocation"
+      },
+      "title": "Locations",
+      "type": "array"
+    },
+    "other_locations": {
+      "items": {
+        "$ref": "#/$defs/QuoteLocation"
+      },
+      "title": "Other Locations",
+      "type": "array"
+    },
+    "passed": {
+      "title": "Passed",
+      "type": "boolean"
+    },
+    "quote": {
+      "title": "Quote",
+      "type": "string"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "segments": {
+      "items": {
+        "$ref": "#/$defs/QuoteSegment"
+      },
+      "title": "Segments",
+      "type": "array"
+    },
+    "tier": {
+      "$ref": "#/$defs/Tier"
+    },
+    "verdict": {
+      "$ref": "#/$defs/Verdict"
+    }
+  },
+  "required": [
+    "quote",
+    "cite",
+    "verdict",
+    "passed",
+    "reason",
+    "tier",
+    "fidelity",
+    "locations",
+    "segments"
+  ],
+  "title": "QuoteCheck",
+  "type": "object"
+}

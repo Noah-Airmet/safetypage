@@ -1,0 +1,751 @@
+{
+  "$defs": {
+    "Answer": {
+      "additionalProperties": false,
+      "properties": {
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/AnswerCitation"
+          },
+          "title": "Citations",
+          "type": "array"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "Answer",
+      "type": "object"
+    },
+    "AnswerCitation": {
+      "additionalProperties": false,
+      "properties": {
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "cite_id": {
+          "title": "Cite Id",
+          "type": "string"
+        },
+        "gold": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gold"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quote"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "unresolved",
+                "unseen",
+                "quote_elsewhere",
+                "quote_near_miss",
+                "quote_not_found",
+                "unsupported"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "state": {
+          "enum": [
+            "verified",
+            "cited",
+            "rejected"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cite_id",
+        "cite",
+        "state"
+      ],
+      "title": "AnswerCitation",
+      "type": "object"
+    },
+    "AnswerEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "delta": {
+          "title": "Delta",
+          "type": "string"
+        },
+        "kind": {
+          "const": "answer",
+          "default": "answer",
+          "title": "Kind",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 0,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "t_ms": {
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "seq",
+        "t_ms",
+        "delta"
+      ],
+      "title": "AnswerEvent",
+      "type": "object"
+    },
+    "CiteEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "cite_id": {
+          "title": "Cite Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "cite",
+          "default": "cite",
+          "title": "Kind",
+          "type": "string"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quote"
+        },
+        "seq": {
+          "minimum": 0,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "t_ms": {
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "seq",
+        "t_ms",
+        "cite_id",
+        "cite"
+      ],
+      "title": "CiteEvent",
+      "type": "object"
+    },
+    "Judgement": {
+      "additionalProperties": false,
+      "description": "A model's verdict on support. Always labelled as a judge's, never mixed with code checks.",
+      "properties": {
+        "agreement": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Agreement"
+        },
+        "judge": {
+          "title": "Judge",
+          "type": "string"
+        },
+        "label": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "unsupported"
+          ],
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "judge",
+        "label"
+      ],
+      "title": "Judgement",
+      "type": "object"
+    },
+    "ThinkEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "think",
+          "default": "think",
+          "title": "Kind",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 0,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "t_ms": {
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "t_ms",
+        "text"
+      ],
+      "title": "ThinkEvent",
+      "type": "object"
+    },
+    "ToolEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "additionalProperties": true,
+          "title": "Args",
+          "type": "object"
+        },
+        "call_id": {
+          "title": "Call Id",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "found_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Found At"
+        },
+        "kind": {
+          "const": "tool",
+          "default": "tool",
+          "title": "Kind",
+          "type": "string"
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        },
+        "result_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result Tokens"
+        },
+        "returned": {
+          "items": {
+            "$ref": "#/$defs/ToolReturn"
+          },
+          "title": "Returned",
+          "type": "array"
+        },
+        "seq": {
+          "minimum": 0,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "t_ms": {
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "tool": {
+          "title": "Tool",
+          "type": "string"
+        },
+        "total": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Verdict"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "seq",
+        "t_ms",
+        "call_id",
+        "tool",
+        "args"
+      ],
+      "title": "ToolEvent",
+      "type": "object"
+    },
+    "ToolReturn": {
+      "additionalProperties": false,
+      "description": "One unit a tool returned. ``cite`` is what the replay lights up and what makes a later\ncitation of it count as *seen*.",
+      "properties": {
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Score"
+        }
+      },
+      "required": [
+        "cite"
+      ],
+      "title": "ToolReturn",
+      "type": "object"
+    },
+    "TraceHeader": {
+      "additionalProperties": false,
+      "properties": {
+        "arm": {
+          "title": "Arm",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "sample_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sample Id"
+        },
+        "server_version": {
+          "title": "Server Version",
+          "type": "string"
+        },
+        "snapshot": {
+          "title": "Snapshot",
+          "type": "string"
+        },
+        "solver": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Solver"
+        },
+        "started_at": {
+          "title": "Started At",
+          "type": "string"
+        },
+        "surface_id": {
+          "title": "Surface Id",
+          "type": "string"
+        },
+        "trace_id": {
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "usage": {
+          "$ref": "#/$defs/Usage"
+        }
+      },
+      "required": [
+        "trace_id",
+        "question",
+        "model",
+        "surface_id",
+        "snapshot",
+        "arm",
+        "server_version",
+        "started_at"
+      ],
+      "title": "TraceHeader",
+      "type": "object"
+    },
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "cache_read_tokens": {
+          "default": 0,
+          "title": "Cache Read Tokens",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Usd"
+        },
+        "input_tokens": {
+          "default": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "price_table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Price Table"
+        }
+      },
+      "title": "Usage",
+      "type": "object"
+    },
+    "Verdict": {
+      "description": "The one verdict vocabulary. Only the first two pass.",
+      "enum": [
+        "exact",
+        "normalized",
+        "elsewhere",
+        "near_miss",
+        "not_found"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    },
+    "VerifyEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "cite_id": {
+          "title": "Cite Id",
+          "type": "string"
+        },
+        "closest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Closest"
+        },
+        "judgement": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Judgement"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "kind": {
+          "const": "verify",
+          "default": "verify",
+          "title": "Kind",
+          "type": "string"
+        },
+        "quote_verdict": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Verdict"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "unresolved",
+                "unseen",
+                "quote_elsewhere",
+                "quote_near_miss",
+                "quote_not_found",
+                "unsupported"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "resolves": {
+          "title": "Resolves",
+          "type": "boolean"
+        },
+        "seen": {
+          "title": "Seen",
+          "type": "boolean"
+        },
+        "seq": {
+          "minimum": 0,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "span": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "integer"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Span"
+        },
+        "state": {
+          "enum": [
+            "verified",
+            "cited",
+            "rejected"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "t_ms": {
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "seq",
+        "t_ms",
+        "cite_id",
+        "state",
+        "resolves",
+        "seen"
+      ],
+      "title": "VerifyEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "answer": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Answer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "events": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "answer": "#/$defs/AnswerEvent",
+            "cite": "#/$defs/CiteEvent",
+            "think": "#/$defs/ThinkEvent",
+            "tool": "#/$defs/ToolEvent",
+            "verify": "#/$defs/VerifyEvent"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ThinkEvent"
+          },
+          {
+            "$ref": "#/$defs/ToolEvent"
+          },
+          {
+            "$ref": "#/$defs/AnswerEvent"
+          },
+          {
+            "$ref": "#/$defs/CiteEvent"
+          },
+          {
+            "$ref": "#/$defs/VerifyEvent"
+          }
+        ]
+      },
+      "title": "Events",
+      "type": "array"
+    },
+    "header": {
+      "$ref": "#/$defs/TraceHeader"
+    },
+    "schema": {
+      "const": "onthepage.trace/1",
+      "default": "onthepage.trace/1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "scores": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Scores",
+      "type": "object"
+    }
+  },
+  "required": [
+    "header",
+    "events"
+  ],
+  "title": "Trace",
+  "type": "object"
+}

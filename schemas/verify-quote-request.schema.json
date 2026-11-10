@@ -1,0 +1,38 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "cite": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cite"
+    },
+    "doc": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Doc"
+    },
+    "quote": {
+      "title": "Quote",
+      "type": "string"
+    }
+  },
+  "required": [
+    "quote"
+  ],
+  "title": "VerifyQuoteRequest",
+  "type": "object"
+}

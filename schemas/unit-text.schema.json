@@ -1,0 +1,84 @@
+{
+  "$defs": {
+    "Tier": {
+      "enum": [
+        "open",
+        "link_only"
+      ],
+      "title": "Tier",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "anchor": {
+      "title": "Anchor",
+      "type": "string"
+    },
+    "anchor_label": {
+      "title": "Anchor Label",
+      "type": "string"
+    },
+    "cite": {
+      "title": "Cite",
+      "type": "string"
+    },
+    "excerpt": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Excerpt"
+    },
+    "image_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Image Url"
+    },
+    "source_url": {
+      "title": "Source Url",
+      "type": "string"
+    },
+    "text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Text"
+    },
+    "tier": {
+      "$ref": "#/$defs/Tier"
+    },
+    "url": {
+      "title": "Url",
+      "type": "string"
+    }
+  },
+  "required": [
+    "cite",
+    "url",
+    "anchor",
+    "anchor_label",
+    "tier",
+    "text",
+    "source_url"
+  ],
+  "title": "UnitText",
+  "type": "object"
+}

@@ -1,0 +1,15 @@
+# Notes on reading system cards
+
+SYNTHETIC TEST FIXTURE. This is not a real post; it was written for the test suite.
+
+A system card is easiest to read backwards. Start with the limitations section, because that is
+where a lab says what it did not test, and only then read the headline results.
+
+# What to look for
+
+Three questions do most of the work. Which model snapshot was evaluated? Who ran the
+evaluation, the lab or an outside party? And was the evaluation run before or after the
+safeguards that ship with the product were switched on?
+
+When a card reports that the model “showed no evidence of sandbagging”, check the page for
+how many probes were run. A claim of absence is only as strong as the search behind it.

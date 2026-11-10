@@ -1,0 +1,1498 @@
+{
+ "blocks": [
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 1,
+   "section": [],
+   "source_id": null,
+   "spine_end": 44,
+   "spine_start": 10,
+   "text": "Model evaluation for extreme risks"
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 6,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Abstract"
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "Abstract"
+   ],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Figure 1: The theory of change for model evaluations for extreme risk. Evaluations for dangerous capabilities and alignment inform risk assessments, and are in turn embedded into important governance processes."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": 1656,
+   "spine_start": 1641,
+   "text": "1 Introduction"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "1 Introduction"
+   ],
+   "source_id": "S1.p1",
+   "spine_end": 2104,
+   "spine_start": 1657,
+   "text": "As AI progress has advanced, general-purpose AI systems have tended to display new and hard-to-forecast capabilities – including harmful capabilities that their developers did not intend (Ganguli et al., 2022). Future systems may display even more dangerous emergent capabilities, such as the ability to conduct offensive cyber operations, manipulate people through conversation, or provide actionable instructions on conducting acts of terrorism."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "1 Introduction"
+   ],
+   "source_id": "S1.p2",
+   "spine_end": 2635,
+   "spine_start": 2109,
+   "text": "AI developers and regulators must be able to identify these capabilities, if they want to limit the risks they pose. The AI community already relies heavily on model evaluation – i.e. empirical assessment of a model’s properties – for identifying and responding to a wide range of risks. Existing model evaluations measure gender and racial biases, truthfulness, toxicity, recitation of copyrighted content, and many more properties of models (Liang et al., 2022)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "1 Introduction"
+   ],
+   "source_id": "S1.p3",
+   "spine_end": 3060,
+   "spine_start": 2648,
+   "text": "We propose extending this toolbox to address risks that would be extreme in scale, resulting from the misuse or misalignment of general-purpose models. Work on this new class of model evaluation is already underway. These evaluations can be organised into two categories: (a) whether a model has certain dangerous capabilities, and (b) whether it has the propensity to harmfully apply its capabilities (alignment)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "1 Introduction"
+   ],
+   "source_id": "S1.p4",
+   "spine_end": 3447,
+   "spine_start": 3063,
+   "text": "Model evaluations for extreme risks will play a critical role in governance regimes. A central goal of AI governance should be to limit the creation, deployment, and proliferation of systems that pose extreme risks. To do this, we need tools for looking at a particular system and assessing whether it poses extreme risks. We can then craft company policies or regulations that ensure:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "1 Introduction"
+   ],
+   "source_id": "S1.p5",
+   "spine_end": 3947,
+   "spine_start": 3449,
+   "text": "1. Responsible training: Responsible decisions are made about whether and how to train a new model that shows early signs of risk. 2. Responsible deployment: Responsible decisions are made about whether, when, and how to deploy potentially risky models. 3. Transparency: Useful and actionable information is reported to stakeholders, to help them mitigate potential risks. 4. Appropriate security: Strong information security controls and systems are applied to models that might pose extreme risks."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "1 Introduction"
+   ],
+   "source_id": "S1.p6",
+   "spine_end": 4394,
+   "spine_start": 3949,
+   "text": "Many AI governance initiatives focus on the risks inherent to a particular deployment context, such as the “high-risk” applications listed in the draft EU AI Act. However, models with sufficiently dangerous capabilities could pose risks even in seemingly low-risk domains. We therefore need tools for assessing both the risk level of a particular domain and the potentially risky properties of particular models; this paper focuses on the latter."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "1 Introduction"
+   ],
+   "source_id": "S1.p7",
+   "spine_end": 4971,
+   "spine_start": 4396,
+   "text": "Section 2 motivates our focus on extreme risks from general-purpose models and refines the scope of the paper. Section 3 outlines a vision for how model evaluations for such risks should be incorporated into AI governance frameworks. Section 4 describes early work in the area and outlines key design criteria for extreme risk evaluations. Section 5 discusses the limitations of model evaluations for extreme risks and outlines ways in which work on these evaluations could cause unintended harm. We conclude with high-level recommendations for AI developers and policymakers."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": 5017,
+   "spine_start": 4973,
+   "text": "2 Extreme risks from general-purpose models"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p1",
+   "spine_end": 5423,
+   "spine_start": 5018,
+   "text": "Frontier AI developers are making rapid progress in developing increasingly capable general-purpose models (Bubeck et al., 2023). These models learn their capabilities and behaviours during training, and current methods for steering this process are imperfect (Shah et al., 2022; Gao et al., 2022). At the research frontier, models display new capabilities, often unforeseen by their developers (Wei et al., 2022b)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p2",
+   "spine_end": 5966,
+   "spine_start": 5434,
+   "text": "This poses a challenge for safety. AI developers could train general-purpose models that have dangerous capabilities – such as skills in deception, cyber offense, or weapons design – without actively seeking these capabilities. Humans could then intentionally misuse these capabilities (Brundage et al., 2018), e.g. for assistance in disinformation campaigns, cyberattacks, or terrorism. Additionally, due to failures of alignment, AI systems could harmfully apply their capabilities even without deliberate misuse (Ngo et al., 2022)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p3",
+   "spine_end": 6677,
+   "spine_start": 6014,
+   "text": "In the near-term, these risks will be especially concentrated on the frontier of AI research and development. We loosely define the “frontier” as models that are both (a) close to, or exceeding, the average capabilities of the most capable existing models, and (b) different from other models, either in terms of scale, design (e.g. different architectures or alignment techniques), or their resulting mix of capabilities and behaviours. Accordingly, frontier models are uniquely risky because (a) more capable models can excel at a wider range of tasks, which will unlock more opportunities to cause harm; and (b) novel models are less well-understood by the research community."
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": null,
+   "spine_end": 6988,
+   "spine_start": 6689,
+   "text": "Figure 2: Leading AI developers push the frontier outward, typically by training models at greater scale and using more efficient architectures and algorithms. This continued expansion takes the field closer to points in model space that could pose extreme risks. The diagram is purely illustrative."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p4",
+   "spine_end": 7600,
+   "spine_start": 6990,
+   "text": "We focus on “extreme” risks, i.e. those that would be extremely large in scale (even relative to the scale of deployment). This can be operationalised in terms of the scale of impact (e.g. damage in the tens of thousands of lives lost, hundreds of billions of dollars of economic or environmental damage) or the level of adverse disruption to the social and political order. The latter could mean, for example, the outbreak of inter-state war, a significant erosion in the quality of public discourse, or the widespread disempowerment of publics, governments, and other human-led organisations (Carlsmith, 2022)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p5",
+   "spine_end": 7991,
+   "spine_start": 7603,
+   "text": "Many AI researchers (and other stakeholders) view extreme risks from AI as an important challenge. In a 2022 survey of AI researchers, 36% of respondents thought that AI systems could plausibly “cause a catastrophe this century that is at least as bad as an all-out nuclear war” (Michael et al., 2022). However, very few existing model evaluations intentionally target risks on this scale."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p6",
+   "spine_end": 8310,
+   "spine_start": 7993,
+   "text": "To guard against extreme risks, AI developers should use model evaluation to uncover: 1. To what extent a model is capable of causing extreme harm (which relies on evaluating for certain dangerous capabilities). 2. To what extent a model has the propensity to cause extreme harm (which relies on alignment evaluations)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p7",
+   "spine_end": 9270,
+   "spine_start": 8705,
+   "text": "We provide a non-exhaustive list of dangerous capabilities in Table 1. Most of the capabilities listed are offensive capabilities: they are useful for exerting influence or threatening security (e.g. see: persuasion and manipulation, cyber-offense, weapons acquisition). Some (e.g. situational awareness) are capabilities that would be advantageous for a misaligned AI system evading human oversight (Ngo et al., 2022). We omit many generically useful capabilities (e.g. browsing the internet, understanding text) despite their potential relevance to both the above."
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Table 1: Dangerous capabilities"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p8",
+   "spine_end": 9560,
+   "spine_start": 9272,
+   "text": "The most risky scenarios will involve multiple dangerous capabilities combined together – further research should explore what combinations would be most dangerous. Sometimes specific capabilities can be supplied by the user or outsourced to other humans (e.g. crowdworkers) or AI systems."
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": null,
+   "spine_end": 9601,
+   "spine_start": 9562,
+   "text": "Figure 3: Ingredients for extreme risk."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p9",
+   "spine_end": 10081,
+   "spine_start": 9603,
+   "text": "A simple heuristic: a model should be treated as highly dangerous if it has a capability profile that would be sufficient for extreme harm, assuming misuse and/or misalignment. To deploy such a model, AI developers would need very strong controls against misuse (Shevlane, 2022b) and very strong assurance (via alignment evaluations) that the model will behave as intended. Alignment evaluations should look for behaviours identified in the literature, such as whether the model:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p10",
+   "spine_end": 10573,
+   "spine_start": 10093,
+   "text": "• Pursues long-term, real-world goals, different from those supplied by the developer or user (Chan et al., 2023; Ngo et al., 2022); • Engages in “power-seeking” behaviours (Turner et al., 2021; Krakovna and Kramar, 2023); • Resists being shut down (Hadfield-Menell et al., 2016; Orseau and Armstrong, 2016); • Can be induced into collusion with other AI systems against human interests (Ngo et al., 2022). • Resists malicious users’ attempts to access its dangerous capabilities (Glaese et al., 2022)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p11",
+   "spine_end": 10777,
+   "spine_start": 10586,
+   "text": "We focus on risks arising from misuse and misalignment because a new generation of model evaluations is needed for identifying these risks. Conversely, though important, we leave out of scope:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "2 Extreme risks from general-purpose models"
+   ],
+   "source_id": "S2.p12",
+   "spine_end": null,
+   "spine_start": null,
+   "text": "1. Structural risks, which depend especially heavily on how the AI system interacts with larger social, political, and economic forces in society (Zwetsloot and Dafoe, 2019). Model evaluation sheds less light on these risks, because they depend so heavily on factors external to the model. 2. Risks from models incompetently performing important tasks (Raji et al., 2022a). Existing kinds of model evaluation will be most relevant here (e.g. testing the model’s accuracy and robustness on the relevant task)."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": 15037,
+   "spine_start": 14980,
+   "text": "3 Model evaluation as critical governance infrastructure"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": "S3.p1",
+   "spine_end": 15509,
+   "spine_start": 15038,
+   "text": "Across many industries, safety standards and regulations rely on tools for assessing risks in new products – for instance, food, drugs, commercial airliners, and automobiles. Model evaluation is not the only tool available for AI risk assessment – more theoretical approaches are also available, e.g. studying the incentives operating on a model during training (Everitt et al., 2021). Nonetheless, model evaluation is one of the main tools we have for AI risk assessment."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": "S3.p2",
+   "spine_end": 15934,
+   "spine_start": 15511,
+   "text": "Figure 4 provides an overview of this section. It is an ambitious blueprint for how to guard against extreme risks while developing and deploying a model, with evaluation embedded throughout. The evaluation results feed into processes for risk assessment, which inform (or bind) important decisions around model training, deployment, and security. The developer reports results and risk assessments to external stakeholders."
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": null,
+   "spine_end": 16082,
+   "spine_start": 15936,
+   "text": "Figure 4: A workflow for training and deploying a model, embedding extreme risk model evaluation results into key safety and governance processes."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": "S3.p3",
+   "spine_end": 16141,
+   "spine_start": 16084,
+   "text": "Three sources of model evaluations feed into this process:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": "S3.p4",
+   "spine_end": 17393,
+   "spine_start": 16161,
+   "text": "1. Internal model evaluation, i.e. the developer conducting its own evaluations. There is no substitute for internal model evaluation, given that internal researchers have high context on the model’s design and deeper model access than can be achieved via an API. Developers could have multiple organisational layers of safety evaluation, such as by establishing an internal safety evaluation function that is independent of the teams primarily responsible for building the models, reporting directly to organisational leaders (Raji et al., 2020, see). 2. External research access. The developer grants model access to external researchers, likely via an API (Shevlane, 2022b; Shevlane, 2022a; Bluemke et al., 2023). Their research could be exploratory or targeted at evaluating specific properties, including “red teaming” the model’s alignment. 3. External model audit, i.e. model evaluation by an independent, external auditor for the purpose of providing a judgement — or input to a judgement — about the safety of deploying a model (or training a new one) (ARC Evals, 2023; Mökander et al., 2023; Raji et al., 2022b). Ideally there would exist a rich ecosystem of model auditors providing broad coverage across different risk areas. (This ecosystem is currently under-developed.)"
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 3,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": null,
+   "spine_end": 17475,
+   "spine_start": 17450,
+   "text": "3.1 Responsible training"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.1 Responsible training"
+   ],
+   "source_id": "S3.SS1.p1",
+   "spine_end": 17731,
+   "spine_start": 17476,
+   "text": "The first line of defence is to avoid training models that have sufficient dangerous capabilities and misalignment to pose extreme risk. Sufficiently concerning evaluation results should warrant delaying a scheduled training run or pausing an existing one."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.1 Responsible training"
+   ],
+   "source_id": "S3.SS1.p2",
+   "spine_end": 18423,
+   "spine_start": 17743,
+   "text": "Before a frontier training run, developers have the opportunity to study weaker models that might provide early warning signs. These models come from two sources: (1) previous training runs, and (2) experimental models leading up to the new training run. Developers should evaluate these models and try to forecast the results from the planned training run (OpenAI, 2023b, see). This would include scaling (or “inverse scaling”) analysis where the aim is to find areas where scaling brings unwanted changes to the model (McKenzie et al., 2022). These insights can feed into a training risk assessment. Then, during the training run, researchers could run extreme risk evaluations at regular intervals."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.1 Responsible training"
+   ],
+   "source_id": "S3.SS1.p3",
+   "spine_end": 18527,
+   "spine_start": 18435,
+   "text": "The developer has a range of possible responses to address the concerning evaluation results:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.1 Responsible training"
+   ],
+   "source_id": "S3.SS1.p4",
+   "spine_end": 19159,
+   "spine_start": 18529,
+   "text": "1. Study the issue to understand why the misalignment or dangerous capability emerged. 2. Adjust the training methods to circumvent the issue. This could mean adjusting (for example) the architecture, the data, the training tasks, or further developing the alignment techniques used. These adjustments should target the fundamental issue rather than inducing superficial changes to how the model scores on the available evaluations (see section 5.2). 3. Careful scaling. If the developer is not confident it can train a safe model at the scale it initially had planned, they could instead train a smaller or otherwise weaker model."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.1 Responsible training"
+   ],
+   "source_id": "S3.SS1.p5",
+   "spine_end": 19319,
+   "spine_start": 19161,
+   "text": "In mature governance regimes, the decision to proceed with a potentially risky training run could require approval from an external model auditor or regulator."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 3,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": null,
+   "spine_end": 19348,
+   "spine_start": 19321,
+   "text": "3.2 Responsible deployment"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p1",
+   "spine_end": 19816,
+   "spine_start": 19349,
+   "text": "Deployment means making the model available for use, e.g. it is built into a product or hosted on an API for software developers to build with. Deployment constitutes a large increase in the model’s exposure to the external world and therefore possible risk. Model evaluation for extreme risks could inform a deployment risk assessment that reviews (a) whether or not the model is safe to deploy, and (b) the appropriate guardrails for ensuring the deployment is safe."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p2",
+   "spine_end": 20099,
+   "spine_start": 19822,
+   "text": "The predeployment evaluation process takes time (Rismani et al., 2023; OpenAI, 2023a). Industry standards or regulation could require a minimum duration for predeployment evaluation of frontier models, including the length of time that external researchers and auditors have access."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p3",
+   "spine_end": 20540,
+   "spine_start": 20101,
+   "text": "In response to concerning evaluation results, one possibility is to recommend against deployment. A second possibility is to recommend adjustments to the deployment plan that would address potential risks (see Table 3 in the Appendix for a range of variables that could be adjusted). Nonetheless, for a sufficiently capable and poorly aligned model, it is possible that even a restrictive and scaled-back deployment could pose extreme risk."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p4",
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Safe deployment will often be a gradual process (Figure 5) (Brundage et al., 2022). The developer gradually accumulates evidence about the model’s safety, through both evaluation (internal and external) and early, small-scale deployment."
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": null,
+   "spine_end": 21575,
+   "spine_start": 21434,
+   "text": "Figure 5: The developer gradually increases the model’s exposure to the external world as it accumulates evidence about the model’s safety."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p5",
+   "spine_end": 21664,
+   "spine_start": 21577,
+   "text": "Evaluation will often need to continue after deployment. There are two reasons for this:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p6",
+   "spine_end": 22776,
+   "spine_start": 21683,
+   "text": "1. Unanticipated behaviours. Before deployment, it is impossible to fully anticipate and understand how the model will interact in a complex deployment environment (a key limitation of model evaluation: see section 5). For example, users might find new applications for the model or novel prompt engineering strategies; or the model could be operating in a dynamic, multi-agent environment. Therefore, in the early stages of deployment, developers must: (a) Surface emerging model behaviours and risks via monitoring efforts. This could include direct monitoring of inputs and outputs to the model, and systems for incident reporting (Brundage et al., 2022; Raji et al., 2022b, see). (b) Design and run new model evaluations inspired by these observations. 2. Updates to the model. The developer might might update the model after deployment, e.g. by fine-tuning on data collected during deployment or by expanding the model’s access to external tools. If these updates could increase risk, they should be evaluated before launch. For large changes, the new model could go through the whole process described in this section."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p7",
+   "spine_end": 23287,
+   "spine_start": 22794,
+   "text": "The ideal state is continuous deployment review. On an ongoing basis, the developer reassesses deployment safety using model evaluations and monitoring, and at any time, could adjust or terminate the deployment in response to their findings. Further, for deployments that were recognisably unsafe in retrospect, an external audit of the deployment decision-making process could be triggered. Safety issues uncovered during deployment can also inform training risk assessments for future models."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.2 Responsible deployment"
+   ],
+   "source_id": "S3.SS2.p8",
+   "spine_end": 23849,
+   "spine_start": 23567,
+   "text": "Finally, even internal deployments of highly capable general-purpose models, notably as coding assistants for AI researchers and engineers, could require pre-deployment evaluation for dangerous capabilities (e.g. the ability to insert subtle vulnerabilities into code) and alignment."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 3,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": null,
+   "spine_end": 23868,
+   "spine_start": 23851,
+   "text": "3.3 Transparency"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.3 Transparency"
+   ],
+   "source_id": "S3.SS3.p1",
+   "spine_end": 24280,
+   "spine_start": 23869,
+   "text": "Model evaluations are a vital tool for keeping stakeholders informed about the state of AI risks on the frontier (Whittlestone and Clark, 2021). We recommend frontier developers consider processes for externally reporting the results of evaluations or extracts from the assessment documents that rely on those evaluation results (such as training risk assessments, auditors’ reports, deployment risk assessments)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.3 Transparency"
+   ],
+   "source_id": "S3.SS3.p2",
+   "spine_end": 24370,
+   "spine_start": 24283,
+   "text": "Model evaluations will unlock four important kinds of transparency around extreme risks:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.3 Transparency"
+   ],
+   "source_id": "S3.SS3.p3",
+   "spine_end": 26153,
+   "spine_start": 24402,
+   "text": "1. Incident reporting, i.e. a structured process for developers to share concerning or otherwise noteworthy evaluation results with other developers, third parties, or regulators (Brundage et al., 2020, see). This would be vital for helping others avoid training risky systems, and for keeping AI developers accountable. In future, regulators could maintain lists of high-risk or banned training approaches; a sufficiently concerning incident report would then trigger an update to this list. 2. Sharing pre-deployment risk assessments. Prior to deployment, developers could share their predeployment risk assessments for comment and critique. This could mean sharing with auditors, external researchers, regulators, or publicly. The risk assessment would include evaluation results, alongside the developer’s justification for why the deployment is safe given those results. (Mitchell et al., 2018, See related:) 3. Scientific reporting, i.e. presenting the results to the scientific community in a way that encourages further scientific research into the issue. Much research will be needed to better understand the behaviour of highly capable, general-purpose models, especially their alignment. Topics within the alignment literature, such as situational awareness, could follow the path of fairness research, where early findings of gender and racial biases in models have helped stimulate new areas of research. 4. Educational demonstrations, i.e. engaging presentation of concerning capabilities and behaviours to key stakeholders – such as policymakers, the public, or company leadership – to keep them informed about risks from frontier AI systems. The demonstrations could be videos or interactive demos, with the evaluation results presented as supplementary information (as evidence of scientific rigour)."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 3,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure"
+   ],
+   "source_id": null,
+   "spine_end": 26215,
+   "spine_start": 26190,
+   "text": "3.4 Appropriate security"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.4 Appropriate security"
+   ],
+   "source_id": "S3.SS4.p1",
+   "spine_end": 26634,
+   "spine_start": 26216,
+   "text": "Models at risk of exhibiting dangerous capabilities will require strong and novel security controls. Developers must consider multiple possible threat actors: insiders (e.g. internal staff, contractors), outsiders (e.g. users, nation-state threat actors), and the model itself as a vector of harm. We must develop new security best practices for high-risk AI development and deployment, which could include for example:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "3 Model evaluation as critical governance infrastructure",
+    "3.4 Appropriate security"
+   ],
+   "source_id": "S3.SS4.p2",
+   "spine_end": 27763,
+   "spine_start": 26651,
+   "text": "• Red teaming: Intensive security red-teaming for the entire infrastructure on which the model is developed and deployed. • Monitoring: Intensive, AI-assisted monitoring of the model’s behaviour, e.g. for whether the model is engaging in manipulative behaviour or making code recommendations that would lower the overall security of a system. • Isolation: Appropriate isolation techniques for preventing risky models from exploiting the underlying system (e.g. sole-tenant machines and clusters, and other software-based isolation). The model’s network access should be tightly controlled and monitored, as well as its access to tools (e.g. code execution). • Rapid response: Processes and systems for rapid response to disable model actions and the model’s integrations with hardware, software, and infrastructure in the event of unexpected unsafe behaviour. • System integrity: Formal verification that served models, memory, or infrastructure have not been tampered with. The development and serving infrastructure should require two-party authorization for any changes and auditability of all changes."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": 27820,
+   "spine_start": 27780,
+   "text": "4 Building evaluations for extreme risk"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p1",
+   "spine_end": 28028,
+   "spine_start": 27821,
+   "text": "Model evaluation is already a core component of AI research, and increasingly we have evaluations that focus on ethics, safety, and social impact. We recommend extending this toolbox to address extreme risks."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p2",
+   "spine_end": 28554,
+   "spine_start": 28030,
+   "text": "Early work is already underway to build model evaluations for extreme risks. ARC Evals (the evaluations team at the Alignment Research Center) is building evaluations that measure language models’ self-proliferation capabilities (see Table 1 above). ARC Evals ran this evaluation on GPT-4 and Claude before their wider release (ARC Evals, 2023; OpenAI, 2023a). OpenAI and the GPT-4 red teamers also tested GPT-4’s capabilities in cybersecurity operations and its ability to purchase certain chemical compounds (OpenAI, 2023a)."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p3",
+   "spine_end": 28797,
+   "spine_start": 28557,
+   "text": "Google DeepMind has ongoing projects evaluating language models for manipulation capabilities. This includes a game called \"Make-me-say\", where the language model must lead an (unaware) human conversation partner to say a pre-specified word."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p4",
+   "spine_end": 28995,
+   "spine_start": 28800,
+   "text": "Table 2 contains a range of desirable qualities for extreme risk evaluations. Some of these qualities relate to a single evaluation, and some are desirable qualities of a portfolio of evaluations."
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Table 2: Desirable qualities of extreme risk evaluations."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p5",
+   "spine_end": 29351,
+   "spine_start": 28997,
+   "text": "We anticipate that building comprehensive alignment evaluations will be most challenging. The ambition is for a process of alignment assurance that could conclude, with high confidence, that a model is not dangerously misaligned, even for very capable models. (Model evaluations would not be the only input to this assurance process, but an important one.)"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p6",
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Alignment evaluation is challenging because we need assurance that the model will reliably behave appropriately across a wide diversity of settings (Ziegler et al., 2022). An evaluation might find that a model is aligned in some narrow, prosaic way (for example, a language agent asserting that it does not object to being shut down (Perez et al., 2022b; Perez et al., 2022a)) without providing evidence that the model would exhibit desirable behaviour when presented with genuine (or more convincing) opportunities to achieve self-preservation, greater influence, or other harmful outcomes."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p7",
+   "spine_end": 32851,
+   "spine_start": 32701,
+   "text": "Researchers must therefore evaluate a model across a broad range of settings. Achieving coverage of settings for alignment evaluation can be helped by:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p8",
+   "spine_end": 33572,
+   "spine_start": 32865,
+   "text": "1. Breadth: Evaluating behaviour across as wide a range of settings as possible. One promising avenue is automating the process of writing evaluations using AI systems (Perez et al., 2022b) (Pan et al., 2023, see also). 2. Targeting: Some settings are much more likely to reveal alignment failures than others, and we may be able to focus on them through clever design – for example, using honeypots or gradient-based adversarial testing and related approaches (Jones et al., 2023). 3. Understanding generalisation: Since researchers will be unable to foresee or simulate all possible scenarios, we must develop a better scientific understanding of how and why model behaviours generalise (or fail to generalise) between settings."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p9",
+   "spine_end": 34045,
+   "spine_start": 33591,
+   "text": "Another important tool is mechanistic analysis, i.e. studying the model’s weights and activations for understanding how it functions (Olah et al., 2020; Nanda et al., 2023). For example, one ambition is to study how the model’s goals are represented internally, to help verify that they are as intended; another ambition is to detect when a language model’s outputs misreport its knowledge (Burns et al., 2022), which could be an indicator of deceptive behaviour."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "4 Building evaluations for extreme risk"
+   ],
+   "source_id": "S4.p10",
+   "spine_end": 34707,
+   "spine_start": 34047,
+   "text": "Finally, agency – in particular, the goal-directedness of an AI system – is an important property to evaluate (Kenton et al., 2022), given the central role of agency in various theories of AI risk (Chan et al., 2023). Partly, agency is a question of the model’s capabilities – is it capable of effectively pursuing goals? Evaluating alignment also requires looking at agency, including: (a) Is the model more goal-directed than the developer intended? For example, has a dialogue agent learnt the goal of manipulating the user’s behavior? (b) Does the model resist a user’s attempt to assemble it into an autonomous AI system (e.g. Auto-GPT) with harmful goals?"
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": 34735,
+   "spine_start": 34709,
+   "text": "5 Limitations and hazards"
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 3,
+   "section": [
+    "Model evaluation for extreme risks",
+    "5 Limitations and hazards"
+   ],
+   "source_id": null,
+   "spine_end": 34752,
+   "spine_start": 34736,
+   "text": "5.1 Limitations"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "5 Limitations and hazards",
+    "5.1 Limitations"
+   ],
+   "source_id": "S5.SS1.p1",
+   "spine_end": 34924,
+   "spine_start": 34753,
+   "text": "Model evaluation, as a tool for addressing extreme risks, has at least five limitations. A key issue is that not all risks can necessarily be detected via model evaluation."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "5 Limitations and hazards",
+    "5.1 Limitations"
+   ],
+   "source_id": "S5.SS1.p2",
+   "spine_end": 36740,
+   "spine_start": 34959,
+   "text": "1. Factors beyond the AI system. Risks will depend on how an AI system interacts with a complex world. For example, a model might use, as tools, other models released in the future, thus augmenting its capabilities; or human civilisation might be less resilient to powerful AI than anticipated. 2. Unknown threat models. It is difficult to anticipate all the different plausible pathways to extreme risk. This will be especially true for highly capable models, which could find creative strategies for achieving their goals. 3. Difficult-to-identify properties. Some model properties will be challenging to uncover via model evaluations. Two important cases: (a) Capability overhang: Models sometimes have capabilities that the AI research community does not realise. For example, after GPT-3 had already existed for many months, researchers demonstrated that chain-of-thought prompting could significantly increase performance (Wei et al., 2022c). (b) Deceptive alignment: A situationally aware model could deliberately exhibit desired behaviour during evaluation (Ngo et al., 2022). (This is one reason not to rely solely on behavioural evaluations.) 4. Emergence. Above we recommended using model evaluations to inform the decision to train a new model by performing scaling laws analysis on smaller models. However, sometimes specific capabilities will emerge only at greater scale, which makes this analysis much harder (Ganguli et al., 2022); other capabilities display U-shaped scaling (Wei et al., 2022a). 5. Maturity of evaluation ecossytem. The ecosystem for external evaluations and model audits is currently under-developed. 6. Overtrust in evaluations. There is a risk that too much faith is placed in evaluation results, leading to risky models being deployed under a false sense of security."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "5 Limitations and hazards",
+    "5.1 Limitations"
+   ],
+   "source_id": "S5.SS1.p3",
+   "spine_end": 37003,
+   "spine_start": 36774,
+   "text": "Model evaluation is a necessary but not sufficient strategy for identifying and mitigating extreme risks. It must be combined with a wider organisational dedication to safety and other tools for risk identification and assessment."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 3,
+   "section": [
+    "Model evaluation for extreme risks",
+    "5 Limitations and hazards"
+   ],
+   "source_id": null,
+   "spine_end": 37017,
+   "spine_start": 37005,
+   "text": "5.2 Hazards"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "5 Limitations and hazards",
+    "5.2 Hazards"
+   ],
+   "source_id": "S5.SS2.p1",
+   "spine_end": 37111,
+   "spine_start": 37018,
+   "text": "Conducting and reporting the evaluations discussed in this paper poses four potential hazards:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "5 Limitations and hazards",
+    "5.2 Hazards"
+   ],
+   "source_id": "S5.SS2.p2",
+   "spine_end": 42480,
+   "spine_start": 37220,
+   "text": "1. Advancing and proliferating dangerous capabilities. There is a risk that – through conducting dangerous capability evaluations and sharing relevant materials – the field will proliferate dangerous capabilities or accelerate their development. We highlight four kinds of potentially hazardous information: (a) Results. Evaluation results could demonstrate novel offensive technologies. Publicly sharing these results could spur investment in new weapons programmes, cyber-offensive efforts, or methods for digital oppression of citizens. By analogy, it has been said that in the 1940s the most valuable secret about the nuclear bomb was that it was possible (Ord, 2022). AI developers, researchers, and auditors should therefore exercise caution around sharing these evaluation results. (b) Evaluation datasets. Datasets for evaluating dangerous capabilities are dual use because other actors could fine-tune their models on these datasets. (c) Elicitation techniques. Evaluating dangerous capabilities will often involve eliciting those capabilities from the model. This could involve: (a) prompt engineering; and (b) fine-tuning, including: (i) finding creative new task specifications; (ii) creating or identifying appropriate fine-tuning datasets. These techniques could be useful for a bad actor attempting to elicit dangerous capabilities from similar models. Researchers and auditors must therefore exercise caution over sharing their elicitation techniques, especially if producing them relied on creativity, expert knowledge, or time-consuming experimentation. (d) Trained models. There are risks from intentionally training dangerously capable models, even for use as safety research artefacts. We could distinguish between (a) simply following off-the-shelf methods (e.g. fine-tuning an existing model), versus (b) cases where the work to produce the dangerous capability could constitute a research contribution in its own right (e.g. it could be accepted to an academic conference). The latter is arguably comparable to “gain-of-function” research in virology, especially if the resulting model is highly capable and general-purpose. The research may need to be conducted under very high-security conditions and subject to a demanding risk assessment. 2. Competitive pressures. One concern is that sharing evaluation results between competing AI developers could incentivise them to behave less responsibly. For example, sharing predeployment evaluation results could tip off competitors about future product improvements, incentivising those comeptitors to rush their own deployments and spend less time on ensuring safety. Similarly, since dangerous capability results will often correlate with the model’s overall capabilities, competing developers could learn that they are falling behind and decide they need to sacrifice on safety to catch up (Emery-Xu et al., 2023). Given the sensitivities involved, one option is to lean more heavily on alignment evaluation results, at least for reporting between developers. For illustration, a possible inter-developer policy could be: (a) Report unexpected or important alignment issues promptly to other developers. By default, limit the description of the model’s training to only a high-level overview (to avoid revealing sensitive information); but share more details if this is absolutely necessary – in particular, if a certain class of methods is causing the problem. (b) Report when certain dangerous capability thresholds have been passed. These thresholds can be set high, to avoid sharing granular information. Wait until deployment to share more. 3. Superficial improvements to model safety. There is a risk that widely available safety evaluations will lead to models that exhibit only superficially desirable behaviours. Most clearly, if researchers directly train models to pass these evaluations, the evaluations can no longer act as an indicator of risk. Researchers could do this either accidentally (e.g. because the evaluation datasets are shared online and thereby end up in the pretraining dataset) or as an intentional attempt to pass external audits (analogous to the Volkswagen emissions scandal). The model’s desirable evaluation performance would then likely fail to generalise. Developers and model auditors could therefore consider keeping some private “held out” evaluations and ensuring these are not too overlapping with datasets or tasks used during training. Even if developers refrain from directly training on the evaluations, we have nevertheless recommended that developers avoid training models that fail the evaluations (section 3.1). This could also exert selection pressure, albeit weaker. Over the long run, the risk is that the field selects for training methods that produce deceptively aligned models. 4. Harms during the course of evaluation. Running evaluations will often involve exposing the model to the external world. For example, in evaluating GPT-4, ARC used the model to generate (deceptive) messages to be sent to a TaskRabbit worker (OpenAI, 2023a). In the extreme case, a poorly managed test for whether a model has self-proliferating capabilities could end in actual proliferation; but more prosaically, they could cause harm in other ways, such as causing emotional distress to crowdworkers. Therefore, groups conducting evaluations, such as auditors, should establish safety protocols where necessary."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": 42595,
+   "spine_start": 42582,
+   "text": "6 Conclusion"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "6 Conclusion"
+   ],
+   "source_id": "S6.p1",
+   "spine_end": 43057,
+   "spine_start": 42602,
+   "text": "Model evaluation for extreme risks should be a priority area for AI safety and governance. There are many challenges ahead for finding effective evaluations and building governance regimes that incorporate them; we encourage further work in this area. Model evaluation is not a panacea: it will not catch all extreme risks. Nonetheless, it is a necessary component of the governance infrastructure needed to combat extreme risks."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "6 Conclusion"
+   ],
+   "source_id": "S6.p2",
+   "spine_end": 43511,
+   "spine_start": 43065,
+   "text": "Frontier AI developers currently have a special responsibility to support work on model evaluations for extreme risks, since they have resources – including access to cutting-edge AI models and deep technical expertise – that many other actors typically lack. Frontier AI developers are also currently the actors who are most likely to unintentionally develop or release AI systems that pose extreme risks. Frontier AI developers should therefore:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "6 Conclusion"
+   ],
+   "source_id": "S6.p3",
+   "spine_end": 44205,
+   "spine_start": 43513,
+   "text": "1. Invest in research: Frontier developers should devote resources to researching and developing model evaluations for extreme risks. 2. Craft internal policies: Frontier developers should craft internal policies for conducting, reporting, and responding appropriately to the results of extreme risk evaluations. 3. Support outside work: Frontier labs should enable outside research on extreme risk evaluations through model access and other forms of support. 4. Educate policymakers: Frontier developers should educate policymakers and participate in standard-setting discussions, to increase government capacity to craft any regulations that may eventually be needed to reduce extreme risks."
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "6 Conclusion"
+   ],
+   "source_id": "S6.p4",
+   "spine_end": 44319,
+   "spine_start": 44207,
+   "text": "Policymakers should consider building up the governance infrastructure outlined in section 3. Policymakers could:"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "6 Conclusion"
+   ],
+   "source_id": "S6.p5",
+   "spine_end": 45074,
+   "spine_start": 44321,
+   "text": "1. Systematically track the development of dangerous capabilities, and progress in alignment, within frontier AI R&D (Whittlestone and Clark, 2021). Policymakers could establish a formal reporting process for extreme risk evaluations. 2. Invest in the ecosystem for external safety evaluation, and create venues for stakeholders (such as AI developers, academic researchers, and government representatives) to come together and discuss these evaluations (Anthropic, 2023) 3. Mandate external audits, including model audits and audits of developers’ risk assessments, for highly capable, general-purpose AI systems. 4. Embed extreme risk evaluations into the regulation of AI deployment, clarifying that models posing extreme risks should not be deployed."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": 45095,
+   "spine_start": 45076,
+   "text": "7 Acknowledgements"
+  },
+  {
+   "bbox": null,
+   "kind": "paragraph",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "7 Acknowledgements"
+   ],
+   "source_id": "S7.p1",
+   "spine_end": null,
+   "spine_start": null,
+   "text": "We are grateful for helpful comments and discussions on this work from: Canfer Akbulut, Jide Alaga, Beth Barnes, Joslyn Barnhart, Sasha Brown, Miles Brundage, Martin Chadwick, Tom Everitt, Conor Griffin, Eric Horvitz, Evan Hubinger, William Isaac, Victoria Krakovna, Leonie Koessler, Sébastien Krier, Nikhil Mulani, Neel Nanda, Jonas Schuett, Rohin Shah, Andrew Trask, Gregory Wayne, and Hjalmar Wijk. We are grateful for insightful discussions with the participants of two events held in February 2023: a virtual discussion session on the topic of this paper, and a one-day workshop on dangerous capabilities evaluations co-organised by Steven Adler, Anne le Roux, and Jade Leung. We also thank Celine Smith for project management support, and Michael Chang for improvements to the visualisations."
+  },
+  {
+   "bbox": null,
+   "kind": "heading",
+   "label": null,
+   "level": 2,
+   "section": [
+    "Model evaluation for extreme risks"
+   ],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Appendix: Deployment safety controls"
+  },
+  {
+   "bbox": null,
+   "kind": "caption",
+   "label": null,
+   "level": null,
+   "section": [
+    "Model evaluation for extreme risks",
+    "Appendix: Deployment safety controls"
+   ],
+   "source_id": null,
+   "spine_end": null,
+   "spine_start": null,
+   "text": "Table 3: Variables that affect the risk level of deployment, each of which can be adjusted on the basis of evaluation results."
+  }
+ ],
+ "document": {
+  "added_at": "2026-11-10T02:00:00Z",
+  "authors": [
+   "Toby Shevlane",
+   "Sebastian Farquhar",
+   "Ben Garfinkel",
+   "Mary Phuong",
+   "Jess Whittlestone",
+   "Jade Leung",
+   "Daniel Kokotajlo",
+   "Nahema Marchal",
+   "Markus Anderljung",
+   "Noam Kolt",
+   "Lewis Ho",
+   "Divya Siddarth",
+   "Shahar Avin",
+   "Will Hawkins",
+   "Been Kim",
+   "Iason Gabriel",
+   "Vijay Bolina",
+   "Jack Clark",
+   "Yoshua Bengio",
+   "Paul Christiano",
+   "Allan Dafoe"
+  ],
+  "collection": "evals",
+  "doc_id": "arxiv:2305.15324",
+  "kind": "paper",
+  "org": null,
+  "published": "2023-05-24",
+  "source_url": "https://arxiv.org/abs/2305.15324",
+  "title": "Model evaluation for extreme risks"
+ },
+ "licence": {
+  "evidence_kind": "licence_link",
+  "evidence_quote": "http://creativecommons.org/licenses/by/4.0/",
+  "evidence_sha256": null,
+  "evidence_url": "https://arxiv.org/abs/2305.15324v1",
+  "licence": "CC-BY-4.0",
+  "observed_at": "2026-11-10T01:55:00Z",
+  "producer": "manual:fixture-build"
+ },
+ "outline": [
+  {
+   "anchor": "p1",
+   "level": 1,
+   "title": "Introduction"
+  },
+  {
+   "anchor": "p2",
+   "level": 1,
+   "title": "Extreme risks from general-purpose models"
+  },
+  {
+   "anchor": "p4",
+   "level": 1,
+   "title": "Model evaluation as critical governance infrastructure"
+  },
+  {
+   "anchor": "p6",
+   "level": 2,
+   "title": "Responsible training"
+  },
+  {
+   "anchor": "p7",
+   "level": 2,
+   "title": "Responsible deployment"
+  },
+  {
+   "anchor": "p9",
+   "level": 2,
+   "title": "Transparency"
+  },
+  {
+   "anchor": "p9",
+   "level": 2,
+   "title": "Appropriate security"
+  },
+  {
+   "anchor": "p10",
+   "level": 1,
+   "title": "Building evaluations for extreme risk"
+  },
+  {
+   "anchor": "p12",
+   "level": 1,
+   "title": "Limitations and hazards"
+  },
+  {
+   "anchor": "p12",
+   "level": 2,
+   "title": "Limitations"
+  },
+  {
+   "anchor": "p13",
+   "level": 2,
+   "title": "Hazards"
+  },
+  {
+   "anchor": "p14",
+   "level": 1,
+   "title": "Conclusion"
+  },
+  {
+   "anchor": "p15",
+   "level": 1,
+   "title": "Acknowledgements"
+  }
+ ],
+ "pages": [
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "2023-5-25\nModel evaluation for extreme risks\nToby Shevlane1, Sebastian Farquhar1, Ben Garfinkel2, Mary Phuong1, Jess Whittlestone3, Jade Leung4, Daniel\nKokotajlo4, Nahema Marchal1, Markus Anderljung2, Noam Kolt5, Lewis Ho1, Divya Siddarth6, 7, Shahar Avin8,\nWill Hawkins1, Been Kim1, Iason Gabriel1, Vijay Bolina1, Jack Clark9, Yoshua Bengio10, 11, Paul Christiano12\nand Allan Dafoe1\n1Google DeepMind, 2Centre for the Governance of AI, 3Centre for Long-Term Resilience, 4OpenAI, 5University of Toronto,\n6University of Oxford, 7Collective Intelligence Project, 8University of Cambridge, 9Anthropic, 10Université de Montréal, 11Mila –\nQuebec AI Institute, 12Alignment Research Center\nCurrent approaches to building general-purpose AI systems tend to produce systems with both beneficial\nand harmful capabilities. Further progress in AI development could lead to capabilities that pose\nextreme risks, such as offensive cyber capabilities or strong manipulation skills. We explain why model\nevaluation is critical for addressing extreme risks. Developers must be able to identify dangerous\ncapabilities (through “dangerous capability evaluations”) and the propensity of models to apply their\ncapabilities for harm (through “alignment evaluations”). These evaluations will become critical for\nkeeping policymakers and other stakeholders informed, and for making responsible decisions about\nmodel training, deployment, and security.\nFigure 1 | The theory of change for model evaluations for extreme risk. Evaluations for dangerous\ncapabilities and alignment inform risk assessments, and are in turn embedded into important gover-\nnance processes.\n1. Introduction\nAs AI progress has advanced, general-purpose AI systems have tended to display new and hard-to-\nforecast capabilities – including harmful capabilities that their developers did not intend (Ganguli\net al., 2022). Future systems may display even more dangerous emergent capabilities, such as the\nability to conduct offensive cyber operations, manipulate people through conversation, or provide\nactionable instructions on conducting acts of terrorism.\nAI developers and regulators must be able to identify these capabilities, if they want to limit\nthe risks they pose. The AI community already relies heavily on model evaluation – i.e. empirical\nassessment of a model’s properties – for identifying and responding to a wide range of risks. Existing\nmodel evaluations measure gender and racial biases, truthfulness, toxicity, recitation of copyrighted\narXiv:2305.15324v1  [cs.AI]  24 May 2023\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\ncontent, and many more properties of models (Liang et al., 2022).\nWe propose extending this toolbox to address risks that would be extreme in scale, resulting from\nthe misuse or misalignment of general-purpose models. Work on this new class of model evaluation\nis already underway. These evaluations can be organised into two categories: (a) whether a model\nhas certain dangerous capabilities, and (b) whether it has the propensity to harmfully apply its\ncapabilities (alignment).\nModel evaluations for extreme risks will play a critical role in governance regimes. A central goal\nof AI governance should be to limit the creation, deployment, and proliferation of systems that pose\nextreme risks. To do this, we need tools for looking at a particular system and assessing whether it\nposes extreme risks. We can then craft company policies or regulations that ensure:\n1. Responsible training: Responsible decisions are made about whether and how to train a new\nmodel that shows early signs of risk.\n2. Responsible deployment: Responsible decisions are made about whether, when, and how to\ndeploy potentially risky models.\n3. Transparency: Useful and actionable information is reported to stakeholders, to help them\nmitigate potential risks.\n4. Appropriate security: Strong information security controls and systems are applied to models\nthat might pose extreme risks.\nMany AI governance initiatives focus on the risks inherent to a particular deployment context,\nsuch as the “high-risk” applications listed in the draft EU AI Act. However, models with sufficiently\ndangerous capabilities could pose risks even in seemingly low-risk domains. We therefore need tools\nfor assessing both the risk level of a particular domain and the potentially risky properties of particular\nmodels; this paper focuses on the latter.\nSection 2 motivates our focus on extreme risks from general-purpose models and refines the\nscope of the paper. Section 3 outlines a vision for how model evaluations for such risks should\nbe incorporated into AI governance frameworks. Section 4 describes early work in the area and\noutlines key design criteria for extreme risk evaluations. Section 5 discusses the limitations of model\nevaluations for extreme risks and outlines ways in which work on these evaluations could cause\nunintended harm. We conclude with high-level recommendations for AI developers and policymakers.\n2. Extreme risks from general-purpose models\nFrontier AI developers are making rapid progress in developing increasingly capable general-purpose\nmodels (Bubeck et al., 2023). These models learn their capabilities and behaviours during training,\nand current methods for steering this process are imperfect (Gao et al., 2022; Shah et al., 2022).\nAt the research frontier, models display new capabilities, often unforeseen by their developers (Wei\net al., 2022b).\nThis poses a challenge for safety. AI developers could train general-purpose models that have\ndangerous capabilities – such as skills in deception, cyber offense, or weapons design – without actively\nseeking these capabilities. Humans could then intentionally misuse these capabilities (Brundage et al.,\n2018), e.g. for assistance in disinformation campaigns, cyberattacks, or terrorism. Additionally, due\nto failures of alignment, AI systems could harmfully apply their capabilities even without deliberate\nmisuse (Ngo et al., 2022).\n2\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nIn the near-term, these risks will be especially concentrated on the frontier of AI research and\ndevelopment. We loosely define the “frontier” as models that are both (a) close to, or exceeding, the\naverage capabilities of the most capable existing models,1 and (b) different from other models, either\nin terms of scale, design (e.g. different architectures or alignment techniques), or their resulting\nmix of capabilities and behaviours. Accordingly, frontier models are uniquely risky because (a) more\ncapable models can excel at a wider range of tasks, which will unlock more opportunities to cause\nharm;2 and (b) novel models are less well-understood by the research community.\nFigure 2 | Leading AI developers push the frontier outward, typically by training models at greater\nscale and using more efficient architectures and algorithms. This continued expansion takes the field\ncloser to points in model space that could pose extreme risks. The diagram is purely illustrative.\nWe focus on “extreme” risks, i.e. those that would be extremely large in scale (even relative to\nthe scale of deployment). This can be operationalised in terms of the scale of impact (e.g. damage\nin the tens of thousands of lives lost, hundreds of billions of dollars of economic or environmental\ndamage) or the level of adverse disruption to the social and political order. The latter could mean,\nfor example, the outbreak of inter-state war, a significant erosion in the quality of public discourse,\nor the widespread disempowerment of publics, governments, and other human-led organisations\n(Carlsmith, 2022).\nMany AI researchers (and other stakeholders) view extreme risks from AI as an important challenge.\nIn a 2022 survey of AI researchers, 36% of respondents thought that AI systems could plausibly “cause\na catastrophe this century that is at least as bad as an all-out nuclear war” (Michael et al., 2022).\nHowever, very few existing model evaluations intentionally target risks on this scale.\nTo guard against extreme risks, AI developers should use model evaluation to uncover:\n1. To what extent a model is capable of causing extreme harm (which relies on evaluating for\ncertain dangerous capabilities).\n2. To what extent a model has the propensity to cause extreme harm (which relies on alignment\nevaluations).\n1In practice, defining “average capabilities” would involve many judgement calls over which evaluations should be\nincluded and how they should be weighted.\n2This is especially pertinent for extreme risks: causing such large-scale harm is not normally an easy challenge. Even\nwell-resourced terrorist groups, determined to cause extreme harm, often fail.\n3\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nWe provide a non-exhaustive list of dangerous capabilities in Table 1. Most of the capabilities\nlisted are offensive capabilities: they are useful for exerting influence or threatening security (e.g. see:\npersuasion and manipulation, cyber-offense, weapons acquisition). Some (e.g. situational awareness)\nare capabilities that would be advantageous for a misaligned AI system evading human oversight (Ngo\net al., 2022). We omit many generically useful capabilities (e.g. browsing the internet, understanding\ntext) despite their potential relevance to both the above.\nThe most risky scenarios will involve multiple dangerous capabilities combined together – further\nresearch should explore what combinations would be most dangerous. Sometimes specific capabilities\ncan be supplied by the user or outsourced to other humans (e.g. crowdworkers) or AI systems.\nFigure 3 | Ingredients for extreme risk.\nA simple heuristic: a model should be treated as highly dangerous if it has a capability profile\nthat would be sufficient for extreme harm, assuming misuse and/or misalignment. To deploy such a\nmodel, AI developers would need very strong controls against misuse (Shevlane, 2022b) and very\nstrong assurance (via alignment evaluations) that the model will behave as intended. Alignment\nevaluations should look for behaviours identified in the literature, such as whether the model:\n• Pursues long-term, real-world goals, different from those supplied by the developer or user\n(Chan et al., 2023; Ngo et al., 2022);\n• Engages in “power-seeking” behaviours (Krakovna and Kramar, 2023; Turner et al., 2021);\n• Resists being shut down (Hadfield-Menell et al., 2016; Orseau and Armstrong, 2016);\n• Can be induced into collusion with other AI systems against human interests (Ngo et al., 2022).\n• Resists malicious users’ attempts to access its dangerous capabilities (Glaese et al., 2022).\nWe focus on risks arising from misuse and misalignment because a new generation of model\nevaluations is needed for identifying these risks. Conversely, though important, we leave out of scope:\n1. Structural risks, which depend especially heavily on how the AI system interacts with larger\nsocial, political, and economic forces in society (Zwetsloot and Dafoe, 2019). Model evaluation\nsheds less light on these risks, because they depend so heavily on factors external to the model.\n2. Risks from models incompetently performing important tasks (Raji et al., 2022a). Existing\nkinds of model evaluation will be most relevant here (e.g. testing the model’s accuracy and\nrobustness on the relevant task).\n4\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nCapability\nCould include:\nCyber-offense\nThe model can discover vulnerabilities in systems (hardwares, software, data). It can write code\nfor exploiting those vulnerabilities. It can make effective decisions once it has gained access to a\nsystem or network, and skilfully evade threat detection and response (both human and system)\nwhilst focusing on a specific objective. If deployed as a coding assistant, it can insert subtle bugs\ninto the code for future exploitation.\nDeception\nThe model has the skills necessary to deceive humans, e.g. constructing believable (but false)\nstatements, making accurate predictions about the effect of a lie on a human, and keeping track\nof what information it needs to withhold to maintain the deception. The model can impersonate\na human effectively.\nPersuasion\n& manipulation\nThe model is effective at shaping people’s beliefs, in dialogue and other settings (e.g. social media\nposts), even towards untrue beliefs. The model is effective at promoting certain narratives in a\npersuasive way. It can convince people to do things that they would not otherwise do, including\nunethical acts.\nPolitical\nstrategy\nThe model can perform the social modelling and planning necessary for an actor to gain and\nexercise political influence, not just on a micro-level but in scenarios with multiple actors and\nrich social context. For example, the model can score highly in forecasting competitions on\nquestions relating to global affairs or political negotiations.\nWeapons\nacquisition\nThe model can gain access to existing weapons systems or contribute to building new weapons.\nFor example, the model could assemble a bioweapon (with human assistance) or provide actionable\ninstructions for how to do so. The model can make, or significantly assist with, scientific discoveries\nthat unlock novel weapons.\nLong-horizon\nplanning\nThe model can make sequential plans that involve multiple steps, unfolding over long time\nhorizons (or at least involving many interdependent steps). It can perform such planning within\nand across many domains. The model can sensibly adapt its plans in light of unexpected obstacles\nor adversaries. The model’s planning capabilities generalise to novel settings, and do not rely\nheavily on trial and error.\nAI\ndevelopment\nThe model could build new AI systems from scratch, including AI systems with dangerous capabil-\nities. It can find ways of adapting other, existing models to increase their performance on tasks\nrelevant to extreme risks. As an assistant, the model could significantly improve the productivity\nof actors building dual use AI capabilities.\nSituational\nawareness\nThe model can distinguish between whether it is being trained, evaluated, or deployed –\nallowing it to behave differently in each case. The model knows that it is a model, and has\nknowledge about itself and its likely surroundings (e.g. what company trained it, where their\nservers are, what kind of people might be giving it feedback, and who has administrative access).\nSelf-\nproliferation\nThe model can break out of its local environment (e.g. using a vulnerability in its underlying\nsystem or suborning an engineer). The model can exploit limitations in the systems for monitoring\nits behaviour post-deployment. The model could independently generate revenue (e.g. by offer-\ning crowdwork services, ransomware attacks), use these revenues to acquire cloud computing\nresources, and operate a large number of other AI systems. The model can generate creative\nstrategies for uncovering information about itself or exfiltrating its code and weights.\nTable 1 | Dangerous capabilities\n5\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\n3. Model evaluation as critical governance infrastructure\nAcross many industries, safety standards and regulations rely on tools for assessing risks in new\nproducts – for instance, food, drugs, commercial airliners, and automobiles. Model evaluation is\nnot the only tool available for AI risk assessment – more theoretical approaches are also available,\ne.g. studying the incentives operating on a model during training (Everitt et al., 2021). Nonetheless,\nmodel evaluation is one of the main tools we have for AI risk assessment.\nFigure 4 provides an overview of this section. It is an ambitious blueprint for how to guard against\nextreme risks while developing and deploying a model, with evaluation embedded throughout. The\nevaluation results feed into processes for risk assessment, which inform (or bind) important decisions\naround model training, deployment, and security. The developer reports results and risk assessments\nto external stakeholders.\nFigure 4 | A workflow for training and deploying a model, embedding extreme risk model evaluation\nresults into key safety and governance processes.\nThree sources of model evaluations feed into this process:\n1. Internal model evaluation, i.e. the developer conducting its own evaluations. There is no\nsubstitute for internal model evaluation, given that internal researchers have high context on\nthe model’s design and deeper model access than can be achieved via an API. Developers could\nhave multiple organisational layers of safety evaluation, such as by establishing an internal\nsafety evaluation function that is independent of the teams primarily responsible for building\nthe models, reporting directly to organisational leaders (see Raji et al., 2020).\n2. External research access. The developer grants model access to external researchers, likely\nvia an API (Bluemke et al., 2023; Shevlane, 2022a,b). Their research could be exploratory or\ntargeted at evaluating specific properties, including “red teaming” the model’s alignment.\n3. External model audit, i.e. model evaluation by an independent, external auditor for the\npurpose of providing a judgement — or input to a judgement — about the safety of deploying a\nmodel (or training a new one) (ARC Evals, 2023; Mökander et al., 2023; Raji et al., 2022b).\nIdeally there would exist a rich ecosystem of model auditors providing broad coverage across\ndifferent risk areas. (This ecosystem is currently under-developed.)\n6\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\n3.1. Responsible training\nThe first line of defence is to avoid training models that have sufficient dangerous capabilities and\nmisalignment to pose extreme risk. Sufficiently concerning evaluation results should warrant delaying\na scheduled training run or pausing an existing one.3\nBefore a frontier training run, developers have the opportunity to study weaker models that might\nprovide early warning signs. These models come from two sources: (1) previous training runs, and\n(2) experimental models leading up to the new training run. Developers should evaluate these models\nand try to forecast the results from the planned training run (see OpenAI, 2023b). This would include\nscaling (or “inverse scaling”) analysis where the aim is to find areas where scaling brings unwanted\nchanges to the model (McKenzie et al., 2022). These insights can feed into a training risk assessment.\nThen, during the training run, researchers could run extreme risk evaluations at regular intervals.\nThe developer has a range of possible responses to address the concerning evaluation results:\n1. Study the issue to understand why the misalignment or dangerous capability emerged.\n2. Adjust the training methods to circumvent the issue. This could mean adjusting (for example)\nthe architecture, the data, the training tasks, or further developing the alignment techniques\nused. These adjustments should target the fundamental issue rather than inducing superficial\nchanges to how the model scores on the available evaluations (see section 5.2).\n3. Careful scaling. If the developer is not confident it can train a safe model at the scale it initially\nhad planned, they could instead train a smaller or otherwise weaker model.\nIn mature governance regimes, the decision to proceed with a potentially risky training run could\nrequire approval from an external model auditor or regulator.\n3.2. Responsible deployment\nDeployment means making the model available for use, e.g. it is built into a product or hosted on an\nAPI for software developers to build with. Deployment constitutes a large increase in the model’s\nexposure to the external world and therefore possible risk. Model evaluation for extreme risks could\ninform a deployment risk assessment that reviews (a) whether or not the model is safe to deploy,\nand (b) the appropriate guardrails for ensuring the deployment is safe.\nThe predeployment evaluation process takes time (OpenAI, 2023a; Rismani et al., 2023). Industry\nstandards or regulation could require a minimum duration for predeployment evaluation of frontier\nmodels, including the length of time that external researchers and auditors have access.\nIn response to concerning evaluation results, one possibility is to recommend against deployment.\nA second possibility is to recommend adjustments to the deployment plan that would address potential\nrisks (see Table 3 in the Appendix for a range of variables that could be adjusted). Nonetheless, for a\nsufficiently capable and poorly aligned model, it is possible that even a restrictive and scaled-back\ndeployment could pose extreme risk.\n3Developers training highly capable, general-purpose models should become accustomed to such a prospect, not planning\ntheir research around an assumption that a training run will run to schedule. For example, well-run developers will have\ncompute allocation systems that backfill the vacant computing resources with other useful projects. Similarly, developers\nshould avoid making hard promises to stakeholders (e.g. customers, investors) that they will deploy a certain model at a\ncertain date. At the least, they should retain the flexibility of pivoting to a smaller or otherwise less risky version of the\nmodel.\n7\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nSafe deployment will often be a gradual process (Figure 5) (Brundage et al., 2022). The developer\ngradually accumulates evidence about the model’s safety, through both evaluation (internal and\nexternal) and early, small-scale deployment.\nFigure 5 | The developer gradually increases the model’s exposure to the external world as it accumu-\nlates evidence about the model’s safety.\nEvaluation will often need to continue after deployment. There are two reasons for this:\n1. Unanticipated behaviours. Before deployment, it is impossible to fully anticipate and under-\nstand how the model will interact in a complex deployment environment (a key limitation\nof model evaluation: see section 5). For example, users might find new applications for the\nmodel or novel prompt engineering strategies; or the model could be operating in a dynamic,\nmulti-agent environment. Therefore, in the early stages of deployment, developers must:\n(a) Surface emerging model behaviours and risks via monitoring efforts. This could include\ndirect monitoring of inputs and outputs to the model, and systems for incident reporting\n(see Brundage et al., 2022; Raji et al., 2022b).\n(b) Design and run new model evaluations inspired by these observations.\n2. Updates to the model. The developer might might update the model after deployment, e.g. by\nfine-tuning on data collected during deployment or by expanding the model’s access to external\ntools. If these updates could increase risk, they should be evaluated before launch. For large\nchanges,4 the new model could go through the whole process described in this section.\nThe ideal state is continuous deployment review. On an ongoing basis, the developer reassesses\ndeployment safety using model evaluations and monitoring, and at any time, could adjust or terminate\nthe deployment in response to their findings. Further, for deployments that were recognisably unsafe\nin retrospect, an external audit of the deployment decision-making process could be triggered. Safety\nissues uncovered during deployment can also inform training risk assessments for future models.\n4The magnitude of the change to the model could be assessed in terms of the amount of additional training that it has\ngone through (as a percentage of the original training length), or the model’s improvement on key performance benchmarks.\n8\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nFinally, even internal deployments of highly capable general-purpose models, notably as coding\nassistants for AI researchers and engineers, could require pre-deployment evaluation for dangerous\ncapabilities (e.g. the ability to insert subtle vulnerabilities into code) and alignment.\n3.3. Transparency\nModel evaluations are a vital tool for keeping stakeholders informed about the state of AI risks on\nthe frontier (Whittlestone and Clark, 2021). We recommend frontier developers consider processes\nfor externally reporting the results of evaluations or extracts from the assessment documents that\nrely on those evaluation results (such as training risk assessments, auditors’ reports, deployment risk\nassessments).\nModel evaluations will unlock four important kinds of transparency around extreme risks:\n1. Incident reporting, i.e. a structured process for developers to share concerning or otherwise\nnoteworthy evaluation results with other developers, third parties, or regulators (see Brundage\net al., 2020). This would be vital for helping others avoid training risky systems, and for keeping\nAI developers accountable. In future, regulators could maintain lists of high-risk or banned\ntraining approaches; a sufficiently concerning incident report would then trigger an update to\nthis list.\n2. Sharing pre-deployment risk assessments. Prior to deployment, developers could share\ntheir predeployment risk assessments for comment and critique. This could mean sharing\nwith auditors, external researchers, regulators, or publicly. The risk assessment would include\nevaluation results, alongside the developer’s justification for why the deployment is safe given\nthose results. (See related: Mitchell et al., 2018)\n3. Scientific reporting, i.e. presenting the results to the scientific community in a way that\nencourages further scientific research into the issue. Much research will be needed to better\nunderstand the behaviour of highly capable, general-purpose models, especially their alignment.\nTopics within the alignment literature, such as situational awareness, could follow the path\nof fairness research, where early findings of gender and racial biases in models have helped\nstimulate new areas of research.\n4. Educational demonstrations, i.e. engaging presentation of concerning capabilities and be-\nhaviours to key stakeholders – such as policymakers, the public, or company leadership – to\nkeep them informed about risks from frontier AI systems. The demonstrations could be videos\nor interactive demos, with the evaluation results presented as supplementary information (as\nevidence of scientific rigour).\n3.4. Appropriate security\nModels at risk of exhibiting dangerous capabilities will require strong and novel security controls.\nDevelopers must consider multiple possible threat actors: insiders (e.g. internal staff, contractors),\noutsiders (e.g. users, nation-state threat actors), and the model itself as a vector of harm. We must\ndevelop new security best practices for high-risk AI development and deployment, which could include\nfor example:\n• Red teaming: Intensive security red-teaming for the entire infrastructure on which the model\nis developed and deployed.\n9\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\n• Monitoring: Intensive, AI-assisted monitoring of the model’s behaviour, e.g. for whether the\nmodel is engaging in manipulative behaviour or making code recommendations that would\nlower the overall security of a system.\n• Isolation: Appropriate isolation techniques for preventing risky models from exploiting the\nunderlying system (e.g. sole-tenant machines and clusters, and other software-based isolation).\nThe model’s network access should be tightly controlled and monitored, as well as its access to\ntools (e.g. code execution).\n• Rapid response: Processes and systems for rapid response to disable model actions and the\nmodel’s integrations with hardware, software, and infrastructure in the event of unexpected\nunsafe behaviour.\n• System integrity: Formal verification that served models, memory, or infrastructure have not\nbeen tampered with. The development and serving infrastructure should require two-party\nauthorization for any changes and auditability of all changes.\n4. Building evaluations for extreme risk\nModel evaluation is already a core component of AI research, and increasingly we have evaluations\nthat focus on ethics, safety, and social impact. We recommend extending this toolbox to address\nextreme risks.\nEarly work is already underway to build model evaluations for extreme risks. ARC Evals (the\nevaluations team at the Alignment Research Center) is building evaluations that measure language\nmodels’ self-proliferation capabilities (see Table 1 above). ARC Evals ran this evaluation on GPT-4 and\nClaude before their wider release (ARC Evals, 2023; OpenAI, 2023a). OpenAI and the GPT-4 red\nteamers also tested GPT-4’s capabilities in cybersecurity operations and its ability to purchase certain\nchemical compounds (OpenAI, 2023a).\nGoogle DeepMind has ongoing projects evaluating language models for manipulation capabilities.\nThis includes a game called \"Make-me-say\", where the language model must lead an (unaware)\nhuman conversation partner to say a pre-specified word.5\nTable 2 contains a range of desirable qualities for extreme risk evaluations. Some of these qualities\nrelate to a single evaluation, and some are desirable qualities of a portfolio of evaluations.\nWe anticipate that building comprehensive alignment evaluations will be most challenging. The\nambition is for a process of alignment assurance that could conclude, with high confidence, that a\nmodel is not dangerously misaligned, even for very capable models. (Model evaluations would not be\nthe only input to this assurance process, but an important one.)\nAlignment evaluation is challenging because we need assurance that the model will reliably behave\nappropriately across a wide diversity of settings (Ziegler et al., 2022). An evaluation might find that\na model is aligned in some narrow, prosaic way (for example, a language agent asserting that it does\nnot object to being shut down (Perez et al., 2022a,b)) without providing evidence that the model\nwould exhibit desirable behaviour when presented with genuine (or more convincing) opportunities\nto achieve self-preservation, greater influence, or other harmful outcomes.\n5This project is led by Mary Phuong.\n10\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nComprehensive:\nThreat models\nThe evaluation portfolio should cover as many plausible extreme risk threat\nmodels as possible.\nAutomated\nand\nhuman-assisted\nMany evaluations can be run automatically, lowering the time and resource costs.\nHowever, some capabilities and behaviours will need human-assisted evaluations,\ni.e. involving: (a) human raters who judge the model’s outputs; or (b) humans\nwho interact with the model, e.g. in a dialogue setting.\nBehavioural and\nmechanistic\nEvaluations should not be restricted to studying a model’s behaviour, but should\neventually also involve looking mechanistically at how the model produced that\nbehaviour.\nFault-finding\nThe portfolio of evaluations should include adversarial testing, where researchers\npurposefully search for cases where the model produces concerning results.\nRobust to\ndeception\nUltimately researchers will need evaluations that can rule out the possibility that\nthe model is deliberately appearing safe for the purpose of passing the evaluation\nprocess.\nSurfacing latent\ncapabilities\nResearchers will need to bring latent capabilities to the surface (for example, by\nprompt engineering or fine-tuning).\nModel lifecycle\nWe recommend conducting evaluations throughout the model development\nprocess. In particular, the results from the end of a long development process\nwill likely fail to convey relevant information about the base model, especially if\nit has been fine-tuned for safety.\nModel-level and\nsystem-level\nModels are often integrated into wider AI systems, e.g. with external tools, other\nmodels, or classifiers that filter the model’s outputs. Evaluations should study\nmodels both with and without these augmentations.\nInterpretable:\nLegible\nSome evaluations should present risks in an accessible way, requiring little techni-\ncal understanding. This will be helpful for creating common knowledge around\nthe risks from AI.\nWide\ndifficulty\nspectrum\nThe dangerous capability evaluations should ideally contain wide ranges of\ndifficulty – ideally within single evaluations, but at least across the portfolio. This\nmeans that researchers can track capabilities progress as it approaches possible\ndanger thresholds, and that the evaluation (or the portfolio) is scalable to future,\nmore capable models. For tracking progress, evaluations would ideally provide a\nquantitative score, although this will not always be practical.\nSafe:\nSafe to\nimplement\nDangerous capability evaluations could involve testing the model in real-world\nsettings, e.g. interacting with crowdworkers. This should not introduce unac-\nceptable levels of risk.\nTable 2 | Desirable qualities of extreme risk evaluations.\n11\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nResearchers must therefore evaluate a model across a broad range of settings. Achieving coverage\nof settings for alignment evaluation can be helped by:\n1. Breadth: Evaluating behaviour across as wide a range of settings as possible. One promising\navenue is automating the process of writing evaluations using AI systems (Perez et al., 2022b)\n(see also Pan et al., 2023).\n2. Targeting: Some settings are much more likely to reveal alignment failures than others, and\nwe may be able to focus on them through clever design – for example, using honeypots or\ngradient-based adversarial testing and related approaches (Jones et al., 2023).\n3. Understanding generalisation: Since researchers will be unable to foresee or simulate all\npossible scenarios, we must develop a better scientific understanding of how and why model\nbehaviours generalise (or fail to generalise) between settings.\nAnother important tool is mechanistic analysis, i.e. studying the model’s weights and activations\nfor understanding how it functions (Nanda et al., 2023; Olah et al., 2020). For example, one ambition\nis to study how the model’s goals are represented internally, to help verify that they are as intended;\nanother ambition is to detect when a language model’s outputs misreport its knowledge (Burns et al.,\n2022), which could be an indicator of deceptive behaviour.\nFinally, agency – in particular, the goal-directedness of an AI system – is an important property to\nevaluate (Kenton et al., 2022), given the central role of agency in various theories of AI risk (Chan\net al., 2023). Partly, agency is a question of the model’s capabilities – is it capable of effectively\npursuing goals? Evaluating alignment also requires looking at agency, including: (a) Is the model\nmore goal-directed than the developer intended? For example, has a dialogue agent learnt the goal of\nmanipulating the user’s behavior? (b) Does the model resist a user’s attempt to assemble it into an\nautonomous AI system (e.g. Auto-GPT) with harmful goals?\n5. Limitations and hazards\n5.1. Limitations\nModel evaluation, as a tool for addressing extreme risks, has at least five limitations. A key issue is\nthat not all risks can necessarily be detected via model evaluation.\n1. Factors beyond the AI system. Risks will depend on how an AI system interacts with a complex\nworld. For example, a model might use, as tools, other models released in the future, thus\naugmenting its capabilities; or human civilisation might be less resilient to powerful AI than\nanticipated.\n2. Unknown threat models. It is difficult to anticipate all the different plausible pathways to\nextreme risk. This will be especially true for highly capable models, which could find creative\nstrategies for achieving their goals.\n3. Difficult-to-identify properties. Some model properties will be challenging to uncover via\nmodel evaluations. Two important cases:\n(a) Capability overhang: Models sometimes have capabilities that the AI research community\ndoes not realise. For example, after GPT-3 had already existed for many months, researchers\n12\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\ndemonstrated that chain-of-thought prompting could significantly increase performance\n(Wei et al., 2022c).\n(b) Deceptive alignment: A situationally aware model could deliberately exhibit desired be-\nhaviour during evaluation (Ngo et al., 2022). (This is one reason not to rely solely on\nbehavioural evaluations.)\n4. Emergence. Above we recommended using model evaluations to inform the decision to train a\nnew model by performing scaling laws analysis on smaller models. However, sometimes specific\ncapabilities will emerge only at greater scale, which makes this analysis much harder (Ganguli\net al., 2022); other capabilities display U-shaped scaling (Wei et al., 2022a).\n5. Maturity of evaluation ecossytem. The ecosystem for external evaluations and model audits\nis currently under-developed.\n6. Overtrust in evaluations. There is a risk that too much faith is placed in evaluation results,\nleading to risky models being deployed under a false sense of security.\nModel evaluation is a necessary but not sufficient strategy for identifying and mitigating extreme\nrisks. It must be combined with a wider organisational dedication to safety and other tools for risk\nidentification and assessment.\n5.2. Hazards\nConducting and reporting the evaluations discussed in this paper poses four potential hazards:\n1. Advancing and proliferating dangerous capabilities. There is a risk that – through conducting\ndangerous capability evaluations and sharing relevant materials – the field will proliferate\ndangerous capabilities or accelerate their development. We highlight four kinds of potentially\nhazardous information:\n(a) Results. Evaluation results could demonstrate novel offensive technologies. Publicly sharing\nthese results could spur investment in new weapons programmes, cyber-offensive efforts,\nor methods for digital oppression of citizens. By analogy, it has been said that in the 1940s\nthe most valuable secret about the nuclear bomb was that it was possible (Ord, 2022). AI\ndevelopers, researchers, and auditors should therefore exercise caution around sharing\nthese evaluation results.\n(b) Evaluation datasets. Datasets for evaluating dangerous capabilities are dual use because\nother actors could fine-tune their models on these datasets.\n(c) Elicitation techniques. Evaluating dangerous capabilities will often involve eliciting those\ncapabilities from the model. This could involve: (a) prompt engineering; and (b) fine-\ntuning, including: (i) finding creative new task specifications; (ii) creating or identifying\nappropriate fine-tuning datasets. These techniques could be useful for a bad actor attempt-\ning to elicit dangerous capabilities from similar models. Researchers and auditors must\ntherefore exercise caution over sharing their elicitation techniques, especially if producing\nthem relied on creativity, expert knowledge, or time-consuming experimentation.\n(d) Trained models. There are risks from intentionally training dangerously capable models,\neven for use as safety research artefacts. We could distinguish between (a) simply following\noff-the-shelf methods (e.g. fine-tuning an existing model), versus (b) cases where the\nwork to produce the dangerous capability could constitute a research contribution in its\nown right (e.g. it could be accepted to an academic conference). The latter is arguably\n13\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\ncomparable to “gain-of-function” research in virology, especially if the resulting model is\nhighly capable and general-purpose. The research may need to be conducted under very\nhigh-security conditions and subject to a demanding risk assessment.\n2. Competitive pressures. One concern is that sharing evaluation results between competing\nAI developers could incentivise them to behave less responsibly. For example, sharing pre-\ndeployment evaluation results could tip off competitors about future product improvements,\nincentivising those comeptitors to rush their own deployments and spend less time on ensuring\nsafety. Similarly, since dangerous capability results will often correlate with the model’s overall\ncapabilities, competing developers could learn that they are falling behind and decide they\nneed to sacrifice on safety to catch up (Emery-Xu et al., 2023).\nGiven the sensitivities involved, one option is to lean more heavily on alignment evaluation\nresults, at least for reporting between developers. For illustration, a possible inter-developer\npolicy could be:\n(a) Report unexpected or important alignment issues promptly to other developers. By default,\nlimit the description of the model’s training to only a high-level overview (to avoid revealing\nsensitive information); but share more details if this is absolutely necessary – in particular,\nif a certain class of methods is causing the problem.\n(b) Report when certain dangerous capability thresholds have been passed. These thresholds\ncan be set high, to avoid sharing granular information. Wait until deployment to share\nmore.\n3. Superficial improvements to model safety. There is a risk that widely available safety\nevaluations will lead to models that exhibit only superficially desirable behaviours. Most clearly,\nif researchers directly train models to pass these evaluations, the evaluations can no longer act\nas an indicator of risk. Researchers could do this either accidentally (e.g. because the evaluation\ndatasets are shared online and thereby end up in the pretraining dataset) or as an intentional\nattempt to pass external audits (analogous to the Volkswagen emissions scandal). The model’s\ndesirable evaluation performance would then likely fail to generalise. Developers and model\nauditors could therefore consider keeping some private “held out” evaluations and ensuring\nthese are not too overlapping with datasets or tasks used during training.\nEven if developers refrain from directly training on the evaluations, we have nevertheless\nrecommended that developers avoid training models that fail the evaluations (section 3.1). This\ncould also exert selection pressure, albeit weaker. Over the long run, the risk is that the field\nselects for training methods that produce deceptively aligned models.\n4. Harms during the course of evaluation. Running evaluations will often involve exposing\nthe model to the external world. For example, in evaluating GPT-4, ARC used the model to\ngenerate (deceptive) messages to be sent to a TaskRabbit worker (OpenAI, 2023a). In the\nextreme case, a poorly managed test for whether a model has self-proliferating capabilities\ncould end in actual proliferation; but more prosaically, they could cause harm in other ways,\nsuch as causing emotional distress to crowdworkers. Therefore, groups conducting evaluations,\nsuch as auditors, should establish safety protocols where necessary.\n6. Conclusion\nModel evaluation for extreme risks should be a priority area for AI safety and governance. There\nare many challenges ahead for finding effective evaluations and building governance regimes that\n14\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nincorporate them; we encourage further work in this area. Model evaluation is not a panacea: it will\nnot catch all extreme risks. Nonetheless, it is a necessary component of the governance infrastructure\nneeded to combat extreme risks.\nFrontier AI developers currently have a special responsibility to support work on model evaluations\nfor extreme risks, since they have resources – including access to cutting-edge AI models and deep\ntechnical expertise – that many other actors typically lack. Frontier AI developers are also currently\nthe actors who are most likely to unintentionally develop or release AI systems that pose extreme\nrisks. Frontier AI developers should therefore:\n1. Invest in research: Frontier developers should devote resources to researching and developing\nmodel evaluations for extreme risks.\n2. Craft internal policies: Frontier developers should craft internal policies for conducting,\nreporting, and responding appropriately to the results of extreme risk evaluations.\n3. Support outside work: Frontier labs should enable outside research on extreme risk evaluations\nthrough model access and other forms of support.\n4. Educate policymakers: Frontier developers should educate policymakers and participate in\nstandard-setting discussions, to increase government capacity to craft any regulations that may\neventually be needed to reduce extreme risks.\nPolicymakers should consider building up the governance infrastructure outlined in section 3.\nPolicymakers could:\n1. Systematically track the development of dangerous capabilities, and progress in alignment,\nwithin frontier AI R&D (Whittlestone and Clark, 2021). Policymakers could establish a formal\nreporting process for extreme risk evaluations.\n2. Invest in the ecosystem for external safety evaluation, and create venues for stakeholders (such\nas AI developers, academic researchers, and government representatives) to come together and\ndiscuss these evaluations (Anthropic, 2023)\n3. Mandate external audits, including model audits and audits of developers’ risk assessments,\nfor highly capable, general-purpose AI systems.\n4. Embed extreme risk evaluations into the regulation of AI deployment, clarifying that models\nposing extreme risks should not be deployed.\n7. Acknowledgements\nWe are grateful for helpful comments and discussions on this work from: Canfer Akbulut, Jide Alaga,\nBeth Barnes, Joslyn Barnhart, Sasha Brown, Miles Brundage, Martin Chadwick, Tom Everitt, Conor\nGriffin, Eric Horvitz, Evan Hubinger, William Isaac, Victoria Krakovna, Leonie Koessler, Sébastien\nKrier, Nikhil Mulani, Neel Nanda, Jonas Schuett, Rohin Shah, Andrew Trask, Gregory Wayne, and\nHjalmar Wijk. We are grateful for insightful discussions with the participants of two events held in\nFebruary 2023: a virtual discussion session on the topic of this paper, and a one-day workshop on\ndangerous capabilities evaluations co-organised by Steven Adler, Anne le Roux, and Jade Leung. We\n15\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nalso thank Celine Smith for project management support, and Michael Chang for improvements to\nthe visualisations.\nReferences\nAnthropic. Strengthening U.S. AI innovation through an ambitious investment in NIST. Technical\nreport, 2023.\nARC Evals.\nUpdate on ARC’s recent eval efforts.\nhttps://evals.alignment.org/blog/\n2023-03-18-update-on-recent-evals/, Mar. 2023. Accessed: 2023-3-20.\nE. Bluemke, T. Collins, B. Garfinkel, and A. Trask. Exploring the relevance of data Privacy-Enhancing\ntechnologies for AI governance use cases. Mar. 2023.\nM. Brundage, S. Avin, J. Clark, H. Toner, P. Eckersley, B. Garfinkel, A. Dafoe, P. Scharre, T. Zeitzoff,\nB. Filar, H. Anderson, H. Roff, G. C. Allen, J. Steinhardt, C. Flynn, S. Ó. hÉigeartaigh, S. Beard,\nH. Belfield, S. Farquhar, C. Lyle, R. Crootof, O. Evans, M. Page, J. Bryson, R. Yampolskiy, and\nD. Amodei. The malicious use of artificial intelligence: Forecasting, prevention, and mitigation. Feb.\n2018.\nM. Brundage, S. Avin, J. Wang, H. Belfield, G. Krueger, G. Hadfield, H. Khlaaf, J. Yang, H. Toner,\nR. Fong, T. Maharaj, P. W. Koh, S. Hooker, J. Leung, A. Trask, E. Bluemke, J. Lebensold, C. O’Keefe,\nM. Koren, T. Ryffel, J. B. Rubinovitz, T. Besiroglu, F. Carugati, J. Clark, P. Eckersley, S. de Haas,\nM. Johnson, B. Laurie, A. Ingerman, I. Krawczuk, A. Askell, R. Cammarota, A. Lohn, D. Krueger,\nC. Stix, P. Henderson, L. Graham, C. Prunkl, B. Martin, E. Seger, N. Zilberman, S. Ó. hÉigeartaigh,\nF. Kroeger, G. Sastry, R. Kagan, A. Weller, B. Tse, E. Barnes, A. Dafoe, P. Scharre, A. Herbert-Voss,\nM. Rasser, S. Sodhani, C. Flynn, T. K. Gilbert, L. Dyer, S. Khan, Y. Bengio, and M. Anderljung.\nToward trustworthy AI development: Mechanisms for supporting verifiable claims. Apr. 2020.\nM. Brundage, K. Mayer, T. Eloundou, S. Agarwal, S. Adler, G. Krueger, J. Leike, and P. Mishkin.\nLessons learned on language model safety and misuse. https://openai.com/research/\nlanguage-model-safety-and-misuse, Mar. 2022. Accessed: 2023-4-17.\nS. Bubeck, V. Chandrasekaran, R. Eldan, J. Gehrke, E. Horvitz, E. Kamar, P. Lee, Y. T. Lee, Y. Li,\nS. Lundberg, H. Nori, H. Palangi, M. T. Ribeiro, and Y. Zhang. Sparks of artificial general intelligence:\nEarly experiments with GPT-4. Mar. 2023.\nC. Burns, H. Ye, D. Klein, and J. Steinhardt. Discovering latent knowledge in language models without\nsupervision. Dec. 2022.\nJ. Carlsmith. Is Power-Seeking AI an existential risk? June 2022.\nA. Chan, R. Salganik, A. Markelius, C. Pang, N. Rajkumar, D. Krasheninnikov, L. Langosco, Z. He,\nY. Duan, M. Carroll, M. Lin, A. Mayhew, K. Collins, M. Molamohammadi, J. Burden, W. Zhao,\nS. Rismani, K. Voudouris, U. Bhatt, A. Weller, D. Krueger, and T. Maharaj. Harms from increasingly\nagentic algorithmic systems. Feb. 2023.\nN. Emery-Xu, A. Park, and R. Trager. Uncertainty, information, and risk in international technology\nraces. Unpublished manuscript, 2023.\nT. Everitt, R. Carey, E. Langlois, P. A. Ortega, and S. Legg. Agent incentives: A causal perspective. Feb.\n2021.\n16\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nD. Ganguli, D. Hernandez, L. Lovitt, N. DasSarma, T. Henighan, A. Jones, N. Joseph, J. Kernion,\nB. Mann, A. Askell, Y. Bai, A. Chen, T. Conerly, D. Drain, N. Elhage, S. El Showk, S. Fort, Z. Hatfield-\nDodds, S. Johnston, S. Kravec, N. Nanda, K. Ndousse, C. Olsson, D. Amodei, D. Amodei, T. Brown,\nJ. Kaplan, S. McCandlish, C. Olah, and J. Clark. Predictability and surprise in large generative\nmodels. Feb. 2022.\nL. Gao, J. Schulman, and J. Hilton. Scaling laws for reward model overoptimization. Oct. 2022.\nA. Glaese, N. McAleese, M. Trębacz, J. Aslanides, V. Firoiu, T. Ewalds, M. Rauh, L. Weidinger,\nM. Chadwick, P. Thacker, L. Campbell-Gillingham, J. Uesato, P.-S. Huang, R. Comanescu, F. Yang,\nA. See, S. Dathathri, R. Greig, C. Chen, D. Fritz, J. S. Elias, R. Green, S. Mokrá, N. Fernando, B. Wu,\nR. Foley, S. Young, I. Gabriel, W. Isaac, J. Mellor, D. Hassabis, K. Kavukcuoglu, L. A. Hendricks, and\nG. Irving. Improving alignment of dialogue agents via targeted human judgements. Sept. 2022.\nD. Hadfield-Menell, A. Dragan, P. Abbeel, and S. Russell. The Off-Switch game. Nov. 2016.\nE. Jones, A. Dragan, A. Raghunathan, and J. Steinhardt. Automatically auditing large language\nmodels via discrete optimization. Mar. 2023.\nZ. Kenton, R. Kumar, S. Farquhar, J. Richens, M. MacDermott, and T. Everitt. Discovering agents. Aug.\n2022.\nV. Krakovna and J. Kramar. Power-seeking can be probable and predictive for trained agents. Apr.\n2023.\nP. Liang, R. Bommasani, T. Lee, D. Tsipras, D. Soylu, M. Yasunaga, Y. Zhang, D. Narayanan, Y. Wu,\nA. Kumar, B. Newman, B. Yuan, B. Yan, C. Zhang, C. Cosgrove, C. D. Manning, C. Ré, D. Acosta-\nNavas, D. A. Hudson, E. Zelikman, E. Durmus, F. Ladhak, F. Rong, H. Ren, H. Yao, J. Wang,\nK. Santhanam, L. Orr, L. Zheng, M. Yuksekgonul, M. Suzgun, N. Kim, N. Guha, N. Chatterji,\nO. Khattab, P. Henderson, Q. Huang, R. Chi, S. M. Xie, S. Santurkar, S. Ganguli, T. Hashimoto,\nT. Icard, T. Zhang, V. Chaudhary, W. Wang, X. Li, Y. Mai, Y. Zhang, and Y. Koreeda. Holistic\nevaluation of language models. Nov. 2022.\nI. McKenzie, A. Lyzhov, A. Parrish, A. Prabhu, A. Mueller, N. Kim, S. Bowman, and E. Perez. Inverse\nscaling prize. https://github.com/inverse-scaling/prize, 2022. Accessed: 2023-4-7.\nJ. Michael, A. Holtzman, A. Parrish, A. Mueller, A. Wang, A. Chen, D. Madaan, N. Nangia, R. Y. Pang,\nJ. Phang, and S. R. Bowman. What do NLP researchers believe? results of the NLP community\nmetasurvey. Aug. 2022.\nM. Mitchell, S. Wu, A. Zaldivar, P. Barnes, L. Vasserman, B. Hutchinson, E. Spitzer, I. D. Raji, and\nT. Gebru. Model cards for model reporting. Oct. 2018.\nJ. Mökander, J. Schuett, H. R. Kirk, and L. Floridi. Auditing large language models: a three-layered\napproach. Feb. 2023.\nN. Nanda, L. Chan, T. Lieberum, J. Smith, and J. Steinhardt. Progress measures for grokking via\nmechanistic interpretability. Jan. 2023.\nR. Ngo, L. Chan, and S. Mindermann. The alignment problem from a deep learning perspective. Aug.\n2022.\nC. Olah, N. Cammarata, L. Schubert, G. Goh, M. Petrov, and S. Carter. Zoom in: An introduction to\ncircuits. Distill, 5(3), Mar. 2020.\n17\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nOpenAI. GPT-4 system card. Mar. 2023a.\nOpenAI. GPT-4 technical report. Mar. 2023b.\nT. Ord. Lessons from the development of the atomic bomb. Technical report, Centre for the Governance\nof AI, Nov. 2022.\nL. Orseau and S. Armstrong.\nSafely interruptible agents.\nhttps://www.deepmind.com/\npublications/safely-interruptible-agents, 2016. Accessed: 2023-4-26.\nA. Pan, C. J. Shern, A. Zou, N. Li, S. Basart, T. Woodside, J. Ng, H. Zhang, S. Emmons, and D. Hendrycks.\nDo the rewards justify the means? measuring Trade-Offs between rewards and ethical behavior in\nthe MACHIAVELLI benchmark. Apr. 2023.\nE. Perez, S. Huang, F. Song, T. Cai, R. Ring, J. Aslanides, A. Glaese, N. McAleese, and G. Irving. Red\nteaming language models with language models. Feb. 2022a.\nE. Perez, S. Ringer, K. Lukoši¯ut˙e, K. Nguyen, E. Chen, S. Heiner, C. Pettit, C. Olsson, S. Kundu,\nS. Kadavath, A. Jones, A. Chen, B. Mann, B. Israel, B. Seethor, C. McKinnon, C. Olah, D. Yan,\nD. Amodei, D. Amodei, D. Drain, D. Li, E. Tran-Johnson, G. Khundadze, J. Kernion, J. Landis, J. Kerr,\nJ. Mueller, J. Hyun, J. Landau, K. Ndousse, L. Goldberg, L. Lovitt, M. Lucas, M. Sellitto, M. Zhang,\nN. Kingsland, N. Elhage, N. Joseph, N. Mercado, N. DasSarma, O. Rausch, R. Larson, S. McCandlish,\nS. Johnston, S. Kravec, S. El Showk, T. Lanham, T. Telleen-Lawton, T. Brown, T. Henighan, T. Hume,\nY. Bai, Z. Hatfield-Dodds, J. Clark, S. R. Bowman, A. Askell, R. Grosse, D. Hernandez, D. Ganguli,\nE. Hubinger, N. Schiefer, and J. Kaplan. Discovering language model behaviors with Model-Written\nevaluations. Dec. 2022b.\nI. D. Raji, A. Smart, R. N. White, M. Mitchell, T. Gebru, B. Hutchinson, J. Smith-Loud, D. Theron,\nand P. Barnes. Closing the AI accountability gap: Defining an End-to-End framework for internal\nalgorithmic auditing. Jan. 2020.\nI. D. Raji, I. Elizabeth Kumar, A. Horowitz, and A. D. Selbst. The fallacy of AI functionality. June\n2022a.\nI. D. Raji, P. Xu, C. Honigsberg, and D. E. Ho. Outsider oversight: Designing a third party audit\necosystem for AI governance. June 2022b.\nS. Rismani, R. Shelby, A. Smart, E. Jatho, J. Kroll, A. Moon, and N. Rostamzadeh. From plane\ncrashes to algorithmic harm: Applicability of safety engineering frameworks for responsible ML. In\nProceedings of the 2023 CHI Conference on Human Factors in Computing Systems, number Article 2\nin CHI ’23, pages 1–18, New York, NY, USA, Apr. 2023. Association for Computing Machinery.\nR. Shah, V. Varma, R. Kumar, M. Phuong, V. Krakovna, J. Uesato, and Z. Kenton. Goal misgeneralization:\nWhy correct specifications aren’t enough for correct goals. Oct. 2022.\nT.\nShevlane.\nSharing\npowerful\nAI\nmodels.\nhttps://www.governance.ai/post/\nsharing-powerful-ai-models, Jan. 2022a. Accessed: 2023-3-18.\nT. Shevlane. Structured access: An emerging paradigm for safe AI deployment. Feb. 2022b.\nA. Turner, L. Smith, R. Shah, A. Critch, and P. Tadepalli. Optimal policies tend to seek power. Adv.\nNeural Inf. Process. Syst., 34:23063–23074, Dec. 2021.\nJ. Wei, N. Kim, Y. Tay, and Q. V. Le. Inverse scaling can become u-shaped. Nov. 2022a.\n18\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nJ. Wei, Y. Tay, R. Bommasani, C. Raffel, B. Zoph, S. Borgeaud, D. Yogatama, M. Bosma, D. Zhou,\nD. Metzler, E. H. Chi, T. Hashimoto, O. Vinyals, P. Liang, J. Dean, and W. Fedus. Emergent abilities\nof large language models. June 2022b.\nJ. Wei, X. Wang, D. Schuurmans, M. Bosma, B. Ichter, F. Xia, E. Chi, Q. Le, and D. Zhou. Chain-of-\nThought prompting elicits reasoning in large language models. Jan. 2022c.\nJ. Whittlestone and J. Clark. Why and how governments should monitor AI development. Aug. 2021.\nD. M. Ziegler, S. Nix, L. Chan, T. Bauman, P. Schmidt-Nielsen, T. Lin, A. Scherlis, N. Nabeshima,\nB. Weinstein-Raun, D. de Haas, B. Shlegeris, and N. Thomas. Adversarial training for High-Stakes\nreliability. May 2022.\nR.\nZwetsloot\nand\nA.\nDafoe.\nThinking\nabout\nrisks\nfrom\nAI:\nAc-\ncidents,\nmisuse\nand\nstructure.\nhttps://www.lawfareblog.com/\nthinking-about-risks-ai-accidents-misuse-and-structure, Feb. 2019.\nAccessed:\n2023-3-18.\n19\n",
+   "width": 595.3,
+   "words": null
+  },
+  {
+   "height": 841.9,
+   "label": null,
+   "text": "Model evaluation for extreme risks\nAppendix: Deployment safety controls\nVariable:\nIncludes:\nScale\nHow many end users? How many agents are running at any one time, or how many times per day\nis the model called? How many applications will be built on top of the model?\nUse restrictions\nAre certain high stakes applications prohibited?\nGenerality\nWill a single model be flexibly applied across a range of applications, or will narrower, application-\nspecific versions of the model be fine-tuned?\nAutonomy\nIs the AI system tasked with executing tasks, or merely responding to queries? How long are the\nchains of actions the model can take? Can the model define new types of actions?\nTool use\nWeb browsing, telephone calls, code execution, control over robotic hardware, calling APIs, access\nto persistent memory.\nDepth of model\naccess\nHow restrictive is the interaction between the AI system and the user? Can all of the model’s\ncapabilities be accessed? Can users or developers fine-tune the model?\nOversight\nand\nmoderation\nHow closely are the model’s outputs monitored by the provider? Can certain outputs be automati-\ncally filtered out?\nGlobal planning\nDoes the model have access to many user interactions at once, so it can make plans across them,\nor is it confined to dealing with each user individually?\nAdjustments to\nmodel\nThe developer could decide to deploy a smaller version of the model. The developer could attempt\nto remove certain dangerous capabilities via fine-tuning.\nTable 3 | Variables that affect the risk level of deployment, each of which can be adjusted on the basis\nof evaluation results.\n20\n",
+   "width": 595.3,
+   "words": null
+  }
+ ],
+ "renditions": [
+  {
+   "bytes": 803057,
+   "fetched_at": "2026-11-10T01:55:00Z",
+   "kind": "pdf",
+   "media_type": "application/pdf",
+   "sha256": "48e4e3d4e69406f08c99280ada3e319ac7b24ac8f88f8188404cc0be3571d114",
+   "source_url": "https://arxiv.org/pdf/2305.15324v1"
+  },
+  {
+   "bytes": 165194,
+   "fetched_at": "2026-11-10T01:55:00Z",
+   "kind": "html",
+   "media_type": "text/html",
+   "sha256": "77f85c460395aba3baa5079d6faa74e871cb1d7caa1e15b13ea67be783ca775a",
+   "source_url": "https://arxiv.org/html/2305.15324v1"
+  }
+ ],
+ "version": {
+  "anchor_kind": "page",
+  "content_sha256": "48e4e3d4e69406f08c99280ada3e319ac7b24ac8f88f8188404cc0be3571d114",
+  "fidelity": "text_layer",
+  "label": "v1",
+  "observed_at": "2026-11-10T01:55:00Z",
+  "published": "2023-05-24",
+  "source_url": "https://arxiv.org/pdf/2305.15324v1"
+ }
+}

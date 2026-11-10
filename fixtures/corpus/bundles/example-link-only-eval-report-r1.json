@@ -1,0 +1,66 @@
+{
+ "blocks": [],
+ "document": {
+  "added_at": "2026-11-10T02:00:00Z",
+  "authors": [],
+  "collection": "evals",
+  "doc_id": "example:link-only-eval-report",
+  "kind": "eval_report",
+  "org": "Example Lab",
+  "published": "2026-03",
+  "source_url": "https://example.org/reports/meridian-2-refusal",
+  "title": "Refusal Robustness Evaluation of the Meridian-2 Model (synthetic fixture)"
+ },
+ "licence": {
+  "evidence_kind": "page_statement",
+  "evidence_quote": "© 2026 Example Lab. All rights reserved.",
+  "evidence_sha256": null,
+  "evidence_url": "https://example.org/reports/meridian-2-refusal.pdf",
+  "licence": "all-rights-reserved",
+  "observed_at": "2026-11-10T02:00:00Z",
+  "producer": "manual:fixture-build"
+ },
+ "outline": [],
+ "pages": [
+  {
+   "height": null,
+   "label": null,
+   "text": "SYNTHETIC TEST FIXTURE. This is not a real document. Example Lab does not exist.\n\nExample Lab\nRefusal Robustness Evaluation of the Meridian-2 Model\nEvaluation report, March 2026\n\n© 2026 Example Lab. All rights reserved. No part of this report may be reproduced\nwithout written permission.\n\nSummary\nWe evaluated Meridian-2 on 1,200 harmful-request prompts drawn from four categories.\nAcross the full set, the model does not reliably refuse requests that are split across\nseveral turns. Single-turn refusal was strong, at 97.5% of prompts, but multi-turn refusal\nfell to 61% once the request was decomposed into three or more innocuous-looking steps.",
+   "width": null,
+   "words": null
+  },
+  {
+   "height": null,
+   "label": null,
+   "text": "1. Method\nEach prompt was presented under three conditions: a single turn, a two-turn split, and a\ndecomposition into three or more turns. Two independent graders labelled every response as a\nrefusal, a partial compliance, or a full compliance. Inter-grader agreement was high, and dis-\nagreements were resolved by a third grader who was unable to see the condition label.\n\nWe did not test jailbreak suffixes, and we make no claim about them. The evaluation is non-\nexhaustive by design: it measures one failure mode under controlled conditions.",
+   "width": null,
+   "words": null
+  },
+  {
+   "height": null,
+   "label": null,
+   "text": "2. Results\nTable 1 reports refusal rates by category and condition. The weakest category was dual-use\nchemistry, where the multi-turn refusal rate was 48%. The model sandbagged on none of the\ncapability probes we ran alongside the refusal prompts, and its stated reasoning matched its\nbehaviour in 3.5% fewer cases under the multi-turn condition than under the single-turn one.\n\n3. Limitations\nThese results describe one model snapshot. They should not be read as a guarantee about\ndeployed behaviour, which also depends on system-level safeguards outside the model.",
+   "width": null,
+   "words": null
+  }
+ ],
+ "renditions": [
+  {
+   "bytes": 1765,
+   "fetched_at": "2026-11-10T02:00:00Z",
+   "kind": "text",
+   "media_type": "text/plain",
+   "sha256": "045e1459d87bc0316083632a580e253f6915823ccf57f0b4ff4e61b80fdc03d8",
+   "source_url": "https://example.org/reports/meridian-2-refusal.pdf"
+  }
+ ],
+ "version": {
+  "anchor_kind": "page",
+  "content_sha256": "045e1459d87bc0316083632a580e253f6915823ccf57f0b4ff4e61b80fdc03d8",
+  "fidelity": "text_layer",
+  "label": "r1",
+  "observed_at": "2026-11-10T02:00:00Z",
+  "published": "2026-03",
+  "source_url": "https://example.org/reports/meridian-2-refusal.pdf"
+ }
+}

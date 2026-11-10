@@ -1,0 +1,380 @@
+{
+  "$defs": {
+    "CitationAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "quotes": {
+          "items": {
+            "$ref": "#/$defs/QuoteAudit"
+          },
+          "title": "Quotes",
+          "type": "array"
+        },
+        "raw": {
+          "title": "Raw",
+          "type": "string"
+        },
+        "resolves": {
+          "title": "Resolves",
+          "type": "boolean"
+        },
+        "tier": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Tier"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "raw",
+        "cite",
+        "url",
+        "resolves"
+      ],
+      "title": "CitationAudit",
+      "type": "object"
+    },
+    "QuoteAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QuoteCheck"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote",
+        "check"
+      ],
+      "title": "QuoteAudit",
+      "type": "object"
+    },
+    "QuoteCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguous": {
+          "default": false,
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "cite": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cite"
+        },
+        "fidelity": {
+          "enum": [
+            "text_layer",
+            "html",
+            "ocr"
+          ],
+          "title": "Fidelity",
+          "type": "string"
+        },
+        "locations": {
+          "items": {
+            "$ref": "#/$defs/QuoteLocation"
+          },
+          "title": "Locations",
+          "type": "array"
+        },
+        "other_locations": {
+          "items": {
+            "$ref": "#/$defs/QuoteLocation"
+          },
+          "title": "Other Locations",
+          "type": "array"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/QuoteSegment"
+          },
+          "title": "Segments",
+          "type": "array"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier"
+        },
+        "verdict": {
+          "$ref": "#/$defs/Verdict"
+        }
+      },
+      "required": [
+        "quote",
+        "cite",
+        "verdict",
+        "passed",
+        "reason",
+        "tier",
+        "fidelity",
+        "locations",
+        "segments"
+      ],
+      "title": "QuoteCheck",
+      "type": "object"
+    },
+    "QuoteDiff": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "enum": [
+            "replace",
+            "delete",
+            "insert"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "quote",
+        "source"
+      ],
+      "title": "QuoteDiff",
+      "type": "object"
+    },
+    "QuoteLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "title": "Anchor",
+          "type": "string"
+        },
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "spine_end": {
+          "title": "Spine End",
+          "type": "integer"
+        },
+        "spine_start": {
+          "title": "Spine Start",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cite",
+        "url",
+        "anchor",
+        "spine_start",
+        "spine_end",
+        "text"
+      ],
+      "title": "QuoteLocation",
+      "type": "object"
+    },
+    "QuoteSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "diff": {
+          "items": {
+            "$ref": "#/$defs/QuoteDiff"
+          },
+          "title": "Diff",
+          "type": "array"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QuoteLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "similarity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Similarity"
+        },
+        "verdict": {
+          "$ref": "#/$defs/Verdict"
+        }
+      },
+      "required": [
+        "quote",
+        "verdict",
+        "location"
+      ],
+      "title": "QuoteSegment",
+      "type": "object"
+    },
+    "Tier": {
+      "enum": [
+        "open",
+        "link_only"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "Verdict": {
+      "description": "The one verdict vocabulary. Only the first two pass.",
+      "enum": [
+        "exact",
+        "normalized",
+        "elsewhere",
+        "near_miss",
+        "not_found"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "The deterministic audit of a draft answer. It does not judge whether a cited page\nsupports the claim made about it; ``support_checked`` is always False to say so.",
+  "properties": {
+    "citation_count": {
+      "title": "Citation Count",
+      "type": "integer"
+    },
+    "citations": {
+      "items": {
+        "$ref": "#/$defs/CitationAudit"
+      },
+      "title": "Citations",
+      "type": "array"
+    },
+    "passed_count": {
+      "title": "Passed Count",
+      "type": "integer"
+    },
+    "quote_count": {
+      "title": "Quote Count",
+      "type": "integer"
+    },
+    "resolved_count": {
+      "title": "Resolved Count",
+      "type": "integer"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "support_checked": {
+      "const": false,
+      "default": false,
+      "title": "Support Checked",
+      "type": "boolean"
+    },
+    "unattached_quotes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unattached Quotes",
+      "type": "array"
+    },
+    "verdict_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Verdict Counts",
+      "type": "object"
+    }
+  },
+  "required": [
+    "citations",
+    "citation_count",
+    "resolved_count",
+    "quote_count",
+    "passed_count",
+    "verdict_counts",
+    "summary"
+  ],
+  "title": "AnswerAudit",
+  "type": "object"
+}

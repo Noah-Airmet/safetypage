@@ -1,0 +1,317 @@
+{
+  "$defs": {
+    "DocumentHit": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Date"
+        },
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "hit_count": {
+          "title": "Hit Count",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "paper",
+            "system_card",
+            "model_card",
+            "framework",
+            "eval_report",
+            "forum_post",
+            "blog",
+            "article",
+            "government",
+            "book"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "licence": {
+          "title": "Licence",
+          "type": "string"
+        },
+        "org": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Org"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "top": {
+          "items": {
+            "$ref": "#/$defs/Hit"
+          },
+          "title": "Top",
+          "type": "array"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "doc_id",
+        "version",
+        "title",
+        "url",
+        "org",
+        "kind",
+        "date",
+        "tier",
+        "licence",
+        "hit_count"
+      ],
+      "title": "DocumentHit",
+      "type": "object"
+    },
+    "Hit": {
+      "additionalProperties": false,
+      "description": "One page or paragraph. ``id``, ``title`` and ``url`` are the triple ChatGPT cites from.",
+      "properties": {
+        "anchor": {
+          "title": "Anchor",
+          "type": "string"
+        },
+        "anchor_label": {
+          "title": "Anchor Label",
+          "type": "string"
+        },
+        "cite": {
+          "title": "Cite",
+          "type": "string"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Date"
+        },
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "doc_title": {
+          "title": "Doc Title",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "paper",
+            "system_card",
+            "model_card",
+            "framework",
+            "eval_report",
+            "forum_post",
+            "blog",
+            "article",
+            "government",
+            "book"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "licence": {
+          "title": "Licence",
+          "type": "string"
+        },
+        "match_spans": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Match Spans",
+          "type": "array"
+        },
+        "org": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Org"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        },
+        "snippet": {
+          "title": "Snippet",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        },
+        "tier": {
+          "$ref": "#/$defs/Tier"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "url",
+        "cite",
+        "doc_id",
+        "version",
+        "anchor",
+        "anchor_label",
+        "doc_title",
+        "org",
+        "kind",
+        "date",
+        "tier",
+        "licence",
+        "score",
+        "snippet",
+        "source_url"
+      ],
+      "title": "Hit",
+      "type": "object"
+    },
+    "Tier": {
+      "enum": [
+        "open",
+        "link_only"
+      ],
+      "title": "Tier",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "arm": {
+      "title": "Arm",
+      "type": "string"
+    },
+    "documents": {
+      "items": {
+        "$ref": "#/$defs/DocumentHit"
+      },
+      "title": "Documents",
+      "type": "array"
+    },
+    "facets": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "type": "integer"
+        },
+        "type": "object"
+      },
+      "title": "Facets",
+      "type": "object"
+    },
+    "hits": {
+      "items": {
+        "$ref": "#/$defs/Hit"
+      },
+      "title": "Hits",
+      "type": "array"
+    },
+    "interpretation": {
+      "title": "Interpretation",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "units",
+        "documents"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "next_cursor": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Cursor"
+    },
+    "query": {
+      "title": "Query",
+      "type": "string"
+    },
+    "snapshot": {
+      "title": "Snapshot",
+      "type": "string"
+    },
+    "total": {
+      "title": "Total",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "query",
+    "interpretation",
+    "arm",
+    "snapshot",
+    "mode",
+    "total"
+  ],
+  "title": "SearchResponse",
+  "type": "object"
+}

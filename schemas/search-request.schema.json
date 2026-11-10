@@ -1,0 +1,172 @@
+{
+  "$defs": {
+    "Tier": {
+      "enum": [
+        "open",
+        "link_only"
+      ],
+      "title": "Tier",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What an agent passes to ``search``, plus the arm (chosen by the surface, not the agent).",
+  "properties": {
+    "all_versions": {
+      "default": false,
+      "title": "All Versions",
+      "type": "boolean"
+    },
+    "arm": {
+      "default": "bm25",
+      "enum": [
+        "bm25",
+        "dense",
+        "hybrid",
+        "hybrid-rerank",
+        "contextual"
+      ],
+      "title": "Arm",
+      "type": "string"
+    },
+    "collection": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Collection"
+    },
+    "cursor": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cursor"
+    },
+    "date_from": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date From"
+    },
+    "date_to": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date To"
+    },
+    "doc": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Doc"
+    },
+    "kind": {
+      "anyOf": [
+        {
+          "enum": [
+            "paper",
+            "system_card",
+            "model_card",
+            "framework",
+            "eval_report",
+            "forum_post",
+            "blog",
+            "article",
+            "government",
+            "book"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kind"
+    },
+    "limit": {
+      "default": 10,
+      "maximum": 25,
+      "minimum": 1,
+      "title": "Limit",
+      "type": "integer"
+    },
+    "mode": {
+      "default": "units",
+      "enum": [
+        "units",
+        "documents"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "org": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Org"
+    },
+    "query": {
+      "default": "",
+      "title": "Query",
+      "type": "string"
+    },
+    "sort": {
+      "default": "relevance",
+      "enum": [
+        "relevance",
+        "date"
+      ],
+      "title": "Sort",
+      "type": "string"
+    },
+    "tier": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Tier"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "title": "SearchRequest",
+  "type": "object"
+}
