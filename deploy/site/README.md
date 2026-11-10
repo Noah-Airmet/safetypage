@@ -57,8 +57,9 @@ deploy/redeploy.sh data/snapshots/<snapshot id>
 
 It reads the server's ssh name and paths from the environment or from `deploy/.env`
 (untracked); the top of the script lists them. Between steps 2 and 3, a minute or so, the
-published site still names the old snapshot's files, which are no longer mounted. Old
-snapshot directories stay on the server until they are removed by hand.
+published site still names the old snapshot's files, which are no longer mounted
+(Cloudflare still has the ones it cached). The snapshot that was live is removed from the
+server once the new one answers.
 
 ## The site
 
@@ -89,14 +90,24 @@ runs for `/d/*` only (`dist/_routes.json`); every other address is a file.
 Pages allows 20,000 files a deployment on the free plan; the build has about 14,600. Worker
 requests count against the free plan's 100,000 a day, and only `/d/*` addresses use them.
 
-## Checked, and not yet
+## Checked
 
-- The Pages worker was run with `wrangler pages dev` against a real build: record pages,
-  citation addresses (with title, canonical address and page image written in), ranges,
-  missing documents and versions (404), and the API origin switched off (plain shell, 200).
-- The Caddyfile was run with a local Caddy in front of the real server and snapshot: files with
-  the cache and cross-origin headers, `..` paths refused, `/api`, `/mcp` and `/health` passed on.
-- A build for two local origins was opened in a browser on 122 pages at desktop and phone
-  width with no failed request.
-- Not done: `docker compose` itself has not been run (no Docker on the build machine), nothing
-  is deployed, and the tunnel is not set up.
+Live since 10 November 2026 on snapshot `2026.11.2`. Checked from outside after the deploy:
+
+- the landing page, search, a record page, the library and Connect, in Chrome at desktop and
+  phone width, with no failed request, console error or sideways scroll;
+- the reader at a citation address of an open PDF with the quote highlighted on the page
+  image, and a link-only document's page (record, excerpt, link to the source, no text);
+- the checker and `/api/verify` rejecting a misquote (`near_miss`) and passing the real one;
+- a citation address fetched as Slack's, X's and Facebook's preview bots: the title
+  ("Shevlane et al. 2023, p. 6") and the cited page's image;
+- MCP `initialize`, `tools/call search` and a surface variant with curl, and a question
+  answered by Claude Code after `claude mcp add --transport http`;
+- data files: `immutable` cache headers, cross-origin allowed, kept by Cloudflare on the
+  second request; nothing under `/data/` for a link-only version (every card was compared
+  with the tree on the server), nothing above `public/`, and the old snapshot's path gone.
+
+Not set up: monitoring of the API origin, and any second copy of it. If that machine is off,
+the site's pages, record pages and files Cloudflare has already cached still load; search,
+the checker, MCP, link-only excerpts and uncached pages do not, and citation links open
+without their title and preview image.

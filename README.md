@@ -11,38 +11,45 @@ the page says it, and show you the page.
 The repository also holds **CitationBench**, a benchmark of whether an agent with a library
 tool cites the right page and quotes it accurately.
 
+## Try it
+
+- **The site**: <https://safetypage.noahairmet.com>. Search, the reader, the quote checker,
+  and the CitationBench leaderboard.
+- **A citation**: <https://safetypage.noahairmet.com/d/arxiv/2305.15324/v2/p6> opens page 6 of
+  that paper.
+- **For an agent**: the MCP endpoint is `https://safetypage-api.noahairmet.com/mcp`, with no
+  login ([Connect an agent](#connect-an-agent)).
+
 ## Status
 
-Everything here runs locally today. The site and the server are not deployed yet, so there is
-no public URL to try.
-
-- The library is built: a sealed snapshot of the corpus below, with keyword search over every
-  page and paragraph. Embedding search is written and its vectors are still being computed.
-- The server, the site and the benchmark harness are built and tested against a small fixture
+- The library is built and public: a sealed snapshot of the corpus below, with keyword search
+  over every page and paragraph. Embedding search is written and its vectors are still being
+  computed.
+- The server, the site and the benchmark harness are also tested against a small fixture
   corpus that is checked in, so all of it can be run from a clone without the 100 GB of data.
 - CitationBench has only small smoke runs so far (see [below](#citationbench)). There are no
   published numbers.
 
 ## What is in the library
 
-Snapshot `2026.11.0`, built 9 November 2026:
+Snapshot `2026.11.2`, built 10 November 2026:
 
 | | |
 |---|---|
-| Documents | 14,356 (14,415 versions) |
-| Citable units | 694,358: 170,594 PDF pages and 523,764 paragraphs of web documents |
-| Hosted in full (open licences) | 3,524 versions, 114,245 units, with page images |
-| Search, snippets, quote checks and a link to the source | 10,891 versions, 580,113 units |
+| Documents | 13,902 (13,949 versions) |
+| Citable units | 661,142: 168,572 PDF pages and 492,570 paragraphs of web documents |
+| Hosted in full (open licences) | 3,514 versions, 106,864 units, with page images |
+| Search, snippets, quote checks and a link to the source | 10,435 versions, 554,278 units |
 
 | Shelf | Documents |
 |---|---|
-| Research papers (arXiv, ACL Anthology, OpenReview) | 6,278 |
-| Alignment Forum and LessWrong posts | 5,593 |
-| Independent evaluators and safety organisations | 1,096 |
-| Lab research published on the web | 687 |
-| Lab system cards, model cards, frameworks, policies | 395 |
-| Government (NIST and CAISI, UK DSIT and AISI, EU AI Office, others) | 271 |
-| Model welfare research | 38 |
+| Research papers (arXiv, ACL Anthology, OpenReview) | 6,256 |
+| Alignment Forum and LessWrong posts | 5,395 |
+| Independent evaluators and safety organisations | 1,022 |
+| Lab research published on the web | 632 |
+| Lab system cards, model cards, frameworks, policies | 329 |
+| Government (NIST and CAISI, UK DSIT and AISI, EU AI Office, others) | 232 |
+| Model welfare research | 36 |
 
 [`corpus/`](corpus/README.md) is the inventory the library is built from, with what could not
 be fetched and why in [`corpus/status/`](corpus/status/). The documents themselves are not in
@@ -58,7 +65,7 @@ it is enforced inside the library.
 
 ```
 arxiv:2305.15324/v2/p6                               document / version / anchor
-https://<host>/d/arxiv/2305.15324/v2/p6              the same thing, as a link
+https://safetypage.noahairmet.com/d/arxiv/2305.15324/v2/p6     the same thing, as a link
 ```
 
 `p6` is a PDF page. `b12` is a paragraph of a document that has no pages. A citation always
@@ -107,16 +114,21 @@ npm run dev -- --port 4391
 
 ## Connect an agent
 
-The server speaks MCP over Streamable HTTP at `/mcp`, with no login. It has four read-only
-tools: `search`, `fetch`, `verify_quote` and `check_answer` (which audits every citation and
-quotation in a draft answer).
+The server speaks MCP over Streamable HTTP, with no login. It has four read-only tools:
+`search`, `fetch`, `verify_quote` and `check_answer` (which audits every citation and
+quotation in a draft answer). The public endpoint is
+`https://safetypage-api.noahairmet.com/mcp`.
 
-```sh
-claude mcp add --transport http safetypage http://127.0.0.1:8000/mcp
-```
+- **Claude Code**:
+  `claude mcp add --transport http safetypage https://safetypage-api.noahairmet.com/mcp`
+- **claude.ai**: Customize → Connectors → **+ Add** → **Add custom connector**; name it
+  `SafetyPage`, enter the endpoint, choose **No sign in**.
+- **ChatGPT**: <https://chatgpt.com/plugins> → **+** → **Add custom MCP server**; enter the
+  endpoint, set authentication to none.
 
-[docs/SERVER.md](docs/SERVER.md) has the settings, the JSON API, the container, and the steps
-for adding a hosted server to claude.ai and ChatGPT.
+A server run locally is at `http://127.0.0.1:8000/mcp`. [docs/SERVER.md](docs/SERVER.md) has
+the full connector steps, the settings, the JSON API and the container;
+[deploy/site/README.md](deploy/site/README.md) has how the public site and server are deployed.
 
 ## CitationBench
 
@@ -150,7 +162,7 @@ schemas/           JSON Schemas for every wire contract, generated from the mode
 fixtures/corpus/   real, openly licensed documents used by the tests
 tests/             unit, property and end-to-end tests
 docs/              ARCHITECTURE.md (the design and the decisions behind it), SERVER.md
-deploy/server/     the server's container
+deploy/            the server's container and file server, the site's deployment, redeploy.sh
 scripts/           check.sh (everything CI runs)
 ```
 

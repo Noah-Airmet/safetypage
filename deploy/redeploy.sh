@@ -11,8 +11,8 @@
 #   DEPLOY_BWLIMIT   rsync's transfer cap, KB/s                (default 40000)
 #   CLOUDFLARE_ACCOUNT_ID and a Cloudflare credential wrangler accepts, for the Pages upload
 #
-# The server's code is whatever is pushed to the checkout's branch. Old snapshots stay on the
-# server until someone removes them.
+# The server's code is whatever is pushed to the checkout's branch. The snapshot that was live
+# is removed from the server once the new one answers.
 set -eu
 cd "$(dirname "$0")/.."
 if [ -f deploy/.env ]; then set -a; . deploy/.env; set +a; fi
@@ -49,6 +49,9 @@ until curl -fsS "$PUBLIC_API_BASE/health" | grep -q "\"$id\""; do
   sleep 2
 done
 echo "$PUBLIC_API_BASE serves $id"
+# The snapshot that was live is no longer mounted; files the new one shares with it are hard
+# links, so removing it frees only what changed.
+case "$live" in "" | "$id" | */* | .*) ;; *) ssh "$host" "rm -rf $data/snapshots/$live" ;; esac
 
 # 3. Build the site against the same snapshot and publish it.
 cd site
