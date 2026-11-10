@@ -11,6 +11,11 @@ dependencies = [
     "rapidfuzz>=3.14.6",
 ]
 
+[project.optional-dependencies]
+embed = [
+    "sentence-transformers>=6.2.0",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -58,6 +63,15 @@ source = ["onthepage"]
 branch = true
 
 [dependency-groups]
+bench = [
+    "anthropic>=2.7.0",
+    "inspect-ai>=0.3.288",
+    "openai>=3.48.0",
+]
+build = [
+    "pillow>=13.0.0",
+    "pymupdf>=2.1",
+]
 dev = [
     "hypothesis>=6.170.15",
     "pyright>=1.1.414",
@@ -67,4 +81,14 @@ dev = [
 ]
 fixtures = [
     "pymupdf>=2.1",
+]
+search = [
+    "numpy>=2.5.4",
+    "tantivy>=0.27.0",
+]
+server = [
+    "mcp>=2.3.0",
+    "pyyaml>=6.0.3",
+    "starlette>=1.10.0",
+    "uvicorn>=0.54.0",
 ]
