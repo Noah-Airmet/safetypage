@@ -82,6 +82,11 @@ dev = [
 fixtures = [
     "pymupdf>=2.1",
 ]
+ingest = [
+    "httpx>=0.28",
+    "pypdfium2>=4.30",
+    "trafilatura>=2.0",
+]
 search = [
     "numpy>=2.5.4",
     "tantivy>=0.27.0",
