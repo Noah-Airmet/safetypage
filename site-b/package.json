@@ -1,0 +1,37 @@
+{
+  "name": "safetypage-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "data": "cd .. && uv run --group fixtures --group build python site/scripts/make_data.py",
+    "api": "cd .. && uv run --group server python -m safetypage.server --fixtures --port",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "tsc --noEmit",
+    "unit": "vitest run",
+    "e2e": "playwright test",
+    "test": "npm run check && npm run unit && npm run e2e",
+    "build:deploy": "set -a && . ./deploy.env && set +a && astro build"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.1.5",
+    "@fontsource-variable/hanken-grotesk": "^5.3.0",
+    "@fontsource/fragment-mono": "^5.3.0",
+    "@fontsource/hanken-grotesk": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "astro": "^7.4.8",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "satori": "^0.63.2"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

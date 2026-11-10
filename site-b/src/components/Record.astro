@@ -1,0 +1,110 @@
+---
+import type { DocumentCard } from '../lib/types';
+import { KINDS, anchorLabel, bibtex, citePath, outlineHtml, formatDate, hostOf, licenceName, shelfName, sourceLink } from '../lib/cite';
+import { hasUnit } from '../lib/data';
+import { pageImageUrl } from '../lib/env';
+import Icon from './Icon.astro';
+
+interface Props { doc: DocumentCard; version: string }
+const { doc, version } = Astro.props;
+const summary = doc.versions.find((v) => v.version === version)!;
+const latest = version === doc.version;
+const ref = `${doc.doc_id}/${version}`;
+// The card describes the latest version. For an older one, the published text says which kind of anchor it has.
+const paged = latest ? doc.anchor_kind === 'page' : hasUnit(doc.doc_id, version, 'p1') || (!hasUnit(doc.doc_id, version, 'b1') && doc.anchor_kind === 'page');
+const count = latest ? doc.unit_count : 0;
+const first = latest ? (count ? (paged ? 'p1' : 'b1') : undefined) : paged ? 'p1' : 'b1';
+const open = summary.tier === 'open';
+const host = hostOf(doc.source_url);
+const authors = doc.authors.length > 8 ? [...doc.authors.slice(0, 7), `and ${doc.authors.length - 7} more`] : doc.authors;
+const evidence = latest ? doc.licence_evidence : null;
+const evidenceKinds: Record<string, string> = {
+  licence_link: 'Licence link on the source page', page_statement: 'Statement on the page',
+  publisher_rule: "The publisher's rule", statute: 'Statute', manual: 'Read by hand',
+};
+const site = Astro.site!.origin;
+const citeExample = first ? `${ref}/${first}` : ref;
+const shelf = doc.collection;
+const cover = open && paged && first && hasUnit(doc.doc_id, version, 'p1');
+---
+<article class="wrap record">
+  <header class="head">
+    <nav class="up" aria-label="Up"><a href="/library">Library</a>{shelf && <><Icon name="forward" /><a href={`/library/${shelf}`}>{shelfName(shelf)}</a></>}</nav>
+    <h1 class="title">{doc.title}</h1>
+    {authors.length > 0 && <p class="byline">{authors.join(', ')}</p>}
+    <p class="facts">
+      <span>{KINDS[doc.kind] ?? doc.kind}</span>
+      {doc.org && <span>{doc.org}</span>}
+      <span>{formatDate(summary.published ?? doc.published)}</span>
+      {count > 0 && <span>{count.toLocaleString('en')} {paged ? 'pages' : 'paragraphs'}</span>}
+      <span>{licenceName(summary.licence)}</span>
+      {!latest && <span>Version {version}, <a class="link" href={citePath(doc.doc_id)}>latest {doc.version}</a></span>}
+    </p>
+    <div class="actions">
+      {open && first && <a class="btn btn-primary" href={citePath(`${ref}/${first}`)}>Read</a>}
+      <a class={open ? 'btn' : 'btn btn-primary'} href={open ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener">{open ? host : `Read at ${host}`}<Icon name="external" small /></a>
+    </div>
+    {cover && <a class="cover sheet" href={citePath(`${ref}/p1`)} style="aspect-ratio: 612 / 792" tabindex="-1" aria-hidden="true"><img src={pageImageUrl(`${ref}/p1`, 800)} alt="" loading="eager" decoding="async" /></a>}
+  </header>
+
+  <div class="cols">
+    <section aria-labelledby="outline-h">
+      <h2 class="sr" id="outline-h">Outline</h2>
+      {latest && count > 0 && (
+        <form class="inside" action="/search" role="search">
+          <input type="hidden" name="doc" value={doc.doc_id} />
+          <Icon name="search" />
+          <input class="field" type="search" name="query" placeholder={`Search ${count.toLocaleString('en')} ${paged ? 'pages' : 'paragraphs'}`} aria-label="Search inside this document" autocomplete="off" />
+        </form>
+      )}
+      {latest && doc.outline.length > 0 ? (
+        <ol class="outline" set:html={outlineHtml(doc.outline)} />
+      ) : (
+        <p class="muted">{latest ? 'No section headings' : `Outline kept for ${doc.version}`}{first && <>{' '}<a class="link" href={citePath(`${ref}/${first}`)}>Open {anchorLabel(first)}</a></>}</p>
+      )}
+    </section>
+
+    <aside class="side">
+      <section aria-labelledby="cite-h">
+        <h2 class="h3" id="cite-h">Cite</h2>
+        <div class="codeline"><code tabindex="0">{citeExample}</code><button class="ib" data-copy={citeExample} aria-label="Copy citation"><Icon name="copy" /></button></div>
+        <div class="codeline"><code tabindex="0">{site}{citePath(citeExample)}</code><button class="ib" data-copy={site + citePath(citeExample)} aria-label="Copy link"><Icon name="copy" /></button></div>
+        <details class="more">
+          <summary>BibTeX<Icon name="down" small /></summary>
+          <pre class="code" tabindex="0">{bibtex(doc)}</pre>
+        </details>
+      </section>
+
+      <section aria-labelledby="versions-h">
+        <h2 class="h3" id="versions-h">Versions</h2>
+        <table class="table versions">
+          <tbody>
+            {[...doc.versions].reverse().map((v) => (
+              <tr>
+                <td><a class="link" href={citePath(v.latest ? doc.doc_id : `${doc.doc_id}/${v.version}`)} aria-current={v.version === version ? 'true' : undefined}>{v.version}</a></td>
+                <td>{formatDate(v.published) || <span class="muted">seen {formatDate(v.observed_at)}</span>}</td>
+                <td class="muted">{v.tier === 'open' ? 'Read here' : 'At source'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section aria-labelledby="licence-h">
+        <h2 class="h3" id="licence-h">Licence</h2>
+        <dl class="kv">
+          <dt>Terms</dt><dd>{licenceName(summary.licence)}</dd>
+          <dt>Read</dt><dd>{open ? 'Here, in full' : `At ${host}`}</dd>
+          {evidence ? (
+            <>
+              <dt>Evidence</dt><dd>{evidenceKinds[evidence.kind] ?? evidence.kind}<br /><span class="mono">{evidence.quote}</span></dd>
+              <dt>Seen</dt><dd><a class="link" href={evidence.url} rel="noopener">{hostOf(evidence.url)}</a>, {formatDate(evidence.observed_at)}</dd>
+            </>
+          ) : latest ? (
+            <><dt>Evidence</dt><dd>No licence statement found</dd></>
+          ) : null}
+        </dl>
+      </section>
+    </aside>
+  </div>
+</article>

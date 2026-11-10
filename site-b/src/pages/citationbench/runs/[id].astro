@@ -1,0 +1,58 @@
+---
+// One run: its measures with intervals, and every question with a link to its replay.
+import Base from '../../../layouts/Base.astro';
+import Tally from '../../../components/Tally.astro';
+import { allRuns, allTraces } from '../../../lib/data';
+import { questionParts } from '../../../lib/cite';
+import type { RunResult } from '../../../lib/types';
+
+export const getStaticPaths = () => allRuns().map((run) => ({ params: { id: run.run_id }, props: { run } }));
+const { run } = Astro.props as { run: RunResult };
+const traces = allTraces().filter((t) => t.header.run_id === run.run_id);
+const pct = (x: number | null | undefined) => (x == null ? '–' : `${Math.round(x * 100)}`);
+const NAMES: Record<string, string> = {
+  correct: 'Correct', verdict_correct: 'Verdict correct', page_precision: 'Page precision', page_recall: 'Page recall',
+  quote_fidelity: 'Quote fidelity', quoted: 'Answers that quote', seen_rate: 'Citations the run opened', support_rate: 'Claim support (judge)',
+};
+---
+<Base title={`${run.model.split('/').pop()}, ${run.name}`} description={`A CitationBench run: ${run.samples} questions, each with its replay.`}>
+  <div class="wrap">
+    <header class="head">
+      <nav class="up" aria-label="Up"><a href="/citationbench">CitationBench</a></nav>
+      <h1 class="title">{run.model.split('/').pop()}</h1>
+      <p class="facts">{[run.solver, `Surface ${run.surface}`, `Snapshot ${run.snapshot}`, run.created_at.slice(0, 10), run.judge && `Judge ${run.judge.id}`].filter(Boolean).map((part) => <span>{part}</span>)}<span class="mono">{run.run_id}</span></p>
+    </header>
+
+    <div class="cols">
+      <section aria-labelledby="q-h">
+        <h2 class="h3" id="q-h">{traces.length} questions</h2>
+        <div class="rows" style="margin-top: var(--s-2)">
+          {traces.map((t) => {
+            const q = questionParts(t.header.question);
+            return (
+              <a href={`/r/${t.header.trace_id}`}>
+                <span class="name clamp">{q.quoted ?? q.lead}</span>
+                <Tally citations={t.answer?.citations ?? []} />
+                <span class="val">{t.scores?.correct === 1 ? 'Correct' : t.scores?.correct === 0 ? 'Not correct' : ''}</span>
+                <span class="val mono">{t.header.sample_id}</span>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+      <aside class="side" aria-labelledby="m-h">
+        <section>
+          <h2 class="h3" id="m-h">Measures, with 95% interval</h2>
+          <table class="table measures">
+            <tbody>
+              {Object.entries(run.measures).map(([key, e]) => (
+                <tr><td>{NAMES[key] ?? key}</td><td class="num">{pct(e.mean)}</td><td class="num muted">{e.mean == null ? '' : `${pct(e.ci_low)}–${pct(e.ci_high)}`}</td><td class="num muted">n {e.n}</td></tr>
+              ))}
+              {run.cost.priced && run.cost.total_usd != null && <tr><td>Cost of the run</td><td class="num">${run.cost.total_usd.toFixed(3)}</td><td class="num muted" colspan="2">{run.cost.price_table}</td></tr>}
+            </tbody>
+          </table>
+        </section>
+      </aside>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Not found">
+  <div class="wrap">
+    <header class="head">
+      <h1 class="title">Not in the library</h1>
+      <p class="actions"><a class="btn btn-primary" href="/search">Search</a><a class="btn" href="/library">Library</a></p>
+    </header>
+  </div>
+</Base>
+<script>
+  // A range such as /d/arxiv/2305.15324/v2/p6-p8 opens the reader at its first page.
+  const m = /^(\/d\/[^/]+\/[^/]+\/[vr]\d+\/)([pb])(\d+)-[pb]?(\d+)\/?$/.exec(location.pathname);
+  if (m) {
+    const params = new URLSearchParams(location.search);
+    params.set('end', m[2] + m[4]);
+    location.replace(`${m[1]}${m[2]}${m[3]}?${params}`);
+  }
+</script>

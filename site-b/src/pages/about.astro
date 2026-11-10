@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import { allShelves, libraryCounts } from '../lib/data';
+const n = libraryCounts();
+const num = (x: number) => x.toLocaleString('en');
+---
+<Base title="How it works" description="How SafetyPage checks a citation, what the licence tiers mean, and how it is built.">
+  <div class="wrap col">
+    <header class="head"><h1 class="title">How it works</h1></header>
+    <div class="prose">
+      <p>SafetyPage is a library of the AI safety record: research papers, system cards, safety frameworks, evaluation reports and government guidance. Every search result opens an exact page or paragraph. Every citation names a document, a version and a place in it, and code can check it against that place.</p>
+      <p>It holds {num(n.documents)} documents on <a class="link" href="/library">{allShelves().length} shelves</a>: {num(n.pages)} PDF pages and {num(n.paragraphs)} paragraphs of web documents, each one citable. {num(n.open)} documents are openly licensed and read in full here; the other {num(n.documents - n.open)} are searched, cited and quote-checked here and read at their source.</p>
+
+      <h2>What a citation is</h2>
+      <p><code>arxiv:2305.15324/v2/p6</code> is a document, a version and a page. The version is always there, because pages move when a paper is revised. The same three parts make the link: <code>/d/arxiv/2305.15324/v2/p6</code>.</p>
+
+      <h2>How a quote is checked</h2>
+      <p>The check is deterministic and uses no model. The quoted words have to be on the cited page, in order, with no words skipped, starting and ending on whole words. Case, punctuation, hyphenation across line breaks and ligatures are forgiven. A dropped “not” is not: a quotation one word away from the page fails, and the result shows the page's own wording.</p>
+      <p>A citation is shown in one of three states. <span class="state" data-state="verified">Verified</span> means the quoted words are on the cited page. <span class="state" data-state="cited">Page only</span> means the page is real and there was no quote to check. <span class="state" data-state="rejected">Rejected</span> means anything else, with the reason. A rejected citation is struck through, never hidden.</p>
+      <p>The check says whether the page contains the words. It does not say whether the page supports the claim made about it. Where a model judges that, its verdict is labelled as a judge's and kept apart from the code's.</p>
+
+      <h2 id="licences">Licences</h2>
+      <p>Documents under an open licence (CC BY, CC BY-SA, CC0, public domain, the UK Open Government Licence) are hosted in full, and their record shows the evidence for the licence. Everything else, and anything whose licence we could not find, can be searched, cited and quote-checked here, and opens at its source at the cited page. The tier changes where you read a document, not what the library knows about it.</p>
+
+      <h2>How it is built</h2>
+      <p>The text of record is the PDF's own text layer. No model transcribes a document. The reader, the checker, the MCP server and the benchmark all use one implementation of each rule, so a verdict an agent gets during a run is the verdict the leaderboard scores. The library is served from frozen snapshots; a benchmark names the snapshot it ran against.</p>
+      <p>The design, with the decisions behind it, is in <a class="link" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md">the architecture document</a>. The code is Apache-2.0.</p>
+    </div>
+  </div>
+</Base>

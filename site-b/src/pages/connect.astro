@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import { mcpUrl } from '../lib/env';
+import Icon from '../components/Icon.astro';
+const site = Astro.site!.origin;
+const mcp = mcpUrl(site);
+const clients = [
+  ['Claude Code', `claude mcp add --transport http safetypage ${mcp}`],
+  ['Claude.ai, ChatGPT, others', mcp],
+];
+const tools = [
+  ['search', 'search(query, collection?, org?, kind?, date_from?, date_to?, doc?, mode?, sort?, limit?)', 'Ranked pages and paragraphs. Words are ANDed; "a phrase", prefix*, a NEAR/5 b and -exclude work. Every hit is a citation.'],
+  ['fetch', 'fetch(id)', 'A document id returns its record and outline. A cite string returns the page or paragraph: the full text if the licence allows, otherwise its opening words and a link that opens the source at that page.'],
+  ['verify_quote', 'verify_quote(quote, cite?, doc?)', 'Whether the words are at the cited place. Five verdicts: exact and normalized pass; elsewhere, near_miss and not_found fail, with where the words really are or what the page says instead.'],
+  ['check_answer', 'check_answer(text)', 'Audits a draft answer: every citation in it, the quotations attached to each, and how each one checked out.'],
+];
+const api = [
+  ['GET', '/api/search?query=…', 'SearchResponse'],
+  ['GET', '/api/doc/<ns>/<id>[/<version>]', 'DocumentCard'],
+  ['GET', '/api/units/<ns>/<id>/<version>/<anchor>', 'UnitText[]'],
+  ['POST', '/api/verify', 'QuoteCheck'],
+  ['POST', '/api/check', 'AnswerAudit'],
+];
+---
+<Base title="Connect" description="Connect an agent to the library over MCP: search, fetch, verify_quote, check_answer.">
+  <div class="wrap">
+    <header class="head">
+      <h1 class="title">Connect an agent</h1>
+      <p class="facts"><span>MCP over HTTP</span><span>4 tools</span><span>Read-only</span><span>No key</span></p>
+    </header>
+
+    <dl class="clients">
+      {clients.map(([name, line]) => (
+        <>
+          <dt>{name}</dt>
+          <dd><div class="codeline"><code tabindex="0">{line}</code><button class="ib" data-copy={line} aria-label={`Copy for ${name}`}><Icon name="copy" /></button></div></dd>
+        </>
+      ))}
+    </dl>
+
+    <section class="section">
+      <h2 class="h2">Tools</h2>
+      <ul class="tools">
+        {tools.map(([name, sig, what]) => (
+          <li><h3><b>{name}</b>{sig.slice(name.length)}</h3><p>{what}</p></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2 class="h2">A citation</h2>
+      <div class="anatomy">
+        <code>arxiv:2305.15324</code><span>document</span>
+        <code class="sep">/</code><span></span>
+        <code>v2</code><span>version</span>
+        <code class="sep">/</code><span></span>
+        <code>p6</code><span>page</span>
+      </div>
+      <div class="anatomy" style="margin-top: var(--s-5)">
+        <code>distill:zoom-in</code><span>document</span>
+        <code class="sep">/</code><span></span>
+        <code>r1</code><span>version</span>
+        <code class="sep">/</code><span></span>
+        <code>b21</code><span>paragraph</span>
+      </div>
+      <div class="anatomy-more">
+        <div class="codeline"><code tabindex="0">{site}/d/arxiv/2305.15324/v2/p6</code><button class="ib" data-copy={`${site}/d/arxiv/2305.15324/v2/p6`} aria-label="Copy link"><Icon name="copy" /></button></div>
+        <div class="codeline"><code tabindex="0">{site}/d/arxiv/2305.15324/v2/p6?q=not%20the%20only%20tool</code><a class="ib" href="/d/arxiv/2305.15324/v2/p6?q=not%20the%20only%20tool" aria-label="Open with the quote highlighted"><Icon name="forward" /></a></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="h2">HTTP</h2>
+      <div class="scroll" tabindex="0" role="region" aria-label="Routes"><table class="table routes" style="max-width: 54rem">
+        <tbody>{api.map(([m, route, model]) => <tr><td>{m}</td><td>{route}</td><td>{model}</td></tr>)}</tbody>
+      </table></div>
+      <p class="facts" style="margin-top: var(--s-4)"><a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/schemas">JSON Schemas</a><a class="link" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md">Architecture</a></p>
+    </section>
+  </div>
+</Base>

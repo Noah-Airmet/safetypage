@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import Tally from '../../components/Tally.astro';
+import { allTraces } from '../../lib/data';
+import { questionParts } from '../../lib/cite';
+const traces = allTraces();
+---
+<Base title="Replays" description="Agent research runs, played back step by step against the library.">
+  <div class="wrap">
+    <header class="head">
+      <h1 class="title">Replays</h1>
+      <p class="facts"><span>{traces.length} runs</span></p>
+    </header>
+    <div class="rows">
+      {traces.map((t) => (
+        <a href={`/r/${t.header.trace_id}`}>
+          <span class="name clamp">{questionParts(t.header.question).quoted ?? t.header.question}</span>
+          <Tally citations={t.answer?.citations ?? []} />
+          <span class="val">{t.header.model.split('/').pop()}</span>
+          <span class="val">{t.header.started_at.slice(0, 10)}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
