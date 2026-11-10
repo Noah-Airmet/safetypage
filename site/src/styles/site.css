@@ -188,7 +188,9 @@ a.row-link:hover .name, .rows a:hover .name { color: var(--accent); }
 .table th { text-align: left; font-weight: 500; color: var(--ink-2); padding: var(--s-2) var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--edge); vertical-align: bottom; }
 .table td { padding: var(--s-2) var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
 .table .num { font-family: var(--mono); text-align: right; white-space: nowrap; }
-.table th.num { text-align: right; }
+.table th.num { font-family: var(--sans); }
+
+.scroll { overflow-x: auto; position: relative; }
 
 .kv { display: grid; grid-template-columns: 9.5rem 1fr; gap: var(--s-2) var(--s-5); }
 .kv dt { color: var(--ink-2); }

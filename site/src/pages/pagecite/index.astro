@@ -49,11 +49,7 @@ const lead = board.metrics[0];
                   return <td class="num"><a href={run} title={`${pct(v.ci[0])} to ${pct(v.ci[1])}, n = ${v.n}`}>{pct(v.value)} <span class="pm">±{Math.round(((v.ci[1] - v.ci[0]) / 2) * 100)}</span></a></td>;
                 })}
                 <td class="whisk">
-                  <svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true">
-                    <line x1="0" x2="100" y1="6" y2="6" class="axis" />
-                    <line x1={s.ci[0] * 100} x2={s.ci[1] * 100} y1="6" y2="6" class="ci" />
-                    <circle cx={s.value * 100} cy="6" r="2.4" class="dot" />
-                  </svg>
+                  <span class="whisker"><i class="ci" style={`left:${s.ci[0] * 100}%;width:${(s.ci[1] - s.ci[0]) * 100}%`}></i><i class="dot" style={`left:${s.value * 100}%`}></i></span>
                 </td>
                 <td class="num"><a href={run}>{row.cost_per_correct_usd == null ? '–' : `$${row.cost_per_correct_usd.toFixed(2)}`}</a></td>
                 <td class="num"><a class="link" href={run}>{row.scores[lead.key].n} ›</a></td>
@@ -74,7 +70,7 @@ const lead = board.metrics[0];
 </Base>
 <style>
   .facts { font-size: var(--t-12); }
-  .scroll { overflow-x: auto; margin-top: var(--s-4); }
+  .scroll { margin-top: var(--s-4); }
   .board { min-width: 720px; }
   .board th .src { display: block; font: 400 var(--t-12)/1.3 var(--sans); color: var(--ink-3); }
   .board td { padding-block: var(--s-3); }
@@ -84,10 +80,9 @@ const lead = board.metrics[0];
   .solver { color: var(--ink-2); font-size: var(--t-12); }
   .pm { color: var(--ink-2); }
   .whisk { width: 9rem; padding-right: var(--s-4) !important; vertical-align: middle !important; }
-  .whisk svg { width: 100%; height: 12px; display: block; overflow: visible; }
-  .axis { stroke: var(--rule); stroke-width: 1; vector-effect: non-scaling-stroke; }
-  .ci { stroke: var(--ink-2); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
-  .dot { fill: var(--accent); }
+  .whisker { position: relative; display: block; height: 12px; background: linear-gradient(var(--rule), var(--rule)) center / 100% 1px no-repeat; }
+  .whisker .ci { position: absolute; top: 5px; height: 2px; background: var(--ink-2); }
+  .whisker .dot { position: absolute; top: 2px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--accent); }
   .notes { margin-top: var(--s-6); display: grid; gap: var(--s-2); color: var(--ink-2); max-width: 76ch; font-size: var(--t-13); }
   .notes strong { color: var(--ink); font-weight: 500; }
 </style>

@@ -34,7 +34,7 @@ const api = [
         {clients.map(([name, line]) => (
           <>
             <dt>{name}</dt>
-            <dd><div class="codeline"><code>{line}</code><button class="btn btn-quiet" data-copy={line}>Copy</button></div></dd>
+            <dd><div class="codeline"><code tabindex="0">{line}</code><button class="btn btn-quiet" data-copy={line}>Copy</button></div></dd>
           </>
         ))}
       </dl>
@@ -59,10 +59,10 @@ ${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
 
     <section class="section">
       <h2 class="h2">The same functions over HTTP</h2>
-      <table class="table">
+      <div class="scroll"><table class="table">
         <thead><tr><th>Method</th><th>Route</th><th>Returns</th></tr></thead>
         <tbody>{api.map(([m, route, model]) => <tr><td class="mono">{m}</td><td class="mono">{route}</td><td class="mono">{model}</td></tr>)}</tbody>
-      </table>
+      </table></div>
       <p class="after muted">JSON Schemas for every model are in <a class="link" href="https://github.com/Noah-Airmet/onthepage/tree/main/schemas">schemas/</a>. The design is in <a class="link" href="https://github.com/Noah-Airmet/onthepage/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a>.</p>
     </section>
   </div>
@@ -78,6 +78,7 @@ ${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
 </script>
 <style>
   .narrow { max-width: 52rem; }
+  .scroll td { white-space: nowrap; }
   .clients { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--s-2) var(--s-4); align-items: center; }
   .clients dt { color: var(--ink-2); }
   .tools li { padding-block: var(--s-3); border-top: 1px solid var(--rule); display: grid; gap: var(--s-1); }

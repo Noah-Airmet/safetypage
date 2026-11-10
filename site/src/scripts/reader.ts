@@ -76,17 +76,20 @@ function start(root: HTMLElement) {
     );
     sheets.forEach((s) => here.observe(s));
 
-    const go = (anchor: string) => document.getElementById(anchor)?.scrollIntoView({ block: 'start' });
+    const go = (anchor: string, record = false) => {
+      document.getElementById(anchor)?.scrollIntoView({ block: 'start' });
+      if (record) history.replaceState(null, '', citePath(`${ref}/${anchor}`));
+    };
     root.querySelector('[data-goto]')!.addEventListener('submit', (event) => {
       event.preventDefault();
       const n = Math.min(Math.max(1, Number(input.value) || 1), sheets.length);
-      go(`p${n}`);
+      go(`p${n}`, true);
       input.blur();
     });
     root.querySelectorAll<HTMLAnchorElement>('[data-jump]').forEach((a) =>
       a.addEventListener('click', (event) => {
         event.preventDefault();
-        go(a.dataset.jump!);
+        go(a.dataset.jump!, true);
         a.closest('details')!.removeAttribute('open');
       }),
     );

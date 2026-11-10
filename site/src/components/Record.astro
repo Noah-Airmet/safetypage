@@ -60,8 +60,8 @@ const citeExample = first ? `${ref}/${first}` : ref;
       <section aria-labelledby="cite-h">
         <h2 class="h2" id="cite-h">How to cite</h2>
         <p class="hint">A citation names the document, the version and the place.</p>
-        <div class="codeline"><code>{citeExample}</code><button class="btn btn-quiet" data-copy={citeExample}>Copy</button></div>
-        <div class="codeline"><code>{site}{citePath(citeExample)}</code><button class="btn btn-quiet" data-copy={site + citePath(citeExample)}>Copy</button></div>
+        <div class="codeline"><code tabindex="0">{citeExample}</code><button class="btn btn-quiet" data-copy={citeExample}>Copy</button></div>
+        <div class="codeline"><code tabindex="0">{site}{citePath(citeExample)}</code><button class="btn btn-quiet" data-copy={site + citePath(citeExample)}>Copy</button></div>
         <details class="more">
           <summary>BibTeX</summary>
           <pre class="code">{bibtex(doc)}</pre>
@@ -118,7 +118,7 @@ const citeExample = first ? `${ref}/${first}` : ref;
   .byline { color: var(--ink-2); font-size: var(--t-16); max-width: 80ch; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-top: var(--s-2); }
   .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-7); align-items: start; margin-top: var(--s-4); }
-  .side { display: grid; gap: var(--s-6); }
+  .side { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); }
   .side .codeline + .codeline { margin-top: var(--s-2); }
   .hint { color: var(--ink-2); font-size: var(--t-13); margin-bottom: var(--s-2); }
   .more { margin-top: var(--s-2); }
@@ -133,5 +133,5 @@ const citeExample = first ? `${ref}/${first}` : ref;
   .outline a:hover .o-title, .outline a:hover .o-page { color: var(--accent); }
   .lic { grid-template-columns: 5.5rem 1fr; font-size: var(--t-13); }
   .table a[aria-current] { font-weight: 600; }
-  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; gap: var(--s-6); } }
+  @media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); } }
 </style>

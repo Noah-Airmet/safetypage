@@ -17,13 +17,13 @@ const host = new URL(doc.source_url).hostname.replace(/^www\./, '');
 const latest = version === doc.version;
 const outline = latest ? doc.outline : [];
 const meta = { doc_id: doc.doc_id, title: doc.title, authors: doc.authors, org: doc.org, published: doc.published, short: shortLabel(doc) };
-const tags: Record<string, string> = { heading: 'h2', list_item: 'li', caption: 'figcaption', quote: 'blockquote', code: 'pre' };
+const tags: Record<string, string> = { quote: 'blockquote', code: 'pre' };
 ---
 <div class="reader" data-reader data-mode={!open ? 'source' : paged ? 'pages' : 'text'} data-ref={ref} data-target={anchor} data-count={count} data-doc={JSON.stringify(meta)} data-base={DATA_BASE}>
   <div class="rbar">
     <div class="wrap rbar-in">
       <a class="rback" href={citePath(ref)} aria-label={`Record: ${doc.title}`}><span aria-hidden="true">‹</span><span class="rtitle">{doc.title}</span></a>
-      {paged ? (
+      {paged && open ? (
         <form class="goto" data-goto>
           <label><span class="sr">Go to page</span><span aria-hidden="true">p.</span>
             <input class="field mono" name="page" inputmode="numeric" autocomplete="off" value={n} aria-label="Page number" />
@@ -164,8 +164,8 @@ const tags: Record<string, string> = { heading: 'h2', list_item: 'li', caption: 
   .sourcecard { width: min(100%, 620px); aspect-ratio: 612 / 792; background: var(--surface); box-shadow: 0 0 0 1px var(--edge); padding: clamp(var(--s-5), 8%, var(--s-8)); display: flex; flex-direction: column; gap: var(--s-4); align-items: flex-start; }
   .sourcecard h1 { font: 400 var(--t-28)/1.2 var(--serif); text-wrap: balance; }
   .sourcecard .why { font: 400 var(--t-16)/1.55 var(--serif); color: var(--ink-2); max-width: 44ch; }
-  .sourcecard .links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); }
-  .sourcecard .links > * { min-height: 24px; }
+  .sourcecard .links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); align-items: center; }
+  .sourcecard .links > * { min-height: 24px; display: inline-flex; align-items: center; font-size: var(--t-14); }
   .sourcecard .pager { display: flex; justify-content: space-between; width: 100%; margin-top: auto; }
   .sourcecard .foot-line { font-size: var(--t-12); }
   @media (max-width: 700px) { .sourcecard { aspect-ratio: auto; min-height: 70vh; } }

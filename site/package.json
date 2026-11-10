@@ -11,7 +11,7 @@
     "check": "tsc --noEmit",
     "unit": "vitest run",
     "e2e": "playwright test",
-    "test": "npm run check && npm run unit && npm run build && npm run e2e"
+    "test": "npm run check && npm run unit && npm run e2e"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.5",

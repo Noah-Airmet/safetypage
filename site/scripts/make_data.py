@@ -203,7 +203,7 @@ def sample_trace(corpus: Any) -> dict[str, Any]:
 
 def leaderboard() -> tuple[dict[str, Any], dict[str, Any]]:
     def score(value: float, half: float) -> dict[str, Any]:
-        return {"value": value, "ci": [round(value - half, 3), round(value + half, 3)], "n": 2}
+        return {"value": value, "ci": [round(value - half, 3), round(value + half, 3)], "n": 1}
 
     rows = [
         ("Sample agent A", "sample-run", [1, 2], 0.71, 0.93, 0.98, 0.21),
