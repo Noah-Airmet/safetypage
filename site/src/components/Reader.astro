@@ -43,7 +43,7 @@ const tags: Record<string, string> = { quote: 'blockquote', code: 'pre' };
       )}
       <a class="btn btn-quiet rsource" href={sourceLink(doc.source_url, anchor, paged)} rel="noopener" data-source>Source ↗</a>
     </div>
-    <div class="wrap qstatus" data-qstatus hidden></div>
+    <p class="wrap qstatus" data-qstatus hidden></p>
   </div>
 
   {open && paged && (
@@ -125,8 +125,9 @@ const tags: Record<string, string> = { quote: 'blockquote', code: 'pre' };
   .contents summary { list-style: none; }
   .contents summary::-webkit-details-marker { display: none; }
   .contents ol { position: absolute; right: 0; top: calc(100% + var(--s-1)); width: min(26rem, calc(100vw - 2 * var(--s-4))); max-height: 70vh; overflow: auto; background: var(--surface); border: 1px solid var(--edge); border-radius: var(--r-2); box-shadow: var(--shadow); padding: var(--s-2); }
-  .contents li a { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) calc(var(--s-2) + var(--level) * var(--s-4)); border-radius: var(--r-1); min-height: 36px; align-items: baseline; }
+  .contents li a { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-2); border-radius: var(--r-1); min-height: 36px; align-items: baseline; }
   .contents li a:hover { background: var(--wash); }
+  .contents li:not([style*='level:0']) a > span:first-child { color: var(--ink-2); }
   .contents .mono { font-size: var(--t-12); white-space: nowrap; }
   .rsource { flex: none; }
   .qstatus { padding-block: var(--s-2); border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); align-items: baseline; }

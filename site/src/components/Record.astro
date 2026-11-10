@@ -64,7 +64,7 @@ const citeExample = first ? `${ref}/${first}` : ref;
         <div class="codeline"><code tabindex="0">{site}{citePath(citeExample)}</code><button class="btn btn-quiet" data-copy={site + citePath(citeExample)}>Copy</button></div>
         <details class="more">
           <summary>BibTeX</summary>
-          <pre class="code">{bibtex(doc)}</pre>
+          <pre class="code" tabindex="0">{bibtex(doc)}</pre>
         </details>
       </section>
 
@@ -126,7 +126,7 @@ const citeExample = first ? `${ref}/${first}` : ref;
   .more pre { margin-top: var(--s-2); }
   .outline li { border-top: 1px solid var(--rule); }
   .outline li:last-child { border-bottom: 1px solid var(--rule); }
-  .outline a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); padding: var(--s-2) 0 var(--s-2) calc(var(--level) * var(--s-5)); min-height: 44px; }
+  .outline a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); padding: var(--s-2) 0; min-height: 44px; }
   .outline .o-title { font: 400 var(--t-18)/1.35 var(--serif); }
   .outline li:not([style*='level:0']) .o-title { font-size: var(--t-16); color: var(--ink-2); }
   .outline .o-page { color: var(--ink-2); font-size: var(--t-12); white-space: nowrap; }

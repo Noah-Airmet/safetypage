@@ -115,7 +115,7 @@ export default function Replay({ trace, docs, librarySize }: Props) {
                 <button type="button" onClick={() => { setPlaying(false); go(e.seq); }}>
                   <span className="t mono">{clock(e.t_ms)}</span>{line(e)}
                 </button>
-                {raw && e.seq === step && <pre className="code">{JSON.stringify(e, null, 1)}</pre>}
+                {raw && e.seq === step && <pre className="code" tabIndex={0}>{JSON.stringify(e, null, 1)}</pre>}
               </li>
             ))}
           </ol>

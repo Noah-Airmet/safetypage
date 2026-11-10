@@ -51,7 +51,7 @@ const api = [
 
     <section class="section">
       <h2 class="h2">What a citation looks like</h2>
-      <pre class="code">{`arxiv:2305.15324/v2/p6                         document / version / place
+      <pre class="code" tabindex="0">{`arxiv:2305.15324/v2/p6                         document / version / place
 ${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
 …/v2/p6?q=not%20the%20only%20tool                 with the quoted words highlighted`}</pre>
       <p class="after muted">A citation always names a version, because pages move when a paper is revised. <span class="mono">p6</span> is a PDF page; <span class="mono">b12</span> is a paragraph of a document that has no pages.</p>
@@ -59,7 +59,7 @@ ${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
 
     <section class="section">
       <h2 class="h2">The same functions over HTTP</h2>
-      <div class="scroll"><table class="table">
+      <div class="scroll" tabindex="0" role="region" aria-label="Table"><table class="table">
         <thead><tr><th>Method</th><th>Route</th><th>Returns</th></tr></thead>
         <tbody>{api.map(([m, route, model]) => <tr><td class="mono">{m}</td><td class="mono">{route}</td><td class="mono">{model}</td></tr>)}</tbody>
       </table></div>
