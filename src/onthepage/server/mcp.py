@@ -199,11 +199,15 @@ class McpEndpoint:
 
 def mcp_endpoint(server: Server, surface: Surface, allowed_hosts: list[str] | None) -> McpEndpoint:
     mcp = build_mcp(server, surface)
-    security = (
-        TransportSecuritySettings(enable_dns_rebinding_protection=True, allowed_hosts=allowed_hosts)
-        if allowed_hosts
-        else TransportSecuritySettings(enable_dns_rebinding_protection=False)
-    )
+    if allowed_hosts:
+        origins = [f"{scheme}://{host}" for host in allowed_hosts for scheme in ("http", "https")]
+        security = TransportSecuritySettings(
+            enable_dns_rebinding_protection=True,
+            allowed_hosts=allowed_hosts,
+            allowed_origins=origins,
+        )
+    else:
+        security = TransportSecuritySettings(enable_dns_rebinding_protection=False)
     mcp.streamable_http_app(
         stateless_http=True,
         json_response=True,

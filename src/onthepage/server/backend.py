@@ -24,7 +24,7 @@ __all__ = ["MemoryBackend", "QueryError"]
 
 _WORD = re.compile(r"\w+")
 _TOKEN = re.compile(r'(-?)"([^"]*)"|(\S+)')
-_NEAR = re.compile(r"NEAR/\d+")
+_NEAR = re.compile(r"NEAR(?:/\d+)?")
 _SNIPPET_CHARS = 280
 
 
@@ -63,8 +63,11 @@ def _parse(query: str) -> _Query:
         if _NEAR.fullmatch(bare):
             q.near = True
             continue
-        if bare.startswith("NEAR"):
-            raise QueryError("NEAR needs a distance: write 'sandbagging NEAR/10 evaluation'.")
+        if bare in {"OR", "|", "||"}:
+            raise QueryError(
+                "OR is not an operator here: every word in a query must appear. Run one search "
+                "per alternative instead."
+            )
         negative = bare.startswith("-") and len(bare) > 1
         text = bare[1:] if negative else bare
         prefix = text.endswith("*")

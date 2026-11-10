@@ -2,10 +2,12 @@
 
     python -m onthepage.server --fixtures                 # the fixture corpus, for development
     python -m onthepage.server --data /data               # every sealed snapshot under /data
+    python -m onthepage.server --snapshot /snapshot       # one sealed snapshot directory
 
 Settings come from flags or the environment (flags win):
 
 ``ONTHEPAGE_DATA``           data root holding ``snapshots/`` (and, by default, ``ops.sqlite``)
+``ONTHEPAGE_SNAPSHOT``       one sealed snapshot directory, instead of a data root
 ``ONTHEPAGE_BASE_URL``       the public origin citation URLs are minted from
 ``ONTHEPAGE_STATIC_URL``     where ``public/`` is served, for page image links (default: base URL)
 ``ONTHEPAGE_OPS_DB``         the call log (default ``<data>/ops.sqlite``; ``none`` disables it)
@@ -31,9 +33,9 @@ from onthepage.server.backend import MemoryBackend
 from onthepage.server.library import Library, open_readonly
 from onthepage.server.oplog import OpsLog
 from onthepage.server.surfaces import load_surfaces
-from onthepage.snapshot import list_snapshots, resolve_snapshot
+from onthepage.snapshot import list_snapshots, load_manifest, resolve_snapshot
 
-__all__ = ["fixture_library", "load_server", "main", "open_backend"]
+__all__ = ["fixture_library", "load_server", "main", "open_backend", "snapshot_library"]
 
 log = logging.getLogger("onthepage.server")
 
@@ -74,10 +76,23 @@ def fixture_library(base_url: str, directory: Path | None = None) -> Library:
     return Library(path, backend, base_url=base_url)
 
 
+def snapshot_library(directory: Path, base_url: str, static_url: str | None = None) -> Library:
+    """One sealed snapshot directory as a library."""
+    snapshot_id = load_manifest(directory).snapshot_id
+    return Library(
+        directory / "corpus.sqlite",
+        open_backend(directory, snapshot_id, base_url),
+        base_url=base_url,
+        public_dir=directory / "public",
+        static_url=static_url,
+    )
+
+
 def load_server(
     *,
     data: Path | None,
     fixtures: bool,
+    snapshot: Path | None = None,
     base_url: str,
     static_url: str | None = None,
     ops_db: Path | None = None,
@@ -86,30 +101,31 @@ def load_server(
     libraries: dict[str, Library] = {}
     if fixtures:
         libraries["fixtures"] = libraries["current"] = fixture_library(base_url)
+    elif snapshot is not None:
+        library = snapshot_library(snapshot, base_url, static_url)
+        libraries[library.snapshot] = libraries["current"] = library
     elif data is not None:
         for snapshot_id in list_snapshots(data):
             directory = resolve_snapshot(data, snapshot_id)
-            libraries[snapshot_id] = Library(
-                directory / "corpus.sqlite",
-                open_backend(directory, snapshot_id, base_url),
-                base_url=base_url,
-                public_dir=directory / "public",
-                static_url=static_url,
-            )
-        current = resolve_snapshot(data).name
+            libraries[snapshot_id] = snapshot_library(directory, base_url, static_url)
+        current = load_manifest(resolve_snapshot(data)).snapshot_id
         libraries["current"] = libraries[current]
     else:
-        raise SystemExit("give --data <root> or --fixtures")
+        raise SystemExit("give --data <root>, --snapshot <dir> or --fixtures")
     return Server(libraries, load_surfaces(), OpsLog(ops_db), limits or Limits())
 
 
 def main(argv: list[str] | None = None) -> None:
     env = os.environ.get
     data_env = env("ONTHEPAGE_DATA")
+    snapshot_env = env("ONTHEPAGE_SNAPSHOT")
     parser = argparse.ArgumentParser(
         prog="python -m onthepage.server", description="Run the On the Page search server."
     )
     parser.add_argument("--data", type=Path, default=Path(data_env) if data_env else None)
+    parser.add_argument(
+        "--snapshot", type=Path, default=Path(snapshot_env) if snapshot_env else None
+    )
     parser.add_argument(
         "--fixtures", action="store_true", help="serve the checked-in fixture corpus"
     )
@@ -137,6 +153,7 @@ def main(argv: list[str] | None = None) -> None:
     server = load_server(
         data=args.data,
         fixtures=args.fixtures,
+        snapshot=args.snapshot,
         base_url=base_url,
         static_url=env("ONTHEPAGE_STATIC_URL"),
         ops_db=ops_db,
