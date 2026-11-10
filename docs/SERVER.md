@@ -76,9 +76,9 @@ from mcp.client import Client
 
 async with Client("http://127.0.0.1:8000/mcp") as client:
     result = await client.call_tool("search", {"query": "sandbagging"})
-    result.content[0].text            # markdown, for the model
-    result.structured_content         # onthepage.api.SearchResponse
-    result.meta["onthepage"]          # ResponseMeta: server_version, surface_id, snapshot, arm, request_id
+    result.content[0].text  # markdown, for the model
+    result.structured_content  # onthepage.api.SearchResponse
+    result.meta["onthepage"]  # ResponseMeta: server_version, surface_id, snapshot, arm, request_id
 ```
 
 A benchmark harness sends `X-OnThePage-Run: <run id>` (and `X-OnThePage-Sample: <sample id>`) on

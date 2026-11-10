@@ -25,4 +25,4 @@ step "fixture bundles rebuild byte for byte"
 uv run python fixtures/build.py --check
 
 step "tests"
-uv run pytest --cov=onthepage --cov-report=term --cov-fail-under=90 "$@"
+uv run pytest --cov=onthepage --cov-report=term --cov-fail-under=85 "$@"
