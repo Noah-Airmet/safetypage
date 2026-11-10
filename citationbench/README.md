@@ -70,7 +70,7 @@ Runs use subscription logins, not API keys. A leaderboard row is an **agent plus
 
 | Agent | Login | How it is isolated |
 |---|---|---|
-| `claude-code` | `claude` | `--tools ""` (no built-in tools), `--strict-mcp-config` with only the library, `--setting-sources ""` (no user settings, plugins or hooks), no saved session |
+| `claude-code` | `claude` (`CITATIONBENCH_CLAUDE` names another binary) | `--tools ""` (no built-in tools), `--strict-mcp-config` with only the library, `--setting-sources ""` (no user settings, plugins or hooks), no saved session |
 | `codex` | the ChatGPT login | its own `CODEX_HOME` (no user AGENTS.md or config; `auth.json` is a link to the real one), shell, apps, plugins, browser, images, memories and web search off. Its code mode stays on because GPT-6 calls MCP tools through it; it has no file system, imports or network |
 | `antigravity` | the Google login (`agy`) | its own `HOME` with only the library server, permission rules denying commands, files and URLs. Its web search cannot be turned off: a sample that uses it, or any other non-library tool, is marked `contaminated` and scores as wrong |
 | `inspect` | none, or an API key | Inspect's `react` agent; used for local models on oMLX, and by anyone with API keys |

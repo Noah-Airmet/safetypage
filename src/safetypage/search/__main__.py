@@ -1,9 +1,9 @@
 """Command line: build a snapshot, embed units, run a query, measure latency.
 
-    python -m safetypage.search build   --root data --id 2026.11.0 [--current] [--no-images]
-    python -m safetypage.search embed   --root data             (overnight: stops at 06:00)
-    python -m safetypage.search query   --root data [--snapshot 2026.11.0] "sparse autoencoder*"
-    python -m safetypage.search latency --root data [--snapshot ...]
+    python -m safetypage.search --root data build --id 2026.11.0 [--current] [--no-images]
+    python -m safetypage.search --root data embed (overnight: stops at 06:00)
+    python -m safetypage.search --root data query [--snapshot 2026.11.0] "sparse autoencoder*"
+    python -m safetypage.search --root data latency [--snapshot ...]
 
 ``--root`` is the data root: ``corpus.sqlite``, ``blobs/``, ``snapshots/``, ``embeddings/``.
 """

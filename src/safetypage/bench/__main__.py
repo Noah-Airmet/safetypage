@@ -46,19 +46,20 @@ def _corpus(name: str) -> Any:
 
 
 def _env_from_vault(mapping: dict[str, str]) -> None:
-    """Fill unset environment variables from 1Password references (``op://...``) through
-    ``agent-op``. Values go into this process's environment only."""
+    """Fill unset environment variables from 1Password references (``op://...``) through the
+    1Password CLI (``op``, or the command named in ``CITATIONBENCH_OP``). Values go into this
+    process's environment only."""
+    op = os.environ.get("CITATIONBENCH_OP", "op")
     for var, ref in mapping.items():
         if os.environ.get(var):
             continue
         if not ref.startswith("op://"):
             os.environ[var] = ref  # a plain value, not a secret
             continue
-        if not shutil.which("agent-op"):  # pragma: no cover
-            sys.exit(f"{var} is not set and agent-op is not available to read {ref}")
-        agent_op = shutil.which("agent-op")
+        if not shutil.which(op):  # pragma: no cover
+            sys.exit(f"{var} is not set and {op} is not available to read {ref}")
         value = subprocess.run(  # noqa: S603
-            [agent_op or "agent-op", "read", ref],
+            [op, "read", ref],
             capture_output=True,
             text=True,
             check=True,

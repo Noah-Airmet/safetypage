@@ -81,10 +81,10 @@ test('checker: marks each citation Verified, Page only or Rejected, with the rea
 });
 
 // A real CitationBench run: three verified citations, one rejected, one page-only.
-const TRACE = '/r/GVTHZaZca3mVqmnh9t79KL-pc-7abbdba8ab-1';
+const TRACE = '/r/cc-sonnet-5-5-43677d-pc-7abbdba8ab.1';
 
 test('replay: a link opens at its step, with the rejection struck through', async ({ page }) => {
-  await page.goto(`${TRACE}?step=30`);
+  await page.goto(`${TRACE}?step=14`);
   const rejected = page.locator('.rp-answer .chip[data-state="rejected"]');
   await expect(rejected).toHaveCount(1);
   await expect(rejected.locator('.chip-label')).toHaveCSS('text-decoration-line', 'line-through');
@@ -95,7 +95,7 @@ test('replay: a link opens at its step, with the rejection struck through', asyn
   await expect(page.locator('.rp-answer .chip')).toHaveCount(5);
   await expect(page.locator('.rp-tally')).toHaveText(/3.*1.*1/);
   await page.locator('.rp-answer .chip[data-state="verified"]').first().click();
-  await expect(page.locator('.rp-page .hl').first()).toBeVisible();
+  await expect(page.locator('.rp-page .hl, .rp-page mark').first()).toBeVisible();
   await page.locator('.rp-track input').focus();
   await page.keyboard.press('Home');
   await expect(page.locator('.rp-answer .chip')).toHaveCount(0);
@@ -114,7 +114,7 @@ test('leaderboard: a number leads to the run, the run to the replay, the replay 
 });
 
 const SCREENS = ['/', '/library', '/d/arxiv/2305.15324', PAGE6, '/d/distill/zoom-in/r1/b21', '/d/example/link-only-eval-report/r1/p2',
-  '/search?query=evaluation', '/check?example=1', `${TRACE}?step=30`, '/citationbench', '/citationbench/runs/GVTHZaZca3mVqmnh9t79KL', '/connect', '/about'];
+  '/search?query=evaluation', '/check?example=1', `${TRACE}?step=14`, '/citationbench', '/citationbench/runs/cc-sonnet-5-5-43677d', '/connect', '/about'];
 
 for (const scheme of ['light', 'dark'] as const) {
   test.describe(`accessibility, ${scheme}`, () => {

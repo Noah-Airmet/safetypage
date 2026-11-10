@@ -1,7 +1,8 @@
 # Copy to vault.local.toml (not committed) to have `python -m safetypage.bench` read missing
-# keys from a password manager with `agent-op read <reference>`, into the process only. Used
-# only when a run configuration says `vault = [...]` or a command gets `--vault`. Without this
-# file, set the environment variables yourself. Values not starting op:// are plain settings.
+# keys from 1Password with `op read <reference>` (or the command named in CITATIONBENCH_OP), into
+# the process only. Used only when a run configuration says `vault = [...]` or a command gets
+# `--vault`. Without this file, set the environment variables yourself. Values not starting
+# op:// are plain settings.
 
 [anthropic]
 ANTHROPIC_API_KEY = "op://<vault>/<item>/<field>"

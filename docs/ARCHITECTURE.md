@@ -590,10 +590,10 @@ command refuses to start outside 22:00–06:00 (local model work runs overnight)
 `--now`, and stops at 06:00.
 
 ```sh
-uv run python -m safetypage.search build   --root data --id 2026.11.0 --current
-uv run python -m safetypage.search query   --root data '"reward hacking" -benchmark' --kind paper
-uv run python -m safetypage.search latency --root data
-uv sync --extra embed && uv run python -m safetypage.search embed --root data   # at night
+uv run python -m safetypage.search --root data build --id 2026.11.0 --current
+uv run python -m safetypage.search --root data query '"reward hacking" -benchmark' --kind paper
+uv run python -m safetypage.search --root data latency
+uv sync --extra embed && uv run python -m safetypage.search --root data embed   # at night
 ```
 
 The site's JSON API is the same functions over HTTP, with `/s/<snapshot>/` as an optional
