@@ -6,14 +6,14 @@ Fetched files are never committed; they live in the gitignored `data/` directory
 
 | File | Rows | What |
 |---|---|---|
-| `scope/labs.jsonl` | 402 | Frontier-lab system cards, model cards, safety frameworks, policies, reports |
+| `scope/labs.jsonl` | 385 | Frontier-lab system cards, model cards, safety frameworks, policies, reports |
 | `scope/lab-research-web.jsonl` | 636 | Lab research published on the web: Transformer Circuits, Distill, alignment blogs |
 | `scope/evaluators.jsonl` | 1,028 | Independent evaluators and safety organisations |
 | `scope/government.jsonl` | 275 | NIST and CAISI, US presidential documents, UK DSIT and AISI, EU AI Office, International AI Safety Report |
 | `scope/welfare.jsonl` | 40 | Model welfare research |
 | `scope/papers.jsonl` | 6,804 | Research papers (arXiv, ACL Anthology, OpenReview); `papers-method.md` says how the list was made |
 | `scope/forum-posts.jsonl` | 5,500 | Alignment Forum posts, and AI-tagged LessWrong posts with karma 100+ or curated |
-| `scope/excluded.jsonl` | 675 | Rows set aside from the inventory, each with `excluded_because` and the shelf file it came from |
+| `scope/excluded.jsonl` | 692 | Rows set aside from the inventory, each with `excluded_because` and the shelf file it came from |
 
 `sources.md` lists the index pages, sitemaps and feeds behind the five web files.
 
