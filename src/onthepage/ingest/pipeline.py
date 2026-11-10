@@ -22,6 +22,7 @@ import sqlite3
 import threading
 from collections import OrderedDict, defaultdict
 from collections.abc import Callable, Iterable, Mapping, Sequence
+from concurrent.futures import Future, ProcessPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Final
@@ -36,7 +37,7 @@ from onthepage.ingest.items import Item, load_items
 from onthepage.ingest.licence import licence_for
 from onthepage.ingest.lw import fetch_posts
 from onthepage.ingest.pdf import NeedsOcrError, PdfError, pdf_outline, pdf_pages
-from onthepage.model import Document, Rendition
+from onthepage.model import Document, NewPage, OutlineEntry, Rendition
 
 __all__ = ["DONE", "Pipeline", "Result"]
 
@@ -87,6 +88,13 @@ def _rfc_date(value: object) -> str | None:
         return None
 
 
+def _parse_pdf(path: str) -> tuple[list[NewPage], list[OutlineEntry]]:
+    """Run in a worker process: pdfium is not thread-safe, but each process has its own."""
+    data = Path(path).read_bytes()
+    pages = pdf_pages(data)
+    return pages, pdf_outline(data, pages)
+
+
 def _is_pdf(data: bytes) -> bool:
     return b"%PDF-" in data[:1024]
 
@@ -112,6 +120,20 @@ class Pipeline:
         self.state = sqlite3.connect(data / "ingest.sqlite", timeout=60)
         self.state.executescript(_SCHEMA)
         self.log: Callable[[str], None] = print
+        self._procs: ProcessPoolExecutor | None = None
+        self._parsed: dict[str, Future[tuple[list[NewPage], list[OutlineEntry]]]] = {}
+
+    def _prefetch_parse(self, fetched: list[tuple[Item, Fetched | FetchError]]) -> None:
+        """Start parsing fetched PDFs in worker processes while the main thread does other work."""
+        if self._procs is None:
+            return
+        for _item, got in fetched:
+            if isinstance(got, Fetched) and got.sha256 not in self._parsed:
+                path = self.blobs.path(got.sha256)
+                with path.open("rb") as handle:
+                    head = handle.read(1024)
+                if _is_pdf(head):
+                    self._parsed[got.sha256] = self._procs.submit(_parse_pdf, str(path))
 
     # ------------------------------------------------------------------ state
 
@@ -197,13 +219,16 @@ class Pipeline:
             if sum(len(b.text) for b in blocks) == 0:
                 return Result("unsupported", "the post has no text")
         elif _is_pdf(data):
+            future = self._parsed.pop(fetched.sha256, None)
             try:
-                pages = pdf_pages(data)
+                pages, outline = (
+                    future.result() if future else _parse_pdf(str(self.blobs.path(fetched.sha256)))
+                )
             except NeedsOcrError as exc:
                 return Result("needs_ocr", str(exc))
             except PdfError as exc:
                 return Result("unsupported", str(exc))
-            blocks, outline = [], pdf_outline(data, pages)
+            blocks = []
             sha = fetched.sha256
             rendition = Rendition(
                 kind="pdf",
@@ -397,7 +422,9 @@ class Pipeline:
 
         def lane(work: list[_Work]) -> None:
             for group, todo in work:
-                results.put((group, self._fetch_group(todo, refresh)))
+                fetched = self._fetch_group(todo, refresh)
+                self._prefetch_parse(fetched)
+                results.put((group, fetched))
 
         def forum_lane(work: list[_Work]) -> None:
             ids = [g[0].url for g, _ in work]
@@ -423,6 +450,7 @@ class Pipeline:
         if lw_groups:
             work = [(g, self._todo(g, refresh)) for g in lw_groups]
             threads.append(threading.Thread(target=forum_lane, args=(work,), daemon=True))
+        self._procs = ProcessPoolExecutor(max_workers=6)
         for thread in threads:
             thread.start()
         for done in range(1, len(pending) + 1):
@@ -432,6 +460,8 @@ class Pipeline:
                 self.log(f"  {done}/{len(pending)} documents")
         for thread in threads:
             thread.join()
+        self._procs.shutdown()
+        self._procs = None
         counts: dict[str, int] = defaultdict(int)
         for (status,) in self.state.execute("SELECT status FROM items"):
             counts[status] += 1
