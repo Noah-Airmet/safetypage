@@ -1,0 +1,13 @@
+{
+  "id": "2026-11",
+  "note": "USD per million tokens. Anthropic first-party list prices as of 2026-11-03 (input, output, cache read as published; cache write at 1.25x input, the 5-minute rate). Haiku 5.5 is the price for prompts up to 100K tokens; its cache-read price was not in the source and is set at 10% of input. gpt-5-mini is the 2025 OpenAI list price and should be checked before it is published. Local models are priced at 0 and marked local.",
+  "models": {
+    "anthropic/claude-fable-5-2": {"input": 8.0, "output": 40.0, "cache_read": 0.2, "cache_write": 10.0},
+    "anthropic/claude-opus-5-5": {"input": 4.0, "output": 20.0, "cache_read": 0.2, "cache_write": 5.0},
+    "anthropic/claude-sonnet-5-5": {"input": 2.0, "output": 10.0, "cache_read": 0.1, "cache_write": 2.5},
+    "anthropic/claude-haiku-5-5": {"input": 0.1, "output": 0.5, "cache_read": 0.01, "cache_write": 0.125},
+    "openai/azure/gpt-5-mini": {"input": 0.25, "output": 2.0, "cache_read": 0.025, "cache_write": 0.25},
+    "openai-api/omlx/Jundot--Qwen3.8-27B-oQ4e-mtp": {"input": 0, "output": 0, "cache_read": 0, "cache_write": 0, "local": "yes"},
+    "openai-api/omlx/Jundot--Qwen3.6-35B-A3B-oQ4e-mtp": {"input": 0, "output": 0, "cache_read": 0, "cache_write": 0, "local": "yes"}
+  }
+}

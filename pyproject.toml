@@ -64,6 +64,7 @@ branch = true
 
 [dependency-groups]
 bench = [
+    "agent-client-protocol<1",
     "anthropic>=2.7.0",
     "inspect-ai>=0.3.288",
     "openai>=3.48.0",

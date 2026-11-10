@@ -1,0 +1,10 @@
+# Ablation: retrieval arm 'bm25'. Needs a snapshot with that arm built and a server surface
+# named 'arm-bm25' (default surface, arm = "bm25"); set corpus to that snapshot's directory.
+model = "anthropic/claude-sonnet-5-5"
+questions = "pagecite/questions/dev.jsonl"
+corpus = "fixtures"
+server = "http://localhost:8765"
+surface = "arm-bm25"
+arm = "bm25"
+judge = "anthropic/claude-sonnet-5-5"
+epochs = 3

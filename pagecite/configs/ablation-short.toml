@@ -1,0 +1,9 @@
+# Ablation: the 'short' surface against 'default'. Same model, questions and judge as the
+# baseline (baseline.toml); report with: python -m onthepage.bench compare <baseline> <this>
+model = "anthropic/claude-sonnet-5-5"
+questions = "pagecite/questions/dev.jsonl"
+corpus = "fixtures"
+server = "http://localhost:8765"
+surface = "short"
+judge = "anthropic/claude-sonnet-5-5"
+epochs = 3

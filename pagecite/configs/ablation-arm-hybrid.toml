@@ -1,0 +1,10 @@
+# Ablation: retrieval arm 'hybrid'. Needs a snapshot with that arm built and a server surface
+# named 'arm-hybrid' (default surface, arm = "hybrid"); set corpus to that snapshot's directory.
+model = "anthropic/claude-sonnet-5-5"
+questions = "pagecite/questions/dev.jsonl"
+corpus = "fixtures"
+server = "http://localhost:8765"
+surface = "arm-hybrid"
+arm = "hybrid"
+judge = "anthropic/claude-sonnet-5-5"
+epochs = 3

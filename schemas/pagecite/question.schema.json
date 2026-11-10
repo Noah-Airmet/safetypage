@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "Check": {
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "title": "At",
+          "type": "string"
+        },
+        "by": {
+          "title": "By",
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "code",
+            "model",
+            "human"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "level",
+        "by",
+        "at"
+      ],
+      "title": "Check",
+      "type": "object"
+    },
+    "Made": {
+      "additionalProperties": false,
+      "properties": {
+        "drafted_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Drafted By"
+        },
+        "evidence": {
+          "items": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "method": {
+          "enum": [
+            "citing_sentence",
+            "perturbed_claim",
+            "version_diff",
+            "shared_section"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "source_cite": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Cite"
+        },
+        "source_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Text"
+        }
+      },
+      "required": [
+        "method"
+      ],
+      "title": "Made",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/Check"
+      },
+      "title": "Checks",
+      "type": "array"
+    },
+    "cluster": {
+      "title": "Cluster",
+      "type": "string"
+    },
+    "expected": {
+      "enum": [
+        "supported",
+        "not_supported",
+        "answer"
+      ],
+      "title": "Expected",
+      "type": "string"
+    },
+    "gold": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Gold",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "claim",
+        "compare"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "made": {
+      "$ref": "#/$defs/Made"
+    },
+    "question": {
+      "title": "Question",
+      "type": "string"
+    },
+    "split": {
+      "anyOf": [
+        {
+          "enum": [
+            "dev",
+            "test"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Split"
+    },
+    "status": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "accepted",
+        "rejected"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "question",
+    "expected",
+    "gold",
+    "cluster",
+    "made"
+  ],
+  "title": "Question",
+  "type": "object"
+}
