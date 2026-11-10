@@ -28,6 +28,8 @@ __all__ = ["MIN_TEXT_CHARS", "ExtractError", "blocks_from_html", "outline_of", "
 MIN_TEXT_CHARS: Final = 300
 """A page whose main text is shorter than this is not the document (a script shell, a stub)."""
 
+_INVISIBLE: Final = {"Cf", "Cc", "Zs", "Zl", "Zp"}
+"""Unicode categories a reader cannot see: format characters, controls and spaces."""
 _HEADINGS: Final = {"h1", "h2", "h3", "h4", "h5", "h6"}
 _SKIP: Final = {"script", "style", "noscript", "nav", "button", "svg", "math", "form", "iframe"}
 _CONTAINERS: Final = {"ul", "ol", "dl"}
@@ -75,8 +77,8 @@ class _Walker:
         self.sections: list[tuple[int, str]] = []
 
     def add(self, kind: BlockKind, text: str, *, level: int | None = None) -> None:
-        if not text.strip():
-            return
+        if all(unicodedata.category(ch) in _INVISIBLE for ch in text):
+            return  # nothing a reader can see (empty, or a lone zero-width joiner)
         if kind == "heading" and level is not None:
             self.sections = [s for s in self.sections if s[0] < level]
             section = [s[1] for s in self.sections]
@@ -209,7 +211,6 @@ _FURNITURE_FROM: Final = {"apolloresearch.ai": "Share this article"}
 
 _APOLLO_BANNER: Final = {"Table of Contents", "Evaluating anti-scheming training"}
 """The table-of-contents widget and the banner linking to a featured post, atop every post."""
-_INVISIBLE: Final = {"Cf", "Cc", "Zs", "Zl", "Zp"}
 _MIN_READ: Final = re.compile(r"\d+ min read")
 
 
@@ -220,8 +221,6 @@ def _without_furniture(blocks: list[NewBlock], url: str) -> list[NewBlock]:
         text = block.text.strip()
         if end is not None and text == end:
             break
-        if all(unicodedata.category(ch) in _INVISIBLE for ch in text):
-            continue  # nothing a reader can see (a lone zero-width joiner)
         if block.kind != "heading" and (
             text.lower() in _FURNITURE
             or text.startswith("Lorem ipsum dolor sit amet")
