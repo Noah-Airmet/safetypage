@@ -196,6 +196,16 @@ class OutlineItem(_Wire):
     url: str
 
 
+class LicenceEvidence(_Wire):
+    """How we know a version's licence: what the record page shows under "Licence"."""
+
+    kind: str
+    """``licence_link``, ``page_statement``, ``publisher_rule``, ``statute`` or ``manual``."""
+    url: str
+    quote: str
+    observed_at: str
+
+
 class DocumentCard(_Wire):
     doc_id: str
     title: str
@@ -215,6 +225,8 @@ class DocumentCard(_Wire):
     fidelity: Fidelity
     unit_count: int
     outline: list[OutlineItem]
+    licence_evidence: LicenceEvidence | None = None
+    """The licence fact in force for this version. None when no statement was found."""
     summary: str | None = None
     """Machine-written orientation, when present. Not the source's words; never quotable."""
 
@@ -232,6 +244,21 @@ class UnitText(_Wire):
     source_url: str
     image_url: str | None = None
     """Open, paged documents: the rendered page image."""
+    kind: str | None = None
+    """``page``, or the block's kind (``heading``, ``paragraph``, ``caption`` ...)."""
+    level: int | None = None
+    """A heading block's level."""
+    spine_start: int | None = None
+    spine_end: int | None = None
+    """The unit's stretch of the version's spine, so a quote location can be placed in it."""
+    width: float | None = None
+    height: float | None = None
+    """A page's size in PDF points."""
+    words: list[tuple[int, int, float, float, float, float]] | None = None
+    """Word boxes ``[char_start, char_end, x0, y0, x1, y1]``: offsets into ``text``, PDF points
+    from the top-left. Open, paged documents, and only when asked for
+    (``read_units(layout=True)``, which the ``public/`` export uses). Drives the reader's text
+    layer and highlight."""
 
 
 class FetchResult(_Wire):

@@ -1,5 +1,35 @@
 {
   "$defs": {
+    "LicenceEvidence": {
+      "additionalProperties": false,
+      "description": "How we know a version's licence: what the record page shows under \"Licence\".",
+      "properties": {
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "observed_at": {
+          "title": "Observed At",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "url",
+        "quote",
+        "observed_at"
+      ],
+      "title": "LicenceEvidence",
+      "type": "object"
+    },
     "OutlineItem": {
       "additionalProperties": false,
       "properties": {
@@ -153,6 +183,17 @@
     "licence": {
       "title": "Licence",
       "type": "string"
+    },
+    "licence_evidence": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/LicenceEvidence"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "org": {
       "anyOf": [

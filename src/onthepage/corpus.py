@@ -31,6 +31,7 @@ from onthepage.api import (
     AnswerAudit,
     CitationAudit,
     DocumentCard,
+    LicenceEvidence,
     OutlineItem,
     QuoteAudit,
     QuoteCheck,
@@ -770,11 +771,13 @@ class Corpus:
     def _cite(self, version: Version, anchor: Anchor) -> Citation:
         return Citation(DocId.parse(version.doc_id), version.label, anchor)
 
-    def read_units(self, ref: Ref | Citation | str) -> list[UnitText]:
+    def read_units(self, ref: Ref | Citation | str, *, layout: bool = False) -> list[UnitText]:
         """The cited units as a client may see them: full text for an open document, the
         opening words and a link to the source for a link-only one.
 
         This is the public read path. At most :data:`MAX_UNITS_PER_READ` units per call.
+        ``layout=True`` adds page sizes and word boxes for an open, paged document; the
+        ``public/`` export asks for it, the tools do not.
         """
         resolved = self.resolve(ref)
         version, anchor = resolved.version, resolved.anchor
@@ -788,7 +791,8 @@ class Corpus:
             )
         if anchor.kind == "p":
             rows = self.conn.execute(
-                "SELECT page AS n, text FROM pages WHERE version_id = ? AND page BETWEEN ? AND ? "
+                "SELECT page AS n, text, 'page' AS kind, NULL AS level, spine_start, spine_end, "
+                "width, height FROM pages WHERE version_id = ? AND page BETWEEN ? AND ? "
                 "ORDER BY page",
                 (version.version_id, anchor.start, anchor.end),
             ).fetchall()
@@ -798,7 +802,8 @@ class Corpus:
                 (version.version_id, anchor.start, anchor.end),
             ).fetchone()
             rows = self.conn.execute(
-                "SELECT anchor AS n, text FROM blocks WHERE version_id = ? AND seq BETWEEN ? AND ? "
+                "SELECT anchor AS n, text, kind, level, spine_start, spine_end, NULL AS width, "
+                "NULL AS height FROM blocks WHERE version_id = ? AND seq BETWEEN ? AND ? "
                 "ORDER BY seq",
                 (version.version_id, bounds[0], bounds[1]),
             ).fetchall()
@@ -813,6 +818,13 @@ class Corpus:
             single = Anchor(anchor.kind, int(row["n"]), int(row["n"]))
             cite = self._cite(version, single)
             text = str(row["text"])
+            words = None
+            if layout and access.full_text and anchor.kind == "p":
+                found = self.conn.execute(
+                    "SELECT words FROM page_words WHERE version_id = ? AND page = ?",
+                    (version.version_id, row["n"]),
+                ).fetchone()
+                words = json.loads(found[0]) if found else None
             units.append(
                 UnitText(
                     cite=str(cite),
@@ -823,6 +835,13 @@ class Corpus:
                     text=policy.full_text(text, version.tier) if access.full_text else None,
                     excerpt=None if access.full_text else policy.clip(text, version.tier),
                     source_url=source_link(version.source_url, single, paged=version.paged),
+                    kind=row["kind"],
+                    level=row["level"],
+                    spine_start=row["spine_start"],
+                    spine_end=row["spine_end"],
+                    width=row["width"] if layout and access.full_text else None,
+                    height=row["height"] if layout and access.full_text else None,
+                    words=words,
                 )
             )
         return units
@@ -845,6 +864,7 @@ class Corpus:
                     url=cite.url(self.base_url),
                 )
             )
+        fact = self.licence_fact(version.version_id)
         return DocumentCard(
             doc_id=document.doc_id,
             title=document.title,
@@ -874,6 +894,14 @@ class Corpus:
             fidelity=version.fidelity,
             unit_count=len(self._units(version)),
             outline=outline,
+            licence_evidence=LicenceEvidence(
+                kind=fact.evidence_kind,
+                url=fact.evidence_url,
+                quote=fact.evidence_quote,
+                observed_at=fact.observed_at,
+            )
+            if fact
+            else None,
         )
 
     # ------------------------------------------------------------------ quote checking

@@ -35,6 +35,18 @@
       "default": null,
       "title": "Excerpt"
     },
+    "height": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Height"
+    },
     "image_url": {
       "anyOf": [
         {
@@ -47,9 +59,57 @@
       "default": null,
       "title": "Image Url"
     },
+    "kind": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kind"
+    },
+    "level": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Level"
+    },
     "source_url": {
       "title": "Source Url",
       "type": "string"
+    },
+    "spine_end": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Spine End"
+    },
+    "spine_start": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Spine Start"
     },
     "text": {
       "anyOf": [
@@ -68,6 +128,55 @@
     "url": {
       "title": "Url",
       "type": "string"
+    },
+    "width": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Width"
+    },
+    "words": {
+      "anyOf": [
+        {
+          "items": {
+            "maxItems": 6,
+            "minItems": 6,
+            "prefixItems": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Words"
     }
   },
   "required": [

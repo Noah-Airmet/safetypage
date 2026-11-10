@@ -309,3 +309,25 @@ def test_an_unplaced_overlay_block_cannot_be_cited(library: Corpus) -> None:
     unplaced = next(b for b in library.blocks(version.version_id) if b.spine_start is None)
     with pytest.raises(NotFoundError, match="cite the page instead"):
         library.resolve(f"{PAPER}/v2/b{unplaced.anchor}")
+
+
+def test_layout_is_only_returned_when_asked_and_only_for_open_pages(library: Corpus) -> None:
+    plain = library.read_units(f"{PAPER}/v2/p6")[0]
+    assert plain.words is None and plain.width is None
+    assert plain.kind == "page" and plain.spine_start is not None
+
+    page = library.read_units(f"{PAPER}/v2/p6", layout=True)[0]
+    assert page.text is not None and page.words and page.width and page.height
+    start, end, x0, y0, x1, y1 = page.words[0]
+    assert page.text[start:end] == "Model"
+    assert 0 <= x0 < x1 <= page.width and 0 <= y0 < y1 <= page.height
+
+    closed = library.read_units("example:link-only-eval-report/r1/p1", layout=True)[0]
+    assert closed.text is None and closed.words is None and closed.width is None
+
+
+def test_the_document_card_carries_the_licence_evidence(library: Corpus) -> None:
+    evidence = library.document_card(PAPER).licence_evidence
+    assert evidence is not None and evidence.kind == "licence_link"
+    assert evidence.url == "https://arxiv.org/abs/2305.15324v2"
+    assert library.document_card("example:unlicensed-post").licence_evidence is None

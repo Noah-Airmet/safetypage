@@ -426,7 +426,7 @@ Implemented in [`onthepage.blobs`](../src/onthepage/blobs.py) and
       dense/<model>/                 vectors.f16.npy, unit_ids.json, model.json
       public/                        THE ONLY directory that is ever published
         docs/<ns>/<id>.json                       DocumentCard, both tiers (no text)
-        text/<ns>/<id>/<ver>/<anchor>.json        UnitText               open only
+        text/<ns>/<id>/<ver>/<anchor>.json        UnitText, with layout  open only
         pages/<ns>/<id>/<ver>/p<n>.<width>.webp   page image             open only
         files/<ns>/<id>/<ver>/source.<ext>        the file itself        open only
     2026.11.0.staging/               being built
@@ -448,6 +448,14 @@ Writes go to a temporary file and are renamed into place. Reads re-hash by defau
    `manifest.json` and renames the directory into place. A snapshot that fails a gate is not
    sealed.
 4. `set_current(root, "2026.11.0")` points `current` at it with an atomic rename.
+
+The `text/` files are written from `Corpus.read_units(cite, layout=True)`, which adds what the
+reader needs to draw a page and nothing a tool result should carry: the page's `width` and
+`height` in PDF points and its `words` (the `page_words` boxes, offsets into `text`). Every
+`UnitText` also carries `kind`, `level`, `spine_start` and `spine_end`, so the reader can
+re-set an HTML document's blocks and place a `QuoteLocation` inside a page. The `DocumentCard`
+in `docs/` carries `licence_evidence` (the licence fact in force: kind, URL, statement, when
+it was read), which is what the record page shows under the licence.
 
 `verify_snapshot` re-hashes a sealed snapshot against its manifest. The manifest's
 `content_digest` hashes what the snapshot says (every unit's text, every version's licence and
