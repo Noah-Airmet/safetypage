@@ -5,7 +5,7 @@ Two origins. The addresses are written once, in [`site/deploy.env`](../../site/d
 | Origin | What it serves | Where it runs |
 |---|---|---|
 | `https://safetypage.noahairmet.com` | the static site: about 14,600 files, 194 MB, and one small worker for citation addresses | a Cloudflare Pages project |
-| `https://api.safetypage.noahairmet.com` | search and quote checks (`/api/…`), MCP (`/mcp`, `/x/<surface>/mcp`), and the snapshot's public files (`/data/<snapshot id>/…`) | one machine, behind a Cloudflare tunnel |
+| `https://safetypage-api.noahairmet.com` | search and quote checks (`/api/…`), MCP (`/mcp`, `/x/<surface>/mcp`), and the snapshot's public files (`/data/<snapshot id>/…`) | one machine, behind a Cloudflare tunnel |
 
 The browser calls the API origin directly; the server answers cross-origin requests from
 anywhere, and so does the file server.
@@ -24,24 +24,55 @@ SNAPSHOT_DIR=<snapshot dir> SNAPSHOT_ID=<its id, e.g. 2026.11.1> \
 - `/data/<snapshot id>/…` is the snapshot's `public/` directory: `docs/` (75 MB), `text/`
   (2 GB), `pages/` (page images) and `files/` (the open PDFs, 12 GB). The snapshot's id is in
   the path because a sealed snapshot never changes: every file is sent with
-  `Cache-Control: public, max-age=31536000, immutable`, so Cloudflare and browsers keep it. A
-  new snapshot is a new path, mounted beside the old one. Nothing outside `public/` is reachable.
+  `Cache-Control: public, max-age=31536000, immutable`, so Cloudflare and browsers keep it (a
+  miss is sent `no-store`). Cloudflare only keeps some file types by default, and JSON is not
+  one, so the zone has one cache rule: host is the API origin and the path starts with
+  `/data/`, eligible for cache. Only the live snapshot's `public/` is mounted; nothing outside
+  it is reachable.
 - Everything else goes to the search server, which reads the snapshot's `corpus.sqlite` (4 GB)
   and `lexical/` (0.3 GB). It used 350 MB of memory serving this snapshot locally.
+- The snapshot is mounted read-only except its `lexical/` directory: Tantivy takes a lock
+  file to open an index, so that directory must be writable by the container's user (uid
+  65534).
+- The two settings can sit in `deploy/server/.env` (untracked) instead of the command line.
+- The hostname is one label under the zone (`safetypage-api`, not `api.safetypage`) because
+  Cloudflare's free certificate covers `*.noahairmet.com` and nothing deeper.
 - The site's build must name the same snapshot: it reads the id from the snapshot's
   `manifest.json` and writes `…/data/<snapshot id>` into the pages.
+
+## A new snapshot
+
+```sh
+deploy/redeploy.sh data/snapshots/<snapshot id>
+```
+
+[`redeploy.sh`](../redeploy.sh) does three things, each of which can be run by hand:
+
+1. copies the snapshot's `manifest.json`, `corpus.sqlite`, `lexical/` and `public/` to the
+   server with `rsync` (rate-capped; files identical to the live snapshot's are hard-linked
+   rather than sent);
+2. on the server, pulls this repository, writes `deploy/server/.env` and runs
+   `docker compose up -d --build --wait`, then waits for `/health` to name the new snapshot;
+3. builds the site against the same snapshot and uploads it to the Pages project.
+
+It reads the server's ssh name and paths from the environment or from `deploy/.env`
+(untracked); the top of the script lists them. Between steps 2 and 3, a minute or so, the
+published site still names the old snapshot's files, which are no longer mounted. Old
+snapshot directories stay on the server until they are removed by hand.
 
 ## The site
 
 ```sh
-uv run python -m safetypage.server --snapshot <snapshot dir> --port 8000 &   # the build asks it questions
 cd site && npm ci
-SAFETYPAGE_PUBLIC_DIR=<snapshot dir>/public SAFETYPAGE_API=http://127.0.0.1:8000 npm run build:deploy
-npx wrangler pages deploy dist --project-name safetypage
+SAFETYPAGE_PUBLIC_DIR=<snapshot dir>/public SAFETYPAGE_API=https://safetypage-api.noahairmet.com \
+  npm run build:deploy
+npx wrangler pages deploy dist --project-name safetypage --branch main
 ```
 
 `npm run build:deploy` is the one command that builds the static site for the two origins in
-`deploy.env`. `SAFETYPAGE_API` may also be the deployed API origin, once it is up.
+`deploy.env`. The build asks a search server on the same snapshot a few questions
+(`SAFETYPAGE_API`): the deployed API origin, or a local
+`uv run python -m safetypage.server --snapshot <snapshot dir>`.
 
 **The edge rule.** `dist/_worker.js` (from [`site/edge/worker.js`](../../site/edge/worker.js))
 runs for `/d/*` only (`dist/_routes.json`); every other address is a file.

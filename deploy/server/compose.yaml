@@ -4,6 +4,9 @@
 #   SNAPSHOT_DIR=/srv/safetypage/snapshots/2026.11.1 SNAPSHOT_ID=2026.11.1 \
 #     docker compose -f deploy/server/compose.yaml up -d --build
 #
+# The two settings can also sit in deploy/server/.env (untracked), which compose reads;
+# deploy/redeploy.sh writes it.
+#
 # SNAPSHOT_DIR   a sealed snapshot directory (manifest.json, corpus.sqlite, lexical/, public/)
 # SNAPSHOT_ID    its id; the public files are served under /data/<SNAPSHOT_ID>/
 # SITE_URL       where the site is, for the citation links in tool results
@@ -17,10 +20,13 @@ services:
     restart: unless-stopped
     environment:
       SAFETYPAGE_BASE_URL: ${SITE_URL:-https://safetypage.noahairmet.com}
-      SAFETYPAGE_STATIC_URL: ${API_URL:-https://api.safetypage.noahairmet.com}/data/${SNAPSHOT_ID:?set SNAPSHOT_ID}
+      SAFETYPAGE_STATIC_URL: ${API_URL:-https://safetypage-api.noahairmet.com}/data/${SNAPSHOT_ID:?set SNAPSHOT_ID}
       SAFETYPAGE_TRUST_PROXY: "1"
     volumes:
       - ${SNAPSHOT_DIR:?set SNAPSHOT_DIR}:/snapshot:ro
+      # Tantivy takes a lock file to open an index, so this one directory is writable, and
+      # must be writable by the container's user (nobody, 65534).
+      - ${SNAPSHOT_DIR}/lexical:/snapshot/lexical
       - ops:/ops
 
   files:

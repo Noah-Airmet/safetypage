@@ -11,7 +11,7 @@
 # keep no log. Behind Cloudflare or another proxy, set SAFETYPAGE_TRUST_PROXY=1 so rate limits
 # key on the caller's address rather than the proxy's.
 
-FROM python:3.13-slim
+FROM python:3.13-slim AS build
 
 COPY --from=ghcr.io/astral-sh/uv:0.9.7 /uv /usr/local/bin/uv
 
@@ -25,6 +25,11 @@ COPY pyproject.toml uv.lock README.md LICENSE ./
 RUN uv sync --locked --no-dev --group server --group search --no-install-project
 COPY src ./src
 RUN uv sync --locked --no-dev --group server --group search --no-editable
+
+# The image that runs: Python and the environment, without uv or the build's layers.
+FROM python:3.13-slim
+COPY --from=build /app/.venv /app/.venv
+WORKDIR /app
 
 ENV SAFETYPAGE_SNAPSHOT=/snapshot \
     SAFETYPAGE_OPS_DB=/ops/ops.sqlite \
