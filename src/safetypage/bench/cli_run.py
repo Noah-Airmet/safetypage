@@ -165,7 +165,11 @@ def _trace(
 
 
 def _inspect_sample(
-    config: dict[str, Any], question: Question, headers: dict[str, str], state: Path
+    config: dict[str, Any],
+    question: Question,
+    headers: dict[str, str],
+    state: Path,
+    time_limit: int,
 ) -> AgentRun:
     """One question through the Inspect agent (``react``), for local models and API keys."""
     task = citationbench(
@@ -185,6 +189,7 @@ def _inspect_sample(
         log_dir=str(state / "logs"),
         display="none",
         score=False,
+        time_limit=time_limit,
         **config.get("generate", {}),
     )
     seconds = time.monotonic() - start
@@ -309,7 +314,6 @@ def run_cli(
     # The saved meter may be from a window that has since reset, so a batch starts unmetered:
     # its first sample reads the meter afresh.
     last_meter: dict[str, Any] = {}
-    durations: list[float] = []
     (state / "stopped.json").unlink(missing_ok=True)
     for question, epoch in plan:
         sample = f"{question.id}.{epoch}"
@@ -322,7 +326,10 @@ def run_cli(
         if (why := _over(last_meter, ceiling)) is not None:
             stopped = f"{why}; next is {sample}"
             break
-        expected = (sum(durations) / len(durations)) if durations else 300.0
+        # A sample is cut off at ``timeout``, so one that starts a full timeout before
+        # ``until`` cannot run past it.
+        timeout = int(config.get("timeout", 900))
+        expected = float(timeout)
         if (
             until is not None
             and datetime.now(until.tzinfo).timestamp() + expected > until.timestamp()
@@ -336,7 +343,7 @@ def run_cli(
         headers = {"X-SafetyPage-Run": run_id, "X-SafetyPage-Sample": sample}
         try:
             if agent == "inspect":
-                result = _inspect_sample(config, question, headers, state)
+                result = _inspect_sample(config, question, headers, state, timeout)
             else:
                 result = run_agent(
                     agent,
@@ -344,7 +351,7 @@ def run_cli(
                     prompt,
                     mcp_url=url,
                     headers=headers,
-                    timeout=int(config.get("timeout", 900)),
+                    timeout=timeout,
                 )
         except UsageLimitError as exc:
             stopped = f"usage limit: {exc}"[:500] + f"; next is {sample}"
@@ -380,7 +387,6 @@ def run_cli(
         if result.meter:
             last_meter = result.meter
             (state / "meter.json").write_text(json.dumps(result.meter), encoding="utf-8")
-        durations.append(result.seconds)
         ran += 1
     if stopped:
         (state / "stopped.json").write_text(

@@ -1,0 +1,413 @@
+{
+ "schema": "citationbench.result/1",
+ "run_id": "agy-gemini-3.8-flash-high-014241",
+ "name": "agy-gemini-3.8-flash-high",
+ "created_at": "2026-11-10T10:08:21.455014+00:00",
+ "agent": "antigravity 1.5.4",
+ "model": "gemini-3.8-flash-high",
+ "solver": "antigravity 1.5.4",
+ "surface": "default",
+ "server": "http://localhost:8766",
+ "snapshot": "2026.11.3",
+ "questions": {
+  "file": "citationbench/heldout/test.jsonl",
+  "sha256": "d18c86f4df9d8d905d27c7a317d3b35749c2766e8f0e0156e277c9474eb512c4",
+  "n": 50
+ },
+ "epochs": 1,
+ "samples": 50,
+ "planned_samples": 50,
+ "complete": true,
+ "stopped": null,
+ "errors": 2,
+ "contaminated": 0,
+ "seconds_per_sample": 273.59087185162053,
+ "judge": null,
+ "measures": {
+  "correct": {
+   "mean": 0.66,
+   "ci_low": 0.5283018867924528,
+   "ci_high": 0.7843137254901961,
+   "n": 50
+  },
+  "verdict_correct": {
+   "mean": 0.7954545454545454,
+   "ci_low": 0.6808510638297872,
+   "ci_high": 0.9069767441860465,
+   "n": 44
+  },
+  "page_precision": {
+   "mean": 0.3083829365079365,
+   "ci_low": 0.24456521739130435,
+   "ci_high": 0.37577639751552794,
+   "n": 48
+  },
+  "page_recall": {
+   "mean": 0.58,
+   "ci_low": 0.47,
+   "ci_high": 0.6886792452830188,
+   "n": 50
+  },
+  "quote_fidelity": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 48
+  },
+  "quoted": {
+   "mean": 0.96,
+   "ci_low": 0.8979591836734694,
+   "ci_high": 1.0,
+   "n": 50
+  },
+  "seen_rate": {
+   "mean": 1.0,
+   "ci_low": 1.0,
+   "ci_high": 1.0,
+   "n": 48
+  },
+  "support_rate": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 0
+  }
+ },
+ "by_method": {
+  "perturbed_claim": {
+   "correct": {
+    "mean": 0.7931034482758621,
+    "ci_low": 0.6206896551724138,
+    "ci_high": 0.9310344827586207,
+    "n": 29
+   },
+   "verdict_correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "page_precision": {
+    "mean": 0.25426929392446634,
+    "ci_low": 0.18965517241379307,
+    "ci_high": 0.31995073891625614,
+    "n": 29
+   },
+   "page_recall": {
+    "mean": 0.5229885057471264,
+    "ci_low": 0.3908045977011494,
+    "ci_high": 0.6494252873563219,
+    "n": 29
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 29
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "version_diff": {
+   "correct": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.0,
+    "ci_high": 0.5,
+    "n": 3
+   },
+   "page_recall": {
+    "mean": 0.6666666666666666,
+    "ci_low": 0.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "citing_sentence": {
+   "correct": {
+    "mean": 0.3333333333333333,
+    "ci_low": 0.13333333333333333,
+    "ci_high": 0.6,
+    "n": 15
+   },
+   "verdict_correct": {
+    "mean": 0.4,
+    "ci_low": 0.2,
+    "ci_high": 0.6666666666666666,
+    "n": 15
+   },
+   "page_precision": {
+    "mean": 0.315018315018315,
+    "ci_low": 0.2087912087912088,
+    "ci_high": 0.42161172161172156,
+    "n": 13
+   },
+   "page_recall": {
+    "mean": 0.5888888888888889,
+    "ci_low": 0.36666666666666664,
+    "ci_high": 0.788888888888889,
+    "n": 15
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 13
+   },
+   "quoted": {
+    "mean": 0.8666666666666667,
+    "ci_low": 0.6666666666666666,
+    "ci_high": 1.0,
+    "n": 15
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 13
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "shared_section": {
+   "correct": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.7777777777777777,
+    "ci_low": 0.6666666666666666,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "page_recall": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 3
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "by_kind": {
+  "claim": {
+   "correct": {
+    "mean": 0.6363636363636364,
+    "ci_low": 0.4883720930232558,
+    "ci_high": 0.7674418604651163,
+    "n": 44
+   },
+   "verdict_correct": {
+    "mean": 0.7954545454545454,
+    "ci_low": 0.6808510638297872,
+    "ci_high": 0.9069767441860465,
+    "n": 44
+   },
+   "page_precision": {
+    "mean": 0.27307256235827665,
+    "ci_low": 0.2146258503401361,
+    "ci_high": 0.33159117305458774,
+    "n": 42
+   },
+   "page_recall": {
+    "mean": 0.5454545454545454,
+    "ci_low": 0.43023255813953487,
+    "ci_high": 0.6521739130434783,
+    "n": 44
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 42
+   },
+   "quoted": {
+    "mean": 0.9545454545454546,
+    "ci_low": 0.8837209302325582,
+    "ci_high": 1.0,
+    "n": 44
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 42
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  },
+  "compare": {
+   "correct": {
+    "mean": 0.8333333333333334,
+    "ci_low": 0.4,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "verdict_correct": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   },
+   "page_precision": {
+    "mean": 0.5555555555555555,
+    "ci_low": 0.27777777777777773,
+    "ci_high": 0.7999999999999999,
+    "n": 6
+   },
+   "page_recall": {
+    "mean": 0.8333333333333334,
+    "ci_low": 0.4,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "quote_fidelity": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "quoted": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "seen_rate": {
+    "mean": 1.0,
+    "ci_low": 1.0,
+    "ci_high": 1.0,
+    "n": 6
+   },
+   "support_rate": {
+    "mean": null,
+    "ci_low": null,
+    "ci_high": null,
+    "n": 0
+   }
+  }
+ },
+ "cost": {
+  "billing": "subscription",
+  "price_table": "2026-11",
+  "priced": false,
+  "input_tokens": 11860976,
+  "output_tokens": 778546,
+  "cache_read_tokens": 63972692,
+  "cache_write_tokens": 0,
+  "total_usd": null,
+  "per_sample_usd": null,
+  "per_correct_usd": {
+   "mean": null,
+   "ci_low": null,
+   "ci_high": null,
+   "n": 50
+  }
+ },
+ "meter": {},
+ "config": {
+  "agent": "antigravity",
+  "model": "gemini-3.8-flash-high",
+  "questions": "citationbench/heldout/test.jsonl",
+  "limit": 50,
+  "corpus": "data/snapshots/2026.11.3",
+  "server": "http://localhost:8766",
+  "ops_db": "citationbench/work/ops.sqlite",
+  "surface": "default",
+  "epochs": 1,
+  "batch": 50,
+  "pause": 10,
+  "name": "agy-gemini-3.8-flash-high"
+ },
+ "log": "work/runs/agy-gemini-3.8-flash-high-014241"
+}
