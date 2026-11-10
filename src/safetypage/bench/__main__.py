@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import json
 import os
 import shutil
@@ -29,7 +30,7 @@ from .cli_run import rescore, run_cli
 from .draft import check_question, draft
 from .judge import agreement, judge_id, load_agreements, make_judge
 from .label import label_loop, pairs_from_questions, pairs_from_traces, read_jsonl, unit_text
-from .mine import Candidate, citing_contexts, shared_sections, version_diffs
+from .mine import Candidate, citing_contexts, pick, shared_sections, version_diffs
 from .nightly import nightly
 from .questions import Question, assign_split, load_questions, save_questions
 from .results import PriceTable, RunResult, compare, publish, write_run
@@ -102,27 +103,57 @@ def cmd_mine(a: argparse.Namespace) -> None:
     print(f"{len(found)} candidates -> {out}", dict(Counter(c.method for c in found)))
 
 
+def cmd_pick(a: argparse.Namespace) -> None:
+    corpus = _corpus(a.corpus)
+    rows = [json.loads(x) for x in Path(a.candidates).read_text().splitlines() if x.strip()]
+    quotas = {k: int(v) for k, v in (q.split("=") for q in a.quota)}
+    chosen = pick(corpus, [Candidate.load(r) for r in rows], quotas, seed=a.seed)
+    out = Path(a.out)
+    out.write_text("".join(json.dumps(c.as_dict()) + "\n" for c in chosen), encoding="utf-8")
+    by_method = dict(Counter(c.method for c in chosen))
+    print(f"{len(chosen)} of {len(rows)} candidates -> {out}", by_method)
+
+
 def cmd_draft(a: argparse.Namespace) -> None:
 
     keys_for(a.model, vault=a.vault)
     corpus = _corpus(a.corpus)
     rows = [json.loads(x) for x in Path(a.candidates).read_text().splitlines() if x.strip()]
-    candidates = [Candidate.load(r) for r in rows][: a.limit or None]
+    candidates = [Candidate.load(r) for r in rows]
 
-    async def go() -> list[Question]:
+    out = Path(a.out)
+    merged = {q.id: q for q in load_questions(out)} if out.is_file() else {}
+    done_file = out.with_suffix(".done")  # candidates already drafted, so a rerun resumes
+    done = set(done_file.read_text().split()) if done_file.is_file() else set()
+    todo = [c for c in candidates if _candidate_key(c) not in done][: a.limit or None]
+    drafted = 0
+
+    async def go() -> None:
+        nonlocal drafted
         sem = asyncio.Semaphore(a.concurrency)
 
-        async def one(c: Candidate) -> list[Question]:
+        async def one(c: Candidate) -> None:
+            nonlocal drafted
             async with sem:
-                return await draft(corpus, c, a.model)
+                try:
+                    qs = await draft(corpus, c, a.model)
+                except Exception as exc:
+                    print(f"draft failed for {c.source_cite}: {exc}"[:300], file=sys.stderr)
+                    return
+            merged.update({q.id: q for q in qs})
+            drafted += len(qs)
+            save_questions(out, merged.values())
+            with done_file.open("a", encoding="utf-8") as f:
+                f.write(_candidate_key(c) + "\n")
 
-        return [q for qs in await asyncio.gather(*(one(c) for c in candidates)) for q in qs]
+        await asyncio.gather(*(one(c) for c in todo))
 
-    questions = asyncio.run(go())
-    existing = load_questions(Path(a.out)) if Path(a.out).is_file() else []
-    merged = {q.id: q for q in existing} | {q.id: q for q in questions}
-    n = save_questions(Path(a.out), merged.values())
-    print(f"{len(questions)} drafted from {len(candidates)} candidates; {n} in {a.out}")
+    asyncio.run(go())
+    print(f"{drafted} drafted from {len(todo)} candidates; {len(merged)} in {a.out}")
+
+
+def _candidate_key(c: Candidate) -> str:
+    return hashlib.sha256(f"{c.method}|{c.source_cite}|{c.source_text}".encode()).hexdigest()[:16]
 
 
 def cmd_check(a: argparse.Namespace) -> None:
@@ -132,15 +163,28 @@ def cmd_check(a: argparse.Namespace) -> None:
     path = Path(a.questions)
     questions = load_questions(path)
 
+    sem = asyncio.Semaphore(a.concurrency)
+
+    async def one(q: Question) -> None:
+        async with sem:
+            try:
+                check = await check_question(corpus, q, a.model)
+            except Exception as exc:
+                print(f"check failed for {q.id}: {exc}"[:300], file=sys.stderr)
+                return
+        if check is None:
+            q.status = "rejected"
+        else:
+            q.checks.append(check)
+        save_questions(path, questions)  # progress survives an interruption
+
     async def go() -> None:
-        for q in questions:
-            if q.status != "draft" or any(c.level == "model" for c in q.checks):
-                continue
-            check = await check_question(corpus, q, a.model)
-            if check is None:
-                q.status = "rejected"
-            else:
-                q.checks.append(check)
+        todo = [
+            q
+            for q in questions
+            if q.status == "draft" and not any(c.level == "model" for c in q.checks)
+        ]
+        await asyncio.gather(*(one(q) for q in todo))
 
     asyncio.run(go())
     save_questions(path, questions)
@@ -367,6 +411,16 @@ def main(argv: list[str] | None = None) -> None:
     s.add_argument("--out", default=str(PC / "work" / "candidates.jsonl"))
     s.set_defaults(fn=cmd_mine)
 
+    s = sub.add_parser("pick", help="choose a spread of candidates to draft, by method and kind")
+    s.add_argument("--corpus", default="fixtures", help=corpus_help)
+    s.add_argument("--candidates", default=str(PC / "work" / "candidates.jsonl"))
+    s.add_argument("--out", default=str(PC / "work" / "picked.jsonl"))
+    s.add_argument("--seed", default="v1")
+    s.add_argument(
+        "quota", nargs="+", help="<method>[/<kind>]=<n>, e.g. citing_sentence/system_card=25"
+    )
+    s.set_defaults(fn=cmd_pick)
+
     s = sub.add_parser(
         "draft", help="draft questions from candidates with a model; code checks gold"
     )
@@ -384,6 +438,7 @@ def main(argv: list[str] | None = None) -> None:
     s.add_argument("--questions", default=str(PC / "work" / "questions.jsonl"))
     s.add_argument("--model", default="codex:gpt-6-luna")
     s.add_argument("--vault", action="store_true", help="read API keys from the vault")
+    s.add_argument("--concurrency", type=int, default=4)
     s.set_defaults(fn=cmd_check)
 
     s = sub.add_parser("split", help="assign dev/test by cited document and write both files")

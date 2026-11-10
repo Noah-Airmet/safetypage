@@ -252,14 +252,26 @@ def rescore(config: dict[str, Any]) -> Path | None:
         path.write_text(json.dumps(rec, indent=1), encoding="utf-8")
     stopped_file = state / "stopped.json"
     stopped = json.loads(stopped_file.read_text())["reason"] if stopped_file.is_file() else None
-    plan = len(by_id) * int(config.get("epochs", 1))
+    plan = len(_subset(list(by_id.values()), config)) * int(config.get("epochs", 1))
     return write_cli_results(config, run_id, plan_size=plan, stopped=stopped)
 
 
-def _over(meter: dict[str, Any], ceiling: float) -> str | None:
+def _subset(questions: list[Question], config: dict[str, Any]) -> list[Question]:
+    """``limit = N`` runs the first N questions in id order (ids are hashes, so this is a fixed
+    pseudo-random sample, and a 50-question run is a subset of a 150-question one)."""
+    limit = int(config.get("limit", 0))
+    return sorted(questions, key=lambda q: q.id)[:limit] if limit else questions
+
+
+def _over(meter: dict[str, Any], ceiling: float | dict[str, float]) -> str | None:
+    """``ceiling`` is one share for every window, or one per window
+    (``{five_hour = 0.6, seven_day = 0.45}``)."""
     for key, value in meter.items():
-        if key.endswith("_used") and isinstance(value, int | float) and value >= ceiling:
-            return f"usage meter {key} at {value:.0%}, at or above the {ceiling:.0%} ceiling"
+        if not key.endswith("_used") or not isinstance(value, int | float):
+            continue
+        limit = ceiling.get(key.removesuffix("_used")) if isinstance(ceiling, dict) else ceiling
+        if limit is not None and value >= limit:
+            return f"usage meter {key} at {value:.0%}, at or above the {limit:.0%} ceiling"
     return None
 
 
@@ -270,14 +282,20 @@ def run_cli(
     run_id = run_id_for(config)
     state = PC / "work" / "runs" / run_id
     (state / "samples").mkdir(parents=True, exist_ok=True)
-    questions = load_questions(
-        REPO / str(config.get("questions", "citationbench/questions/dev.jsonl"))
+    questions = _subset(
+        load_questions(REPO / str(config.get("questions", "citationbench/questions/dev.jsonl"))),
+        config,
     )
     epochs = int(config.get("epochs", 1))
     plan = [(q, e) for e in range(1, epochs + 1) for q in questions]
     batch = batch or int(config.get("batch", 10))
     pause = float(config.get("pause", 30))
-    ceiling = float(config.get("max_used", 0.8))
+    raw_ceiling = config.get("max_used", 0.8)
+    ceiling = (
+        {k: float(v) for k, v in raw_ceiling.items()}
+        if isinstance(raw_ceiling, dict)
+        else float(raw_ceiling)
+    )
     ops_db = REPO / str(config.get("ops_db", "citationbench/work/ops.sqlite"))
     url = surface_url(
         str(config.get("server", "http://localhost:8766")), str(config.get("surface", "default"))
@@ -288,9 +306,9 @@ def run_cli(
 
     stopped: str | None = None
     ran = 0
-    last_meter: dict[str, Any] = (
-        json.loads((state / "meter.json").read_text()) if (state / "meter.json").is_file() else {}
-    )
+    # The saved meter may be from a window that has since reset, so a batch starts unmetered:
+    # its first sample reads the meter afresh.
+    last_meter: dict[str, Any] = {}
     durations: list[float] = []
     (state / "stopped.json").unlink(missing_ok=True)
     for question, epoch in plan:

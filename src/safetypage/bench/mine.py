@@ -16,6 +16,7 @@ candidates into questions.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from dataclasses import asdict, dataclass
 from itertools import pairwise
@@ -26,10 +27,12 @@ from rapidfuzz import fuzz
 from safetypage.corpus import Corpus
 from safetypage.ids import Anchor
 from safetypage.model import Version
+from safetypage.quote import skeleton
 
 __all__ = [
     "Candidate",
     "citing_contexts",
+    "pick",
     "shared_sections",
     "split_sentences",
     "version_diffs",
@@ -40,7 +43,8 @@ _BOUNDARY = re.compile(r"(?<=[.!?])[\"”’)\]]?\s+(?=[A-Z(\[“\"])")
 _REFS_HEADING = re.compile(r"(?m)^\s*(?:\d+\s+)?(?:References|Bibliography|REFERENCES)\s*$")
 _NUMBERED_REF = re.compile(r"\[(\d{1,3})\]|^\s*(\d{1,3})\.\s", re.M)
 _BRACKETS = re.compile(r"\[(\d{1,3}(?:\s*[,–-]\s*\d{1,3})*)\]")
-MIN_SENTENCE, MAX_SENTENCE = 40, 700
+_REF_ENTRY = re.compile(r"^\s*\[\d{1,3}\]")
+MIN_SENTENCE, MAX_SENTENCE = 40, 400
 
 
 @dataclass(frozen=True)
@@ -74,6 +78,10 @@ class Candidate:
 
 def _norm(text: str) -> str:
     return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def _digitless(key: str) -> str:
+    return re.sub(r"[0-9]", "", key)
 
 
 def _cite(version: Version, anchor: Anchor) -> str:
@@ -111,37 +119,55 @@ def _references_start(text: str) -> int:
     return found[-1].start() if found else len(text)
 
 
+_ARXIV_ID = re.compile(r"\b(\d{4}\.\d{4,5})(?:v\d+)?\b")
+_KEY = 14
+"""Titles are found by their first ``_KEY`` normalized characters, then matched in full."""
+
+
+def _title_index(docs: dict[str, Any]) -> dict[str, list[tuple[str, str]]]:
+    """Normalized titles by their first ``_KEY`` characters. A paper's title must be at least 20
+    characters to count; a system card's or framework's may be shorter ("GPT-4 System Card")."""
+    index: dict[str, list[tuple[str, str]]] = {}
+    for doc_id, doc in docs.items():
+        title = _norm(doc.title)
+        if len(title) >= (20 if doc.kind in ("paper", "forum_post", "blog", "article") else _KEY):
+            index.setdefault(title[:_KEY], []).append((title, doc_id))
+    return index
+
+
 def citing_contexts(corpus: Corpus) -> list[Candidate]:
-    """Every sentence in a library document that cites another library document."""
-    latest = {d: corpus.versions(d)[-1] for d in corpus.doc_ids() if corpus.versions(d)}
+    """Every sentence in a library document that cites another library document.
+
+    A cited document is found in the citing document's reference list (the text after its last
+    "References" heading) by title or arXiv id; the sentence by the in-text marker."""
+    latest = {d: vs[-1] for d in corpus.doc_ids() if (vs := corpus.versions(d))}
+    docs = {d: doc for d in latest if (doc := corpus.document(d)) is not None}
+    index = _title_index(docs)
     out: list[Candidate] = []
     seen: set[tuple[str, str]] = set()
     for citing_id, version in latest.items():
         text = corpus.private_spine_text(version)
-        sk = corpus.private_skeleton(version)
         refs_at = _references_start(text)
-        spans = split_sentences(text)
-        for cited_id, _cited_version in latest.items():
-            if cited_id == citing_id:
-                continue
-            doc = corpus.document(cited_id)
-            if doc is None:
-                continue
-            title = _norm(doc.title)
-            local = doc_id_local(cited_id)
-            hits = (
-                [m.start() for m in re.finditer(re.escape(title), sk.text)]
-                if len(title) >= 20
-                else []
-            )
-            title_pos = [sk.offsets[h] for h in hits]
-            if not title_pos and local and re.search(rf"\b{re.escape(local)}\b", text):
-                title_pos = [m.start() for m in re.finditer(re.escape(local), text)]
-            if not title_pos:
-                continue
-            markers = _markers(text, title_pos, doc.authors, doc.published)
-            for pos in markers:
-                if pos >= refs_at or any(abs(pos - t) < 400 for t in title_pos):
+        if refs_at >= len(text):
+            continue
+        refs = text[refs_at:]
+        sk = skeleton(refs)
+        found: dict[str, list[int]] = {}
+        for i in range(len(sk.text) - _KEY + 1):
+            for title, doc_id in index.get(sk.text[i : i + _KEY], ()):
+                if doc_id != citing_id and sk.text.startswith(title, i):
+                    found.setdefault(doc_id, []).append(refs_at + sk.offsets[i])
+        for m in _ARXIV_ID.finditer(refs):
+            doc_id = f"arxiv:{m.group(1)}"
+            if doc_id in docs and doc_id != citing_id:
+                found.setdefault(doc_id, []).append(refs_at + m.start())
+        if not found:
+            continue
+        spans = split_sentences(text[:refs_at])
+        for cited_id, title_pos in found.items():
+            doc = docs[cited_id]
+            for pos in _markers(text, title_pos, doc.authors, doc.published):
+                if pos >= refs_at:
                     continue
                 span = _sentence_at(spans, pos)
                 if span is None:
@@ -150,6 +176,8 @@ def citing_contexts(corpus: Corpus) -> list[Candidate]:
                 sentence = _clean(text[s:e])
                 if not MIN_SENTENCE <= len(sentence) <= MAX_SENTENCE:
                     continue
+                if len(_BRACKETS.findall(sentence)) > 2 or _REF_ENTRY.match(sentence):
+                    continue  # a list of works, or a reference entry, says nothing about one
                 key = (cited_id, sentence)
                 if key in seen:
                     continue
@@ -191,7 +219,8 @@ def _markers(
             continue
         n = int(numbers[-1])
         for m in _BRACKETS.finditer(text):
-            if n in _expand(m.group(1)):
+            # Only "[12]" alone: a group ("[2-6]", "[3, 12]") does not single the work out.
+            if _expand(m.group(1)) == {n}:
                 found.append(m.start())
     return sorted(set(found))
 
@@ -225,6 +254,8 @@ def version_diffs(corpus: Corpus, *, per_pair: int = 8) -> list[Candidate]:
                 if best is None:
                     continue
                 score = fuzz.ratio(best, n_key)
+                if best in n_key or n_key in best or _digitless(best) == _digitless(n_key):
+                    continue  # a page header, footer or number glued on, not an edit
                 if 60 <= score < 97:
                     pairs.append((score, best, n_key))
             pairs.sort(key=lambda p: (p[0], p[2]))
@@ -288,4 +319,45 @@ def shared_sections(corpus: Corpus, *, min_title: int = 12) -> list[Candidate]:
                         targets=(f"{a.doc_id}/{a.label}/{sections[i][key]}",),
                     )
                 )
+    return out
+
+
+def pick(
+    corpus: Corpus, candidates: list[Candidate], quotas: dict[str, int], *, seed: str = "v1"
+) -> list[Candidate]:
+    """A spread of candidates to draft from. ``quotas`` maps ``<method>`` or
+    ``<method>/<kind of the document asked about>`` to a count, so system cards, frameworks
+    and government guidance are not swamped by papers. Within a quota the order is a fixed
+    hash of the seed and the candidate; at most two candidates per document asked about (three
+    for version diffs),
+    and one per citing-and-cited pair."""
+
+    def order(c: Candidate) -> str:
+        return hashlib.sha256(f"{seed}|{c.source_cite}|{c.source_text}".encode()).hexdigest()
+
+    kinds: dict[str, str] = {}
+    out: list[Candidate] = []
+    per_doc: dict[str, int] = {}
+    pairs: set[tuple[str, str]] = set()
+    for key, n in quotas.items():
+        method, _, kind = key.partition("/")
+        taken = 0
+        for c in sorted(candidates, key=order):
+            if taken >= n:
+                break
+            cap = 3 if method == "version_diff" else 2  # few documents have versions
+            if c.method != method or per_doc.get(c.cluster, 0) >= cap:
+                continue
+            if c.cluster not in kinds:
+                doc = corpus.document(c.cluster)
+                kinds[c.cluster] = doc.kind if doc else ""
+            if kind and kinds[c.cluster] != kind:
+                continue
+            pair = (dict(c.extra).get("citing_doc", c.source_cite), c.cluster)
+            if method == "citing_sentence" and pair in pairs:
+                continue
+            pairs.add(pair)
+            per_doc[c.cluster] = per_doc.get(c.cluster, 0) + 1
+            out.append(c)
+            taken += 1
     return out

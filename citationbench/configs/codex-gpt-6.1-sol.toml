@@ -1,13 +1,13 @@
-# Codex CLI (Noah's ChatGPT login) with gpt-6.1-sol.
+# Codex CLI (ChatGPT login) with gpt-6.1-sol, on the held-out split of snapshot 2026.11.3.
 agent = "codex"
 model = "gpt-6.1-sol"
-judge = "claude-code:claude-sonnet-5-5"
-questions = "citationbench/questions/dev.jsonl"
-corpus = "fixtures"
+questions = "citationbench/heldout/test.jsonl"
+limit = 50
+corpus = "data/snapshots/2026.11.3"
 server = "http://localhost:8766"
 ops_db = "citationbench/work/ops.sqlite"
 surface = "default"
 epochs = 1
-batch = 10
-pause = 30
-max_used = 0.6
+batch = 50
+pause = 10
+max_used = { five_hour = 0.8, seven_day = 0.45 }

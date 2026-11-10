@@ -12,9 +12,10 @@ import pytest
 from inspect_ai.model import ModelOutput, get_model
 
 from safetypage.bench import __main__ as cli
+from safetypage.bench.cli_run import _over  # pyright: ignore[reportPrivateUsage]
 from safetypage.bench.draft import check_question, draft
 from safetypage.bench.label import pairs_from_questions, pairs_from_traces, unit_text
-from safetypage.bench.mine import Candidate, citing_contexts, version_diffs
+from safetypage.bench.mine import Candidate, citing_contexts, pick, shared_sections, version_diffs
 from safetypage.bench.questions import load_questions, save_questions
 from safetypage.bench.task import open_corpus
 
@@ -199,3 +200,19 @@ def test_cli_check_rejects_on_no(tmp_path: Path) -> None:
     cli.main(["check", "--questions", str(path), "--model", "mockllm/model"])
     statuses = [q.status for q in load_questions(path)]
     assert statuses == ["rejected"] * from_dev
+
+
+def test_pick_spreads_by_kind() -> None:
+    corpus = open_corpus("fixtures")
+    found = citing_contexts(corpus) + version_diffs(corpus) + shared_sections(corpus)
+    chosen = pick(corpus, found, {"citing_sentence/paper": 1, "version_diff": 5})
+    assert [c.method for c in chosen].count("citing_sentence") <= 1
+    assert all(c.method in ("citing_sentence", "version_diff") for c in chosen)
+    assert chosen == pick(corpus, found, {"citing_sentence/paper": 1, "version_diff": 5})
+
+
+def test_usage_ceiling_per_window() -> None:
+    meter = {"five_hour_used": 0.5, "seven_day_used": 0.5}
+    assert _over(meter, 0.6) is None
+    assert _over(meter, {"five_hour": 0.6, "seven_day": 0.45}) is not None
+    assert _over(meter, {"five_hour": 0.4}) is not None

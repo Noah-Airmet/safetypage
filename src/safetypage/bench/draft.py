@@ -50,9 +50,16 @@ SENTENCE (from {citing_doc}):
 
 CITED DOCUMENT: {cited_title}
 
+The citation was matched by code from the reference list and may be wrong. If the
+SENTENCE is plainly not about this document at all (its subject is something this document
+does not discuss), answer {{"verdict": "wrong_reference"}} and nothing else. If the
+SENTENCE attributes nothing to the document beyond naming it (it only says a model, dataset
+or method from it was used or exists), answer {{"verdict": "no_claim"}} and nothing else.
+
 1. State, in one sentence, what the SENTENCE attributes to the cited document.
 2. Decide whether the cited document supports that: "supported", "partially_supported" or
-   "not_supported" (it says something different, or does not say it).
+   "not_supported" (it is about this document, but the document says something different, or
+   does not say it).
 3. Give 1 to 3 pieces of evidence: the cite string of a unit and an exact quotation from that
    unit (copied character for character, 8 to 40 words) that shows what the document says on
    this point. For "not_supported", quote what it says instead.
@@ -75,6 +82,10 @@ version(s) or edition(s) so the question is answerable from a library of many do
 
 {context}
 
+If the passages differ only by page furniture (a running header or footer, a page or
+footnote number, a sentence cut off at a page break) rather than by what they say, or the
+section is empty in either, answer {{"question": null}}.
+
 Answer with JSON only: {{"question": "..."}}
 """
 
@@ -96,7 +107,7 @@ with a short reason and then a last line "OK: yes" or "OK: no".
 """
 
 PROMPT_ID = "draft@" + hashlib.sha256((CLAIM_PROMPT + COMPARE_PROMPT).encode()).hexdigest()[:6]
-MAX_DOC_CHARS = 150_000
+MAX_DOC_CHARS = 60_000
 
 
 def now() -> str:

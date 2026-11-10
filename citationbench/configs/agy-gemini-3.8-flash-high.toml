@@ -1,13 +1,14 @@
-# Antigravity CLI (Noah's Google login) with Gemini 3.8 Flash (High). Its web search cannot be
-# turned off; a sample that uses it, or any tool but the library's, is marked contaminated.
+# Antigravity CLI (Google login) with Gemini 3.8 Flash (High), on the held-out split of snapshot
+# 2026.11.3. Its web search cannot be turned off; a sample that uses it, or any tool but the
+# library's, is marked contaminated.
 agent = "antigravity"
 model = "gemini-3.8-flash-high"
-judge = "claude-code:claude-sonnet-5-5"
-questions = "citationbench/questions/dev.jsonl"
-corpus = "fixtures"
+questions = "citationbench/heldout/test.jsonl"
+limit = 50
+corpus = "data/snapshots/2026.11.3"
 server = "http://localhost:8766"
 ops_db = "citationbench/work/ops.sqlite"
 surface = "default"
 epochs = 1
-batch = 10
-pause = 30
+batch = 50
+pause = 10
