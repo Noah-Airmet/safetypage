@@ -15,8 +15,8 @@ export const toRow = (d: DocumentCard): Row => [
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
 export function rowHtml([id, title, who, , kind, published, open, units, paged]: Row): string {
-  const by = [who, `${units.toLocaleString('en')} ${paged ? (units === 1 ? 'page' : 'pages') : units === 1 ? 'paragraph' : 'paragraphs'}`, open ? 'Read here' : 'Read at source'].filter(Boolean).join(' · ');
-  return `<a href="/d/${esc(id.replace(':', '/'))}"><span class="meta">${esc([KINDS[kind] ?? kind, formatDate(published).replace(/^\d+ /, '')].filter(Boolean).join(' · '))}</span><span><span class="name">${esc(title)}</span><span class="meta by">${esc(by)}</span></span></a>`;
+  const size = `${units.toLocaleString('en')} ${paged ? (units === 1 ? 'page' : 'pages') : units === 1 ? 'paragraph' : 'paragraphs'}`;
+  return `<a href="/d/${esc(id.replace(':', '/'))}"><span class="name">${esc(title)}</span><span class="c kind">${esc(KINDS[kind] ?? kind)}</span><span class="c date">${esc(formatDate(published).replace(/^\d+ /, ''))}</span><span class="c size">${esc(size)}</span><span class="c read"${open ? ' data-here' : ''}>${open ? 'Read here' : 'At source'}</span>${who ? `<span class="sub">${esc(who)}</span>` : ''}</a>`;
 }
 
 export interface Filter { q: string; publisher: string; kind: string; year: string; read: string }

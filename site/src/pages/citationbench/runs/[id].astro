@@ -15,50 +15,44 @@ const NAMES: Record<string, string> = {
   quote_fidelity: 'Quote fidelity', quoted: 'Answers that quote', seen_rate: 'Citations the run opened', support_rate: 'Claim support (judge)',
 };
 ---
-<Base title={`${run.model.split('/').pop()} · ${run.name}`} description={`A CitationBench run: ${run.samples} questions, each with its replay.`}>
+<Base title={`${run.model.split('/').pop()}, ${run.name}`} description={`A CitationBench run: ${run.samples} questions, each with its replay.`}>
   <div class="wrap">
-    <header class="pagehead">
-      <p class="rubric"><a href="/citationbench">CitationBench</a> · Run</p>
+    <header class="head">
+      <nav class="up" aria-label="Up"><a href="/citationbench">CitationBench</a></nav>
       <h1 class="title">{run.model.split('/').pop()}</h1>
-      <p class="muted mono facts">{[run.run_id, run.solver, `surface ${run.surface}`, `snapshot ${run.snapshot}`, run.created_at.slice(0, 10), run.judge && `judge ${run.judge.id}`].filter(Boolean).join(' · ')}</p>
+      <p class="facts">{[run.solver, `Surface ${run.surface}`, `Snapshot ${run.snapshot}`, run.created_at.slice(0, 10), run.judge && `Judge ${run.judge.id}`].filter(Boolean).map((part) => <span>{part}</span>)}<span class="mono">{run.run_id}</span></p>
     </header>
 
     <div class="cols">
       <section aria-labelledby="q-h">
-        <h2 class="h2" id="q-h">{traces.length} questions</h2>
-        <div class="rows">
+        <h2 class="h3" id="q-h">{traces.length} questions</h2>
+        <div class="rows" style="margin-top: var(--s-2)">
           {traces.map((t) => {
             const q = questionParts(t.header.question);
             return (
               <a href={`/r/${t.header.trace_id}`}>
-                <span class="meta"><span class="mono">{t.header.sample_id}</span><br />{t.scores?.correct === 1 ? 'Correct' : t.scores?.correct === 0 ? 'Not correct' : ''}</span>
-                <span>
-                  <span class="name">{q.quoted ?? q.lead}</span>
-                  <Tally citations={t.answer?.citations ?? []} />
-                </span>
+                <span class="name clamp">{q.quoted ?? q.lead}</span>
+                <Tally citations={t.answer?.citations ?? []} />
+                <span class="val">{t.scores?.correct === 1 ? 'Correct' : t.scores?.correct === 0 ? 'Not correct' : ''}</span>
+                <span class="val mono">{t.header.sample_id}</span>
               </a>
             );
           })}
         </div>
       </section>
-      <aside aria-labelledby="m-h">
-        <h2 class="h2" id="m-h">Measures · 95% interval</h2>
-        <table class="table">
-          <tbody>
-            {Object.entries(run.measures).map(([key, e]) => (
-              <tr><td>{NAMES[key] ?? key}</td><td class="num">{pct(e.mean)}</td><td class="num muted">{e.mean == null ? '' : `${pct(e.ci_low)}–${pct(e.ci_high)}`}</td><td class="num muted">n {e.n}</td></tr>
-            ))}
-            {run.cost.priced && run.cost.total_usd != null && <tr><td>Cost of the run</td><td class="num">${run.cost.total_usd.toFixed(3)}</td><td class="num muted" colspan="2">prices {run.cost.price_table}</td></tr>}
-          </tbody>
-        </table>
+      <aside class="side" aria-labelledby="m-h">
+        <section>
+          <h2 class="h3" id="m-h">Measures, with 95% interval</h2>
+          <table class="table measures">
+            <tbody>
+              {Object.entries(run.measures).map(([key, e]) => (
+                <tr><td>{NAMES[key] ?? key}</td><td class="num">{pct(e.mean)}</td><td class="num muted">{e.mean == null ? '' : `${pct(e.ci_low)}–${pct(e.ci_high)}`}</td><td class="num muted">n {e.n}</td></tr>
+              ))}
+              {run.cost.priced && run.cost.total_usd != null && <tr><td>Cost of the run</td><td class="num">${run.cost.total_usd.toFixed(3)}</td><td class="num muted" colspan="2">{run.cost.price_table}</td></tr>}
+            </tbody>
+          </table>
+        </section>
       </aside>
     </div>
   </div>
 </Base>
-<style>
-  .facts { font-size: var(--t-12); overflow-wrap: anywhere; }
-  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); gap: var(--s-7); align-items: start; }
-  .name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
-  .rows .meta { line-height: 1.6; }
-  @media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); } }
-</style>

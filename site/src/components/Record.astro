@@ -1,8 +1,13 @@
 ---
+// A document's record: its cover, the catalogue entry and the ways in (Read, the source, Cite,
+// search inside); under them the contents, and beside those its versions and its licence with
+// the evidence for it. The cover is the first page when the library may show it; otherwise a
+// bare binding in its shelf's cloth.
 import type { DocumentCard } from '../lib/types';
-import { KINDS, anchorLabel, bibtex, citePath, formatDate, hostOf, licenceName, shelfName, sourceLink } from '../lib/cite';
+import { KINDS, anchorLabel, bibtex, citePath, clothOf, formatDate, hostOf, licenceName, outlineHtml, shelfName, sourceLink, titleParts } from '../lib/cite';
 import { hasUnit } from '../lib/data';
-import Tier from './Tier.astro';
+import { pageImageUrl } from '../lib/env';
+import Icon from './Icon.astro';
 
 interface Props { doc: DocumentCard; version: string }
 const { doc, version } = Astro.props;
@@ -15,138 +20,82 @@ const count = latest ? doc.unit_count : 0;
 const first = latest ? (count ? (paged ? 'p1' : 'b1') : undefined) : paged ? 'p1' : 'b1';
 const open = summary.tier === 'open';
 const host = hostOf(doc.source_url);
-const authors = doc.authors.length > 8 ? [...doc.authors.slice(0, 7), `and ${doc.authors.length - 7} more`] : doc.authors;
+const authors = doc.authors.length > 8 ? [...doc.authors.slice(0, 7), `${doc.authors.length - 7} more`] : doc.authors;
 const evidence = latest ? doc.licence_evidence : null;
-const evidenceKinds: Record<string, string> = {
-  licence_link: 'Licence link on the source page', page_statement: 'Statement on the page',
-  publisher_rule: "The publisher's rule", statute: 'Statute', manual: 'Read by hand',
-};
 const site = Astro.site!.origin;
 const citeExample = first ? `${ref}/${first}` : ref;
 const shelf = doc.collection;
+const { main, sub } = titleParts(doc.title);
+const page1 = open && paged && hasUnit(doc.doc_id, version, 'p1');
+const units = count ? `${count.toLocaleString('en')} ${paged ? (count === 1 ? 'page' : 'pages') : count === 1 ? 'paragraph' : 'paragraphs'}` : '';
 ---
 <article class="wrap record">
-  <header class="pagehead">
-    <p class="rubric">{shelf && <><a href={`/library/${shelf}`}>{shelfName(shelf)}</a> · </>}{[KINDS[doc.kind] ?? doc.kind, doc.org].filter(Boolean).join(' · ')}</p>
-    <h1 class="title">{doc.title}</h1>
-    <p class="byline">{authors.join(', ')}{authors.length && summary.published ? ' · ' : ''}{formatDate(summary.published ?? doc.published)}</p>
-    {!latest && <p class="note">This is version {version}. The latest is <a class="link" href={citePath(doc.doc_id)}>{doc.version}</a>.</p>}
-    <div class="actions">
-      {open && first && <a class="btn btn-primary" href={citePath(`${ref}/${first}`)}>Read</a>}
-      <a class={open ? 'btn' : 'btn btn-primary'} href={open ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener">{open ? 'Source' : 'Read'} at {host} ↗</a>
-      <Tier tier={summary.tier} licence={summary.licence} />
-    </div>
-    {latest && count > 0 && (
-      <form class="searchbox inside" action="/search" role="search">
-        <input type="hidden" name="doc" value={doc.doc_id} />
-        <input class="field" type="search" name="query" placeholder={`Search its ${count.toLocaleString('en')} ${paged ? 'pages' : 'paragraphs'}`} aria-label="Search inside this document" />
-        <button class="btn">Search</button>
-      </form>
-    )}
-  </header>
+  <div class="rec-top">
+    {page1
+      ? <a class="cover sheet" href={citePath(`${ref}/p1`)} tabindex="-1" aria-hidden="true"><img src={pageImageUrl(`${ref}/p1`, 800)} alt="" loading="eager" decoding="async" /></a>
+      : <span class="cover binding" style={`--cloth:${clothOf(shelf)}`} aria-hidden="true"><Icon name={open ? 'book' : 'external'} /></span>}
+    <header class="rec-head">
+      <nav class="up" aria-label="Up"><a href="/library">Library</a>{shelf && <><Icon name="forward" /><a href={`/library/${shelf}`}>{shelfName(shelf)}</a></>}</nav>
+      <h1 class="title">{main}{sub && <span class="subtitle">: {sub}</span>}</h1>
+      {authors.length > 0 && <p class="byline">{authors.join(', ')}</p>}
+      <p class="facts">{[KINDS[doc.kind] ?? doc.kind, doc.org, formatDate(summary.published ?? doc.published), units, !latest && version].filter(Boolean).map((part) => <span>{part}</span>)}</p>
+      <div class="actions">
+        {open && first && <a class="btn btn-primary" href={citePath(`${ref}/${first}`)}><Icon name="book" small />Read</a>}
+        <a class={open ? 'btn' : 'btn btn-primary'} href={open ? doc.source_url : sourceLink(doc.source_url, undefined, paged)} rel="noopener"><Icon name="external" small />{open ? host : `Read at ${host}`}</a>
+        <details class="pop">
+          <summary class="btn"><Icon name="quote" small />Cite</summary>
+          <div class="pop-body">
+            <div class="codeline"><code tabindex="0">{citeExample}</code><button class="ib" data-copy={citeExample} aria-label="Copy citation"><Icon name="copy" /></button></div>
+            <div class="codeline"><code tabindex="0">{site}{citePath(citeExample)}</code><button class="ib" data-copy={site + citePath(citeExample)} aria-label="Copy link"><Icon name="link" /></button></div>
+            <div class="codeline bib"><pre tabindex="0">{bibtex(doc)}</pre><button class="ib" data-copy={bibtex(doc)} aria-label="Copy BibTeX"><Icon name="copy" /></button></div>
+          </div>
+        </details>
+        {!latest && <a class="btn" href={citePath(doc.doc_id)}>Latest, {doc.version}</a>}
+        {latest && count > 0 && (
+          <form class="inside" action="/search" role="search">
+            <input type="hidden" name="doc" value={doc.doc_id} />
+            <Icon name="search" small />
+            <input class="field" type="search" name="query" placeholder="Search in document" aria-label="Search in this document" autocomplete="off" />
+          </form>
+        )}
+      </div>
+    </header>
+  </div>
 
   <div class="cols">
     <section aria-labelledby="outline-h">
-      <h2 class="h2" id="outline-h">Outline{count ? ` · ${count} ${paged ? 'pages' : 'paragraphs'}` : ''}</h2>
+      <h2 class="h2" id="outline-h">Contents</h2>
       {latest && doc.outline.length > 0 ? (
-        <ol class="outline">
-          {doc.outline.map((item) => (
-            <li style={`--level:${item.level - 1}`}>
-              <a href={citePath(item.cite)}>
-                <span class="o-title">{item.title}</span>
-                <span class="o-page mono">{anchorLabel(item.anchor)}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <p class="muted">{latest ? 'This document has no section headings.' : `The outline is kept for the latest version, ${doc.version}.`}{' '}
-          {first && <a class="link" href={citePath(`${ref}/${first}`)}>Open at {anchorLabel(first)}</a>}</p>
-      )}
+        <ol class="outline" set:html={outlineHtml(doc.outline)} />
+      ) : first ? (
+        <ol class="outline"><li><a href={citePath(`${ref}/${first}`)}><span class="o-title">{main}</span><span class="o-page">{anchorLabel(first)}</span></a></li></ol>
+      ) : <p class="muted">Empty</p>}
     </section>
 
     <aside class="side">
-      <section aria-labelledby="cite-h">
-        <h2 class="h2" id="cite-h">How to cite</h2>
-        <p class="hint">A citation names the document, the version and the place.</p>
-        <div class="codeline"><code tabindex="0">{citeExample}</code><button class="btn btn-quiet" data-copy={citeExample}>Copy</button></div>
-        <div class="codeline"><code tabindex="0">{site}{citePath(citeExample)}</code><button class="btn btn-quiet" data-copy={site + citePath(citeExample)}>Copy</button></div>
-        <details class="more">
-          <summary>BibTeX</summary>
-          <pre class="code" tabindex="0">{bibtex(doc)}</pre>
-        </details>
-      </section>
-
       <section aria-labelledby="versions-h">
         <h2 class="h2" id="versions-h">Versions</h2>
-        <table class="table versions">
-          <thead><tr><th>Version</th><th>Published</th><th>Read</th></tr></thead>
-          <tbody>
-            {[...doc.versions].reverse().map((v) => (
-              <tr>
-                <td><a class="link mono" href={citePath(v.latest ? doc.doc_id : `${doc.doc_id}/${v.version}`)} aria-current={v.version === version ? 'true' : undefined}>{v.version}</a>{v.latest && <span class="muted"> latest</span>}</td>
-                <td>{formatDate(v.published) || <span class="muted">seen {formatDate(v.observed_at)}</span>}</td>
-                <td>{v.tier === 'open' ? 'Here' : 'At source'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div class="versions">
+          {[...doc.versions].reverse().map((v) => (
+            <a href={citePath(v.latest ? doc.doc_id : `${doc.doc_id}/${v.version}`)} aria-current={v.version === version ? 'true' : undefined}>
+              <span class="v">{v.version}</span>
+              <span>{formatDate(v.published) || formatDate(v.observed_at)}</span>
+              <span class="where">{v.tier === 'open' ? 'Read here' : 'Read at source'}</span>
+            </a>
+          ))}
+        </div>
       </section>
 
       <section aria-labelledby="licence-h">
         <h2 class="h2" id="licence-h">Licence</h2>
-        <dl class="kv lic">
-          <dt>Terms</dt><dd>{licenceName(summary.licence)}</dd>
-          <dt>So you</dt><dd>{open ? 'Read the full document here' : 'Search it, cite it and check quotes here; read it at its source'}</dd>
-          {evidence ? (
-            <>
-              <dt>Evidence</dt><dd>{evidenceKinds[evidence.kind] ?? evidence.kind}: <span class="mono">{evidence.quote}</span></dd>
-              <dt>Read at</dt><dd><a class="link" href={evidence.url} rel="noopener">{evidence.url.replace(/^https?:\/\//, '')}</a>, {formatDate(evidence.observed_at)}</dd>
-            </>
-          ) : latest ? (
-            <><dt>Evidence</dt><dd>No licence statement was found, so the document is treated as not openly licensed.</dd></>
-          ) : null}
-        </dl>
+        <p class="lic">{licenceName(summary.licence)}</p>
+        {evidence && (
+          <figure class="evidence-card">
+            <blockquote>{evidence.quote}</blockquote>
+            <figcaption><a class="link" href={evidence.url} rel="noopener">{hostOf(evidence.url)}</a><span>{formatDate(evidence.observed_at)}</span></figcaption>
+          </figure>
+        )}
       </section>
     </aside>
   </div>
 </article>
-
-<script>
-  document.addEventListener('click', (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLElement>('[data-copy]');
-    if (!button) return;
-    navigator.clipboard.writeText(button.dataset.copy!);
-    const was = button.textContent;
-    button.textContent = 'Copied';
-    setTimeout(() => (button.textContent = was), 1200);
-  });
-</script>
-
-<style>
-  .byline { color: var(--ink-2); max-width: 90ch; }
-  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin-top: var(--s-2); }
-  .rubric a:hover { color: var(--accent); }
-  .inside { margin-top: var(--s-2); }
-  @media (max-width: 700px) { .actions :global(.tier) { flex-basis: 100%; } }
-  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: var(--s-7); align-items: start; }
-  .side { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); }
-  .side .codeline + .codeline { margin-top: var(--s-2); }
-  .hint { color: var(--ink-2); font-size: var(--t-13); margin-bottom: var(--s-2); }
-  .more { margin-top: var(--s-2); }
-  .more summary { cursor: pointer; color: var(--ink-2); min-height: 24px; display: inline-flex; align-items: center; }
-  .more pre { margin-top: var(--s-2); }
-  .outline li { border-top: 1px solid var(--rule); }
-  .outline li:last-child { border-bottom: 1px solid var(--rule); }
-  .outline a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); padding: var(--s-2) 0; min-height: 44px; }
-  .outline .o-title { font: 400 var(--t-18)/1.35 var(--serif); }
-  .outline li:not([style*='level:0']) .o-title { font-size: var(--t-16); color: var(--ink-2); }
-  .outline .o-page { color: var(--ink-2); font-size: var(--t-13); white-space: nowrap; }
-  .outline a:hover .o-title, .outline a:hover .o-page { color: var(--accent); }
-  .lic { font-size: var(--t-13); }
-  .table a[aria-current] { font-weight: 600; }
-  .versions { table-layout: fixed; }
-  .versions th:nth-child(1) { width: 34%; }
-  .versions th:nth-child(3) { width: 26%; }
-  @media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); } }
-</style>

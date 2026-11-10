@@ -86,6 +86,14 @@ export const SHELVES: Record<string, { name: string; about: string }> = {
   welfare: { name: 'Model welfare', about: 'Research on whether AI systems could be moral patients, and what follows.' },
 };
 export const shelfName = (id: string) => SHELVES[id]?.name ?? id[0].toUpperCase() + id.slice(1).replace(/[-_]/g, ' ');
+// Bookcloth: which shelf a document stands on (never state). A shelf not named here is grey.
+const CLOTH: Record<string, string> = { labs: 'labs', papers: 'papers', 'lab-research-web': 'web', evaluators: 'evaluators', government: 'government', forum: 'forum', welfare: 'welfare' };
+export const clothOf = (shelf: string | null | undefined) => `var(--c-${CLOTH[shelf ?? ''] ?? 'welfare'})`;
+/** `Title: subtitle`, split on the first colon followed by a space. */
+export function titleParts(title: string): { main: string; sub: string } {
+  const at = title.indexOf(': ');
+  return at > 0 && at < title.length - 2 ? { main: title.slice(0, at), sub: title.slice(at + 2) } : { main: title, sub: '' };
+}
 export const shelfOrder = (id: string) => { const at = Object.keys(SHELVES).indexOf(id); return at < 0 ? 99 : at; };
 
 export function formatDate(iso: string | null | undefined): string {
@@ -124,4 +132,21 @@ export function questionParts(question: string): { lead: string; quoted: string 
     quoted: blocks[at].replace(/^>\s?/gm, '').replace(/\s+/g, ' '),
     rest: blocks.slice(at + 1).join(' '),
   };
+}
+
+const escHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+/** A document's outline as nested lists, so a section's subsections sit inside it. The items of one <ol class="outline">. */
+export function outlineHtml(outline: { level: number; title: string; anchor: string; cite: string }[]): string {
+  interface Node { item: (typeof outline)[number]; children: Node[] }
+  const roots: Node[] = [];
+  const stack: Node[] = [];
+  for (const item of outline) {
+    while (stack.length && stack[stack.length - 1].item.level >= item.level) stack.pop();
+    const node: Node = { item, children: [] };
+    (stack.length ? stack[stack.length - 1].children : roots).push(node);
+    stack.push(node);
+  }
+  const draw = (nodes: Node[]): string => nodes.map(({ item, children }) =>
+    `<li><a href="${citePath(item.cite)}" data-jump="${item.anchor}"><span class="o-title">${escHtml(item.title)}</span><span class="o-page">${escHtml(anchorLabel(item.anchor))}</span></a>${children.length ? `<ol>${draw(children)}</ol>` : ''}</li>`).join('');
+  return draw(roots);
 }

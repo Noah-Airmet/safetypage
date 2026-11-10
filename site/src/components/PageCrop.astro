@@ -1,15 +1,15 @@
 ---
-// A window onto one page, centred on a passage, with the passage lit. Built from the page's
-// word boxes, so what is lit here is what the checker matched.
+// A window onto one page, centred on a passage, with the passage marked. Built from the page's
+// word boxes, so what is marked here is what the checker matched.
 import type { UnitText } from '../lib/types';
 import { highlightRects } from '../lib/quote';
 import { pageImageUrl } from '../lib/env';
 
-interface Props { unit: UnitText; ranges: [number, number][]; kind?: 'found' | 'reject'; alt: string; eager?: boolean }
-const { unit, ranges, kind = 'found', alt, eager } = Astro.props;
+interface Props { unit: UnitText; ranges: [number, number][]; kind?: 'found' | 'reject'; alt: string; eager?: boolean; lead?: number }
+const { unit, ranges, kind = 'found', alt, eager, lead = 16 } = Astro.props;
 const rects = ranges.flatMap(([s, e]) => highlightRects(unit, s, e));
 const top = rects.length ? Math.min(...rects.map((r) => r.top)) : 10;
-const shift = Math.max(0, top - 11);
+const shift = Math.max(0, top - lead);
 ---
 <div class="crop">
   <div class="sheet" style={`aspect-ratio:${unit.width}/${unit.height};transform:translateY(-${shift.toFixed(2)}%)`}>
@@ -17,8 +17,3 @@ const shift = Math.max(0, top - 11);
     {rects.map((r) => <div class="hl" data-kind={kind === 'reject' ? 'reject' : undefined} style={`left:${r.left}%;top:${r.top}%;width:${r.width}%;height:${r.height}%`} />)}
   </div>
 </div>
-<style>
-  .crop { position: relative; overflow: hidden; aspect-ratio: 5 / 4; background: #fff; box-shadow: 0 0 0 1px var(--edge); border-radius: var(--r-1); }
-  .crop .sheet { position: absolute; left: -5%; top: 0; width: 110%; box-shadow: none; overflow: visible; }
-  @media (max-width: 700px) { .crop { aspect-ratio: 4 / 3; } .crop .sheet { left: -9%; width: 118%; } }
-</style>

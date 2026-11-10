@@ -7,21 +7,19 @@ const traces = allTraces();
 ---
 <Base title="Replays" description="Agent research runs, played back step by step against the library.">
   <div class="wrap">
-    <header class="pagehead">
+    <header class="head">
       <h1 class="title">Replays</h1>
-      <p class="muted">An agent's research run, played back: what it searched, which pages it read, and how each citation in its answer checked out.</p>
+      <p class="facts"><span>{traces.length} runs</span></p>
     </header>
     <div class="rows">
       {traces.map((t) => (
         <a href={`/r/${t.header.trace_id}`}>
-          <span class="meta">{t.header.model.split('/').pop()}<br />{t.header.started_at.slice(0, 10)}</span>
-          <span><span class="name clamp">{questionParts(t.header.question).quoted ?? t.header.question}</span><Tally citations={t.answer?.citations ?? []} /></span>
+          <span class="name clamp">{questionParts(t.header.question).quoted ?? t.header.question}</span>
+          <Tally citations={t.answer?.citations ?? []} />
+          <span class="val">{t.header.model.split('/').pop()}</span>
+          <span class="val">{t.header.started_at.slice(0, 10)}</span>
         </a>
       ))}
     </div>
   </div>
 </Base>
-<style>
-  .clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
-  .rows .meta { line-height: 1.6; }
-</style>

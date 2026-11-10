@@ -1,15 +1,15 @@
 // ui-check (~/development/tools/ui-check): what to check on this site, on the real library.
 // Build against a snapshot and serve it first (site/README.md, "On the real library"):
-//   node scripts/serve.mjs dist 4395
+//   node scripts/serve.mjs dist 4412
 // UI_CHECK_SCHEME=dark runs the same pages in the dark theme, with its own screenshots.
 const q = encodeURIComponent;
 const dark = process.env.UI_CHECK_SCHEME === 'dark';
 export default {
-  base: 'http://localhost:4395',
+  base: process.env.UI_CHECK_BASE ?? 'http://localhost:4412',
   scheme: dark ? 'dark' : 'light',
   dir: dark ? 'ui-check/dark' : 'ui-check',
   pages: [
-    { name: 'home', path: '/', states: [{ name: 'rejected', click: ['.chip[data-state="rejected"]'] }] },
+    { name: 'home', path: '/', states: [{ name: 'rejected', click: ['.claim[data-pick="rejected"]'] }] },
     { name: 'library', path: '/library' },
     { name: 'shelf', path: '/library/labs' },
     { name: 'shelf-filtered', path: '/library/papers?year=2024&q=sparse' },
@@ -22,10 +22,11 @@ export default {
     { name: 'reader-source-circuits', path: '/d/anthropic/2024-scaling-monosemanticity/r1/b20' },
     { name: 'reader-source-forum', path: '/d/lw/LNA8mubrByG7SFacm/r1/b85' },
     { name: 'reader-source-arxiv', path: '/d/arxiv/2401.05566/v3/p5' },
+    { name: 'search-empty', path: '/search', mask: ['.wall'] },
     { name: 'search', path: `/search?query=${q('"alignment faking"')}` },
     { name: 'follow', path: '/follow/sabotage' },
     { name: 'check', path: '/check?example=1' },
-    { name: 'replay', path: '/r/cc-sonnet-5-5-43677d-pc-7abbdba8ab.1?step=14' },
+    { name: 'replay', path: '/r/cc-haiku-5-5-4e1c63-pc-4bd058594c.1?step=21' },
     { name: 'citationbench', path: '/citationbench', mask: ['.board tbody', '.facts'] },   // rows change as runs land
     { name: 'connect', path: '/connect' },
   ],

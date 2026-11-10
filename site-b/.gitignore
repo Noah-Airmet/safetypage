@@ -1,7 +1,0 @@
-node_modules/
-dist/
-dist-*/
-.astro/
-.data/
-test-results/
-playwright-report/

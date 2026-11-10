@@ -3,11 +3,8 @@
 interface Props { citations: { state: string }[] }
 const count = (s: string) => Astro.props.citations.filter((c) => c.state === s).length;
 ---
-<p class="tally">
+<span class="tally">
   <span class="state" data-state="verified">{count('verified')} verified</span>
   <span class="state" data-state="cited">{count('cited')} page only</span>
   <span class="state" data-state="rejected">{count('rejected')} rejected</span>
-</p>
-<style>
-  .tally { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); margin-top: auto; padding-top: var(--s-2); }
-</style>
+</span>

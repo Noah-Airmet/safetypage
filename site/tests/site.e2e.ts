@@ -127,56 +127,60 @@ test('checker: marks each citation Verified, Page only or Rejected, with the rea
   await expect(page.locator('.findings')).toContainText('The words are on p. 6');
   await expect(page.locator('.findings ins.diff')).toHaveText('not');
   await expect(page.locator('.findings')).toContainText('there is no p41');
-  await expect(page.locator('.findings .hl[data-kind="reject"]').first()).toBeVisible();
+  await expect(page.locator('.checker .hl[data-kind="reject"]').first()).toBeVisible();
 });
 
-// A real CitationBench run: three verified citations, one rejected, one page-only.
-const TRACE = '/r/cc-sonnet-5-5-43677d-pc-7abbdba8ab.1';
+// A real CitationBench run on the live snapshot: four verified citations, two rejected. On the
+// fixture corpus its pages are another snapshot's, so the stage names the page without showing it.
+const TRACE = '/r/cc-haiku-5-5-4e1c63-pc-4bd058594c.1';
 
 test('replay: a link opens at its step, with the rejection struck through', async ({ page }) => {
-  await page.goto(`${TRACE}?step=14`);
+  await page.goto(`${TRACE}?step=24`);
   const rejected = page.locator('.rp-answer .chip[data-state="rejected"]');
   await expect(rejected).toHaveCount(1);
   await expect(rejected.locator('.chip-label')).toHaveCSS('text-decoration-line', 'line-through');
   await expect(page.locator('.rp-trace li[aria-current]')).toContainText('Rejected');
-  await expect(page.locator('.rp-tally')).toHaveText(/3.*0.*1/);
+  await expect(page.locator('.rp-tally')).toHaveText(/4.*0.*1/);
   await page.locator('.rp-track input').focus();
   await page.keyboard.press('End');
-  await expect(page.locator('.rp-answer .chip')).toHaveCount(5);
-  await expect(page.locator('.rp-tally')).toHaveText(/3.*1.*1/);
+  await expect(page.locator('.rp-answer .chip')).toHaveCount(6);
+  await expect(page.locator('.rp-tally')).toHaveText(/4.*0.*2/);
   await page.locator('.rp-answer .chip[data-state="verified"]').first().click();
-  await expect(page.locator('.rp-page .hl, .rp-page mark').first()).toBeVisible();
+  await expect(page.locator('.rp-page .pv')).toBeVisible();
+  await expect(page.locator('.rp-answer .chip[aria-current="true"]')).toHaveCount(1);
   await page.locator('.rp-track input').focus();
   await page.keyboard.press('Home');
   await expect(page.locator('.rp-answer .chip')).toHaveCount(0);
 });
 
-test('leaderboard: a number leads to the run, the run to the replay, the replay to the page', async ({ page }) => {
+test('leaderboard: a number leads to the run, the run to the replay', async ({ page }) => {
   await page.goto('/citationbench');
-  await page.locator('.board tbody tr').first().locator('td.num a').first().click();
+  // A run that kept its traces.
+  await page.locator('.board td.num a[href$="/cc-haiku-5-5-4e1c63"]').first().click();
   await expect(page).toHaveURL(/\/citationbench\/runs\/[\w.-]+/);
   await page.locator('.rows a').first().click();
   await expect(page).toHaveURL(/\/r\/[\w.-]+/);
   await page.locator('.rp-track input').focus();
   await page.keyboard.press('End');
-  await page.locator('.rp-caption a').click();
-  await expect(page).toHaveURL(/\/d\//);
+  await expect(page.locator('.rp-stage .pv')).toBeVisible();
 });
 
 const SCREENS = ['/', '/library', '/library/evals', '/follow', '/follow/sabotage', '/d/arxiv/2305.15324', PAGE6, '/d/distill/zoom-in/r1/b21', '/d/example/link-only-eval-report/r1/p2',
-  '/search?query=evaluation', '/check?example=1', `${TRACE}?step=14`, '/citationbench', '/citationbench/runs/cc-sonnet-5-5-43677d', '/connect', '/about'];
+  '/search', '/search?query=evaluation', '/check?example=1', `${TRACE}?step=14`, '/citationbench', '/citationbench/runs/cc-haiku-5-5-4e1c63', '/connect', '/about'];
 
 for (const scheme of ['light', 'dark'] as const) {
-  test.describe(`accessibility, ${scheme}`, () => {
-    test.use({ colorScheme: scheme });
-    for (const path of SCREENS) {
-      test(path, async ({ page }) => {
-        await page.goto(path, { waitUntil: 'networkidle' });
-        const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
-        expect(result.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).slice(0, 4).join(' | ')}`)).toEqual([]);
-      });
-    }
-  });
+  for (const width of [1440, 390]) {
+    test.describe(`accessibility, ${scheme}, ${width}`, () => {
+      test.use({ colorScheme: scheme, viewport: { width, height: 900 } });
+      for (const path of SCREENS) {
+        test(path, async ({ page }) => {
+          await page.goto(path, { waitUntil: 'networkidle' });
+          const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+          expect(result.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).slice(0, 4).join(' | ')}`)).toEqual([]);
+        });
+      }
+    });
+  }
 }
 
 test.describe('phone width', () => {

@@ -5,22 +5,19 @@ import { TOPICS, follow } from '../../lib/follow';
 const topics = await Promise.all(TOPICS.map(follow));
 ---
 <Base title="Follow a topic across labs" description="One evaluation or topic across every lab's system cards, by lab and date. Each mention opens the page.">
-  <div class="wrap narrow">
-    <header class="pagehead">
-      <h1 class="title">Follow a topic across the labs</h1>
-      <p class="lede">What each lab's system cards say about one evaluation, lined up by lab and date. Every mention opens the page it is on.</p>
+  <div class="wrap">
+    <header class="head">
+      <h1 class="title">Follow</h1>
     </header>
     <div class="rows">
       {topics.map((t) => (
         <a href={`/follow/${t.topic.id}`}>
-          <span class="meta">{t.found} of {t.cards} cards<br />{t.labs.filter((l) => l.found.length).length} labs</span>
-          <span><span class="name">{t.topic.name}</span><span class="meta by">{t.topic.about}</span></span>
+          <span class="name">{t.topic.name}</span>
+          <span class="sub">{t.topic.about}</span>
+          <span class="val">{t.found} of {t.cards} system cards</span>
+          <span class="val">{t.labs.filter((l) => l.found.length).length} labs</span>
         </a>
       ))}
     </div>
   </div>
 </Base>
-<style>
-  .by { display: block; margin-top: 2px; }
-  .rows .meta { line-height: 1.6; }
-</style>

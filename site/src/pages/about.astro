@@ -5,8 +5,8 @@ const n = libraryCounts();
 const num = (x: number) => x.toLocaleString('en');
 ---
 <Base title="How it works" description="How SafetyPage checks a citation, what the licence tiers mean, and how it is built.">
-  <div class="wrap narrow">
-    <header class="pagehead"><h1 class="title">How it works</h1></header>
+  <div class="wrap col">
+    <header class="head"><h1 class="title">How it works</h1></header>
     <div class="prose">
       <p>SafetyPage is a library of the AI safety record: research papers, system cards, safety frameworks, evaluation reports and government guidance. Every search result opens an exact page or paragraph. Every citation names a document, a version and a place in it, and code can check it against that place.</p>
       <p>It holds {num(n.documents)} documents on <a class="link" href="/library">{allShelves().length} shelves</a>: {num(n.pages)} PDF pages and {num(n.paragraphs)} paragraphs of web documents, each one citable. {num(n.open)} documents are openly licensed and read in full here; the other {num(n.documents - n.open)} are searched, cited and quote-checked here and read at their source.</p>
@@ -28,7 +28,3 @@ const num = (x: number) => x.toLocaleString('en');
     </div>
   </div>
 </Base>
-<style>
-  .prose h2 { font: 600 var(--t-22)/1.3 var(--serif); margin: 1.6em 0 0.4em; scroll-margin-top: var(--s-5); }
-  .prose .state { font-size: 0.85em; }
-</style>

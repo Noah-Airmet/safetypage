@@ -1,8 +1,0 @@
----
-// A citation. State is drawn by shape and colour and said in words for screen readers.
-interface Props { state: 'verified' | 'cited' | 'rejected'; label: string; href?: string }
-const { state, label, href } = Astro.props;
-const words = { verified: 'Verified', cited: 'Page only', rejected: 'Rejected' }[state];
-const Tag = href ? 'a' : 'span';
----
-<Tag class="chip" data-state={state} href={href}><span class="sr">{words}: </span><span class="chip-label">{label}</span></Tag>

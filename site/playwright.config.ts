@@ -8,12 +8,12 @@ export default defineConfig({
   testMatch: '*.e2e.ts',
   fullyParallel: true,
   reporter: 'list',
-  use: { baseURL: 'http://localhost:4393', channel: 'chrome' },
+  use: { baseURL: 'http://localhost:4493', channel: 'chrome' },
   webServer: [
-    { command: 'npm run api -- 8793', url: 'http://127.0.0.1:8793/health', reuseExistingServer: true, timeout: 60000 },
+    { command: 'npm run api -- 8893', url: 'http://127.0.0.1:8893/health', reuseExistingServer: true, timeout: 60000 },
     {
-      command: 'SAFETYPAGE_API=http://127.0.0.1:8793 npx astro build --outDir dist-e2e && SAFETYPAGE_API=http://127.0.0.1:8793 node scripts/serve.mjs dist-e2e 4393',
-      url: 'http://localhost:4393', reuseExistingServer: true, timeout: 180000,
+      command: 'SAFETYPAGE_API=http://127.0.0.1:8893 npx astro build --outDir dist-e2e && SAFETYPAGE_API=http://127.0.0.1:8893 node scripts/serve.mjs dist-e2e 4493',
+      url: 'http://localhost:4493', reuseExistingServer: true, timeout: 180000,
     },
   ],
 });

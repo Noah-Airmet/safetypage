@@ -28,22 +28,21 @@ const small = runs.some((r) => r.samples < 50);
 ---
 <Base title="CitationBench" description="A benchmark of page-level citation: does an agent cite the right page, quote it accurately, and make claims the page supports?">
   <div class="wrap">
-    <header class="pagehead">
+    <header class="head">
       <h1 class="title">CitationBench</h1>
-      <p class="lede">Does an agent cite the right page, quote it accurately, and make claims the page supports?</p>
-      {runs.length > 0 && <p class="muted facts mono">{runs.length} {runs.length === 1 ? 'run' : 'runs'} · updated {updated}</p>}
-      {small && <p class="note">These are early runs on a handful of questions over the six-document fixture library. They show that the harness works end to end; they are too small to compare models.</p>}
+      <p class="byline">Does an agent cite the right page, quote it accurately, and make claims the page supports?</p>
+      {runs.length > 0 && <p class="facts"><span>{runs.length} {runs.length === 1 ? 'run' : 'runs'}</span><span>Updated {updated}</span>{small && <span>Early runs, too small to compare models</span>}</p>}
     </header>
 
-    {runs.length === 0 ? <p class="muted">No runs yet.</p> : (
+    {runs.length === 0 ? <p class="muted">No runs yet</p> : (
       <div class="scroll" tabindex="0" role="region" aria-label="Results">
         <table class="table board">
           <thead>
             <tr>
               <th>Rank</th><th>Agent</th>
-              {COLUMNS.map((c) => <th class="num">{c.label}<span class="src">{c.source} · higher is better</span></th>)}
+              {COLUMNS.map((c) => <th class="num">{c.label}<span class="src">{c.source}</span></th>)}
               <th class="whisk"><span class="sr">Correct, with its 95% interval</span></th>
-              <th class="num">$ per correct<span class="src">answer · lower is better</span></th>
+              <th class="num">$ / correct</th>
               <th class="num">Questions</th>
             </tr>
           </thead>
@@ -54,8 +53,8 @@ const small = runs.some((r) => r.samples < 50);
               const cost = run.cost.per_correct_usd.mean;
               return (
                 <tr>
-                  <td class="mono">{band(run)}</td>
-                  <td><a href={href}><span class="model">{run.model.split('/').pop()}</span><span class="solver mono">{run.solver} · {run.name} · {run.snapshot}</span></a></td>
+                  <td>{band(run)}</td>
+                  <td><a href={href}><span class="model">{run.model.split('/').pop()}</span><span class="solver mono">{run.solver} {run.name} {run.snapshot}</span></a></td>
                   {COLUMNS.map((col) => {
                     const e = run.measures[col.key];
                     return <td class="num"><a href={href} title={e?.mean == null ? 'not measured' : `${pct(e.ci_low)} to ${pct(e.ci_high)}, n = ${e.n}`}>{pct(e?.mean)}{e && half(e) != null && <span class="pm"> ±{half(e)}</span>}</a></td>;
@@ -64,7 +63,7 @@ const small = runs.some((r) => r.samples < 50);
                     {c.mean != null && <span class="whisker"><i class="ci" style={`left:${(c.ci_low ?? c.mean) * 100}%;width:${((c.ci_high ?? c.mean) - (c.ci_low ?? c.mean)) * 100}%`}></i><i class="dot" style={`left:${c.mean * 100}%`}></i></span>}
                   </td>
                   <td class="num"><a href={href}>{cost == null || !run.cost.priced ? '–' : cost < 0.1 ? `$${cost.toFixed(3)}` : `$${cost.toFixed(2)}`}</a></td>
-                  <td class="num"><a class="link" href={href}>{run.samples} ›</a></td>
+                  <td class="num"><a class="link" href={href}>{run.samples}</a></td>
                 </tr>
               );
             })}
@@ -73,33 +72,15 @@ const small = runs.some((r) => r.samples < 50);
       </div>
     )}
 
-    <div class="notes">
-      <p><strong>Correct</strong> is the headline: the verdict is right, at least one cited page is a gold page, and no citation is rejected by code.</p>
-      <p><strong>Code</strong> columns are deterministic: the cited page exists, the run opened it, and the quoted words are on it. No model is involved.</p>
-      <p><strong>Judge</strong> columns come from a model, and are labelled so. {judges.length > 0
-        ? <>{judges.length === 1 ? 'The judge is ' : 'The judges are '}{judges.map((j, i) => <>{i > 0 && ' and '}<span class="mono">{j.id}</span></>)}. {judges.some((j) => j.agreement) ? 'Agreement with human labels is published with each run.' : 'Their agreement with human labels has not been measured yet, so read this column as provisional.'}</>
-        : 'The judge is named here, with its measured agreement with human labels, once a run uses one.'}</p>
-      <p><strong>Rank</strong> is a band, not a position: runs whose 95% intervals on Correct overlap share a band. Intervals come from a bootstrap over questions, clustered by document.</p>
-      <p>Every number opens the run behind it. Every question in a run opens its replay, and every citation in a replay opens the page. <a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/citationbench">How the questions are made, and how to run it</a></p>
-    </div>
+    <dl class="terms section">
+      <dt>Correct</dt><dd>The verdict is right, a cited page is a gold page, and code rejects no citation.</dd>
+      <dt>Code</dt><dd>Deterministic: the cited page exists, the run opened it, and the quoted words are on it.</dd>
+      <dt>Judge</dt><dd>{judges.length > 0
+        ? <>A model's verdict: {judges.map((j, i) => <>{i > 0 && ', '}<span class="mono">{j.id}</span></>)}. {judges.some((j) => j.agreement) ? 'Its agreement with human labels is published with each run.' : 'Its agreement with human labels is not measured yet.'}</>
+        : "A model's verdict, named with its agreement with human labels."}</dd>
+      <dt>Rank</dt><dd>A band: runs whose 95% intervals on Correct overlap share one. Bootstrap over questions, clustered by document.</dd>
+      <dt>Percent</dt><dd>Higher is better; ± is half the 95% interval.</dd>
+      <dt>Method</dt><dd><a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/citationbench">citationbench/ on GitHub</a></dd>
+    </dl>
   </div>
 </Base>
-<style>
-  .facts { font-size: var(--t-12); }
-  .board { min-width: 920px; }
-  .board td { vertical-align: top; line-height: 24px; }
-  .board td:nth-child(2) { min-width: 17rem; }
-  .board th .src { display: block; font: 400 var(--t-12)/1.3 var(--sans); color: var(--ink-3); }
-  .board td { padding-block: var(--s-3); }
-  .board td a { display: inline-block; min-height: 24px; }
-  .board td a:hover, .board td a:hover .model { color: var(--accent); }
-  .model { font: 400 var(--t-18)/24px var(--serif); display: block; }
-  .solver { color: var(--ink-2); font-size: var(--t-12); display: block; line-height: 1.4; }
-  .pm { color: var(--ink-2); }
-  .whisk { width: 8rem; padding-right: var(--s-4) !important; }
-  .whisker { position: relative; display: block; height: 12px; margin-top: 6px; background: linear-gradient(var(--rule), var(--rule)) center / 100% 1px no-repeat; }
-  .whisker .ci { position: absolute; top: 5px; height: 2px; background: var(--ink-2); }
-  .whisker .dot { position: absolute; top: 2px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--accent); }
-  .notes { margin-top: var(--s-6); display: grid; gap: var(--s-2); color: var(--ink-2); max-width: 76ch; font-size: var(--t-13); }
-  .notes strong { color: var(--ink); font-weight: 500; }
-</style>

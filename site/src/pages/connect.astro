@@ -1,11 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import { mcpUrl } from '../lib/env';
+import Icon from '../components/Icon.astro';
 const site = Astro.site!.origin;
 const mcp = mcpUrl(site);
 const clients = [
   ['Claude Code', `claude mcp add --transport http safetypage ${mcp}`],
-  ['Claude.ai, ChatGPT and other clients: add a connector with this URL', mcp],
+  ['Claude.ai, ChatGPT, others', mcp],
 ];
 const tools = [
   ['search', 'search(query, collection?, org?, kind?, date_from?, date_to?, doc?, mode?, sort?, limit?)', 'Ranked pages and paragraphs. Words are ANDed; "a phrase", prefix*, a NEAR/5 b and -exclude work. Every hit is a citation.'],
@@ -22,68 +23,58 @@ const api = [
 ];
 ---
 <Base title="Connect" description="Connect an agent to the library over MCP: search, fetch, verify_quote, check_answer.">
-  <div class="wrap narrow">
-    <header class="pagehead">
-      <h1 class="title">Connect your agent</h1>
-      <p class="lede">An MCP server with four read-only tools. No key, no account.</p>
+  <div class="wrap">
+    <header class="head">
+      <h1 class="title">Connect an agent</h1>
+      <p class="facts"><span>MCP over HTTP</span><span>4 tools</span><span>Read-only</span><span>No key</span></p>
     </header>
 
-    <section>
-      <h2 class="h2">Add the server</h2>
-      <dl class="clients">
-        {clients.map(([name, line]) => (
-          <>
-            <dt>{name}</dt>
-            <dd><div class="codeline"><code tabindex="0">{line}</code><button class="btn btn-quiet" data-copy={line}>Copy</button></div></dd>
-          </>
-        ))}
-      </dl>
-    </section>
+    <dl class="clients">
+      {clients.map(([name, line]) => (
+        <>
+          <dt>{name}</dt>
+          <dd><div class="codeline"><code tabindex="0">{line}</code><button class="ib" data-copy={line} aria-label={`Copy for ${name}`}><Icon name="copy" /></button></div></dd>
+        </>
+      ))}
+    </dl>
 
     <section class="section">
-      <h2 class="h2">The tools</h2>
+      <h2 class="h2">Tools</h2>
       <ul class="tools">
         {tools.map(([name, sig, what]) => (
-          <li><h3 class="mono">{sig}</h3><p>{what}</p></li>
+          <li><h3><b>{name}</b>{sig.slice(name.length)}</h3><p>{what}</p></li>
         ))}
       </ul>
     </section>
 
     <section class="section">
-      <h2 class="h2">What a citation looks like</h2>
-      <pre class="code" tabindex="0">{`arxiv:2305.15324/v2/p6                         document / version / place
-${site}/d/arxiv/2305.15324/v2/p6     the same thing, as a link
-…/v2/p6?q=not%20the%20only%20tool                 with the quoted words highlighted`}</pre>
-      <p class="after muted">A citation always names a version, because pages move when a paper is revised. <span class="mono">p6</span> is a PDF page; <span class="mono">b12</span> is a paragraph of a document that has no pages.</p>
+      <h2 class="h2">A citation</h2>
+      <div class="anatomy">
+        <code>arxiv:2305.15324</code><span>document</span>
+        <code class="sep">/</code><span></span>
+        <code>v2</code><span>version</span>
+        <code class="sep">/</code><span></span>
+        <code>p6</code><span>page</span>
+      </div>
+      <div class="anatomy" style="margin-top: var(--s-5)">
+        <code>distill:zoom-in</code><span>document</span>
+        <code class="sep">/</code><span></span>
+        <code>r1</code><span>version</span>
+        <code class="sep">/</code><span></span>
+        <code>b21</code><span>paragraph</span>
+      </div>
+      <div class="anatomy-more">
+        <div class="codeline"><code tabindex="0">{site}/d/arxiv/2305.15324/v2/p6</code><button class="ib" data-copy={`${site}/d/arxiv/2305.15324/v2/p6`} aria-label="Copy link"><Icon name="copy" /></button></div>
+        <div class="codeline"><code tabindex="0">{site}/d/arxiv/2305.15324/v2/p6?q=not%20the%20only%20tool</code><a class="ib" href="/d/arxiv/2305.15324/v2/p6?q=not%20the%20only%20tool" aria-label="Open with the quote highlighted"><Icon name="forward" /></a></div>
+      </div>
     </section>
 
     <section class="section">
-      <h2 class="h2">The same functions over HTTP</h2>
-      <div class="scroll" tabindex="0" role="region" aria-label="Table"><table class="table">
-        <thead><tr><th>Method</th><th>Route</th><th>Returns</th></tr></thead>
-        <tbody>{api.map(([m, route, model]) => <tr><td class="mono">{m}</td><td class="mono">{route}</td><td class="mono">{model}</td></tr>)}</tbody>
+      <h2 class="h2">HTTP</h2>
+      <div class="scroll" tabindex="0" role="region" aria-label="Routes"><table class="table routes" style="max-width: 54rem">
+        <tbody>{api.map(([m, route, model]) => <tr><td>{m}</td><td>{route}</td><td>{model}</td></tr>)}</tbody>
       </table></div>
-      <p class="after muted">JSON Schemas for every model are in <a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/schemas">schemas/</a>. The design is in <a class="link" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a>.</p>
+      <p class="facts" style="margin-top: var(--s-4)"><a class="link" href="https://github.com/Noah-Airmet/safetypage/tree/main/schemas">JSON Schemas</a><a class="link" href="https://github.com/Noah-Airmet/safetypage/blob/main/docs/ARCHITECTURE.md">Architecture</a></p>
     </section>
   </div>
 </Base>
-<script>
-  document.addEventListener('click', (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLElement>('[data-copy]');
-    if (!button) return;
-    navigator.clipboard.writeText(button.dataset.copy!);
-    button.textContent = 'Copied';
-    setTimeout(() => (button.textContent = 'Copy'), 1200);
-  });
-</script>
-<style>
-  .scroll td { white-space: nowrap; }
-  .clients { display: grid; grid-template-columns: var(--label) minmax(0, 1fr); gap: var(--s-2) var(--s-4); align-items: center; }
-  .clients dt { color: var(--ink-2); }
-  .tools li { padding-block: var(--s-4); border-top: 1px solid var(--rule); display: grid; gap: var(--s-1); }
-  .tools li:last-child { border-bottom: 1px solid var(--rule); }
-  .tools h3 { font-weight: 500; font-size: var(--t-13); overflow-wrap: anywhere; }
-  .tools p { color: var(--ink-2); max-width: 70ch; }
-  .after { margin-top: var(--s-3); max-width: 70ch; }
-  @media (max-width: 700px) { .clients { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); } .clients dd { margin-bottom: var(--s-3); } }
-</style>

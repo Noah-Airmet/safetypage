@@ -2,8 +2,27 @@
 
 The reader, the record pages, search, the checker, the replay view and the CitationBench
 leaderboard. Astro, static output, React only on the three interactive parts (search, the
-checker, the replay). Hand-written CSS on the tokens in
-[`src/styles/site.css`](src/styles/site.css); light and dark follow the system setting.
+checker, the replay).
+
+**The look.** Two themes on one set of tokens, at the top of
+[`src/styles/site.css`](src/styles/site.css), which is the whole stylesheet. The theme follows
+the system setting; the switch in the footer overrides it on that device.
+
+- **Light: marked-up paper.** The canvas is a cool grey desk. White is a page of a document or
+  a field you write in, and nothing else. Highlighter yellow means "these words are on this
+  page" (a verified quote, a search match); red pencil means they are not. One family, Hanken
+  Grotesk; Fragment Mono only for syntax (a cite string, a command).
+- **Dark: a reading room**, on the Gospel Scholar Archive's design system. A warm near-black
+  canvas; Source Serif 4 for what is read, Geist for what is operated, Instrument Serif for a
+  page's title; a page of a document is still white. One blue accent means "here on the
+  page": a verified citation takes it with a drawn check, and a rejected one is struck through
+  and dim beside the page's own wording. No second colour for state.
+
+Words in the interface are names, values, states and controls; it shows the page rather than
+explaining itself. Icons are one sprite, [`public/icons.svg`](public/icons.svg). The search
+page's wall is first pages chosen in [`src/lib/wall.ts`](src/lib/wall.ts), drawn from small
+copies in `public/wall/` that [`scripts/make_wall.sh`](scripts/make_wall.sh) makes from a
+snapshot's page images.
 
 ## Run it
 
@@ -30,7 +49,7 @@ uv run python -m safetypage.server --snapshot <snapshot dir> --port 8000 &
 cd site
 export SAFETYPAGE_PUBLIC_DIR=<snapshot dir>/public SAFETYPAGE_API=http://127.0.0.1:8000
 
-npm run build && node scripts/serve.mjs dist 4395   # to look at it locally, everything on one origin
+npm run build && node scripts/serve.mjs dist 4412   # to look at it locally, everything on one origin
 npm run build:deploy                                # for the deployed site: the two origins in deploy.env
 ```
 
@@ -83,11 +102,11 @@ serves `/library` as written, with no redirect to a trailing slash.
 
 | Route | What |
 |---|---|
-| `/` | a checked citation and a rejected one on a real page, search, the library's numbers |
+| `/` | a checked quotation and a rejected one against a real page, search, the shelves and what is new |
 | `/library`, `/library/<shelf>[?publisher=&kind=&year=&read=&q=]` | the shelves; one shelf, filtered in the browser |
 | `/d/<ns>/<id>[/<version>]` | the record: catalogue entry, outline, versions, licence and its evidence, how to cite |
 | `/d/<ns>/<id>/<version>/<anchor>[?q=<quote>]` | the reader at a page or paragraph, with the quote highlighted |
-| `/search?query=[&collection=&kind=&org=&tier=&doc=]` | the concordance; every result is a citation |
+| `/search?query=[&collection=&kind=&org=&tier=&doc=]` | the composer (Search, or Check a paragraph) over a wall of first pages; searched, the results take the wall's place, each one a citation |
 | `/follow`, `/follow/<topic>` | one evaluation across the labs' system cards, by lab and date: a saved search ([`follow.ts`](src/lib/follow.ts)) |
 | `/check[?text=]` | paste a paragraph; each citation comes back Verified, Page only or Rejected |
 | `/r/<trace id>[?step=N]` | a research run played back from its trace |
@@ -118,10 +137,12 @@ serves `/library` as written, with no redirect to a trailing slash.
 ## Checks
 
 - `npm test`: `tsc`, Vitest ([`tests/lib.test.ts`](tests/lib.test.ts)), Playwright with axe
-  ([`tests/site.e2e.ts`](tests/site.e2e.ts)) in light and dark and at phone width.
+  ([`tests/site.e2e.ts`](tests/site.e2e.ts)) in light and dark, at desktop and phone width.
 - `ui-check` ([`ui-check.config.mjs`](ui-check.config.mjs)) measures alignment, sizes and
   contrast on the main screens of the real library against saved screenshots, with a real
-  build served on port 4395. `UI_CHECK_SCHEME=dark ui-check` does the same in the dark theme.
-  After a change you meant: `ui-check update`.
+  build served on port 4412 (`UI_CHECK_BASE` changes it). `UI_CHECK_SCHEME=dark ui-check` does
+  the same in the dark theme. After a change you meant: `ui-check update`.
 - `node scripts/shots.mjs <base> <dir>` saves a screenshot of each main screen at desktop
-  and phone width in both themes.
+  and phone width in both themes; `node scripts/overflow.mjs <base>` lists sideways scroll and console errors;
+  `node scripts/study.mjs <dir>` is the survey of other sites' computed styles the design
+  was drawn from.

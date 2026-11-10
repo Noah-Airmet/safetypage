@@ -3,32 +3,10 @@ import Base from '../layouts/Base.astro';
 import Checker from '../islands/Checker.tsx';
 ---
 <Base title="Check a paragraph" description="Paste text with citations and see each one marked Verified, Page only or Rejected, with the reason.">
-  <div class="wrap narrow">
-    <header class="pagehead">
+  <div class="wrap">
+    <header class="head">
       <h1 class="title">Check a paragraph</h1>
-      <p class="muted">Paste text that cites the library. Each citation comes back <span class="state" data-state="verified">Verified</span>, <span class="state" data-state="cited">Page only</span> or <span class="state" data-state="rejected">Rejected</span>, with the reason.</p>
     </header>
     <Checker client:load />
   </div>
 </Base>
-<style is:global>
-  .pagehead .state { vertical-align: baseline; }
-  .checker textarea { font: 400 var(--t-16)/1.55 var(--serif); }
-  .checker .actions { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
-  .checker .audit { margin-top: var(--s-6); display: grid; gap: var(--s-5); }
-  .checker .summary { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-bottom: var(--s-3); border-bottom: 1px solid var(--edge); }
-  .checker .marked { max-width: none; line-height: 1.75; }
-  .checker .findings > li { padding-block: var(--s-4); border-top: 1px solid var(--rule); display: grid; gap: var(--s-2); scroll-margin-top: var(--s-4); }
-  .checker .finding-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
-  .checker .cite { color: var(--ink-3); font-size: var(--t-12); }
-  .checker .q { font: 400 var(--t-18)/1.5 var(--serif); }
-  .checker .why { color: var(--ink-2); max-width: 72ch; }
-  .checker .quote { display: grid; gap: var(--s-1); justify-items: start; }
-  .checker .diffs { display: block; margin-top: var(--s-1); }
-  .checker .diffs > span + span::before { content: ' · '; }
-  .checker .show { min-height: 24px; }
-  .checker .evidence { width: 100%; margin-top: var(--s-2); }
-  .checker .evidence .pv-page { aspect-ratio: 16 / 7; }
-  .checker .evidence .pv-page .sheet { width: 112%; margin-left: -6%; }
-  @media (max-width: 700px) { .checker .evidence .pv-page { aspect-ratio: 4 / 3; } }
-</style>

@@ -6,6 +6,7 @@
 //   /data/…                           the snapshot's public/ tree (SAFETYPAGE_PUBLIC_DIR, default .data)
 //   /api/…, /mcp                      the search server (SAFETYPAGE_API), when one is named
 import http from 'node:http';
+import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -18,7 +19,7 @@ const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
 http.createServer((req, res) => {
   const pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   if (api && /^\/(api\/|mcp$|x\/)/.test(pathname)) {
-    const upstream = http.request(new URL(req.url, api), { method: req.method, headers: { ...req.headers, host: new URL(api).host } }, (r) => {
+    const upstream = (api.startsWith('https:') ? https : http).request(new URL(req.url, api), { method: req.method, headers: { ...req.headers, host: new URL(api).host, 'accept-encoding': 'identity' } }, (r) => {
       res.writeHead(r.statusCode, r.headers);
       r.pipe(res);
     });

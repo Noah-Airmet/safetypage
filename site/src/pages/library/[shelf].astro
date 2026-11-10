@@ -1,5 +1,5 @@
 ---
-// One shelf. The newest documents are printed here; the filters and "Show more" read the
+// One shelf. The newest documents are printed here; the filters and "More" read the
 // shelf's catalogue file (/catalogue/<shelf>.json), fetched the first time one is used.
 import Base from '../../layouts/Base.astro';
 import { allShelves, type Shelf } from '../../lib/data';
@@ -15,28 +15,28 @@ const open = shelf.docs.filter((d) => d.tier === 'open').length;
 ---
 <Base title={shelfName(shelf.id)} description={`${num(total)} documents. ${SHELVES[shelf.id]?.about ?? ''}`}>
   <div class="wrap">
-    <header class="pagehead">
-      <p class="rubric"><a href="/library">Library</a></p>
+    <header class="head">
+      <nav class="up" aria-label="Up"><a href="/library">Library</a></nav>
       <h1 class="title">{shelfName(shelf.id)}</h1>
-      {SHELVES[shelf.id] && <p class="muted">{SHELVES[shelf.id].about}</p>}
+      {SHELVES[shelf.id] && <p class="byline">{SHELVES[shelf.id].about}</p>}
     </header>
     <form class="filters" data-filters data-shelf={shelf.id} data-total={total}>
-      <input class="field" type="search" name="q" placeholder="Filter by title or author" aria-label="Filter by title or author" autocomplete="off" />
+      <input class="field" type="search" name="q" placeholder="Title or author" aria-label="Filter by title or author" autocomplete="off" />
       {shelf.publishers.length > 1 && (
         <select class="field" name="publisher" aria-label="Publisher">
-          <option value="">Every publisher</option>
+          <option value="">Publisher</option>
           {shelf.publishers.map(([p, c]) => <option value={p}>{p} ({num(c)})</option>)}
         </select>
       )}
       {shelf.kinds.length > 1 && (
         <select class="field" name="kind" aria-label="Kind">
-          <option value="">Every kind</option>
+          <option value="">Kind</option>
           {shelf.kinds.map(([k, c]) => <option value={k}>{KINDS[k] ?? k} ({num(c)})</option>)}
         </select>
       )}
       {shelf.years.length > 1 && (
         <select class="field" name="year" aria-label="Year">
-          <option value="">Every year</option>
+          <option value="">Year</option>
           {shelf.years.map(([y, c]) => <option value={y}>{y} ({num(c)})</option>)}
         </select>
       )}
@@ -44,13 +44,13 @@ const open = shelf.docs.filter((d) => d.tier === 'open').length;
         <select class="field" name="read" aria-label="Where it is read">
           <option value="">Read anywhere</option>
           <option value="here">Read here ({num(open)})</option>
-          <option value="source">Read at source ({num(total - open)})</option>
+          <option value="source">At source ({num(total - open)})</option>
         </select>
       )}
     </form>
-    <p class="count muted" data-count aria-live="polite">{total > FIRST ? `${num(FIRST)} of ${num(total)}` : num(total)} documents, newest first</p>
-    <div class="rows" data-rows set:html={shelf.docs.slice(0, FIRST).map((d) => rowHtml(toRow(d))).join('')} />
-    {total > FIRST && <p class="more"><button class="btn" data-more>Show more</button></p>}
+    <p class="count" data-count aria-live="polite">{total > FIRST ? `${num(FIRST)} of ${num(total)}` : num(total)} documents, newest first</p>
+    <div class="rows cat" data-rows set:html={shelf.docs.slice(0, FIRST).map((d) => rowHtml(toRow(d))).join('')} />
+    {total > FIRST && <p class="morerow"><button class="btn" data-more>More</button></p>}
   </div>
 </Base>
 
@@ -100,15 +100,3 @@ const open = shelf.docs.filter((d) => d.tier === 'open').length;
   }
   if (preset) draw(STEP);
 </script>
-
-<style>
-  .rubric a:hover { color: var(--accent); }
-  .filters { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-  .filters .field { width: auto; flex: 0 1 auto; max-width: 100%; }
-  .filters input.field { flex: 1 1 16rem; }
-  .filters select.field { padding-right: var(--s-2); }
-  .count { margin-block: var(--s-4) var(--s-2); font-size: var(--t-13); }
-  .more { margin-top: var(--s-4); }
-  :global(.rows .by) { display: block; margin-top: 2px; }
-  @media (max-width: 700px) { .filters select.field { flex: 1 1 45%; min-width: 0; } }
-</style>

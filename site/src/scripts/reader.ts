@@ -2,11 +2,12 @@
 // rewrites those paths to it; see site/README.md), and this script draws the document from the
 // snapshot's static files: the card, then page images with a text layer (open PDFs), the text
 // re-set in our template (open web documents), or the source card (documents read at source).
-import { KINDS, anchorLabel, atSource, citePath, formatDate, hostOf, licenceName, shortLabel, sourceLink } from '../lib/cite';
+import { KINDS, anchorLabel, atSource, citePath, outlineHtml, formatDate, hostOf, licenceName, shortLabel, sourceLink } from '../lib/cite';
 import { API_BASE, DATA_BASE } from '../lib/env';
 import { findQuote, highlightRects } from '../lib/quote';
 import type { DocumentCard, QuoteCheck, UnitText } from '../lib/types';
 
+const icon = (name: string, small = false) => `<svg class="i${small ? ' i-sm' : ''}" aria-hidden="true"><use href="/icons.svg#${name}"></use></svg>`;
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 const getJson = async <T>(url: string): Promise<T | null> => {
   try {
@@ -20,12 +21,12 @@ const WINDOW = 150;   // paragraphs drawn either side of the target in a very lo
 
 async function open(root: HTMLElement) {
   const m = /^\/d\/([a-z0-9-]+)\/([A-Za-z0-9._-]+)\/([vr]\d+)\/([pb])(\d+)(?:-[pb]?(\d+))?\/?$/.exec(location.pathname);
-  if (!m) return missing(root, 'This is not the address of a page or paragraph.');
+  if (!m) return missing(root, 'Not the address of a page or paragraph.');
   const [, ns, local, version, letter, first, last] = m;
   const docId = `${ns}:${local}`;
   const inline = document.getElementById('doc-card')?.textContent;
   let doc = inline ? (JSON.parse(inline) as DocumentCard) : await getJson<DocumentCard>(`${DATA_BASE}/docs/${ns}/${local}.json`);
-  if (!doc) return missing(root, 'This document is not in the library.', '/library', 'Browse the library');
+  if (!doc) return missing(root, 'This document is not in the library.', '/library', 'Library');
   // The published card is the latest version's. An older version's comes from the server.
   if (doc.version !== version) doc = (await getJson<DocumentCard>(`${API_BASE}/api/doc/${ns}/${local}/${version}`)) ?? doc;
   const summary = doc.versions.find((v) => v.version === version);
@@ -40,9 +41,9 @@ async function open(root: HTMLElement) {
   start(root, { doc, version, target: `${letter}${n}`, end: last ? `${letter}${last}` : null, count: count || n, open: summary.tier === 'open', licence: summary.licence });
 }
 
-function missing(root: HTMLElement, why: string, href = '/search', label = 'Search the library') {
+function missing(root: HTMLElement, why: string, href = '/search', label = 'Search') {
   document.title = 'Not found · SafetyPage';
-  root.innerHTML = `<div class="wrap"><header class="pagehead"><h1 class="title">Nothing at this address</h1><p class="muted">${esc(why)}</p><p><a class="btn" href="${esc(href)}">${esc(label)}</a></p></header></div>`;
+  root.innerHTML = `<div class="wrap"><header class="head"><h1 class="title">Not in the library</h1><p class="byline">${esc(why)}</p><p class="actions"><a class="btn btn-primary" href="${esc(href)}">${esc(label)}</a></p></header></div>`;
 }
 
 interface Opened { doc: DocumentCard; version: string; target: string; end: string | null; count: number; open: boolean; licence: string }
@@ -72,13 +73,12 @@ function start(root: HTMLElement, o: Opened) {
   root.innerHTML = `
     <div class="rbar">
       <div class="wrap rbar-in">
-        <a class="rback" href="${citePath(doc.version === version ? doc.doc_id : ref)}" aria-label="Record: ${esc(doc.title)}"><span aria-hidden="true">‹</span><span class="rtitle">${esc(doc.title)}</span></a>
+        <a class="rback" href="${citePath(doc.version === version ? doc.doc_id : ref)}" aria-label="Record: ${esc(doc.title)}">${icon('back')}<span class="rtitle">${esc(doc.title)}</span></a>
         ${mode === 'pages'
-          ? `<form class="goto" data-goto><label><span class="sr">Go to page</span><span aria-hidden="true">p.</span><input class="field mono" name="page" inputmode="numeric" autocomplete="off" value="${n}" aria-label="Page number" /></label><span class="muted mono">/ ${count}</span></form>`
-          : `<span class="muted mono" data-here>${esc(anchorLabel(target))}${count ? ` / ${count}` : ''}</span>`}
-        ${outline.length ? `<details class="contents"><summary class="btn btn-quiet">Contents</summary><ol>${outline.map((item) =>
-          `<li style="--level:${item.level - 1}"><a href="${citePath(item.cite)}" data-jump="${item.anchor}"><span>${esc(item.title)}</span><span class="mono muted">${esc(anchorLabel(item.anchor))}</span></a></li>`).join('')}</ol></details>` : ''}
-        <a class="btn btn-quiet rsource" href="${esc(sourceLink(doc.source_url, target, paged))}" rel="noopener" data-source>Source ↗</a>
+          ? `<form class="goto" data-goto><label><span class="sr">Go to page</span><span aria-hidden="true">p.</span><input class="field" name="page" inputmode="numeric" autocomplete="off" value="${n}" aria-label="Page number" /></label><span>/ ${count}</span></form>`
+          : `<span class="here" data-here>${esc(anchorLabel(target))}${count ? ` / ${count}` : ''}</span>`}
+        ${outline.length ? `<details class="contents"><summary class="btn btn-quiet" aria-label="Contents">${icon('contents')}<span>Contents</span></summary><ol class="outline">${outlineHtml(outline)}</ol></details>` : ''}
+        <a class="btn btn-quiet rsource" href="${esc(sourceLink(doc.source_url, target, paged))}" rel="noopener" data-source aria-label="Source: ${esc(host)}"><span>${esc(host)}</span>${icon('external', true)}</a>
       </div>
       <p class="wrap qstatus" data-qstatus hidden></p>
     </div>
@@ -93,7 +93,7 @@ function start(root: HTMLElement, o: Opened) {
     status.innerHTML = `<span class="state" data-state="${state}">${words}</span><q></q>${extra}`;
     status.querySelector('q')!.textContent = quote!.length > 140 ? quote!.slice(0, 140) + '…' : quote!;
   };
-  const checkLink = () => `<a class="link" href="/check?text=${encodeURIComponent(`"${quote}" (${ref}/${target})`)}">Check it</a>`;
+  const checkLink = () => `<a class="link" href="/check?text=${encodeURIComponent(`"${quote}" (${ref}/${target})`)}">Check</a>`;
 
   // ---- pages: images with a text layer on demand, the highlight, the page indicator
   if (mode === 'pages') {
@@ -208,14 +208,14 @@ function start(root: HTMLElement, o: Opened) {
     const tags: Record<string, string> = { quote: 'blockquote', code: 'pre' };
     const n0 = count > 2 * WINDOW + 100 ? Math.max(1, n - WINDOW) : 1;
     const n1 = count > 2 * WINDOW + 100 ? Math.min(count, n + WINDOW) : count;
-    body.className = 'wrap textdoc';
-    body.innerHTML = `<header><p class="rubric">${esc([doc.org, licenceName(o.licence)].filter(Boolean).join(' · '))}</p><h1 class="title">${esc(doc.title)}</h1><p class="muted">${esc(doc.authors.join(', '))}</p></header><div data-blocks aria-busy="true"></div>`;
+    body.className = 'textdoc';
+    body.innerHTML = `<header><h1 class="title">${esc(doc.title)}</h1><p class="byline">${esc(doc.authors.join(', '))}</p><p class="facts">${[doc.org, formatDate(doc.published), licenceName(o.licence)].filter(Boolean).map((part) => `<span>${esc(part!)}</span>`).join('')}</p></header><div data-blocks aria-busy="true"></div>`;
     const holder = body.querySelector<HTMLElement>('[data-blocks]')!;
     const draw = (u: UnitText) => {
       const kind = u.kind ?? 'paragraph';
       const tag = kind === 'heading' ? `h${Math.min(4, (u.level ?? 1) + 1)}` : (tags[kind] ?? 'p');
       const num = u.anchor.slice(1);
-      return `<div class="block" id="${u.anchor}" data-unit="${u.anchor}" data-kind="${kind}"><a class="gutter mono" href="${citePath(u.cite)}" aria-label="Link to paragraph ${num}">¶${num}</a><${tag} class="t">${esc(u.text ?? '')}</${tag}></div>`;
+      return `<div class="block" id="${u.anchor}" data-unit="${u.anchor}" data-kind="${kind}"><a class="gutter" href="${citePath(u.cite)}" aria-label="Link to paragraph ${num}">¶${num}</a><${tag} class="t">${esc(u.text ?? '')}</${tag}></div>`;
     };
     const load = async (from: number, to: number) => {
       const units = await Promise.all(Array.from({ length: to - from + 1 }, (_, i) => unit(`b${from + i}`)));
@@ -273,24 +273,23 @@ function start(root: HTMLElement, o: Opened) {
     body.className = 'desk';
     body.innerHTML = `
       <section class="sourcecard" data-unit="${target}">
-        <p class="rubric">${esc([doc.org, KINDS[doc.kind] ?? doc.kind, formatDate(doc.published)].filter(Boolean).join(' · '))}</p>
+        <p class="facts">${[doc.org, KINDS[doc.kind] ?? doc.kind, formatDate(doc.published)].filter(Boolean).map((part) => `<span>${esc(part!)}</span>`).join('')}</p>
         <h1>${esc(doc.title)}</h1>
-        <p class="where mono"><span data-label>${esc(anchorLabel(target))}</span>${count ? ` of ${count}` : ''}${section ? ` <span class="muted">· ${esc(section.title)}</span>` : ''}</p>
-        <blockquote class="excerpt" data-excerpt aria-busy="true"></blockquote>
-        <p class="hint muted" data-hint></p>
-        <a class="btn btn-primary" data-open href="${esc(sourceLink(doc.source_url, target, paged))}" rel="noopener">Open ${paged ? esc(anchorLabel(target)) : 'this paragraph'} at ${esc(host)} ↗</a>
+        <p class="where"><span><span data-label>${esc(anchorLabel(target))}</span>${count ? ` of ${count}` : ''}</span>${section ? `<span class="muted">${esc(section.title)}</span>` : ''}</p>
+        <div class="held"><p class="hint" data-hint></p><blockquote class="excerpt" data-excerpt aria-busy="true"></blockquote></div>
+        <a class="btn btn-primary" data-open href="${esc(sourceLink(doc.source_url, target, paged))}" rel="noopener">Read ${paged ? esc(anchorLabel(target)) : 'this paragraph'} at ${esc(host)}${icon('external', true)}</a>
         <form class="quotecheck" data-quotecheck>
-          <label for="qc">Check a quote against this ${what}</label>
-          <div class="searchbox"><input class="field" id="qc" name="quote" autocomplete="off" placeholder="Paste the words as quoted" /><button class="btn">Check</button></div>
+          <label class="h3" for="qc">Check a quote</label>
+          <div><input class="field" id="qc" name="quote" autocomplete="off" placeholder="The words as quoted" /><button class="btn">Check</button></div>
           <p class="qc-result" data-result aria-live="polite"></p>
         </form>
         <p class="links">
-          <button class="link" data-copy="${ref}/${target}">Copy citation</button>
-          <a class="link" href="/search?doc=${encodeURIComponent(doc.doc_id)}">Search inside this document</a>
-          <a class="link" href="${citePath(doc.doc_id)}">Record and outline</a>
+          <button class="btn btn-quiet" data-copy="${ref}/${target}">Copy citation</button>
+          <a class="btn btn-quiet" href="/search?doc=${encodeURIComponent(doc.doc_id)}">Search inside</a>
+          <a class="btn btn-quiet" href="${citePath(doc.doc_id)}">Outline</a>
         </p>
-        <nav class="pager" aria-label="${paged ? 'Pages' : 'Paragraphs'}">${step(n - 1, `‹ ${anchorLabel(`${target[0]}${n - 1}`)}`)}${step(n + 1, `${anchorLabel(`${target[0]}${n + 1}`)} ›`)}</nav>
-        <p class="foot-line muted">${esc(licenceName(o.licence))}. The library holds this document's text for search and for checking quotes, and sends you to ${esc(host)} to read it.</p>
+        <nav class="pager" aria-label="${paged ? 'Pages' : 'Paragraphs'}">${step(n - 1, `${icon('back', true)}${anchorLabel(`${target[0]}${n - 1}`)}`)}${step(n + 1, `${anchorLabel(`${target[0]}${n + 1}`)}${icon('forward', true)}`)}</nav>
+        <p class="foot-line">${esc(licenceName(o.licence))}</p>
       </section>`;
     const excerpt = body.querySelector<HTMLElement>('[data-excerpt]')!;
     const hint = body.querySelector<HTMLElement>('[data-hint]')!;
@@ -305,7 +304,7 @@ function start(root: HTMLElement, o: Opened) {
       if (!u?.excerpt) return void (excerpt.hidden = !excerpt.dataset.quoted);
       if (excerpt.dataset.quoted) return;   // a checked quote is already shown
       excerpt.textContent = u.excerpt;
-      hint.textContent = `The opening words of this ${what}, as the library holds them.`;
+      hint.textContent = 'Opening words';
       if (paged) openLink.href = atSource(u.source_url);
       else if (!quote) toPassage(u.excerpt);
       if (u.anchor_label && paged) body.querySelector('[data-label]')!.textContent = u.anchor_label;
@@ -314,23 +313,23 @@ function start(root: HTMLElement, o: Opened) {
     const form = body.querySelector<HTMLFormElement>('[data-quotecheck]')!;
     const input = form.querySelector<HTMLInputElement>('input')!;
     const check = async (words: string) => {
-      result.textContent = 'Checking…';
+      result.textContent = '';
       const c = await verify(words);
-      if (!c) return void (result.textContent = 'The checker is a server and it is not answering. The link to the source still works.');
+      if (!c) return void (result.textContent = 'Checker unavailable');
       const where = c.locations[0];
       const head = `<span class="state" data-state="${c.passed ? 'verified' : 'rejected'}">${c.passed ? `On ${anchorLabel(target)}` : `Not on ${anchorLabel(target)}`}</span> `;
       if (c.passed) {
-        result.innerHTML = `${head}<span class="muted">${c.verdict === 'exact' ? 'word for word' : 'allowing for case, punctuation and line breaks'}, checked against the library's copy.</span>`;
+        result.innerHTML = `${head}<span class="muted">${c.verdict === 'exact' ? 'word for word' : 'ignoring case and punctuation'}</span>`;
         toPassage(words);
         // The words are on the page: show them as the passage, in place of the page's opening words.
         excerpt.removeAttribute('aria-busy');
         excerpt.dataset.quoted = '1';
         excerpt.hidden = false;
         excerpt.textContent = where?.text.replace(/\s+/g, ' ') ?? words;
-        hint.textContent = `The quoted words, as they stand on this ${what}.`;
+        hint.textContent = `On this ${what}`;
       } else if (c.verdict === 'elsewhere' && where) result.innerHTML = `${head}<a class="link" href="${citePath(where.cite, words)}">The words are on ${anchorLabel(where.anchor)}</a>`;
       else if (c.verdict === 'near_miss' && where) {
-        result.innerHTML = `${head}<span class="muted">The source says: </span><span class="closest"></span>`;
+        result.innerHTML = `${head}<span class="closest"></span>`;
         result.querySelector('.closest')!.textContent = `“${where.text.replace(/\s+/g, ' ')}”`;
       } else result.innerHTML = `${head}<span class="muted">${esc(c.reason)}</span>`;
     };
@@ -357,7 +356,7 @@ function start(root: HTMLElement, o: Opened) {
     if (!c || !where) return;
     if (c.verdict === 'elsewhere') say('rejected', `Not on ${anchorLabel(target)}`, `<a class="link" href="${citePath(where.cite, quote)}">It is on ${anchorLabel(where.anchor)}</a>`);
     else if (c.verdict === 'near_miss') {
-      say('rejected', `Not on ${anchorLabel(target)}`, `<span class="muted">The source says: </span><span class="closest"></span>`);
+      say('rejected', `Not on ${anchorLabel(target)}`, `<span class="closest"></span>`);
       status.querySelector('.closest')!.textContent = `“${where.text.replace(/\s+/g, ' ')}”`;
     }
   }
@@ -405,17 +404,6 @@ function start(root: HTMLElement, o: Opened) {
     setTimeout(() => { button.textContent = was; pop.hidden = true; }, 900);
   });
 
-  document.addEventListener('click', (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLElement>('[data-copy]');
-    if (button) {
-      navigator.clipboard.writeText(button.dataset.copy!);
-      const was = button.textContent;
-      button.textContent = 'Copied';
-      setTimeout(() => (button.textContent = was), 1200);
-    }
-    const shown = root.querySelector<HTMLDetailsElement>('details.contents[open]');
-    if (shown && !shown.contains(event.target as Node)) shown.removeAttribute('open');
-  });
 }
 
 /** Scroll to a place and stay on it while the text reflows (fonts arrive for a few seconds), until the reader scrolls. */
