@@ -166,6 +166,18 @@ deploy/            the server's container and file server, the site's deployment
 scripts/           check.sh (everything CI runs)
 ```
 
+`data/` (not committed) is split across machines since 11 November 2026, to keep the Mini's
+disk free:
+
+- **The homelab** serves the live snapshot to the site and the public API
+  (`/data/safetypage/snapshots/<id>`, put there by `deploy/redeploy.sh`).
+- **The Mini** keeps only the live snapshot, `data/snapshots/2026.11.3`, for the local server
+  that CitationBench runs against and for building the site.
+- **The iMac** (`ssh imac`, `/Volumes/Storage/safetypage/data/`) holds the build inputs: the
+  source files (`blobs/`), the rendered page cache (`cache/`), the working `corpus.sqlite` and
+  `ingest.sqlite`, `embeddings/`, the build logs, and snapshot `2026.11.4` (2026.11.3's
+  content plus dense vectors, built 10 November, not live). A new build starts from there.
+
 ## Develop
 
 ```sh
