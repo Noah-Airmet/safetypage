@@ -426,6 +426,18 @@ CURSOR_OK_CALLS = {"mcpToolCall", "getMcpToolsToolCall", "listMcpResourcesToolCa
 CURSOR_FILE_CALLS = {"grepToolCall", "globToolCall", "readToolCall"}
 
 
+def cursor_answer(out: str) -> str:
+    """The answer, as the model's text messages joined by blank lines. Cursor's own ``result``
+    runs them together with no separator, so a ``Verdict:`` line would not start a line."""
+    parts: list[str] = []
+    for e in _jsonl(out):
+        if e.get("type") == "assistant":
+            for block in _d(e.get("message")).get("content", []):
+                if isinstance(block, dict) and block.get("type") == "text":
+                    parts.append(str(block.get("text", "")).strip())
+    return "\n\n".join(p for p in parts if p)
+
+
 def cursor_off_library(out: str, *, workspace: Path, home: Path) -> list[str]:
     """Tools a Cursor run used that are not the library's. Only calls that succeeded count.
     Its file tools ignore the permission rules, so a grep, glob or read counts unless it stayed
@@ -486,7 +498,7 @@ def _cursor(
     run.off_library = cursor_off_library(out, workspace=cwd, home=home)
     for e in _jsonl(out):
         if e.get("type") == "result":
-            run.answer = str(e.get("result") or "")
+            run.answer = cursor_answer(out) or str(e.get("result") or "")
             u = _d(e.get("usage"))
             usage["input"] += int(u.get("inputTokens", 0))
             usage["output"] += int(u.get("outputTokens", 0))

@@ -200,6 +200,8 @@ def test_cursor_marks_successful_non_library_calls(
         call("grepToolCall", {"success": {}}, {"pattern": "x"}),  # the workspace: fine
         call("mcpToolCall", {"success": {}}, {"providerIdentifier": "safetypage"}),
         call("getMcpToolsToolCall", {"success": {}}),
+        {"type": "assistant", "message": {"content": [{"type": "text", "text": "Reading."}]}},
+        {"type": "assistant", "message": {"content": [{"type": "text", "text": "Verdict: x"}]}},
         {
             "type": "result",
             "is_error": False,
@@ -210,9 +212,9 @@ def test_cursor_marks_successful_non_library_calls(
     monkeypatch.setattr(agents, "CURSOR_BIN", _fake(tmp_path, "cursor-agent", lines))
     monkeypatch.setattr(agents.Path, "home", lambda: tmp_path)
     run = run_agent("cursor", "composer-2.5", "q", mcp_url="http://x/mcp", headers={})
-    assert run.off_library == ["glob"] and run.answer == "hi"
+    assert run.off_library == ["glob"] and run.answer == "Reading.\n\nVerdict: x"
     assert run.usage["input"] == 10 and run.usage["cache_read"] == 4
-    assert complete("cursor:composer-2.5", "q") == "hi"
+    assert complete("cursor:composer-2.5", "q").endswith("Verdict: x")
 
 
 def _ops(path: Path, run_id: str, sample: str) -> None:
