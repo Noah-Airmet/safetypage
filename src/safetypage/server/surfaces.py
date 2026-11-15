@@ -167,7 +167,7 @@ def load_surface(name: str, directory: Path = SURFACES_DIR) -> Surface:
 
 def load_surfaces(directory: Path = SURFACES_DIR) -> dict[str, Surface]:
     """Every surface in the directory, ``default`` first."""
-    names = sorted(p.stem for p in directory.glob("*.toml"))
+    names = sorted(p.stem for p in directory.glob("*.toml") if p.name != "library.toml")
     if "default" not in names:
         raise SurfaceError(f"no default surface in {directory}")
     names.remove("default")

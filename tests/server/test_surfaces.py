@@ -77,6 +77,9 @@ def test_identity_defaults_to_safetypage_and_reads_library_toml(tmp_path: Path) 
         "Lectern",
         "A library.",
     )
+    shutil.copy(SURFACES_DIR / "default.toml", tmp_path)
+    (tmp_path / "descriptions").symlink_to(SURFACES_DIR / "descriptions")
+    assert list(load_surfaces(tmp_path)) == ["default"]
     (tmp_path / "library.toml").write_text('colour = "red"\n', encoding="utf-8")
     with pytest.raises(SurfaceError):
         load_identity(tmp_path)
