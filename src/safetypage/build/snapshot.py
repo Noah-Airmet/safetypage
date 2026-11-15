@@ -60,6 +60,7 @@ PALETTE_TOLERANCE: Final = 64
 """A palette reproduces a page when all but 0.1% of pixels are within this of the original in
 every channel (0-255). Colour figures fail it and go lossy, so they keep their colours."""
 LOSSY_QUALITY: Final = {800: 45, 1600: 30}
+WEBP_MAX_SIDE: Final = 16383
 _SOURCE_EXTENSIONS: Final = {"pdf": "pdf", "html": "html"}
 
 
@@ -101,7 +102,9 @@ def render_pdf_pages(
                 target = out_dir / f"p{n}.{width}.webp"
                 if target.exists():
                     continue
-                zoom = width / page.rect.width
+                # WebP holds at most 16,383 pixels a side: a very tall page (a fold-out chart)
+                # is drawn narrower than asked rather than not at all.
+                zoom = min(width / page.rect.width, WEBP_MAX_SIDE / page.rect.height)
                 pixmap = page.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), alpha=False)
                 image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
                 temporary = target.with_suffix(f".{os.getpid()}.tmp")

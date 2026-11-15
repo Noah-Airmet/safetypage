@@ -144,3 +144,17 @@ def test_text_pages_are_palette_and_colour_figures_keep_their_colours(tmp_path: 
     assert save_page_image(photo, tmp_path / "photo.webp", 1600) == "lossy"
     with Image.open(tmp_path / "photo.webp") as image:
         assert image.format == "WEBP" and image.size == (800, 400)
+
+
+def test_a_very_tall_page_is_drawn_within_the_webp_limit(tmp_path: Path) -> None:
+    import pymupdf  # noqa: PLC0415
+
+    from safetypage.build.snapshot import WEBP_MAX_SIDE, render_pdf_pages  # noqa: PLC0415
+
+    pdf = tmp_path / "foldout.pdf"
+    with pymupdf.open() as document:
+        document.new_page(width=200, height=3000)  # 1600 wide would be 24,000 tall
+        document.save(pdf)
+    assert render_pdf_pages(pdf, tmp_path / "out", 1, widths=(1600,)) == 1
+    with Image.open(tmp_path / "out" / "p1.1600.webp") as image:
+        assert image.height <= WEBP_MAX_SIDE
