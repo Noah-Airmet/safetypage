@@ -96,6 +96,7 @@ def render_pdf_pages(
     with pymupdf.open(pdf) as document:
         for n in range(1, min(pages, document.page_count) + 1):
             page = document[n - 1]
+            scan = _is_scan(page)
             for width in widths:
                 target = out_dir / f"p{n}.{width}.webp"
                 if target.exists():
@@ -104,17 +105,30 @@ def render_pdf_pages(
                 pixmap = page.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), alpha=False)
                 image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
                 temporary = target.with_suffix(f".{os.getpid()}.tmp")
-                save_page_image(image, temporary, width)
+                save_page_image(image, temporary, width, scan=scan)
                 temporary.replace(target)
                 rendered += 1
     return rendered
 
 
-def save_page_image(image: Any, path: Path, width: int) -> str:
-    """Save a rendered page as WebP; returns ``"palette"`` or ``"lossy"``."""
+def _is_scan(page: Any) -> bool:
+    """Whether the page is one picture covering it: a scan, which a palette never reproduces."""
+    area = page.rect.width * page.rect.height
+    for info in page.get_image_info():
+        x0, y0, x1, y1 = info["bbox"]
+        if area and (x1 - x0) * (y1 - y0) >= 0.8 * area:
+            return True
+    return False
+
+
+def save_page_image(image: Any, path: Path, width: int, *, scan: bool = False) -> str:
+    """Save a rendered page as WebP; returns ``"palette"`` or ``"lossy"``.
+
+    A scan goes straight to lossy: trying the palettes on a photographed page costs about ten
+    times the render and always fails."""
     from PIL import Image  # noqa: PLC0415
 
-    for colours in PALETTES:
+    for colours in () if scan else PALETTES:
         palette = image.quantize(colours, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
         if _worst_error(palette.convert("RGB"), image) <= PALETTE_TOLERANCE:
             palette.save(path, "WEBP", lossless=True, quality=100, method=4)
