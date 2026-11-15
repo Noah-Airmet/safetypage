@@ -5,7 +5,13 @@ from pathlib import Path
 
 import pytest
 
-from safetypage.server.surfaces import SURFACES_DIR, SurfaceError, load_surface, load_surfaces
+from safetypage.server.surfaces import (
+    SURFACES_DIR,
+    SurfaceError,
+    load_identity,
+    load_surface,
+    load_surfaces,
+)
 
 
 def test_shipped_surfaces() -> None:
@@ -58,3 +64,19 @@ def test_bad_surfaces(tmp_path: Path, text: str, message: str) -> None:
     (copy / "loop.toml").write_text(text)
     with pytest.raises(SurfaceError, match=message):
         load_surface("loop", copy)
+
+
+def test_identity_defaults_to_safetypage_and_reads_library_toml(tmp_path: Path) -> None:
+    assert load_identity().title == "SafetyPage"
+    (tmp_path / "library.toml").write_text(
+        'name = "lectern"\ntitle = "Lectern"\ndescription = "A library."\n', encoding="utf-8"
+    )
+    identity = load_identity(tmp_path)
+    assert (identity.name, identity.title, identity.description) == (
+        "lectern",
+        "Lectern",
+        "A library.",
+    )
+    (tmp_path / "library.toml").write_text('colour = "red"\n', encoding="utf-8")
+    with pytest.raises(SurfaceError):
+        load_identity(tmp_path)

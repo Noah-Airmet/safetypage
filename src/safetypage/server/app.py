@@ -44,7 +44,7 @@ from safetypage.api import (
 from safetypage.server import render
 from safetypage.server.library import Library, MissingError, ToolError, estimate_tokens
 from safetypage.server.oplog import CallRecord, OpsLog
-from safetypage.server.surfaces import Surface
+from safetypage.server.surfaces import Identity, Surface
 
 __all__ = ["Limits", "Server", "build_app", "client_family", "server_version"]
 
@@ -125,6 +125,7 @@ class Server:
     ops: OpsLog
     limits: Limits = field(default_factory=Limits)
     version: str = field(default_factory=server_version)
+    identity: Identity = field(default_factory=Identity)
 
     def __post_init__(self) -> None:
         self._limiter = anyio.CapacityLimiter(self.limits.workers)
@@ -467,7 +468,7 @@ def build_app(server: Server, *, allowed_hosts: list[str] | None = None) -> Star
     async def index(_: Request) -> Response:
         return JSONResponse(
             {
-                "name": "SafetyPage",
+                "name": server.identity.title,
                 "mcp": "/mcp",
                 "variants": {n: f"/x/{n}/mcp" for n in server.surfaces if n != "default"},
                 "api": "/api/search?query=…",

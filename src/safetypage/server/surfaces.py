@@ -19,6 +19,11 @@ Keys:
 ``snapshot``       ``current`` or a snapshot id
 ``search_full_text``  search returns the full text of open units with each hit
 
+A directory may also hold ``library.toml``, which names the library the server presents
+(``name``, ``title``, ``description``); without it the server is SafetyPage. Another library
+built on this engine keeps its own surfaces directory and points the server at it
+(``--surfaces``).
+
 ``surface_id`` is ``<name>@<first 6 hex of the SHA-256 of the resolved config and the text of
 every description file it uses>``.
 """
@@ -32,7 +37,16 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-__all__ = ["SURFACES_DIR", "TOOLS", "Surface", "SurfaceError", "load_surface", "load_surfaces"]
+__all__ = [
+    "SURFACES_DIR",
+    "TOOLS",
+    "Identity",
+    "Surface",
+    "SurfaceError",
+    "load_identity",
+    "load_surface",
+    "load_surfaces",
+]
 
 SURFACES_DIR = Path(__file__).parent / "surfaces"
 TOOLS = ("search", "fetch", "verify_quote", "check_answer")
@@ -64,6 +78,26 @@ class Surface:
     arm: str
     snapshot: str
     search_full_text: bool
+
+
+@dataclass(frozen=True, slots=True)
+class Identity:
+    """The library the server presents itself as, to MCP clients and at ``/``."""
+
+    name: str = "safetypage"
+    title: str = "SafetyPage"
+    description: str = "A page-cited library of the AI safety record."
+
+
+def load_identity(directory: Path = SURFACES_DIR) -> Identity:
+    path = directory / "library.toml"
+    if not path.is_file():
+        return Identity()
+    data = tomllib.loads(path.read_text(encoding="utf-8"))
+    unknown = set(data) - {"name", "title", "description"}
+    if unknown:
+        raise SurfaceError(f"{path.name}: unknown keys {sorted(unknown)}")
+    return Identity(**{k: str(v) for k, v in data.items()})
 
 
 def _raw(name: str, directory: Path, seen: tuple[str, ...] = ()) -> dict[str, Any]:

@@ -32,7 +32,7 @@ from safetypage.server.app import Limits, Server, build_app
 from safetypage.server.backend import MemoryBackend
 from safetypage.server.library import Library, open_readonly
 from safetypage.server.oplog import OpsLog
-from safetypage.server.surfaces import load_surfaces
+from safetypage.server.surfaces import SURFACES_DIR, load_identity, load_surfaces
 from safetypage.snapshot import list_snapshots, load_manifest, resolve_snapshot
 
 __all__ = ["fixture_library", "load_server", "main", "open_backend", "snapshot_library"]
@@ -101,6 +101,7 @@ def load_server(
     static_url: str | None = None,
     ops_db: Path | None = None,
     limits: Limits | None = None,
+    surfaces: Path = SURFACES_DIR,
 ) -> Server:
     libraries: dict[str, Library] = {}
     if fixtures:
@@ -116,7 +117,13 @@ def load_server(
         libraries["current"] = libraries[current]
     else:
         raise SystemExit("give --data <root>, --snapshot <dir> or --fixtures")
-    return Server(libraries, load_surfaces(), OpsLog(ops_db), limits or Limits())
+    return Server(
+        libraries,
+        load_surfaces(surfaces),
+        OpsLog(ops_db),
+        limits or Limits(),
+        identity=load_identity(surfaces),
+    )
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -136,6 +143,13 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--base-url", default=env("SAFETYPAGE_BASE_URL"))
+    surfaces_env = env("SAFETYPAGE_SURFACES")
+    parser.add_argument(
+        "--surfaces",
+        type=Path,
+        default=Path(surfaces_env) if surfaces_env else SURFACES_DIR,
+        help="the surfaces directory (tools, descriptions, and library.toml for the name)",
+    )
     args = parser.parse_args(argv)
 
     import uvicorn  # noqa: PLC0415
@@ -162,6 +176,7 @@ def main(argv: list[str] | None = None) -> None:
         static_url=env("SAFETYPAGE_STATIC_URL"),
         ops_db=ops_db,
         limits=limits,
+        surfaces=args.surfaces,
     )
     hosts = [h.strip() for h in (env("SAFETYPAGE_ALLOWED_HOSTS") or "").split(",") if h.strip()]
     if not hosts and args.host in ("127.0.0.1", "localhost"):

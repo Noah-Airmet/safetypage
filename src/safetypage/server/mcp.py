@@ -169,9 +169,9 @@ def _tools(server: Server, surface: Surface) -> dict[str, ToolFn]:
 def build_mcp(server: Server, surface: Surface) -> MCPServer:
     """An MCP server offering a surface's tools, with its descriptions."""
     mcp = MCPServer(
-        name="safetypage",
-        title="SafetyPage",
-        description="A page-cited library of the AI safety record.",
+        name=server.identity.name,
+        title=server.identity.title,
+        description=server.identity.description,
         instructions=surface.instructions,
         version=server.version,
     )
