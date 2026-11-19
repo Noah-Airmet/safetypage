@@ -297,6 +297,8 @@ class QuoteLocation(_Wire):
     spine_end: int
     text: str
     """The source's own characters for this stretch (an excerpt, for a link-only document)."""
+    anchor_label: str | None = None
+    """The display label for the matched page or paragraph."""
 
 
 class QuoteDiff(_Wire):
@@ -348,6 +350,8 @@ class CitationAudit(_Wire):
     """The document, version and anchor all exist in this snapshot."""
     error: str | None = None
     tier: Tier | None = None
+    anchor_label: str | None = None
+    """The display label for the cited page or paragraph, when it resolves."""
     quotes: list[QuoteAudit] = Field(default_factory=list[QuoteAudit])
 
 

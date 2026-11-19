@@ -3,6 +3,18 @@
     "CitationAudit": {
       "additionalProperties": false,
       "properties": {
+        "anchor_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Label"
+        },
         "cite": {
           "title": "Cite",
           "type": "string"
@@ -213,6 +225,18 @@
         "anchor": {
           "title": "Anchor",
           "type": "string"
+        },
+        "anchor_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Label"
         },
         "cite": {
           "title": "Cite",

@@ -916,6 +916,7 @@ class Corpus:
             spine_start=span.start,
             spine_end=span.end,
             text=policy.clip(span.text, version.tier),
+            anchor_label=self.anchor_label(version, anchor),
         )
 
     def _quote_check(
@@ -984,7 +985,9 @@ class Corpus:
                 raw=found.raw, cite=str(citation), url=citation.url(self.base_url), resolves=True
             )
             try:
-                audit.tier = self.resolve(citation).version.tier
+                version = self.resolve(citation).version
+                audit.tier = version.tier
+                audit.anchor_label = self.anchor_label(version, citation.anchor)
             except NotFoundError as exc:
                 audit.resolves = False
                 audit.error = str(exc)

@@ -121,6 +121,17 @@ def test_spine_offsets_join_pages_with_one_newline(empty: Corpus) -> None:
     )
 
 
+def test_answer_audit_labels_the_cited_page_and_the_match(empty: Corpus) -> None:
+    add_doc(empty)
+    add_paged(empty)
+    audit = empty.check_answer('"Second page with a figure" (example:paper/v1/p1).')
+    cited = audit.citations[0]
+    assert cited.anchor_label == "p. 1"
+    check = cited.quotes[0].check
+    assert check is not None and check.verdict == "elsewhere"
+    assert check.locations[0].anchor_label == "p. ii (PDF p. 2)"
+
+
 def test_a_versions_text_is_written_once(empty: Corpus) -> None:
     add_doc(empty)
     version_id = add_paged(empty)
